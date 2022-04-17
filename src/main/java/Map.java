@@ -1,8 +1,31 @@
+import java.util.Random;
+
 public class Map {
     public  int Iteration = 8;
     public  int size = 5;
 
-    public  void space(int size) {
+    Tile[][] Tiles = new Tile[10][8];
+
+
+    public void AssignTileWithRandom(){
+
+        for(int i = 0; i < 10;i++){
+            for(int j = 0; j < 8;j++){
+                Random rand = new Random();
+                int Condition = rand.nextInt(9);
+                if(Condition < 3){
+                   Tile tile = new Tile(i,j,"fog of war");
+                   Tiles[i][j] = tile;
+                }else{
+                    Tile tile = new Tile(i,j,"clear");
+                    Tiles[i][j] = tile;
+                }
+
+            }
+        }
+    }
+
+    public void space(int size) {
         int counter = 0;
         for (counter = 0; counter < size; counter++) {
             // Add space
@@ -10,30 +33,30 @@ public class Map {
         }
     }
 
-    public static void print_symbol(int size) {
+    public void print_symbol(int size) {
         int counter = 0;
         for (counter = 0; counter < size; counter++) {
             System.out.print("_");
         }
     }
 
-    // Print hexagon of given side
-    public void PrintMap() {
+    public void PrintFirstRows(){
+        space(size);
+        for (int j = 0; j < Iteration; j++) {
+            print_symbol(size);
+            space(size + 6);
+        }
+       
+        System.out.print("\n");
+    }
+  
+    public void PrintMapNextRows() {
         // Print top layers
         int mid = size + 3;
-        int CountSpaceFinal = size + 4;
+        int CountSpaceFinal = size + 2;
         int CountSpaceFirst = size;
-        for (int i = 0; i < mid / 2; i++) {
+        for (int i = 1; i < mid / 2; i++) {
             space(size - i);
-            if (i == 0) {
-
-                for (int j = 0; j < Iteration; j++) {
-                    print_symbol(size);
-                    space(CountSpaceFinal + 2);
-                }
-                CountSpaceFinal -= 2;
-                System.out.print("\n");
-            } else {
 
                 if (i == mid / 2 - 1) {
                     for (int j = 0; j < Iteration; j++) {
@@ -57,7 +80,6 @@ public class Map {
                     System.out.print("\n");
                 }
 
-            }
 
         }
         CountSpaceFinal = size;
@@ -66,7 +88,6 @@ public class Map {
 
         for (int i = mid / 2 - 1; i >= 1; i--) {
             space(size - i);
-
             // last layer
             if (i == 1) {
                 for (int j = 0; j < Iteration; j++) {
