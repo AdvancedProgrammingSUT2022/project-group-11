@@ -606,7 +606,7 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<Object>() {
         {
-          //  add(UnitTypes.ANTITANKGUN);
+            add(UnitTypes.ANTI_TANKGUN);
             add(UnitTypes.INFANTRY);
         }
     }), STEAM_POWER(1680, new ArrayList<TechnologyTypes>() {
