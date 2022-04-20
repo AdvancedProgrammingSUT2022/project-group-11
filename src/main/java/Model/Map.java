@@ -61,14 +61,32 @@ public class Map {
 
                 int HowManySpace = 9 - AllUnit.length();
                 Printmap[i][j] += Tiles[i - 1][l + 1].getTerrainTypes().getColor();
-                for(int count = 0; count < HowManySpace / 2;count++){
-                    
+                for (int count = 0; count < HowManySpace / 2; count++) {
+                    Printmap[i][j] += " ";
                 }
+                int index = AllUnit.indexOf(" ");
+                Printmap[i][j] += Color.BLUE;
+                Printmap[i][j] += AllUnit.substring(0, index);
+                Printmap[i][j] += " ";
+                Printmap[i][j] += Color.MAGENTA;
+                Printmap[i][j] += AllUnit.substring(index + 1);
+                for (int count = 0; count < HowManySpace / 2; count++) {
+                    Printmap[i][j] += " ";
+                }
+                Printmap[i][j] += Color.RESET;
 
             }
 
         } else {
-
+            if (!Tiles[i][l].getType().equals("fog of war")) {
+                Printmap[i][j] += "/";
+                Printmap[i][j] += Tiles[i][l].getTerrainTypes().getColor();
+                for (int count = 0; count < size; count++) {
+                    Printmap[i][j] += " ";
+                }
+                Printmap[i][j] += Color.RESET;
+                Printmap[i][j] += "\\";
+            }
         }
     }
 
