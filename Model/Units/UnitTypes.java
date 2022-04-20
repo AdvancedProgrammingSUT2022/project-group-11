@@ -30,14 +30,14 @@ public enum UnitTypes {
     PANZER(450, CombatTypes.ARMORED, 60, 0, 0, 5, null, TechnologyTypes.COMBUSTION),
     TANK(450, CombatTypes.ARMORED, 50, 0, 0, 4, null, TechnologyTypes.COMBUSTION);
 
-    private final int cost;
-    private final CombatTypes combatTypes;
-    private final int combatStrengh;
-    private final int rangedCombatStrengh;
-    private final int Range;
-    private final int movement;
-    private final ResourceTypes resourceRequirements;
-    private final TechnologyTypes technologyRequirements;
+    private int cost;
+    private CombatTypes combatTypes;
+    private int combatStrengh;
+    private int rangedCombatStrengh;
+    private int Range;
+    private int movement;
+    private ResourceTypes resourceRequirements;
+    private TechnologyTypes technologyRequirements;
 
     UnitTypes(int cost, CombatTypes combatTypes, int combatStrengh, int rangedCombatStrengh, int range, int movement,
             ResourceTypes resourceRequirements, TechnologyTypes technologyRequirements) {

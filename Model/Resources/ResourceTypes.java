@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import Model.Improvements.Improvements;
 import Model.Technologies.TechnologyTypes;
-import Model.Terrain.TerrainTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
+import Model.Terrains.TerrainTypes;
 
 public enum ResourceTypes {
     BANANAS(1, 0, 0, new ArrayList<>() {
@@ -156,12 +156,12 @@ public enum ResourceTypes {
         }
     }, Improvements.PLANTATION, null);
 
-    final int food;
-    final int production;
-    final int gold;
-    final ArrayList<Object> canBeFoundOn;
-    final Improvements requiredImprovement;
-    final TechnologyTypes requiredTechnology;
+    private int food;
+    private int production;
+    private int gold;
+    private ArrayList<Object> canBeFoundOn;
+    private Improvements requiredImprovement;
+    private TechnologyTypes requiredTechnology;
 
     ResourceTypes(int food, int production, int gold, ArrayList<Object> canBeFoundOn, Improvements requiredImprovement,
             TechnologyTypes requiredTechnology) {

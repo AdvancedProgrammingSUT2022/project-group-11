@@ -121,11 +121,11 @@ public enum TerrainTypes {
         this.possibleResources = possibleResources;
     }
 
-    int food;
-    int product;
-    int gold;
-    int movementCost;
-    int combatModifier;
-    ArrayList<TerrainFeatureTypes> possibleFeatures;
-    ArrayList<ResourceTypes> possibleResources;
+    private int food;
+    private int product;
+    private int gold;
+    private int movementCost;
+    private int combatModifier;
+    private ArrayList<TerrainFeatureTypes> possibleFeatures;
+    private ArrayList<ResourceTypes> possibleResources;
 }

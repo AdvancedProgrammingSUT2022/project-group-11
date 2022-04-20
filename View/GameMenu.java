@@ -26,40 +26,10 @@ public class GameMenu {
             // input = input.trim().replaceAll("\\s+", " ");
             if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
 
-                this.databaseController.showInfo();
-                if (matcher.group("section").equals("RESEARCH")) {
+                showInfo(matcher);
 
-                } else if (matcher.group("section").equals("UNITS")) {
-
-                } else if (matcher.group("section").equals("CITIIES")) {
-
-                } else if (matcher.group("section").equals("DIPLOMACY")) {
-
-                } else if (matcher.group("section").equals("VICTORY")) {
-
-                } else if (matcher.group("section").equals("DEMOGRAPHICS")) {
-
-                } else if (matcher.group("section").equals("NOTIFICATIONS")) {
-
-                } else if (matcher.group("section").equals("MILITARY")) {
-
-                } else if (matcher.group("section").equals("ECONOMIC")) {
-
-                } else if (matcher.group("section").equals("DIPLOMATIC")) {
-
-                } else if (matcher.group("section").equals("DEALS")) {
-
-                } else {
-                    System.out.println("INVALID COMMAND");
-                }
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
-                if (matcher.group("subdivision").equals("COMBAT")) {
-
-                } else if (matcher.group("subdivision").equals("NONCOMBAT")) {
-
-                } else {
-                    System.out.println("INVALID COMMAND");
-                }
+                selectUnit(matcher);
 
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_NAME)) != null) {
 
@@ -90,29 +60,7 @@ public class GameMenu {
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
 
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
-                if (matcher.group("subdivision").equals("ROAD")) {
-
-                } else if (matcher.group("subdivision").equals("RAILROAD")) {
-
-                } else if (matcher.group("subdivision").equals("FARM")) {
-
-                } else if (matcher.group("subdivision").equals("MINE")) {
-
-                } else if (matcher.group("subdivision").equals("TRADINGPOST")) {
-
-                } else if (matcher.group("subdivision").equals("LUMBERMILL")) {
-
-                } else if (matcher.group("subdivision").equals("PASTURE")) {
-
-                } else if (matcher.group("subdivision").equals("CAMP")) {
-
-                } else if (matcher.group("subdivision").equals("PLANTATION")) {
-
-                } else if (matcher.group("subdivision").equals("QUARRY")) {
-
-                } else {
-                    System.out.println("INVALID COMMAND");
-                }
+                buildUnit(matcher);
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
                 if (matcher.group("subdivision").equals("JUNGLE")) {
 
@@ -125,6 +73,70 @@ public class GameMenu {
             } else {
                 System.out.println("INVALID COMMAND");
             }
+        }
+    }
+
+    private void showInfo(Matcher matcher) {
+        if (matcher.group("section").equals("RESEARCH")) {
+
+        } else if (matcher.group("section").equals("UNITS")) {
+
+        } else if (matcher.group("section").equals("CITIIES")) {
+
+        } else if (matcher.group("section").equals("DIPLOMACY")) {
+
+        } else if (matcher.group("section").equals("VICTORY")) {
+
+        } else if (matcher.group("section").equals("DEMOGRAPHICS")) {
+
+        } else if (matcher.group("section").equals("NOTIFICATIONS")) {
+
+        } else if (matcher.group("section").equals("MILITARY")) {
+
+        } else if (matcher.group("section").equals("ECONOMIC")) {
+
+        } else if (matcher.group("section").equals("DIPLOMATIC")) {
+
+        } else if (matcher.group("section").equals("DEALS")) {
+
+        } else {
+            System.out.println("INVALID COMMAND");
+        }
+    }
+
+    private void selectUnit(Matcher matcher) {
+        if (matcher.group("subdivision").equals("COMBAT")) {
+
+        } else if (matcher.group("subdivision").equals("NONCOMBAT")) {
+
+        } else {
+            System.out.println("INVALID COMMAND");
+        }
+    }
+
+    private void buildUnit(Matcher matcher) {
+        if (matcher.group("subdivision").equals("ROAD")) {
+
+        } else if (matcher.group("subdivision").equals("RAILROAD")) {
+
+        } else if (matcher.group("subdivision").equals("FARM")) {
+
+        } else if (matcher.group("subdivision").equals("MINE")) {
+
+        } else if (matcher.group("subdivision").equals("TRADINGPOST")) {
+
+        } else if (matcher.group("subdivision").equals("LUMBERMILL")) {
+
+        } else if (matcher.group("subdivision").equals("PASTURE")) {
+
+        } else if (matcher.group("subdivision").equals("CAMP")) {
+
+        } else if (matcher.group("subdivision").equals("PLANTATION")) {
+
+        } else if (matcher.group("subdivision").equals("QUARRY")) {
+
+        } else {
+            System.out.println("INVALID COMMAND");
         }
     }
 

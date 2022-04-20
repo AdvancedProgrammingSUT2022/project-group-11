@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import Model.Resources.ResourceTypes;
 import Model.Technologies.TechnologyTypes;
-import Model.Terrain.TerrainTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
+import Model.Terrains.TerrainTypes;
 
 public enum Improvements {
     CAMP(0, 0, 0, new ArrayList<ResourceTypes>() {
@@ -125,12 +125,12 @@ public enum Improvements {
         }
     });
 
-    final int food;
-    final int production;
-    final int gold;
-    final ArrayList<ResourceTypes> improvesResources;
-    final TechnologyTypes requiredTechnology;
-    final ArrayList<Object> canBeBuiltON;
+    private int food;
+    private int production;
+    private int gold;
+    private ArrayList<ResourceTypes> improvesResources;
+    private TechnologyTypes requiredTechnology;
+    private ArrayList<Object> canBeBuiltON;
 
     Improvements(int food, int production, int gold, ArrayList<ResourceTypes> improvesResources,
             TechnologyTypes requiredTechnology, ArrayList<Object> canBeBuiltOn) {

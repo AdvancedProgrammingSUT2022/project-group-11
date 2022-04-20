@@ -45,10 +45,10 @@ public enum TerrainFeatureTypes {
         this.possibleResourcesFound = possibleResourcesFound;
     }
 
-    int food;
-    int product;
-    int gold;
-    int combatModifier;
-    int movementCost;
-    ArrayList<ResourceTypes> possibleResourcesFound;
+    private int food;
+    private int product;
+    private int gold;
+    private int combatModifier;
+    private int movementCost;
+    private ArrayList<ResourceTypes> possibleResourcesFound;
 }
