@@ -1,122 +1,120 @@
 package Model;
-import java.util.Random;
+
+import java.util.ArrayList;
 
 public class Map {
-    private int Iteration = 8;
+    private int Iteration = 6;
     private int size = 5;
+    private int ROW = 20;
+    private int COL = 8;
 
-    Tile[][] Tiles = new Tile[10][8];
+    private Tile[][] Tiles = new Tile[ROW][COL];
+    private ArrayList<River> rivers = new ArrayList<River>();
+    private String[][] Printmap = new String[ROW][Iteration];
 
-    public void AssignTileWithRandom() {
+    public River hasRiver(Tile tileFirst, Tile tileSecond) {
+        for (River river : this.rivers) {
+            if (river.getFirstTile() == tileFirst && river.getSecondTile() == tileSecond) {
+                return river;
+            } else if (river.getSecondTile() == tileFirst && river.getFirstTile() == tileSecond) {
+                return river;
+            }
+        }
+        return null;
+    }
 
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 8; j++) {
-                Random rand = new Random();
-                int Condition = rand.nextInt(9);
-                if ((i < 3 || i > 8) && (j < 2 || j > 6)) {
+    public void addSpace(int row, int col, int count) {
+        for (int i = 0; i < count; i++) {
+            Printmap[row][col] += " ";
+        }
+    }
 
-                    if(Condition < 5){
-                        
-                        Tile tile = new Tile(i, j, "fog of war", Color.RESET);
-                        Tiles[i][j] = tile;
-                    }
+    public void firstRow(int i, int j, int l, boolean check) {
+        if (check == true) {
+            if (!Tiles[i][l].getType().equals("fog of war")) {
+                Printmap[i][j] += "/";
+                Printmap[i][j] += Tiles[i][l].getTerrainTypes().getColor();
+                for (int count = 0; count < size; count++) {
+                    Printmap[i][j] += " ";
+                }
+                Printmap[i][j] += Color.RESET;
 
-                }else{
+            }
+            if (!Tiles[i - 1][l + 1].getType().equals("fog of war")) {
+                River river;
+                if ((river = hasRiver(Tiles[i][l], Tiles[i - 1][l + 1])) != null) {
+                    Printmap[i][j] += river.getColor();
+                    Printmap[i][j] += "\\";
+                    Printmap[i][j] += Color.RESET;
+                } else {
+                    Printmap[i][j] += "\\";
+                }
+
+                String AllUnit = "";
+                if (Tiles[i - 1][l + 1].getNonCombatUnit().getUnitType() != null) {
+                    AllUnit += Tiles[i - 1][l + 1].getNonCombatUnit().getUnitType().getShowMap();
+                }
+                AllUnit += " ";
+                if (Tiles[i - 1][l + 1].getCombatUnit().getUnitType() != null) {
+                    AllUnit += Tiles[i - 1][l + 1].getCombatUnit().getUnitType().getShowMap();
+                }
+
+                int HowManySpace = 9 - AllUnit.length();
+                Printmap[i][j] += Tiles[i - 1][l + 1].getTerrainTypes().getColor();
+                for(int count = 0; count < HowManySpace / 2;count++){
                     
                 }
 
             }
+
+        } else {
+
         }
     }
 
-    public void space(int size) {
-        int counter = 0;
-        for (counter = 0; counter < size; counter++) {
-            // Add space
-            System.out.print(" ");
-        }
-    }
+    public void printMap() {
 
-    public void print_symbol(int size) {
-        int counter = 0;
-        for (counter = 0; counter < size; counter++) {
-            System.out.print("_");
-        }
-    }
+        for (int i = 0; i < ROW; i++) {
 
-    public void PrintFirstRows() {
-        space(size);
-        for (int j = 0; j < Iteration; j++) {
-            print_symbol(size);
-            space(size + 6);
-        }
+            for (int j = 0; j < Iteration / 2; j++) {
+                addSpace(i, j, Iteration / 2 - 1 - j);
 
-        System.out.print("\n");
-    }
+                for (int l = 0; l < COL; l += 2) {
 
-    public void PrintMapNextRows() {
-        // Print top layers
-        int mid = size + 3;
-        int CountSpaceFinal = size + 2;
-        int CountSpaceFirst = size;
-        for (int i = 1; i < mid / 2; i++) {
-            space(size - i);
+                    switch (j) {
+                        case 0:
+                            if (i > 0) {
+                                firstRow(i, j, l, true);
+                            } else {
+                                firstRow(i, j, l, false);
+                            }
+                            break;
+                        case 1:
 
-            if (i == mid / 2 - 1) {
-                for (int j = 0; j < Iteration; j++) {
-                    System.out.print("/");
-                    space(CountSpaceFirst);
-                    System.out.print("\\");
-                    print_symbol(size);
-                }
-                System.out.print("\n");
-                CountSpaceFirst += 2;
-            } else {
-                for (int j = 0; j < Iteration; j++) {
-                    System.out.print("/");
-                    space(CountSpaceFirst);
-                    System.out.print("\\");
-                    space(CountSpaceFinal + 2);
+                            break;
+                        case 2:
+
+                            break;
+
+                    }
+
                 }
 
-                CountSpaceFinal -= 2;
-                CountSpaceFirst += 2;
-                System.out.print("\n");
             }
+            for (int j = Iteration / 2; j < Iteration; j++) {
+                addSpace(i, j, j - Iteration / 2);
+                switch (j) {
 
-        }
-        CountSpaceFinal = size;
-        CountSpaceFirst = size + 4;
-        // Print bottom layers
+                    case 3:
 
-        for (int i = mid / 2 - 1; i >= 1; i--) {
-            space(size - i);
-            // last layer
-            if (i == 1) {
-                for (int j = 0; j < Iteration; j++) {
-                    System.out.print("\\");
-                    print_symbol(size);
-                    System.out.print("/");
-                    space(CountSpaceFinal);
+                        break;
+                    case 4:
+
+                        break;
+                    case 5:
+
+                        break;
                 }
-
-                CountSpaceFinal += 2;
-                CountSpaceFirst -= 2;
-                System.out.print("\n");
-
-            } else {
-
-                for (int j = 0; j < Iteration; j++) {
-                    System.out.print("\\");
-                    space(CountSpaceFirst);
-                    System.out.print("/");
-                    space(CountSpaceFinal);
-                }
-
-                CountSpaceFinal += 2;
-                CountSpaceFirst -= 2;
-                System.out.print("\n");
-
             }
 
         }
