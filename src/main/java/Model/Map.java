@@ -498,16 +498,54 @@ public class Map {
         if (check == true) {
 
             if (!Tiles[i][l].getType().equals("fog of war")) {
+                River river;
+                if (l > 0 && ((river = hasRiver(Tiles[i][l], Tiles[i][l - 1])) != null)) {
+                    Printmap[i][j] += river.getColor();
+                    Printmap[i][j] += "\\";
+                    Printmap[i][j] += Color.RESET;
+                } else {
+                    Printmap[i][j] += "\\";
+                }
+                Printmap[i][j] += Tiles[i][l].getTerrainTypes().getColor();
+                for (int count = 0; count < size; count++) {
+                    Printmap[i][j] += "_";
+                }
+                Printmap[i][j] += Color.RESET;
 
             }
             if (!Tiles[i][l + 1].getType().equals("fog of war") || !Tiles[i][l].getType().equals("fog of war")) {
-
+                River river;
+                if ((river = hasRiver(Tiles[i][l], Tiles[i][l + 1])) != null) {
+                    Printmap[i][j] += river.getColor();
+                    Printmap[i][j] += "/";
+                    Printmap[i][j] += Color.RESET;
+                } else {
+                    Printmap[i][j] += "/";
+                }
             }
             if (!Tiles[i][l + 1].getType().equals("fog of war")) {
+                Printmap[i][j] += Tiles[i][l = 1].getTerrainTypes().getColor();
+                String XcenterYcenter = "";
+                XcenterYcenter += Tiles[i][l + 1].getX() + "," + Tiles[i][l + 1].getY();
+                int HowManySpace = 9 - XcenterYcenter.length();
+                for (int count = 0; count < HowManySpace / 2; count++) {
+                    Printmap[i][j] += " ";
+                }
+                Printmap[i][j] += XcenterYcenter;
+                for (int count = 0; count < HowManySpace / 2; count++) {
+                    Printmap[i][j] += " ";
+                }
+                Printmap[i][j] += Color.RESET;
 
             }
         } else {
-
+            Printmap[i][j] += "\\";
+            Printmap[i][j] += Tiles[i][l].getTerrainTypes().getColor();
+            for (int count = 0; count < size; count++) {
+                Printmap[i][j] += "_";
+            }
+            Printmap[i][j] += Color.RESET;
+            Printmap[i][j] += "/";
         }
     }
 
