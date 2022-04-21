@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 
 import Controller.DatabaseController;
 import Enums.GameEnums;
+import Model.Map;
 
 public class GameMenu {
     private DatabaseController databaseController;
@@ -30,45 +31,51 @@ public class GameMenu {
 
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
                 selectUnit(matcher);
+                while (this.databaseController.HasoneUnitBeenSelected()) {
+                    input = scanner.nextLine();
+                    if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_MOVETO)) != null) {
+                        // todo
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY)) != null) {
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY_HEAL)) != null) {
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_GARRISON)) != null) {
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SETUP_RANGED)) != null) {
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ATTACK)) != null) {
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FOUND_CITY)) != null) {
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_CANCEL_MISSION)) != null) {
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_WAKE)) != null) {
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+                        buildUnit(matcher);
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
+                        if (matcher.group("subdivision").equals("JUNGLE")) {
+
+                        } else if (matcher.group("subdivision").equals("ROUTE")) {
+
+                        } else {
+                            System.out.println("INVALID COMMAND");
+                        }
+
+                    }
+                }
 
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_NAME)) != null) {
-
+                // todo
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_MOVETO)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY_HEAL)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_GARRISON)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SETUP_RANGED)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ATTACK)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FOUND_CITY)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_CANCEL_MISSION)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_WAKE)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
-
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
-                buildUnit(matcher);
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
-                if (matcher.group("subdivision").equals("JUNGLE")) {
-
-                } else if (matcher.group("subdivision").equals("ROUTE")) {
-
-                } else {
-                    System.out.println("INVALID COMMAND");
-                }
+                // todo
 
             } else {
                 System.out.println("INVALID COMMAND");
@@ -106,9 +113,32 @@ public class GameMenu {
 
     private void selectUnit(Matcher matcher) {
         if (matcher.group("subdivision").equals("COMBAT")) {
-
+            int x = Integer.parseInt(matcher.group("x"));
+            int y = Integer.parseInt(matcher.group("y"));
+            Map map = this.databaseController.getMap();
+            int mapRows = map.getROW();
+            int mapColumns = map.getCOL();
+            if (x > mapRows || x < 0 || y > mapColumns || y < 0) {
+                System.out.println("there is no tile with these coordinates");
+            } else if (map.getTiles()[x][y].getCombatUnit() == null) {
+                System.out.println("there is no combat unit in this tile");
+            } else {
+                this.databaseController.selectAndDeslectCombatUnit(x, y);
+            }
         } else if (matcher.group("subdivision").equals("NONCOMBAT")) {
+            int x = Integer.parseInt(matcher.group("x"));
+            int y = Integer.parseInt(matcher.group("y"));
+            Map map = this.databaseController.getMap();
+            int mapRows = map.getROW();
+            int mapColumns = map.getCOL();
+            if (x > mapRows || x < 0 || y > mapColumns || y < 0) {
+                System.out.println("there is no tile with these coordinates");
+            } else if (map.getTiles()[x][y].getNonCombatUnit() == null) {
+                System.out.println("there is no non combat unit in this tile");
 
+            } else {
+                this.databaseController.selectAndDeslectNonCombatUnit(x, y);
+            }
         } else {
             System.out.println("INVALID COMMAND");
         }
@@ -139,5 +169,11 @@ public class GameMenu {
             System.out.println("INVALID COMMAND");
         }
     }
+
+    private void selectCity(Matcher matcher){
+
+    }
+
+    
 
 }

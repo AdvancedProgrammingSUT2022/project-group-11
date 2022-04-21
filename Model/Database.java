@@ -4,10 +4,22 @@ import java.util.ArrayList;
 
 public class Database {
     private ArrayList<User> Users;
+    private Map map;
 
     public Database ()
     {
         this.Users = new ArrayList<>();
+    }
+    public void setUsers(ArrayList<User> Users) {
+        this.Users = Users;
+    }
+
+    public Map getMap() {
+        return this.map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
     }
 
     public void addUser ( User user)
