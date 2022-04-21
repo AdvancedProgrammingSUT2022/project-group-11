@@ -390,6 +390,127 @@ public class Map {
         }
     }
 
+    // fifth row of map
+    public void fifthRow(int i, int j, int l, boolean check, Database database) {
+        if (check == true) {
+
+            if (!Tiles[i][l].getType().equals("fog of war")) {
+                River river;
+                if (l > 0 && ((river = hasRiver(Tiles[i][l], Tiles[i][l - 1])) != null)) {
+                    Printmap[i][j] += river.getColor();
+                    Printmap[i][j] += "\\";
+                    Printmap[i][j] += Color.RESET;
+                } else {
+                    Printmap[i][j] += "\\";
+                }
+                String TerrainFeatureType = "";
+                if (Tiles[i][l].getTerrainFeatureTypes() != null) {
+                    TerrainFeatureType += Tiles[i][l].getTerrainFeatureTypes().getShowFeatures();
+                }
+                int HowManySpace = 7 - TerrainFeatureType.length();
+                int HowManySpaceLeft = 0;
+                int HowManySpaceRight = 0;
+                if (HowManySpace % 2 == 0) {
+                    HowManySpaceRight = HowManySpace / 2;
+                    HowManySpaceLeft = HowManySpace / 2;
+                } else {
+                    HowManySpaceLeft = HowManySpace / 2;
+                    HowManySpaceRight = HowManySpace / 2 + 1;
+                }
+                Printmap[i][j] += Tiles[i][l].getTerrainTypes().getColor();
+                for (int count = 0; count < HowManySpaceLeft; count++) {
+                    Printmap[i][j] += " ";
+                }
+                Printmap[i][j] += TerrainFeatureType;
+                for (int count = 0; count < HowManySpaceRight; count++) {
+                    Printmap[i][j] += " ";
+                }
+                Printmap[i][j] += Color.RESET;
+            }
+            if (!Tiles[i][l + 1].getType().equals("fog of war") || !Tiles[i][l].getType().equals("fog of war")) {
+                River river;
+                if ((river = hasRiver(Tiles[i][l], Tiles[i][l + 1])) != null) {
+                    Printmap[i][j] += river.getColor();
+                    Printmap[i][j] += "/";
+                    Printmap[i][j] += Color.RESET;
+                } else {
+                    Printmap[i][j] += "/";
+                }
+            }
+            if (!Tiles[i][l + 1].getType().equals("fog of war")) {
+                String Civilization = "";
+                if (database.getCivilizationUser(Tiles[i][l + 1]) != null) {
+                    Civilization += database.getCivilizationUser(Tiles[i][l + 1]).getCivilization().getName();
+                }
+                int HowManySpace = 7 - Civilization.length();
+                int HowManySpaceLeft = 0;
+                int HowManySpaceRight = 0;
+                if (HowManySpace % 2 == 0) {
+                    HowManySpaceRight = HowManySpace / 2;
+                    HowManySpaceLeft = HowManySpace / 2;
+                } else {
+                    HowManySpaceLeft = HowManySpace / 2;
+                    HowManySpaceRight = HowManySpace / 2 + 1;
+                }
+                Printmap[i][j] += Tiles[i][l + 1].getTerrainTypes().getColor();
+                for (int count = 0; count < HowManySpaceLeft; count++) {
+                    Printmap[i][j] += " ";
+                }
+                Printmap[i][j] += Color.MAGENTA;
+                Printmap[i][j] += Civilization;
+                for (int count = 0; count < HowManySpaceRight; count++) {
+                    Printmap[i][j] += " ";
+                }
+                Printmap[i][j] += Color.RESET;
+            }
+        } else {
+            Printmap[i][j] += "\\";
+            String TerrainFeatureType = "";
+            if (Tiles[i][l].getTerrainFeatureTypes() != null) {
+                TerrainFeatureType += Tiles[i][l].getTerrainFeatureTypes().getShowFeatures();
+            }
+            int HowManySpace = 7 - TerrainFeatureType.length();
+            int HowManySpaceLeft = 0;
+            int HowManySpaceRight = 0;
+            if (HowManySpace % 2 == 0) {
+                HowManySpaceRight = HowManySpace / 2;
+                HowManySpaceLeft = HowManySpace / 2;
+            } else {
+                HowManySpaceLeft = HowManySpace / 2;
+                HowManySpaceRight = HowManySpace / 2 + 1;
+            }
+            Printmap[i][j] += Tiles[i][l].getTerrainTypes().getColor();
+            for (int count = 0; count < HowManySpaceLeft; count++) {
+                Printmap[i][j] += " ";
+            }
+            Printmap[i][j] += TerrainFeatureType;
+            for (int count = 0; count < HowManySpaceRight; count++) {
+                Printmap[i][j] += " ";
+            }
+            Printmap[i][j] += Color.RESET;
+            Printmap[i][j] += "/";
+
+        }
+    }
+
+    // sixth row of map
+    public void sixthRow(int i, int j, int l, boolean check) {
+        if (check == true) {
+
+            if (!Tiles[i][l].getType().equals("fog of war")) {
+
+            }
+            if (!Tiles[i][l + 1].getType().equals("fog of war") || !Tiles[i][l].getType().equals("fog of war")) {
+
+            }
+            if (!Tiles[i][l + 1].getType().equals("fog of war")) {
+
+            }
+        } else {
+
+        }
+    }
+
     public void printMap(Database database) {
 
         for (int i = 0; i < ROW; i++) {
@@ -440,10 +561,18 @@ public class Map {
                             }
                             break;
                         case 4:
-
+                            if (i > 0) {
+                                fifthRow(i, j, l, true, database);
+                            } else {
+                                fifthRow(i, j, l, false, database);
+                            }
                             break;
                         case 5:
-
+                            if (i > 0) {
+                                sixthRow(i, j, l, true);
+                            } else {
+                                sixthRow(i, j, l, false);
+                            }
                             break;
                     }
                 }
