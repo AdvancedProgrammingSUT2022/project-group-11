@@ -10,7 +10,7 @@ public enum TerrainFeatureTypes {
             add(ResourceTypes.WHEAT);
             add(ResourceTypes.SUGAR);
         }
-    }),
+    },"FLOOD"),
     FOREST(1, 1, 0, 25, 2, new ArrayList<ResourceTypes>() {
         {
             add(ResourceTypes.DEER);
@@ -18,31 +18,32 @@ public enum TerrainFeatureTypes {
             add(ResourceTypes.DYES);
             add(ResourceTypes.SILK);
         }
-    }),
-    ICE(0, 0, 0, 0, 99999, null),
+    },"FOREST"),
+    ICE(0, 0, 0, 0, 99999, null,"ICE"),
     JUNGLE(1, -1, 0, 25, 2, new ArrayList<ResourceTypes>() {
         {
             add(ResourceTypes.BANANAS);
             add(ResourceTypes.GEMS);
             add(ResourceTypes.DYES);
         }
-    }),
+    },"JUNGLE"),
     MARSH(-1, 0, 0, -33, 2, new ArrayList<ResourceTypes>() {
         {
             add(ResourceTypes.SUGAR);
         }
-    }),
-    OASIS(3, 0, 1, -33, 1, null),
-    RIVER(0, 0, 1, 0, -1, null);
+    },"MARSH"),
+    OASIS(3, 0, 1, -33, 1, null,"OASIS"),
+    RIVER(0, 0, 1, 0, -1, null,"RIVER");
 
     TerrainFeatureTypes(int food, int product, int gold, int combatModifier, int movementCost,
-            ArrayList<ResourceTypes> possibleResourcesFound) {
+            ArrayList<ResourceTypes> possibleResourcesFound,String ShowFeatures) {
         this.food = food;
         this.product = product;
         this.gold = gold;
         this.combatModifier = combatModifier;
         this.movementCost = movementCost;
         this.possibleResourcesFound = possibleResourcesFound;
+        this.ShowFeatures = ShowFeatures;
     }
 
     int food;
@@ -51,4 +52,8 @@ public enum TerrainFeatureTypes {
     int combatModifier;
     int movementCost;
     ArrayList<ResourceTypes> possibleResourcesFound;
+    String ShowFeatures;
+    public String getShowFeatures(){
+        return this.ShowFeatures;
+    }
 }

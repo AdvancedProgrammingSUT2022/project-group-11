@@ -5,6 +5,15 @@ import java.util.ArrayList;
 public class Database {
     private ArrayList<User> Users;
 
+    public User getCivilizationUser(Tile tile){
+       for (User users : this.Users) {
+           if(users.getCivilization().getTiles().indexOf(tile) != -1){
+               return users;
+           }
+       }
+       return null;
+    }
+
     public Database ()
     {
         this.Users = new ArrayList<>();
