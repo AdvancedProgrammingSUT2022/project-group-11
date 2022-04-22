@@ -137,11 +137,11 @@ public class DatabaseController {
             }
             else if(action.equals("wake"))
             {
-                combatUnit.setIsAsleep(false);
+                nonCombatUnit.setIsAsleep(false);
             }
             else if(action.equals("delete"))
             {
-                combatUnit = null;
+                nonCombatUnit = null;
             }
         }
 

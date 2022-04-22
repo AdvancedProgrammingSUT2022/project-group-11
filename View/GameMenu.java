@@ -39,15 +39,41 @@ public class GameMenu {
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
                         this.databaseController.changingTheStateOfAUnit("sleep");
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
-                        this.databaseController.changingTheStateOfAUnit("alert");
+                        if (this.databaseController.getSelectedCombatUnit() == null) {
+                            System.out.println("this unit is not a combat unit");
+                        } else {
+                            this.databaseController.changingTheStateOfAUnit("alert");
+                        }
+
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY)) != null) {
-                        this.databaseController.changingTheStateOfAUnit("fortify");
+                        if (this.databaseController.getSelectedCombatUnit() == null) {
+                            System.out.println("this unit is not a combat unit");
+                        } else {
+                            this.databaseController.changingTheStateOfAUnit("fortify");
+                        }
+
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY_HEAL)) != null) {
-                        this.databaseController.changingTheStateOfAUnit("fortify until heal");
+                        if (this.databaseController.getSelectedCombatUnit() == null) {
+                            System.out.println("this unit is not a combat unit");
+                        } else {
+                            this.databaseController.changingTheStateOfAUnit("fortify until heal");
+                        }
+
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_GARRISON)) != null) {
-                        this.databaseController.changingTheStateOfAUnit("garrison");
+                        if (this.databaseController.getSelectedCombatUnit() == null) {
+                            System.out.println("this unit is not a combat unit");
+                        } else {
+                            this.databaseController.changingTheStateOfAUnit("garrison");
+                        }
+
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SETUP_RANGED)) != null) {
-                        this.databaseController.changingTheStateOfAUnit("setup ranged");
+                        if (this.databaseController.getSelectedCombatUnit() == null) {
+                            System.out.println("this unit is not a combat unit");
+                        } else if(this.databaseController.getSelectedCombatUnit() != null) {
+                            
+                            this.databaseController.changingTheStateOfAUnit("setup ranged");
+                        }
+                        
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ATTACK)) != null) {
 
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FOUND_CITY)) != null) {
@@ -168,10 +194,6 @@ public class GameMenu {
         } else {
             System.out.println("INVALID COMMAND");
         }
-    }
-
-    private void selectCity(Matcher matcher) {
-
     }
 
 }
