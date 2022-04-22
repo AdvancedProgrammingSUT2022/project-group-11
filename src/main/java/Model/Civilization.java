@@ -21,17 +21,7 @@ public class Civilization {
     this.happiness = happiness;
     this.name = name;
   }
-  
-  /*
-   * public Unit findUnit(int x, int y) {
-   * for (Unit unit : this.units) {
-   * if (unit.getX() == x && unit.getY() == y) {
-   * return unit;
-   * }
-   * }
-   * return null;
-   * }
-   */
+ 
   public String getName() {
     return this.name;
   }
