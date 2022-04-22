@@ -1,22 +1,22 @@
 package Model;
 
 public class River {
-    private Tile first;
-    private Tile second;
+    private Terrain first;
+    private Terrain second;
     private Color color;
 
-    public River(Tile first, Tile second) {
+    public River(Terrain first, Terrain second) {
 
         this.first = first;
         this.second = second;
         color = Color.BLUE_BACKGROUND;
     }
 
-    public Tile getFirstTile() {
+    public Terrain getFirstTerrain() {
         return this.first;
     }
 
-    public Tile getSecondTile() {
+    public Terrain getSecondTerrain() {
         return this.second;
     }
 

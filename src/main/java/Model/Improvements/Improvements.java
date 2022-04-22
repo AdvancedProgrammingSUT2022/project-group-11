@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import Model.Resources.ResourceTypes;
 import Model.Technologies.TechnologyTypes;
-import Model.Terrain.TerrainTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
+import Model.Terrains.TerrainTypes;
 
 public enum Improvements {
     CAMP(0, 0, 0, new ArrayList<ResourceTypes>() {

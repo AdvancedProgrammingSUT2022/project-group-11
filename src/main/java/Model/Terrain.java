@@ -1,12 +1,12 @@
 package Model;
 
-import Model.Terrain.TerrainTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
+import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
-import Model.Units.Unit;
 
-public class Tile {
+
+public class Terrain {
 
     private int x;
     private int y;
@@ -15,8 +15,9 @@ public class Tile {
     private TerrainFeatureTypes terrainFeatureTypes;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
+    
 
-    Tile(int x, int y, String Type, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit,NonCombatUnit nonCombatUnit) {
+    Terrain(int x, int y, String Type, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit,NonCombatUnit nonCombatUnit) {
         this.x = x;
         this.y = y;
         this.Type = Type;

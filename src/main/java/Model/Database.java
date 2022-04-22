@@ -5,9 +5,11 @@ import java.util.ArrayList;
 public class Database {
     private ArrayList<User> Users;
 
-    public User getCivilizationUser(Tile tile){
+    
+
+    public User getCivilizationUser(Terrain Terrain){
        for (User users : this.Users) {
-           if(users.getCivilization().getTiles().indexOf(tile) != -1){
+           if(users.getCivilization().getTerrains().indexOf(Terrain) != -1){
                return users;
            }
        }

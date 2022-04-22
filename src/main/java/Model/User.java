@@ -1,7 +1,5 @@
 package Model;
 
-
-
 public class User {
     private String username;
     private String password;
@@ -9,18 +7,21 @@ public class User {
     private Civilization civilization;
     private int score;
 
-    public User (String username, String password, String nickname)
-    {
+    public User(String username, String password, String nickname,Civilization civil) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.civilization = civil;
     }
 
+    public void setCivilization(Civilization civil) {
+        this.civilization = civil;
+    }
 
-    public Civilization getCivilization(){
+    public Civilization getCivilization() {
         return this.civilization;
     }
-    
+
     public int getScore() {
         return score;
     }

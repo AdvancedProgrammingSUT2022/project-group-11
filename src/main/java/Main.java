@@ -1,23 +1,28 @@
-import Model.Color;
+import java.util.ArrayList;
+
+import Model.Civilization;
+import Model.Database;
+import Model.Map;
+import Model.Terrain;
+import Model.User;
 
 public class Main{
     public static void main(String[] args) {
-        String print = "";
-        print += "/";
-        print+= Color.GREEN_BACKGROUND;
-        for(int i = 0; i < 5;i++){
-          print+=" ";
+     
+      Map map = new Map();
+      map.initializeMap();
+      ArrayList<Terrain> terrains = new ArrayList<Terrain>();
+      for(int i = 0; i < 20;i++){
+        for(int j = 0; j < 16;j++){
+          terrains.add(map.getTerrain()[i][j]);
         }
-        print+= Color.RESET;
-        print+= "\\";
-        System.out.println(print);
-       /* System.out.print(Color.RED);
-        System.out.print(Color.YELLOW_BACKGROUND);
+      }
+      Civilization civilization = new Civilization(terrains, null, 0, 0, "A");
+      User user = new User(null, null, null, civilization);
+      Database database = new Database();
+      database.addUser(user);
+      map.printMap(database);
       
-        System.out.print("/ hello");
-        System.out.print(Color.RESET);
-*/
-       
-        
+
     }
 }

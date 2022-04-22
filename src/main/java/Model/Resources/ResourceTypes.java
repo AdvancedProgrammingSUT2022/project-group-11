@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import Model.Improvements.Improvements;
 import Model.Technologies.TechnologyTypes;
-import Model.Terrain.TerrainTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
+import Model.Terrains.TerrainTypes;
 
 public enum ResourceTypes {
     BANANAS(1, 0, 0, new ArrayList<>() {

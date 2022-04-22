@@ -1,5 +1,5 @@
 
-package Model.Terrain;
+package Model.Terrains;
 
 import java.util.ArrayList;
 
