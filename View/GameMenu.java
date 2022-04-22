@@ -37,17 +37,17 @@ public class GameMenu {
                         // todo
 
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
-
+                        this.databaseController.changingTheStateOfAUnit("sleep");
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
-
+                        this.databaseController.changingTheStateOfAUnit("alert");
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY)) != null) {
-
+                        this.databaseController.changingTheStateOfAUnit("fortify");
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY_HEAL)) != null) {
-
+                        this.databaseController.changingTheStateOfAUnit("fortify until heal");
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_GARRISON)) != null) {
-
+                        this.databaseController.changingTheStateOfAUnit("garrison");
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SETUP_RANGED)) != null) {
-
+                        this.databaseController.changingTheStateOfAUnit("setup ranged");
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ATTACK)) != null) {
 
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FOUND_CITY)) != null) {
@@ -55,9 +55,9 @@ public class GameMenu {
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_CANCEL_MISSION)) != null) {
 
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_WAKE)) != null) {
-
+                        this.databaseController.changingTheStateOfAUnit("wake");
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
-
+                        this.databaseController.changingTheStateOfAUnit("delete");
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
                         buildUnit(matcher);
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
@@ -170,10 +170,8 @@ public class GameMenu {
         }
     }
 
-    private void selectCity(Matcher matcher){
+    private void selectCity(Matcher matcher) {
 
     }
-
-    
 
 }

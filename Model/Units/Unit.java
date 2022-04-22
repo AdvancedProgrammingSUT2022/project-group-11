@@ -9,9 +9,13 @@ public class Unit {
     private int life; 
     private int speed; 
     private boolean isAsleep;
-    private boolean alert;
-    private boolean fortify;
-    private boolean fortifyUntilHeal;
+
+    
+    
+
+
+
+
     public void move(){
 
     }
@@ -54,7 +58,8 @@ public class Unit {
     private boolean isSelected;
 
 
-    public Unit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep, boolean alert, boolean fortify, boolean fortifyUntilHeal, UnitTypes unitType, boolean isSelected) {
+
+    public Unit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep, UnitTypes unitType, boolean isSelected) {
         this.x = x;
         this.y = y;
         this.number = number;
@@ -62,9 +67,6 @@ public class Unit {
         this.life = life;
         this.speed = speed;
         this.isAsleep = isAsleep;
-        this.alert = alert;
-        this.fortify = fortify;
-        this.fortifyUntilHeal = fortifyUntilHeal;
         this.unitType = unitType;
         this.isSelected = isSelected;
     }
@@ -123,7 +125,42 @@ public class Unit {
 
 
 
+    public void setX(int x) {
+        this.x = x;
+    }
+    public void setY(int y) {
+        this.y = y;
+    }
 
+    public int getLife() {
+        return this.life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
+    public int getSpeed() {
+        return this.speed;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public boolean isIsAsleep() {
+        return this.isAsleep;
+    }
+
+    public boolean getIsAsleep() {
+        return this.isAsleep;
+    }
+
+    public void setIsAsleep(boolean isAsleep) {
+        this.isAsleep = isAsleep;
+    }
+
+   
 
 
 
