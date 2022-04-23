@@ -12,7 +12,7 @@ public class Main{
       Map map = new Map();
       map.initializeMap();
       ArrayList<Terrain> terrains = new ArrayList<Terrain>();
-      for(int i = 0; i < 20;i++){
+      for(int i = 0; i < 25;i++){
         for(int j = 0; j < 16;j++){
           terrains.add(map.getTerrain()[i][j]);
         }
@@ -22,7 +22,7 @@ public class Main{
       Database database = new Database();
       database.addUser(user);
       String [][]  result = map.printMap(database);
-      for(int i = 0; i < 20;i++){
+      for(int i = 0; i < 25;i++){
         for(int j = 0; j < 6;j++){
           System.out.println(result[i][j]);
         }

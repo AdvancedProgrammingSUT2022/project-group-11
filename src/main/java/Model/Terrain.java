@@ -17,10 +17,10 @@ public class Terrain {
     private TerrainFeatureTypes terrainFeatureTypes;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
-    
+    private ArrayList<Revealed> reveals;
     
 
-    Terrain(int x, int y, String Type, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit,NonCombatUnit nonCombatUnit) {
+    Terrain(int x, int y, String Type, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit,NonCombatUnit nonCombatUnit,ArrayList<Revealed> reveals) {
         this.x = x;
         this.y = y;
         this.Type = Type;
@@ -28,6 +28,7 @@ public class Terrain {
         this.terrainFeatureTypes = terrainFeatureTypes;
         this.combatUnit = combatUnit;
         this.nonCombatUnit = nonCombatUnit;
+        this.reveals = reveals;
     }
 
 
