@@ -21,8 +21,12 @@ public class Main{
       User user = new User(null, null, null, civilization);
       Database database = new Database();
       database.addUser(user);
-      map.printMap(database);
-      
+      String [][]  result = map.printMap(database);
+      for(int i = 0; i < 20;i++){
+        for(int j = 0; j < 6;j++){
+          System.out.println(result[i][j]);
+        }
+      }
 
     }
 }

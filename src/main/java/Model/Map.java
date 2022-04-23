@@ -34,6 +34,7 @@ public class Map {
     }
 
 
+
     /// ADD SPACE FOR FIRST IN ROWS
     public void addSpace(int row, int col, int count) {
         for (int i = 0; i < count; i++) {
@@ -108,6 +109,7 @@ public class Map {
 
         }
     }
+
 
 
 
@@ -209,6 +211,7 @@ public class Map {
 
 
 
+
     /// CIVILIZATION
     public void CivilizationPrintFirstHalf(int i, int j, int l, Database database) {
         if (!Terrains[i][l].getType().equals("fog of war")) {
@@ -281,6 +284,7 @@ public class Map {
             addSpace(i, j, 8);
         }
     }
+
 
 
 
@@ -426,6 +430,7 @@ public class Map {
 
 
 
+
     //// UNDELINE
     public void UnderlineFirstHalf(int i, int j, int l) {
         if (!Terrains[i - 1][l + 1].getType().equals("fog of war")) {
@@ -515,7 +520,7 @@ public class Map {
         addSpace(i, j, 7);
     }
 
-    public void elseThirdRow(int i,int j,int l){
+    public void elseThirdRow(int i, int j, int l) {
         if (!Terrains[i][l].getType().equals("fog of war")) {
             Printmap[i][j] += "/";
             Printmap[i][j] += Terrains[i][l].getTerrainTypes().getColor();
@@ -546,7 +551,7 @@ public class Map {
         addSpace(i, j, 5);
     }
 
-    public void elseFourthRow(int i,int j,int l){
+    public void elseFourthRow(int i, int j, int l) {
         if (!Terrains[i][l].getType().equals("fog of war")) {
             Printmap[i][j] += "\\";
             String AllUnit = "";
@@ -591,7 +596,7 @@ public class Map {
         addSpace(i, j, 5);
     }
 
-    public void elseFifthRow(int i,int j,int l){
+    public void elseFifthRow(int i, int j, int l) {
         if (!Terrains[i][l].getType().equals("fog of war")) {
             Printmap[i][j] += "\\";
             String TerrainFeatureType = "";
@@ -623,8 +628,8 @@ public class Map {
         }
         addSpace(i, j, 7);
     }
-    
-    public void elseSixthRow(int i,int j,int l){
+
+    public void elseSixthRow(int i, int j, int l) {
         if (!Terrains[i][l].getType().equals("fog of war")) {
             Printmap[i][j] += "\\";
             Printmap[i][j] += Terrains[i][l].getTerrainTypes().getColor();
@@ -638,12 +643,12 @@ public class Map {
         }
         addSpace(i, j, 9);
     }
- 
- 
- 
- 
 
-    // first row of map
+
+
+
+
+    /// RowsOfMap
     public void firstRow(int i, int j, int l, boolean check) {
         if (check == true) {
             EmptyFirstHalf(i, j, l);
@@ -654,19 +659,17 @@ public class Map {
         }
     }
 
-    // second row of map
     public void secondRow(int i, int j, int l, boolean check, Database database) {
         if (check == true) {
             CivilizationPrintFirstHalf(i, j, l, database);
             betweetTwoTailFirstHalf(i, j, l);
             TerrainFeaturesFirstHalf(i, j, l);
         } else {
-          elseSecondRow(i, j, l, database);
+            elseSecondRow(i, j, l, database);
         }
 
     }
 
-    // third row of map
     public void thirdRow(int i, int j, int l, boolean check) {
 
         if (check == true) {
@@ -674,11 +677,10 @@ public class Map {
             betweetTwoTailFirstHalf(i, j, l);
             UnderlineFirstHalf(i, j, l);
         } else {
-          elseThirdRow(i, j, l);
+            elseThirdRow(i, j, l);
         }
     }
 
-    // fourth row of map
     public void fourthRow(int i, int j, int l, boolean check) {
 
         if (check == true) {
@@ -690,29 +692,101 @@ public class Map {
         }
     }
 
-    // fifth row of map
     public void fifthRow(int i, int j, int l, boolean check, Database database) {
         if (check == true) {
             TerrainFeaturesSecondHalf(i, j, l);
             betweenTwoTailSecondHalf(i, j, l);
             CivilizationPrintSecondHalf(i, j, l, database);
         } else {
-           elseFifthRow(i, j, l);
+            elseFifthRow(i, j, l);
         }
     }
 
-    // sixth row of map
     public void sixthRow(int i, int j, int l, boolean check) {
         if (check == true) {
             UnderlineSecondHalf(i, j, l);
             betweenTwoTailSecondHalf(i, j, l);
             XandYSecondHalf(i, j, l);
         } else {
-           elseSixthRow(i, j, l);
+            elseSixthRow(i, j, l);
         }
     }
 
-    public void printMap(Database database) {
+
+
+
+   // initialize Map Before Print For Speciall User
+
+   public void initializeMapUser(User user){
+       for(int i = 0;i < ROW;i++){
+           for(int j = 0; j < COL;j++){
+               Terrains[i][j].setType("fog of war");
+           }
+       }
+      ArrayList<Terrain> tiles = user.getCivilization().getTerrains();
+      for (Terrain terrainCopy : tiles) {
+          
+      }
+   }
+
+
+
+   // print map
+    public void SwichCaseFirstHalf(int i, int j, int l, Database database) {
+        switch (j) {
+            case 0:
+                if (i > 0) {
+                    firstRow(i, j, l, true);
+                } else {
+                    firstRow(i, j, l, false);
+                }
+                break;
+            case 1:
+                if (i > 0) {
+                    secondRow(i, j, l, true, database);
+                } else {
+                    secondRow(i, j, l, false, database);
+                }
+                break;
+            case 2:
+                if (i > 0) {
+                    thirdRow(i, j, l, true);
+                } else {
+                    thirdRow(i, j, l, false);
+                }
+                break;
+
+        }
+    }
+
+    public void SwichCaseSecondHalf(int i, int j, int l, Database database) {
+        switch (j) {
+
+            case 3:
+                if (i != ROW - 1) {
+                    fourthRow(i, j, l, true);
+                } else {
+                    fourthRow(i, j, l, false);
+                }
+                break;
+            case 4:
+                if (i != ROW - 1) {
+                    fifthRow(i, j, l, true, database);
+                } else {
+                    fifthRow(i, j, l, false, database);
+                }
+                break;
+            case 5:
+                if (i != ROW - 1) {
+                    sixthRow(i, j, l, true);
+                } else {
+                    sixthRow(i, j, l, false);
+                }
+                break;
+        }
+    }
+
+    public String[][] printMap(Database database) {
 
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < Iteration; j++) {
@@ -720,77 +794,21 @@ public class Map {
             }
         }
         for (int i = 0; i < ROW; i++) {
-
             for (int j = 0; j < Iteration / 2; j++) {
                 addSpace(i, j, Iteration / 2 - 1 - j);
-
                 for (int l = 0; l < COL; l += 2) {
-
-                    switch (j) {
-                        case 0:
-                            if (i > 0) {
-                                firstRow(i, j, l, true);
-                            } else {
-                                firstRow(i, j, l, false);
-                            }
-                            break;
-                        case 1:
-                            if (i > 0) {
-                                secondRow(i, j, l, true, database);
-                            } else {
-                                secondRow(i, j, l, false, database);
-                            }
-                            break;
-                        case 2:
-                            if (i > 0) {
-                                thirdRow(i, j, l, true);
-                            } else {
-                                thirdRow(i, j, l, false);
-                            }
-                            break;
-
-                    }
-
+                    SwichCaseFirstHalf(i, j, l, database);
                 }
 
             }
             for (int j = Iteration / 2; j < Iteration; j++) {
                 addSpace(i, j, j - Iteration / 2);
                 for (int l = 0; l < COL; l += 2) {
-                    switch (j) {
-
-                        case 3:
-                            if (i != ROW - 1) {
-                                fourthRow(i, j, l, true);
-                            } else {
-                                fourthRow(i, j, l, false);
-                            }
-                            break;
-                        case 4:
-                            if (i != ROW - 1) {
-                                fifthRow(i, j, l, true, database);
-                            } else {
-                                fifthRow(i, j, l, false, database);
-                            }
-                            break;
-                        case 5:
-                            if (i != ROW - 1) {
-                                sixthRow(i, j, l, true);
-                            } else {
-                                sixthRow(i, j, l, false);
-                            }
-                            break;
-                    }
+                  SwichCaseSecondHalf(i, j, l, database);
                 }
             }
-
         }
-
-        for (int i = 0; i < ROW; i++) {
-            for (int j = 0; j < Iteration; j++) {
-                System.out.println(Printmap[i][j]);
-            }
-        }
+        return this.Printmap;
     }
 
     public void initializeMap() {
@@ -808,7 +826,7 @@ public class Map {
                     case 1:
                         CombatUnit CombatUnit1 = new CombatUnit(i, j, 3, 12, false, UnitTypes.CANNON);
                         NonCombatUnit nonCombatUnit1 = new NonCombatUnit(i, j, 3, 12, false, UnitTypes.SETTLER);
-                        Terrain terrain1 = new Terrain(i, j, "clear", TerrainTypes.OCEAN, TerrainFeatureTypes.OASIS,
+                        Terrain terrain1 = new Terrain(i, j, "fog of war", TerrainTypes.OCEAN, TerrainFeatureTypes.OASIS,
                                 CombatUnit1, nonCombatUnit1);
                         Terrains[i][j] = terrain1;
                         break;

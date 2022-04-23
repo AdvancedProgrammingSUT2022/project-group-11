@@ -1,29 +1,20 @@
 package Model;
 
-import java.util.ArrayList;
-
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
 
+public class Revealed{
 
-public class Terrain {
-
-    private int x;
-    private int y;
-    private String Type;
+    private String name;
     private TerrainTypes terrainTypes;
     private TerrainFeatureTypes terrainFeatureTypes;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
-    
-    
 
-    Terrain(int x, int y, String Type, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit,NonCombatUnit nonCombatUnit) {
-        this.x = x;
-        this.y = y;
-        this.Type = Type;
+    public Revealed(String name, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit) {
+        this.name = name;
         this.terrainTypes = terrainTypes;
         this.terrainFeatureTypes = terrainFeatureTypes;
         this.combatUnit = combatUnit;
@@ -31,28 +22,12 @@ public class Terrain {
     }
 
 
-    public int getX() {
-        return this.x;
+    public String getName() {
+        return this.name;
     }
 
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return this.y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
-    public String getType() {
-        return this.Type;
-    }
-
-    public void setType(String Type) {
-        this.Type = Type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public TerrainTypes getTerrainTypes() {
@@ -86,8 +61,7 @@ public class Terrain {
     public void setNonCombatUnit(NonCombatUnit nonCombatUnit) {
         this.nonCombatUnit = nonCombatUnit;
     }
-   
-    
 
-   
+
+
 }
