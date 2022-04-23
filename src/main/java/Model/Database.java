@@ -21,6 +21,9 @@ public class Database {
         this.Users = new ArrayList<>();
     }
 
+    public void setUsers( ArrayList<User> Users){
+        this.Users = Users;
+    }
     public void addUser ( User user)
     {
         this.Users.add(user);
