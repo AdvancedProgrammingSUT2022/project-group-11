@@ -32,19 +32,19 @@ public class GameMenu {
                     showInfo(matcher);
 
                 } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
-                    selectUnit(matcher);
+                    selectUnit(user, matcher);
                     while (this.databaseController.HasoneUnitBeenSelected()) {
                         input = scanner.nextLine();
                         if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_MOVETO)) != null) {
                             // todo
 
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
-                            this.databaseController.changingTheStateOfAUnit(user, "sleep");
+                            this.databaseController.changingTheStateOfAUnit("sleep");
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
                             if (this.databaseController.getSelectedCombatUnit() == null) {
                                 System.out.println("this unit is not a combat unit");
                             } else {
-                                System.out.println(this.databaseController.changingTheStateOfAUnit(user, "alert"));
+                                System.out.println(this.databaseController.changingTheStateOfAUnit("alert"));
 
                             }
 
@@ -52,7 +52,7 @@ public class GameMenu {
                             if (this.databaseController.getSelectedCombatUnit() == null) {
                                 System.out.println("this unit is not a combat unit");
                             } else {
-                                System.out.println(this.databaseController.changingTheStateOfAUnit(user, "fortify"));
+                                System.out.println(this.databaseController.changingTheStateOfAUnit("fortify"));
 
                             }
 
@@ -61,7 +61,7 @@ public class GameMenu {
                                 System.out.println("this unit is not a combat unit");
                             } else {
                                 System.out.println(
-                                        this.databaseController.changingTheStateOfAUnit(user, "fortify until heal"));
+                                        this.databaseController.changingTheStateOfAUnit( "fortify until heal"));
 
                             }
 
@@ -69,7 +69,7 @@ public class GameMenu {
                             if (this.databaseController.getSelectedCombatUnit() == null) {
                                 System.out.println("this unit is not a combat unit");
                             } else {
-                                System.out.println(this.databaseController.changingTheStateOfAUnit(user, "garrison"));
+                                System.out.println(this.databaseController.changingTheStateOfAUnit("garrison"));
 
                             }
 
@@ -78,7 +78,7 @@ public class GameMenu {
                                 System.out.println("this unit is not a combat unit");
                             } else if (this.databaseController.getSelectedCombatUnit() != null) {
                                 System.out
-                                        .println(this.databaseController.changingTheStateOfAUnit(user, "setup ranged"));
+                                        .println(this.databaseController.changingTheStateOfAUnit("setup ranged"));
 
                             }
 
@@ -89,10 +89,10 @@ public class GameMenu {
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_CANCEL_MISSION)) != null) {
 
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_WAKE)) != null) {
-                            System.out.println(this.databaseController.changingTheStateOfAUnit(user, "wake"));
+                            System.out.println(this.databaseController.changingTheStateOfAUnit("wake"));
 
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
-                            System.out.println(this.databaseController.changingTheStateOfAUnit(user, "delete"));
+                            System.out.println(this.databaseController.changingTheStateOfAUnit("delete"));
 
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
                             buildUnit(matcher);
@@ -117,6 +117,7 @@ public class GameMenu {
                     System.out.println("INVALID COMMAND");
                 }
             }
+
         }
 
     }
@@ -149,7 +150,7 @@ public class GameMenu {
         }
     }
 
-    private void selectUnit(Matcher matcher) {
+    private void selectUnit(User user, Matcher matcher) {
         if (matcher.group("subdivision").equals("COMBAT")) {
             int x = Integer.parseInt(matcher.group("x"));
             int y = Integer.parseInt(matcher.group("y"));
@@ -161,7 +162,8 @@ public class GameMenu {
             } else if (map.getTiles()[x][y].getCombatUnit() == null) {
                 System.out.println("there is no combat unit in this tile");
             } else {
-                this.databaseController.selectAndDeslectCombatUnit(x, y);
+                System.out.println(this.databaseController.selectAndDeslectCombatUnit(user, x, y));
+
             }
         } else if (matcher.group("subdivision").equals("NONCOMBAT")) {
             int x = Integer.parseInt(matcher.group("x"));
@@ -175,7 +177,8 @@ public class GameMenu {
                 System.out.println("there is no non combat unit in this tile");
 
             } else {
-                this.databaseController.selectAndDeslectNonCombatUnit(x, y);
+                System.out.println(this.databaseController.selectAndDeslectNonCombatUnit(user, x, y));
+
             }
         } else {
             System.out.println("INVALID COMMAND");
