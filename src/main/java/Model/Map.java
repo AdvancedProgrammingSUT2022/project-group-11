@@ -40,9 +40,6 @@ public class Map {
         }
     }
 
-
-
-
     /// EMPTY PRINT
     public void EmptyFirstHalf(int i, int j, int l) {
         River river;
@@ -78,9 +75,6 @@ public class Map {
         }
     }
 
-
-
-
     /// BETWEENT TWO TAIL
     public void betweetTwoTailFirstHalf(int i, int j, int l) {
 
@@ -107,8 +101,6 @@ public class Map {
         }
 
     }
-
-
 
     /// TWO COMBAT TYPE
     public void twoCombatFirstHalf(int i, int j, int l) {
@@ -207,8 +199,6 @@ public class Map {
         }
     }
 
-
-
     /// CIVILIZATION
     public void CivilizationPrintFirstHalf(int i, int j, int l, Database database) {
         River river;
@@ -283,9 +273,6 @@ public class Map {
         }
     }
 
-
-
-
     /// TERRAIN FEATURES
     public void TerrainFeaturesFirstHalf(int i, int j, int l) {
 
@@ -358,9 +345,6 @@ public class Map {
         }
     }
 
-
-
-
     //// X AND Y
     public void XandYFirstHalf(int i, int j, int l) {
         River river;
@@ -428,9 +412,6 @@ public class Map {
         }
     }
 
-
-
-
     //// UNDELINE
     public void UnderlineFirstHalf(int i, int j, int l) {
         if (!Terrains[i - 1][l + 1].getType().equals("fog of war")) {
@@ -465,10 +446,6 @@ public class Map {
             addSpace(i, j, 5);
         }
     }
-
-
-
-
 
     //// else Print of Rows
     public void elseFirstRow(int i, int j, int l) {
@@ -646,9 +623,6 @@ public class Map {
         addSpace(i, j, 9);
     }
 
-
-
-
     /// RowsOfMap
     public void firstRow(int i, int j, int l, boolean check) {
         if (check == true) {
@@ -713,10 +687,6 @@ public class Map {
         }
     }
 
-
-
-
-
     // initialize Map Before Print For Speciall User
     public boolean isBlock(int i, int j) {
 
@@ -765,28 +735,47 @@ public class Map {
             int j = tile.getY();
             Terrains[i][j].setType("visible");
             if (isBlock(i, j)) {
-                 setVisible(i, j);
-                 if(isBlock(i - 1, j)){
+                setVisible(i, j);
+                if (isBlock(i - 1, j)) {
                     setVisible(i - 1, j);
-                 }
-                 if(isBlock(i - 1, j - 1)){
+                }
+                if (isBlock(i - 1, j - 1)) {
                     setVisible(i - 1, j - 1);
                 }
-                if(isBlock(i, j - 1)){
+                if (isBlock(i, j - 1)) {
                     setVisible(i, j - 1);
                 }
-                if(isBlock(i + 1, j)){
+                if (isBlock(i + 1, j)) {
                     setVisible(i + 1, j);
                 }
-                if(isBlock(i, j + 1)){
+                if (isBlock(i, j + 1)) {
                     setVisible(i, j + 1);
                 }
-                if(isBlock(i - 1, j + 1)){
+                if (isBlock(i - 1, j + 1)) {
                     setVisible(i - 1, j + 1);
                 }
             }
         }
+
+        for(int i = 0 ; i < ROW;i++){
+            for(int j = 0; j < COL;j++){
+                if(Terrains[i][j].getType().equals("fog of war")){
+                    for (Revealed Reveals : Terrains[i][j].getReveals()) {
+                        if(Reveals.getUser() == user){
+                            Terrains[i][j].setType("revealed");
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
+
+
+
+
+
+
 
     // print map
     public void SwichCaseFirstHalf(int i, int j, int l, Database database) {
@@ -867,6 +856,11 @@ public class Map {
         }
         return this.Printmap;
     }
+
+
+
+
+
 
     public void initializeMap() {
         for (int i = 0; i < ROW; i++) {

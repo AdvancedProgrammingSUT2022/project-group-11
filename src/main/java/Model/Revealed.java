@@ -7,30 +7,28 @@ import Model.Units.NonCombatUnit;
 
 public class Revealed{
 
-    private String userName;
+    private User user;
     private TerrainTypes terrainTypes;
     private TerrainFeatureTypes terrainFeatureTypes;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
 
-    
 
-    public Revealed(String userName, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit) {
-        this.userName = userName;
+    public Revealed(User user, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit) {
+        this.user = user;
         this.terrainTypes = terrainTypes;
         this.terrainFeatureTypes = terrainFeatureTypes;
         this.combatUnit = combatUnit;
         this.nonCombatUnit = nonCombatUnit;
     }
 
-    
 
-    public String getUserName() {
-        return this.userName;
+    public User getUser() {
+        return this.user;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public TerrainTypes getTerrainTypes() {
@@ -64,4 +62,8 @@ public class Revealed{
     public void setNonCombatUnit(NonCombatUnit nonCombatUnit) {
         this.nonCombatUnit = nonCombatUnit;
     }
+
+
+    
+
 }
