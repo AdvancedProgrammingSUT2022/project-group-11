@@ -9,8 +9,21 @@ public class Unit {
     private int life; 
     private int speed; 
     private boolean isAsleep;
+    private boolean isFinished;
 
     
+
+    public boolean isIsFinished() {
+        return this.isFinished;
+    }
+
+    public boolean getIsFinished() {
+        return this.isFinished;
+    }
+
+    public void setIsFinished(boolean isFinished) {
+        this.isFinished = isFinished;
+    }
     
 
 
@@ -59,7 +72,8 @@ public class Unit {
 
 
 
-    public Unit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep, UnitTypes unitType, boolean isSelected) {
+
+    public Unit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected) {
         this.x = x;
         this.y = y;
         this.number = number;
@@ -67,9 +81,11 @@ public class Unit {
         this.life = life;
         this.speed = speed;
         this.isAsleep = isAsleep;
+        this.isFinished = isFinished;
         this.unitType = unitType;
         this.isSelected = isSelected;
     }
+
 
          
 

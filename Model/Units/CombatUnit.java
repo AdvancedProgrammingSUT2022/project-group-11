@@ -1,26 +1,22 @@
 package Model.Units;
 
-public class CombatUnit extends Unit{
+public class CombatUnit extends Unit {
+
+    public CombatUnit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep,
+            boolean isFinished, UnitTypes unitType, boolean isSelected, boolean isGarrisoned, boolean alert,
+            boolean fortify, boolean fortifyUntilHeal) {
+        super(x, y, number, militaryPower, life, speed, isAsleep, isFinished, unitType, isSelected);
+        // TODO Auto-generated constructor stub
+        this.isGarrisoned = isGarrisoned;
+        this.alert = alert;
+        this.fortify = fortify;
+        this.fortifyUntilHeal = fortifyUntilHeal;
+    }
 
     private boolean isGarrisoned;
     private boolean alert;
     private boolean fortify;
     private boolean fortifyUntilHeal;
-   
-
-    public CombatUnit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep,
-            UnitTypes unitType, boolean isSelected, boolean isGarrisoned, boolean alert, boolean fortify, boolean fortifyUntilHeal) {
-        super(x, y, number, militaryPower, life, speed, isAsleep, unitType, isSelected);
-        this.isGarrisoned = isGarrisoned;
-        this.alert = alert;
-        this.fortify = fortify;
-        this.fortifyUntilHeal = fortifyUntilHeal;
-        //TODO Auto-generated constructor stub
-    }
-
-
-
-
 
     public boolean isIsGarrisoned() {
         return this.isGarrisoned;
@@ -70,12 +66,4 @@ public class CombatUnit extends Unit{
         this.fortifyUntilHeal = fortifyUntilHeal;
     }
 
-
-
-
-
-
-
-
-    
 }

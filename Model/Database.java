@@ -5,6 +5,15 @@ import java.util.ArrayList;
 public class Database {
     private ArrayList<User> Users;
     private Map map;
+    private int turn;
+
+    public int getTurn() {
+        return this.turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
 
     public Database ()
     {

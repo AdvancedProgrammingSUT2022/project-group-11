@@ -85,69 +85,58 @@ public class DatabaseController {
         this.database.getMap().getTiles()[x][y].getNonCombatUnit().setIsSelected(!initialIsSelectedValue);
     }
 
-    public void changingTheStateOfAUnit(String action ) {
+    public String changingTheStateOfAUnit(User user, String action) {
         CombatUnit combatUnit = getSelectedCombatUnit();
         NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
-        if(combatUnit!=null)
-        {
-            if(action.equals("sleep"))
-            {
-                combatUnit.setIsAsleep(true);
-            }
-            else if(action.equals("alert"))
-            {
-                combatUnit.setAlert(true);
-            }
-            else if(action.equals("fortify"))
-            {
-                combatUnit.setFortify(true);
-            }
-            else if(action.equals("fortify until heal"))
-            {
-                combatUnit.setFortifyUntilHeal(true);
-            }
-            else if(action.equals("garrison"))
-            {
-                combatUnit.setIsGarrisoned(true);
-            }
-            else if(action.equals("wake"))
-            {
-                combatUnit.setIsAsleep(false);
-            }
-            else if(action.equals("delete"))
-            {
-                combatUnit = null;
-            }
-            else if(action.equals("setup ranged"))
-            {
-                if(combatUnit instanceof RangedCombatUnit)
-                {
-                    RangedCombatUnit rangedCombatUnit = (RangedCombatUnit) combatUnit;
-                    rangedCombatUnit.setIsSetUpForRangedAttack(true);
+
+        if (combatUnit != null) {
+            if (user.getCivilization().containsUnit((Unit) combatUnit)) {
+                if (action.equals("sleep")) {
+                    combatUnit.setIsAsleep(true);
+                } else if (action.equals("alert")) {
+                    combatUnit.setAlert(true);
+                } else if (action.equals("fortify")) {
+                    combatUnit.setFortify(true);
+                } else if (action.equals("fortify until heal")) {
+                    combatUnit.setFortifyUntilHeal(true);
+                } else if (action.equals("garrison")) {
+                    combatUnit.setIsGarrisoned(true);
+                } else if (action.equals("wake")) {
+                    combatUnit.setIsAsleep(false);
+                } else if (action.equals("delete")) {
+                    combatUnit = null;
+                } else if (action.equals("setup ranged")) {
+                    if (combatUnit instanceof RangedCombatUnit) {
+                        RangedCombatUnit rangedCombatUnit = (RangedCombatUnit) combatUnit;
+                        rangedCombatUnit.setIsSetUpForRangedAttack(true);
+                    }
+                    else{
+                        return "this unit is not a ranged combat unit!";
+                    }
                 }
+            } else {
+                return "you do not have access to this unit";
             }
-            
+
+        } else if (nonCombatUnit != null) {
+            if (user.getCivilization().containsUnit((Unit) nonCombatUnit)) {
+                if (action.equals("sleep")) {
+                    nonCombatUnit.setIsAsleep(true);
+                } else if (action.equals("wake")) {
+                    nonCombatUnit.setIsAsleep(false);
+                } else if (action.equals("delete")) {
+                    nonCombatUnit = null;
+                }
+            } else {
+                return "you do not have access to this unit";
+            }
 
         }
-        else if(nonCombatUnit != null)
-        {
-            if(action.equals("sleep"))
-            {
-                nonCombatUnit.setIsAsleep(true);
-            }
-            else if(action.equals("wake"))
-            {
-                nonCombatUnit.setIsAsleep(false);
-            }
-            else if(action.equals("delete"))
-            {
-                nonCombatUnit = null;
-            }
-        }
+
+        return "action completed";
 
     }
 
-  
     public boolean HasoneUnitBeenSelected() {
         boolean isSelected = false;
         int row = this.database.getMap().getROW();
@@ -164,8 +153,7 @@ public class DatabaseController {
         return isSelected;
     }
 
-    public CombatUnit getSelectedCombatUnit()
-    {
+    public CombatUnit getSelectedCombatUnit() {
         int row = this.database.getMap().getROW();
         int column = this.database.getMap().getCOL();
         for (int i = 0; i < row; i++) {
@@ -177,8 +165,8 @@ public class DatabaseController {
         }
         return null;
     }
-    public NonCombatUnit getSelectedNonCombatUnit()
-    {
+
+    public NonCombatUnit getSelectedNonCombatUnit() {
         int row = this.database.getMap().getROW();
         int column = this.database.getMap().getCOL();
         for (int i = 0; i < row; i++) {
@@ -189,6 +177,15 @@ public class DatabaseController {
             }
         }
         return null;
+    }
+
+    public boolean isAllTasksFinished(User user) {
+        for (Unit unit : user.getCivilization().getUnits()) {
+            if (unit.getIsFinished() == false) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

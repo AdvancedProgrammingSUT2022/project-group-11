@@ -6,12 +6,22 @@ public class User {
     private String password;
     private String nickname;
     private int score;
+    private Civilization civilization;
 
     public User (String username, String password, String nickname)
     {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
+        this.civilization = new Civilization(null, null, null, 0, 0);
+    }
+
+    public Civilization getCivilization() {
+        return this.civilization;
+    }
+
+    public void setCivilization(Civilization civilization) {
+        this.civilization = civilization;
     }
 
     public int getScore() {
