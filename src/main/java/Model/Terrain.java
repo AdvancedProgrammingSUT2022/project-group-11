@@ -31,6 +31,13 @@ public class Terrain {
         this.reveals = reveals;
     }
 
+    public void setReveals(ArrayList<Revealed> reveals){
+        this.reveals = reveals;
+    }
+
+    public ArrayList<Revealed> getReveals(){
+        return this.reveals;
+    }
 
     public int getX() {
         return this.x;

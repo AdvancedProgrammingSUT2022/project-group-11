@@ -33,14 +33,13 @@ public class Map {
         return this.Terrains;
     }
 
-
-
     /// ADD SPACE FOR FIRST IN ROWS
     public void addSpace(int row, int col, int count) {
         for (int i = 0; i < count; i++) {
             Printmap[row][col] += " ";
         }
     }
+
 
 
 
@@ -55,7 +54,7 @@ public class Map {
             Printmap[i][j] += "/";
         }
         if (!Terrains[i][l].getType().equals("fog of war")) {
-           
+
             Printmap[i][j] += Terrains[i][l].getTerrainTypes().getColor();
             for (int count = 0; count < size; count++) {
                 Printmap[i][j] += " ";
@@ -81,34 +80,33 @@ public class Map {
 
 
 
+
     /// BETWEENT TWO TAIL
     public void betweetTwoTailFirstHalf(int i, int j, int l) {
-        
-            River river;
-            if ((river = hasRiver(Terrains[i][l], Terrains[i - 1][l + 1])) != null) {
-                Printmap[i][j] += river.getColor();
-                Printmap[i][j] += "\\";
-                Printmap[i][j] += Color.RESET;
-            } else {
-                Printmap[i][j] += "\\";
-            }
+
+        River river;
+        if ((river = hasRiver(Terrains[i][l], Terrains[i - 1][l + 1])) != null) {
+            Printmap[i][j] += river.getColor();
+            Printmap[i][j] += "\\";
+            Printmap[i][j] += Color.RESET;
+        } else {
+            Printmap[i][j] += "\\";
+        }
 
     }
 
     public void betweenTwoTailSecondHalf(int i, int j, int l) {
-        
-            River river;
-            if ((river = hasRiver(Terrains[i][l], Terrains[i][l + 1])) != null) {
-                Printmap[i][j] += river.getColor();
-                Printmap[i][j] += "/";
-                Printmap[i][j] += Color.RESET;
-            } else {
-                Printmap[i][j] += "/";
-            }
 
-        
+        River river;
+        if ((river = hasRiver(Terrains[i][l], Terrains[i][l + 1])) != null) {
+            Printmap[i][j] += river.getColor();
+            Printmap[i][j] += "/";
+            Printmap[i][j] += Color.RESET;
+        } else {
+            Printmap[i][j] += "/";
+        }
+
     }
-
 
 
 
@@ -167,7 +165,7 @@ public class Map {
             Printmap[i][j] += "\\";
         }
         if (!Terrains[i][l].getType().equals("fog of war")) {
-          
+
             String AllUnit = "";
             if (Terrains[i][l].getNonCombatUnit().getUnitType() != null) {
                 AllUnit += Terrains[i][l].getNonCombatUnit().getUnitType().getShowMap();
@@ -211,7 +209,6 @@ public class Map {
 
 
 
-
     /// CIVILIZATION
     public void CivilizationPrintFirstHalf(int i, int j, int l, Database database) {
         River river;
@@ -223,7 +220,7 @@ public class Map {
             Printmap[i][j] += "/";
         }
         if (!Terrains[i][l].getType().equals("fog of war")) {
-           
+
             String Civilization = "";
             if (database.getCivilizationUser(Terrains[i][l]) != null) {
                 Civilization += database.getCivilizationUser(Terrains[i][l]).getCivilization().getName();
@@ -332,7 +329,7 @@ public class Map {
             Printmap[i][j] += "\\";
         }
         if (!Terrains[i][l].getType().equals("fog of war")) {
-           
+
             String TerrainFeatureType = "";
             if (Terrains[i][l].getTerrainFeatureTypes() != null) {
                 TerrainFeatureType += Terrains[i][l].getTerrainFeatureTypes().getShowFeatures();
@@ -363,6 +360,7 @@ public class Map {
 
 
 
+
     //// X AND Y
     public void XandYFirstHalf(int i, int j, int l) {
         River river;
@@ -374,7 +372,7 @@ public class Map {
             Printmap[i][j] += "/";
         }
         if (!Terrains[i][l].getType().equals("fog of war")) {
-           
+
             Printmap[i][j] += Terrains[i][l].getTerrainTypes().getColor();
             String XcenterYcenter = "";
             XcenterYcenter += Terrains[i][l].getX() + "," + Terrains[i][l].getY();
@@ -456,7 +454,7 @@ public class Map {
             Printmap[i][j] += "\\";
         }
         if (!Terrains[i][l].getType().equals("fog of war")) {
-           
+
             Printmap[i][j] += Terrains[i][l].getTerrainTypes().getColor();
             for (int count = 0; count < size; count++) {
                 Printmap[i][j] += "_";
@@ -467,6 +465,7 @@ public class Map {
             addSpace(i, j, 5);
         }
     }
+
 
 
 
@@ -650,7 +649,6 @@ public class Map {
 
 
 
-
     /// RowsOfMap
     public void firstRow(int i, int j, int l, boolean check) {
         if (check == true) {
@@ -718,18 +716,79 @@ public class Map {
 
 
 
-   // initialize Map Before Print For Speciall User
 
-   public void initializeMapUser(User user){
-       ArrayList<Terrain> Tiles = user.getCivilization().getTerrains();
-       for (Terrain tile : Tiles) {
-           Terrains[tile.getX()][tile.getY()].setType("visible");
-       }
-   }
+    // initialize Map Before Print For Speciall User
+    public boolean isBlock(int i, int j) {
 
+        if (Terrains[i][j].getTerrainTypes() == TerrainTypes.MOUNTAIN) {
+            return false;
+        } else if (Terrains[i][j].getTerrainTypes() == TerrainTypes.HILLS) {
+            return false;
+        } else if (Terrains[i][j].getTerrainFeatureTypes() == TerrainFeatureTypes.JUNGLE) {
+            return false;
+        }
+        return true;
+    }
 
+    public void setVisible(int i, int j) {
+        if (i > 0) {
+            Terrains[i - 1][j].setType("visible");
+        }
+        if (i > 0 && j > 0) {
+            Terrains[i - 1][j - 1].setType("visible");
+        }
+        if (j > 0) {
+            Terrains[i][j - 1].setType("visible");
+        }
+        if (i < ROW - 1) {
+            Terrains[i + 1][j].setType("visible");
+        }
+        if (j < COL - 1) {
 
-   // print map
+            Terrains[i][j + 1].setType("visible");
+        }
+        if (i > 0 && j < COL - 1) {
+            Terrains[i - 1][j + 1].setType("visible");
+        }
+    }
+
+    public void initializeMapUser(User user) {
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COL; j++) {
+                Terrains[i][j].setType("fog of war");
+            }
+        }
+
+        ArrayList<Terrain> Tiles = user.getCivilization().getTerrains();
+        for (Terrain tile : Tiles) {
+            int i = tile.getX();
+            int j = tile.getY();
+            Terrains[i][j].setType("visible");
+            if (isBlock(i, j)) {
+                 setVisible(i, j);
+                 if(isBlock(i - 1, j)){
+                    setVisible(i - 1, j);
+                 }
+                 if(isBlock(i - 1, j - 1)){
+                    setVisible(i - 1, j - 1);
+                }
+                if(isBlock(i, j - 1)){
+                    setVisible(i, j - 1);
+                }
+                if(isBlock(i + 1, j)){
+                    setVisible(i + 1, j);
+                }
+                if(isBlock(i, j + 1)){
+                    setVisible(i, j + 1);
+                }
+                if(isBlock(i - 1, j + 1)){
+                    setVisible(i - 1, j + 1);
+                }
+            }
+        }
+    }
+
+    // print map
     public void SwichCaseFirstHalf(int i, int j, int l, Database database) {
         switch (j) {
             case 0:
@@ -802,7 +861,7 @@ public class Map {
             for (int j = Iteration / 2; j < Iteration; j++) {
                 addSpace(i, j, j - Iteration / 2);
                 for (int l = 0; l < COL; l += 2) {
-                  SwichCaseSecondHalf(i, j, l, database);
+                    SwichCaseSecondHalf(i, j, l, database);
                 }
             }
         }
@@ -818,21 +877,22 @@ public class Map {
                         CombatUnit CombatUnit = new CombatUnit(i, j, 3, 12, false, UnitTypes.ARCHER);
                         NonCombatUnit nonCombatUnit = new NonCombatUnit(i, j, 3, 12, false, UnitTypes.SETTLER);
                         Terrain terrain = new Terrain(i, j, "clear", TerrainTypes.DESERT, TerrainFeatureTypes.FOREST,
-                                CombatUnit, nonCombatUnit,null);
+                                CombatUnit, nonCombatUnit, null);
                         Terrains[i][j] = terrain;
                         break;
                     case 1:
                         CombatUnit CombatUnit1 = new CombatUnit(i, j, 3, 12, false, UnitTypes.CANNON);
                         NonCombatUnit nonCombatUnit1 = new NonCombatUnit(i, j, 3, 12, false, UnitTypes.SETTLER);
-                        Terrain terrain1 = new Terrain(i, j, "fog of war", TerrainTypes.OCEAN, TerrainFeatureTypes.OASIS,
-                                CombatUnit1, nonCombatUnit1,null);
+                        Terrain terrain1 = new Terrain(i, j, "fog of war", TerrainTypes.OCEAN,
+                                TerrainFeatureTypes.OASIS,
+                                CombatUnit1, nonCombatUnit1, null);
                         Terrains[i][j] = terrain1;
                         break;
                     case 2:
                         CombatUnit CombatUnit2 = new CombatUnit(i, j, 3, 12, false, UnitTypes.TANK);
                         NonCombatUnit nonCombatUnit2 = new NonCombatUnit(i, j, 3, 12, false, UnitTypes.SETTLER);
                         Terrain terrain2 = new Terrain(i, j, "clear", TerrainTypes.SNOW, TerrainFeatureTypes.JUNGLE,
-                                CombatUnit2, nonCombatUnit2,null);
+                                CombatUnit2, nonCombatUnit2, null);
                         Terrains[i][j] = terrain2;
                         break;
 
