@@ -1,14 +1,10 @@
 package Controller;
 
-import Model.Database;
-import Model.Map;
-import Model.Terrain;
-import Model.User;
+import Model.*;
+import Model.Resources.ResourceTypes;
 import Model.Terrains.TerrainTypes;
-import Model.Units.CombatUnit;
-import Model.Units.NonCombatUnit;
-import Model.Units.RangedCombatUnit;
-import Model.Units.Unit;
+import Model.Units.*;
+import org.w3c.dom.ranges.Range;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
@@ -78,42 +74,19 @@ public class DatabaseController {
     }
 
     public String selectAndDeslectCombatUnit(User user, int x, int y) {
-        Map map = this.getMap();
-        int mapRows = map.getROW();
-        int mapColumns = map.getCOL();
-        if (x > mapRows || x < 0 || y > mapColumns || y < 0) {
-            return "there is no tile with these coordinates";
-        } else if (map.getTiles()[x][y].getNonCombatUnit() == null) {
-            return "there is no combat unit in this tile";
-
-        } else {
-            if (user.getCivilization().containsUnit((Unit) this.database.getMap().getTiles()[x][y].getCombatUnit())) {
-                boolean initialIsSelectedValue = this.database.getMap().getTiles()[x][y].getCombatUnit()
-                        .getIsSelected();
-                this.database.getMap().getTiles()[x][y].getCombatUnit().setIsSelected(!initialIsSelectedValue);
-                return "Combat unit was selected";
-            }
+        if (user.getCivilization().containsUnit((Unit) this.database.getMap().getTiles()[x][y].getCombatUnit())) {
+            boolean initialIsSelectedValue = this.database.getMap().getTiles()[x][y].getCombatUnit().getIsSelected();
+            this.database.getMap().getTiles()[x][y].getCombatUnit().setIsSelected(!initialIsSelectedValue);
+            return "Combat unit was selected";
         }
         return "you do not have access to this unit";
     }
 
     public String selectAndDeslectNonCombatUnit(User user, int x, int y) {
-        Map map = this.getMap();
-        int mapRows = map.getROW();
-        int mapColumns = map.getCOL();
-        if (x > mapRows || x < 0 || y > mapColumns || y < 0) {
-            return "there is no tile with these coordinates";
-        } else if (map.getTiles()[x][y].getNonCombatUnit() == null) {
-            return "there is no non combat unit in this tile";
-
-        } else {
-            if (user.getCivilization()
-                    .containsUnit((Unit) this.database.getMap().getTiles()[x][y].getNonCombatUnit())) {
-                boolean initialIsSelectedValue = this.database.getMap().getTiles()[x][y].getNonCombatUnit()
-                        .getIsSelected();
-                this.database.getMap().getTiles()[x][y].getNonCombatUnit().setIsSelected(!initialIsSelectedValue);
-                return "Noncombat unit was selected";
-            }
+        if (user.getCivilization().containsUnit((Unit) this.database.getMap().getTiles()[x][y].getNonCombatUnit())) {
+            boolean initialIsSelectedValue = this.database.getMap().getTiles()[x][y].getNonCombatUnit().getIsSelected();
+            this.database.getMap().getTiles()[x][y].getNonCombatUnit().setIsSelected(!initialIsSelectedValue);
+            return "Noncombat unit was selected";
         }
         return "you do not have access to this unit";
     }
@@ -288,7 +261,7 @@ public class DatabaseController {
     }
 
     public void addingAllPath(int turn, int x_beginning, int y_beginning, int x_final, int y_final,
-            Map map, ArrayList<Terrain> path, ArrayList<ArrayList<Terrain>> allPaths) {
+                              Map map, ArrayList<Terrain> path, ArrayList<ArrayList<Terrain>> allPaths) {
         Terrain[][] copy_map = map.getTiles();
         if (turn == 10 && (x_beginning == x_final && y_beginning == y_final)) {
             allPaths.add(path);
@@ -349,4 +322,517 @@ public class DatabaseController {
         return movementCost;
     }
 
+
+    public String createUnit(User user, Matcher matcher, Terrain tile)
+    {
+        Civilization civilization = user.getCivilization();
+        String unitName = matcher.group("unitName");
+        int money = civilization.getGold();
+        String notEnoughMoney = "You do not have enough gold to construct this unit";
+        String lackTechnology = "You lack the required technology to construct this unit";
+        String lackResources = "You lack the required resources to construct this unit";
+        String unitAlreadyExists = "There is already a unit in this tile";
+        String noCityHere = "There is no city in the tile you selected";
+        if (tile.getCity() == null)
+        {
+            return noCityHere;
+        }
+
+        if (unitName.equals("ARCHER"))
+        {
+            if (money < UnitTypes.ARCHER.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.ARCHER.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                RangedCombatUnit newArcher = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.ARCHER, false, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.ARCHER.getCost());
+                civilization.addUnit((Unit) newArcher);
+                tile.setCombatUnit((CombatUnit) newArcher);
+            }
+        } else if (unitName.equals("CHARIOT_ARCHER"))
+        {
+            if (money < UnitTypes.CHARIOT_ARCHER.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.CHARIOT_ARCHER.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (!tile.getResource().getResourceType().equals(ResourceTypes.HORSES))
+            {
+                return lackResources;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                RangedCombatUnit newChariotArcher = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.CHARIOT_ARCHER, false, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.CHARIOT_ARCHER.getCost());
+                civilization.addUnit((Unit) newChariotArcher);
+                tile.setCombatUnit((CombatUnit) newChariotArcher);
+            }
+
+
+        } else if (unitName.equals("SCOUT"))
+        {
+            if (money < UnitTypes.SCOUT.getCost())
+            {
+                return notEnoughMoney;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newScout = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.SCOUT, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.SCOUT.getCost());
+                civilization.addUnit((Unit) newScout);
+                tile.setCombatUnit((CombatUnit) newScout);
+            }
+
+        } else if (unitName.equals("SETTLER"))
+        {
+            if (money < UnitTypes.SETTLER.getCost())
+            {
+                return notEnoughMoney;
+            } else if (tile.getNonCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonCombatUnit newSettler = new NonCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
+                civilization.setGold(money - UnitTypes.SETTLER.getCost());
+                civilization.addUnit((Unit) newSettler);
+                tile.setNonCombatUnit((NonCombatUnit) newSettler);
+            }
+
+        } else if (unitName.equals("SPEARMAN"))
+        {
+            if (money < UnitTypes.SPEARMAN.getCost())
+            {
+                return notEnoughMoney;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newScout = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.SPEARMAN, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.SPEARMAN.getCost());
+                civilization.addUnit((Unit) newScout);
+                tile.setCombatUnit((CombatUnit) newScout);
+            }
+
+        } else if (unitName.equals("WARRIOR"))
+        {
+            if (money < UnitTypes.WARRIOR.getCost())
+            {
+                return notEnoughMoney;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.WARRIOR.getCost());
+                civilization.addUnit((Unit) newWarrior);
+                tile.setCombatUnit((CombatUnit) newWarrior);
+            }
+
+        } else if (unitName.equals("WORKER"))
+        {
+            if (money < UnitTypes.WORKER.getCost())
+            {
+                return notEnoughMoney;
+            } else if (tile.getNonCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonCombatUnit newWorker = new NonCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.WORKER, false);
+                civilization.setGold(money - UnitTypes.WORKER.getCost());
+                civilization.addUnit((Unit) newWorker);
+                tile.setNonCombatUnit((NonCombatUnit) newWorker);
+            }
+
+        } else if (unitName.equals("CATAPULT"))
+        {
+            if (money < UnitTypes.CATAPULT.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!tile.getResource().getResourceType().equals(UnitTypes.CATAPULT.getResourceRequirements()))
+            {
+                return lackResources;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.CATAPULT.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                RangedCombatUnit newCatapult = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.CATAPULT, false, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.CATAPULT.getCost());
+                civilization.addUnit((Unit) newCatapult);
+                tile.setCombatUnit((CombatUnit) newCatapult);
+            }
+
+        } else if (unitName.equals("HORSESMAN"))
+        {
+            if (money < UnitTypes.HORSESMAN.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!tile.getResource().getResourceType().equals(UnitTypes.HORSESMAN.getResourceRequirements()))
+            {
+                return lackResources;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.HORSESMAN.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newHorsesman = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.HORSESMAN, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.HORSESMAN.getCost());
+                civilization.addUnit((Unit) newHorsesman);
+                tile.setCombatUnit((CombatUnit) newHorsesman);
+            }
+
+        } else if (unitName.equals("SWORDSMAN"))
+        {
+            if (money < UnitTypes.SWORDSMAN.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!tile.getResource().getResourceType().equals(UnitTypes.SWORDSMAN.getResourceRequirements()))
+            {
+                return lackResources;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.SWORDSMAN.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newSwordsman = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.SWORDSMAN, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.SWORDSMAN.getCost());
+                civilization.addUnit((Unit) newSwordsman);
+                tile.setCombatUnit((CombatUnit) newSwordsman);
+            }
+
+        } else if (unitName.equals("CROSSBOWMAN"))
+        {
+            if (money < UnitTypes.CROSSBOWMAN.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.CROSSBOWMAN.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                RangedCombatUnit newCrossbowman = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.CROSSBOWMAN, false, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.CROSSBOWMAN.getCost());
+                civilization.addUnit((Unit) newCrossbowman);
+                tile.setCombatUnit((CombatUnit) newCrossbowman);
+            }
+
+        } else if (unitName.equals("KNIGHT"))
+        {
+            if (money < UnitTypes.HORSESMAN.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!tile.getResource().getResourceType().equals(UnitTypes.KNIGHT.getResourceRequirements()))
+            {
+                return lackResources;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.HORSESMAN.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newKnight = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.KNIGHT, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.KNIGHT.getCost());
+                civilization.addUnit((Unit) newKnight);
+                tile.setCombatUnit((CombatUnit) newKnight);
+
+            }
+
+        } else if (unitName.equals("LONGSWORDSMAN"))
+        {
+            if (money < UnitTypes.LONGSWORDSMAN.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!tile.getResource().getResourceType().equals(UnitTypes.LONGSWORDSMAN.getResourceRequirements()))
+            {
+                return lackResources;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.LONGSWORDSMAN.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newLong = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.LONGSWORDSMAN, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.LONGSWORDSMAN.getCost());
+                civilization.addUnit((Unit) newLong);
+                tile.setCombatUnit((CombatUnit) newLong);
+            }
+
+        } else if (unitName.equals("PIKEMAN"))
+        {
+            if (money < UnitTypes.PIKEMAN.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.PIKEMAN.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newPikeman = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.PIKEMAN, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.PIKEMAN.getCost());
+                civilization.addUnit((Unit) newPikeman);
+                tile.setCombatUnit((CombatUnit) newPikeman);
+            }
+
+        } else if (unitName.equals("TREBUCHET"))
+        {
+            if (money < UnitTypes.TREBUCHET.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!tile.getResource().getResourceType().equals(UnitTypes.TREBUCHET.getResourceRequirements()))
+            {
+                return lackResources;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.TREBUCHET.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                RangedCombatUnit newTrebuchet = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.TREBUCHET, false, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.TREBUCHET.getCost());
+                civilization.addUnit((Unit) newTrebuchet);
+                tile.setCombatUnit((CombatUnit) newTrebuchet);
+
+            }
+
+        } else if (unitName.equals("CANNON"))
+        {
+            if (money < UnitTypes.CANNON.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.CANNON.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                RangedCombatUnit newCannon = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.CANNON, false, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.CANNON.getCost());
+                civilization.addUnit((Unit) newCannon);
+                tile.setCombatUnit((CombatUnit) newCannon);
+
+            }
+
+        } else if (unitName.equals("CAVALRY"))
+        {
+            if (money < UnitTypes.CAVALRY.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!tile.getResource().getResourceType().equals(UnitTypes.CAVALRY.getResourceRequirements()))
+            {
+                return lackResources;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.CAVALRY.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.CAVALRY, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.CAVALRY.getCost());
+                civilization.addUnit((Unit) newUnit);
+                tile.setCombatUnit((CombatUnit) newUnit);
+
+            }
+
+        } else if (unitName.equals("LANCER"))
+        {
+            if (money < UnitTypes.LANCER.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!tile.getResource().getResourceType().equals(UnitTypes.LANCER.getResourceRequirements()))
+            {
+                return lackResources;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.LANCER.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.LANCER, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.LANCER.getCost());
+                civilization.addUnit((Unit) newUnit);
+                tile.setCombatUnit((CombatUnit) newUnit);
+            }
+
+        } else if (unitName.equals("MUSKETMAN"))
+        {
+            if (money < UnitTypes.MUSKETMAN.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.MUSKETMAN.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.MUSKETMAN, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.MUSKETMAN.getCost());
+                civilization.addUnit((Unit) newUnit);
+                tile.setCombatUnit((CombatUnit) newUnit);
+            }
+
+        } else if (unitName.equals("RIFLEMAN"))
+        {
+            if (money < UnitTypes.RIFLEMAN.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.RIFLEMAN.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.RIFLEMAN, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.RIFLEMAN.getCost());
+                civilization.addUnit((Unit) newUnit);
+                tile.setCombatUnit((CombatUnit) newUnit);
+
+            }
+
+        } else if (unitName.equals("ANTI_TANKGUN"))
+        {
+            if (money < UnitTypes.ANTI_TANKGUN.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.ANTI_TANKGUN.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.ANTI_TANKGUN, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.ANTI_TANKGUN.getCost());
+                civilization.addUnit((Unit) newUnit);
+                tile.setCombatUnit((CombatUnit) newUnit);
+            }
+
+        } else if (unitName.equals("ARTILLERY"))
+        {
+            if (money < UnitTypes.ARTILLERY.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.ARTILLERY.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                RangedCombatUnit newUnit = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.ARTILLERY, false, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.ARTILLERY.getCost());
+                civilization.addUnit((Unit) newUnit);
+                tile.setCombatUnit((CombatUnit) newUnit);
+            }
+
+        } else if (unitName.equals("INFANTRY"))
+        {
+            if (money < UnitTypes.INFANTRY.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.INFANTRY.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.INFANTRY, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.INFANTRY.getCost());
+                civilization.addUnit((Unit) newUnit);
+                tile.setCombatUnit((CombatUnit) newUnit);
+            }
+
+        } else if (unitName.equals("PANZER"))
+        {
+            if (money < UnitTypes.PANZER.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.PANZER.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.PANZER, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.PANZER.getCost());
+                civilization.addUnit((Unit) newUnit);
+                tile.setCombatUnit((CombatUnit) newUnit);
+            }
+
+        } else if (unitName.equals("TANK"))
+        {
+            if (money < UnitTypes.TANK.getCost())
+            {
+                return notEnoughMoney;
+            } else if (!civilization.getTechnologies().contains(UnitTypes.TANK.getTechnologyRequirements()))
+            {
+                return lackTechnology;
+            } else if (tile.getCombatUnit() != null)
+            {
+                return unitAlreadyExists;
+            } else
+            {
+                NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.TANK, false, false, false, false, false);
+                civilization.setGold(money - UnitTypes.TANK.getCost());
+                civilization.addUnit((Unit) newUnit);
+                tile.setCombatUnit((CombatUnit) newUnit);
+            }
+
+        }
+        return "invalid unit name";
+    }
+
 }
+

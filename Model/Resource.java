@@ -1,11 +1,14 @@
 package Model;
 
+import Model.Resources.ResourceTypes;
+
 public class Resource {
     
     private int food;
     private int gold;
     private int production;
     private String name;
+    private ResourceTypes resourceType;
 
     public int getFood() {
         return this.food;
@@ -39,4 +42,13 @@ public class Resource {
         this.name = name;
     }
 
+    public ResourceTypes getResourceType()
+    {
+        return resourceType;
+    }
+
+    public void setResourceType(ResourceTypes resourceType)
+    {
+        this.resourceType = resourceType;
+    }
 }

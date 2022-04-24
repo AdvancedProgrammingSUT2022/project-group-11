@@ -23,6 +23,7 @@ public enum GameEnums {
     UNIT_BUILD("^UNIT\\sBUILD\\s(?<subdivision>\\S+)$"),
     UNIT_REMOVE("^UNIT\\sREMOVE\\s(?<subdivision>\\S+)$"),
     UNIT_REPAIR("^UNIT\\sREPAIR$"),
+    CREATE_UNIT("^CONSTRUCT UNIT (?<unitName>[A-Za-z]+)"),
     
     INTEGER("^-?\\d+$");
 

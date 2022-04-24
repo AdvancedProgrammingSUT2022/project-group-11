@@ -61,7 +61,7 @@ public enum TerrainTypes {
         }
     },Color.GREEN_BACKGROUND),
     MOUNTAIN(0, 0, 0, 25, 9999999, null, null,  Color.YELLOW_BACKGROUND),
-    OCEAN(1, 0, 1, 0, 9999999, new ArrayList<TerrainFeatureTypes>() {
+    OCEAN(1, 0, 1, 0, 1, new ArrayList<TerrainFeatureTypes>() {
         {
             add(TerrainFeatureTypes.ICE);
         }

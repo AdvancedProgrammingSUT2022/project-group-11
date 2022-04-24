@@ -15,6 +15,8 @@ public class Terrain {
     private TerrainFeatureTypes terrainFeatureTypes;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
+    private Resource resource;
+    private City city;
 
     Terrain(int x, int y, String Type, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit,NonCombatUnit nonCombatUnit) {
         this.x = x;
@@ -24,6 +26,7 @@ public class Terrain {
         this.terrainFeatureTypes = terrainFeatureTypes;
         this.combatUnit = combatUnit;
         this.nonCombatUnit = nonCombatUnit;
+        this.city = null;
     }
 
 
@@ -83,6 +86,26 @@ public class Terrain {
         this.nonCombatUnit = nonCombatUnit;
     }
 
+
+    public Resource getResource()
+    {
+        return resource;
+    }
+
+    public void setResource(Resource resource)
+    {
+        this.resource = resource;
+    }
+
+    public City getCity()
+    {
+        return city;
+    }
+
+    public void setCity(City city)
+    {
+        this.city = city;
+    }
     public boolean containsUnit(Unit unit2)
     {
         if(unit2.equals((Unit) combatUnit))
@@ -95,7 +118,4 @@ public class Terrain {
         }
         return false;
     }
-    
-
-   
 }

@@ -1,9 +1,8 @@
 package Model.Units;
 
-import java.sql.Array;
-import java.util.ArrayList;
-
 import Model.Terrain;
+
+import java.util.ArrayList;
 
 public class Unit {
     private int x,y;
@@ -13,7 +12,6 @@ public class Unit {
     private int speed; 
     private boolean isAsleep;
     private boolean isFinished;
-
     private ArrayList<Terrain> nextTiles;
 
     public ArrayList<Terrain> getNextTiles() {
@@ -23,7 +21,8 @@ public class Unit {
     public void setNextTiles(ArrayList<Terrain> nextTiles) {
         this.nextTiles = nextTiles;
     }
-    
+
+
 
     public boolean isIsFinished() {
         return this.isFinished;
