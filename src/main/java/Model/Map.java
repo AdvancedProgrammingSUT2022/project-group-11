@@ -10,7 +10,7 @@ import Model.Units.UnitTypes;
 
 public class Map {
     private int Iteration = 6;
-    private int ROW = 25;
+    private int ROW = 30;
     private int COL = 16;
 
     private Terrain[][] Terrains = new Terrain[ROW][COL];
@@ -506,10 +506,15 @@ public class Map {
 
 
 
-    
+
     // initialize Map Before Print For Speciall User
     public boolean isBlock(int i, int j) {
-
+        if(i < 0 || i >= ROW){
+            return false;
+        }
+        if(j < 0 || j >= COL){
+            return false;
+        }
         if (Terrains[i][j].getTerrainTypes() == TerrainTypes.MOUNTAIN) {
             return false;
         } else if (Terrains[i][j].getTerrainTypes() == TerrainTypes.HILLS) {
@@ -520,7 +525,7 @@ public class Map {
         return true;
     }
 
-    public void setVisible(int i, int j) {
+    public void setVisibleEven(int i, int j) {
         if (i > 0) {
             Terrains[i - 1][j].setType("visible");
         }
@@ -534,13 +539,141 @@ public class Map {
             Terrains[i + 1][j].setType("visible");
         }
         if (j < COL - 1) {
-
             Terrains[i][j + 1].setType("visible");
         }
         if (i > 0 && j < COL - 1) {
             Terrains[i - 1][j + 1].setType("visible");
         }
     }
+ 
+    public void setVisibleOdd(int i,int j){
+        if (i > 0) {
+            Terrains[i - 1][j].setType("visible");
+        }
+        if (j > 0) {
+            Terrains[i][j - 1].setType("visible");
+        }
+        if(i < ROW - 1 && j > 0){
+            Terrains[i + 1][j - 1].setType("visible");
+        }
+        if (i < ROW - 1) {
+            Terrains[i + 1][j].setType("visible");
+        }
+        if(i < ROW - 1 && j < COL - 1){
+            Terrains[i + 1][j + 1].setType("visible");
+        }
+        if (j < COL - 1) {
+            Terrains[i][j + 1].setType("visible");
+        }
+
+
+    }
+
+
+    public void makeVisibleNearEven(int i,int j){
+        if (isBlock(i - 1, j)) {
+            if(j % 2 == 0){
+                setVisibleEven(i - 1, j);
+            }else{
+                setVisibleOdd(i - 1, j);
+            }
+        }
+        if (isBlock(i - 1, j - 1)) {
+            if((j - 1) % 2 == 0){
+
+                setVisibleEven(i - 1, j - 1);
+            }else{
+                setVisibleOdd(i - 1, j - 1);
+            }
+        }
+        if (isBlock(i, j - 1)) {
+            if((j - 1) % 2 == 0){
+                setVisibleEven(i, j - 1);
+            }else{
+
+                setVisibleOdd(i, j - 1);
+            }
+            
+        }
+        if (isBlock(i + 1, j)) {
+            if(j % 2 == 0){
+              setVisibleEven(i + 1, j);
+            }else{
+              setVisibleOdd(i + 1, j);
+            }
+        }
+        if (isBlock(i, j + 1)) {
+           if((j + 1) % 2 == 0){
+
+            setVisibleEven(i, j + 1);
+           }else{
+           setVisibleOdd(i, j + 1);
+           }
+        }
+        if (isBlock(i - 1, j + 1)) {
+            if((j + 1) % 2 == 0){
+
+                setVisibleEven(i - 1, j+ 1);
+            }else{
+                setVisibleOdd(i - 1, j + 1);
+            }
+        }
+
+    }
+
+    public void makeVisibleNearOdd(int i,int j){
+        if (isBlock(i - 1, j)) {
+            if(j % 2 == 0){
+                setVisibleEven(i - 1, j);
+            }else{
+                setVisibleOdd(i - 1, j);
+            }
+        }
+        if (isBlock(i + 1, j - 1)) {
+            if((j - 1) % 2 == 0){
+
+                setVisibleEven(i + 1, j - 1);
+            }else{
+                setVisibleOdd(i + 1, j - 1);
+            }
+        }
+        if (isBlock(i, j - 1)) {
+            if((j - 1) % 2 == 0){
+                setVisibleEven(i, j - 1);
+            }else{
+
+                setVisibleOdd(i, j - 1);
+            }
+            
+        }
+
+
+        if (isBlock(i + 1, j)) {
+            if(j % 2 == 0){
+              setVisibleEven(i + 1, j);
+            }else{
+              setVisibleOdd(i + 1, j);
+            }
+        }
+        if (isBlock(i, j + 1)) {
+           if((j + 1) % 2 == 0){
+
+            setVisibleEven(i, j + 1);
+           }else{
+           setVisibleOdd(i, j + 1);
+           }
+        }
+        if (isBlock(i + 1, j + 1)) {
+            if((j + 1) % 2 == 0){
+
+                setVisibleEven(i + 1, j+ 1);
+            }else{
+                setVisibleOdd(i + 1, j + 1);
+            }
+        }
+
+    }
+    
 
     public void initializeMapUser(User user) {
         for (int i = 0; i < ROW; i++) {
@@ -555,25 +688,14 @@ public class Map {
             int j = tile.getY();
             Terrains[i][j].setType("visible");
             if (isBlock(i, j)) {
-                setVisible(i, j);
-                if (isBlock(i - 1, j)) {
-                    setVisible(i - 1, j);
+                if(j % 2 == 0){
+                    setVisibleEven(i, j);
+                    makeVisibleNearEven(i, j);
+                }else{
+                    setVisibleOdd(i, j);
+                    makeVisibleNearOdd(i, j);
                 }
-                if (isBlock(i - 1, j - 1)) {
-                    setVisible(i - 1, j - 1);
-                }
-                if (isBlock(i, j - 1)) {
-                    setVisible(i, j - 1);
-                }
-                if (isBlock(i + 1, j)) {
-                    setVisible(i + 1, j);
-                }
-                if (isBlock(i, j + 1)) {
-                    setVisible(i, j + 1);
-                }
-                if (isBlock(i - 1, j + 1)) {
-                    setVisible(i - 1, j + 1);
-                }
+              
             }
         }
 
@@ -590,6 +712,8 @@ public class Map {
             }
         }
     }
+
+
 
     // print map
     public void SwichCaseFirstHalf(int i, int j, int l, Database database, User user) {
@@ -647,7 +771,7 @@ public class Map {
     }
 
     public String[][] printMap(Database database, User user) {
-
+        initializeMapUser(user);
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < Iteration; j++) {
                 Printmap[i][j] = "";
@@ -671,37 +795,7 @@ public class Map {
         return this.Printmap;
     }
 
-    public void initializeMap() {
-        for (int i = 0; i < ROW; i++) {
-            for (int j = 0; j < COL; j++) {
 
-                switch ((i * j) % 3) {
-                    case 0:
-                        CombatUnit CombatUnit = new CombatUnit(i, j, 3, 12, false, UnitTypes.ARCHER);
-                        NonCombatUnit nonCombatUnit = new NonCombatUnit(i, j, 3, 12, false, UnitTypes.SETTLER);
-                        Terrain terrain = new Terrain(i, j, "visible", TerrainTypes.DESERT, TerrainFeatureTypes.FOREST,
-                                CombatUnit, nonCombatUnit, null, null, null);
-                        Terrains[i][j] = terrain;
-                        break;
-                    case 1:
-                        CombatUnit CombatUnit1 = new CombatUnit(i, j, 3, 12, false, UnitTypes.CANNON);
-                        NonCombatUnit nonCombatUnit1 = new NonCombatUnit(i, j, 3, 12, false, UnitTypes.SETTLER);
-                        Terrain terrain1 = new Terrain(i, j, "visible", TerrainTypes.OCEAN,
-                                TerrainFeatureTypes.OASIS,
-                                CombatUnit1, nonCombatUnit1, null, null, null);
-                        Terrains[i][j] = terrain1;
-                        break;
-                    case 2:
-                        CombatUnit CombatUnit2 = new CombatUnit(i, j, 3, 12, false, UnitTypes.TANK);
-                        NonCombatUnit nonCombatUnit2 = new NonCombatUnit(i, j, 3, 12, false, UnitTypes.SETTLER);
-                        Terrain terrain2 = new Terrain(i, j, "visible", TerrainTypes.SNOW, TerrainFeatureTypes.JUNGLE,
-                                CombatUnit2, nonCombatUnit2, null, null, null);
-                        Terrains[i][j] = terrain2;
-                        break;
 
-                }
-            }
-        }
-    }
 
 }
