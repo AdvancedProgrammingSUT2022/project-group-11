@@ -9,7 +9,7 @@ import Model.User;
 
 public class Main{
     public static void main(String[] args) {
-    /* 
+    
       Map map = new Map();
       map.initializeMap();
       ArrayList<Terrain> terrains = new ArrayList<Terrain>();
@@ -22,17 +22,13 @@ public class Main{
       User user = new User(null, null, null, civilization);
       Database database = new Database();
       database.addUser(user);
-      String [][]  result = map.printMap(database);
+      String [][]  result = map.printMap(database, user);
       for(int i = 0; i < 25;i++){
         for(int j = 0; j < 6;j++){
           System.out.println(result[i][j]);
         }
       }
-*/
-System.out.print(Color.YELLOW);
-System.out.print(Color.MAGENTA_BACKGROUND_BRIGHT);
-System.out.println("YELLOW & BLUE");
-System.out.print(Color.RESET);
+
 
     }
 }
