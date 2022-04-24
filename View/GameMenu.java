@@ -195,6 +195,9 @@ public class GameMenu {
     private void moveUnit(User user, Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
+        System.out.println(this.databaseController.unitMovement(x, y));
+
+
     }
 
 }
