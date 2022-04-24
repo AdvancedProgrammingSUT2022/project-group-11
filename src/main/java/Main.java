@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 import Model.Civilization;
+import Model.Color;
 import Model.Database;
 import Model.Map;
 import Model.Terrain;
@@ -8,7 +9,7 @@ import Model.User;
 
 public class Main{
     public static void main(String[] args) {
-     
+    /* 
       Map map = new Map();
       map.initializeMap();
       ArrayList<Terrain> terrains = new ArrayList<Terrain>();
@@ -27,6 +28,11 @@ public class Main{
           System.out.println(result[i][j]);
         }
       }
+*/
+System.out.print(Color.YELLOW);
+System.out.print(Color.MAGENTA_BACKGROUND_BRIGHT);
+System.out.println("YELLOW & BLUE");
+System.out.print(Color.RESET);
 
     }
 }

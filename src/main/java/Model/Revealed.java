@@ -1,5 +1,7 @@
 package Model;
 
+import Model.Improvements.Improvements;
+import Model.Resources.ResourceTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
@@ -12,15 +14,22 @@ public class Revealed{
     private TerrainFeatureTypes terrainFeatureTypes;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
+    private Improvements TerrrainImprovement;
+    private ResourceTypes TerrainResource;
 
-
-    public Revealed(User user, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit) {
+    public Revealed(User user, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement, ResourceTypes TerrainResource) {
         this.user = user;
         this.terrainTypes = terrainTypes;
         this.terrainFeatureTypes = terrainFeatureTypes;
         this.combatUnit = combatUnit;
         this.nonCombatUnit = nonCombatUnit;
+        this.TerrrainImprovement = TerrrainImprovement;
+        this.TerrainResource = TerrainResource;
     }
+
+
+
+    
 
 
     public User getUser() {
@@ -63,7 +72,19 @@ public class Revealed{
         this.nonCombatUnit = nonCombatUnit;
     }
 
+    public Improvements getTerrrainImprovement() {
+        return this.TerrrainImprovement;
+    }
 
-    
+    public void setTerrrainImprovement(Improvements TerrrainImprovement) {
+        this.TerrrainImprovement = TerrrainImprovement;
+    }
 
+    public ResourceTypes getTerrainResource() {
+        return this.TerrainResource;
+    }
+
+    public void setTerrainResource(ResourceTypes TerrainResource) {
+        this.TerrainResource = TerrainResource;
+    }
 }
