@@ -9,6 +9,7 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
         Database database = new Database();
         DatabaseController databaseController = new DatabaseController(database);
+        
 
     }
 

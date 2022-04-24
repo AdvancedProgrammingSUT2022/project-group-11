@@ -82,7 +82,19 @@ public class Terrain {
     public void setNonCombatUnit(NonCombatUnit nonCombatUnit) {
         this.nonCombatUnit = nonCombatUnit;
     }
-   
+
+    public boolean containsUnit(Unit unit2)
+    {
+        if(unit2.equals((Unit) combatUnit))
+        {
+            return true;
+        }
+        else if(unit2.equals((Unit) nonCombatUnit))
+        {
+            return true;
+        }
+        return false;
+    }
     
 
    

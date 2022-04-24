@@ -36,8 +36,7 @@ public class GameMenu {
                     while (this.databaseController.HasoneUnitBeenSelected()) {
                         input = scanner.nextLine();
                         if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_MOVETO)) != null) {
-                            // todo
-
+                            moveUnit(user, matcher);
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
                             this.databaseController.changingTheStateOfAUnit("sleep");
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
@@ -61,7 +60,7 @@ public class GameMenu {
                                 System.out.println("this unit is not a combat unit");
                             } else {
                                 System.out.println(
-                                        this.databaseController.changingTheStateOfAUnit( "fortify until heal"));
+                                        this.databaseController.changingTheStateOfAUnit("fortify until heal"));
 
                             }
 
@@ -154,32 +153,14 @@ public class GameMenu {
         if (matcher.group("subdivision").equals("COMBAT")) {
             int x = Integer.parseInt(matcher.group("x"));
             int y = Integer.parseInt(matcher.group("y"));
-            Map map = this.databaseController.getMap();
-            int mapRows = map.getROW();
-            int mapColumns = map.getCOL();
-            if (x > mapRows || x < 0 || y > mapColumns || y < 0) {
-                System.out.println("there is no tile with these coordinates");
-            } else if (map.getTiles()[x][y].getCombatUnit() == null) {
-                System.out.println("there is no combat unit in this tile");
-            } else {
-                System.out.println(this.databaseController.selectAndDeslectCombatUnit(user, x, y));
+            System.out.println(this.databaseController.selectAndDeslectCombatUnit(user, x, y));
 
-            }
         } else if (matcher.group("subdivision").equals("NONCOMBAT")) {
             int x = Integer.parseInt(matcher.group("x"));
             int y = Integer.parseInt(matcher.group("y"));
-            Map map = this.databaseController.getMap();
-            int mapRows = map.getROW();
-            int mapColumns = map.getCOL();
-            if (x > mapRows || x < 0 || y > mapColumns || y < 0) {
-                System.out.println("there is no tile with these coordinates");
-            } else if (map.getTiles()[x][y].getNonCombatUnit() == null) {
-                System.out.println("there is no non combat unit in this tile");
 
-            } else {
-                System.out.println(this.databaseController.selectAndDeslectNonCombatUnit(user, x, y));
+            System.out.println(this.databaseController.selectAndDeslectNonCombatUnit(user, x, y));
 
-            }
         } else {
             System.out.println("INVALID COMMAND");
         }
@@ -209,6 +190,11 @@ public class GameMenu {
         } else {
             System.out.println("INVALID COMMAND");
         }
+    }
+
+    private void moveUnit(User user, Matcher matcher) {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
     }
 
 }

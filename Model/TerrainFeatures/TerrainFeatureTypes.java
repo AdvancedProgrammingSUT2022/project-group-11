@@ -19,7 +19,7 @@ public enum TerrainFeatureTypes {
             add(ResourceTypes.SILK);
         }
     }),
-    ICE(0, 0, 0, 0, 99999, null),
+    ICE(0, 0, 0, 0, 9999999, null),
     JUNGLE(1, -1, 0, 25, 2, new ArrayList<ResourceTypes>() {
         {
             add(ResourceTypes.BANANAS);

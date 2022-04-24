@@ -1,5 +1,8 @@
 package Model.Units;
 
+import java.sql.Array;
+import java.util.ArrayList;
+
 import Model.Terrain;
 
 public class Unit {
@@ -11,6 +14,15 @@ public class Unit {
     private boolean isAsleep;
     private boolean isFinished;
 
+    private ArrayList<Terrain> nextTiles;
+
+    public ArrayList<Terrain> getNextTiles() {
+        return this.nextTiles;
+    }
+
+    public void setNextTiles(ArrayList<Terrain> nextTiles) {
+        this.nextTiles = nextTiles;
+    }
     
 
     public boolean isIsFinished() {

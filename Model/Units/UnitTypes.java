@@ -57,5 +57,10 @@ public enum UnitTypes {
         return this.showMap;
     }
 
+    public int getMovement()
+    {
+        return this.getMovement();
+    }
+
 
 }
