@@ -15,9 +15,9 @@ public class Revealed{
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
     private Improvements TerrrainImprovement;
-    private ResourceTypes TerrainResource;
+    private Resource TerrainResource;
 
-    public Revealed(User user, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement, ResourceTypes TerrainResource) {
+    public Revealed(User user, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement, Resource TerrainResource) {
         this.user = user;
         this.terrainTypes = terrainTypes;
         this.terrainFeatureTypes = terrainFeatureTypes;
@@ -80,11 +80,11 @@ public class Revealed{
         this.TerrrainImprovement = TerrrainImprovement;
     }
 
-    public ResourceTypes getTerrainResource() {
+    public Resource getTerrainResource() {
         return this.TerrainResource;
     }
 
-    public void setTerrainResource(ResourceTypes TerrainResource) {
+    public void setTerrainResource(Resource TerrainResource) {
         this.TerrainResource = TerrainResource;
     }
 }

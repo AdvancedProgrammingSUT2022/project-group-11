@@ -4,9 +4,25 @@ import java.util.ArrayList;
 
 public class Database {
     private ArrayList<User> Users;
+    private Map map;
+    private int turn;
 
-    
 
+
+    public int getTurn() {
+        return this.turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+    public Map getMap() {
+        return this.map;
+    }
+
+    public void setMap(Map map) {
+        this.map = map;
+    }
     public User getCivilizationUser(Terrain Terrain){
        for (User users : this.Users) {
            if(users.getCivilization().getTerrains().indexOf(Terrain) != -1){
@@ -20,6 +36,7 @@ public class Database {
     {
         this.Users = new ArrayList<>();
     }
+
 
     public void setUsers( ArrayList<User> Users){
         this.Users = Users;
@@ -54,6 +71,18 @@ public class Database {
             {
                 return user;
             }
+        }
+        return null;
+    }
+    public User getUserByNickname(String nickname)
+    {
+        for ( User user : this.Users)
+        {
+            if (user.getNickname().equals(nickname))
+            {
+                return user;
+            }
+
         }
         return null;
     }

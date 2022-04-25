@@ -3,11 +3,11 @@ package Model;
 import java.util.ArrayList;
 
 import Model.Improvements.Improvements;
-import Model.Resources.ResourceTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
+import Model.Units.Unit;
 
 public class Terrain {
 
@@ -19,12 +19,13 @@ public class Terrain {
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
     private Improvements TerrrainImprovement;
-    private ResourceTypes TerrainResource;
+    private Resource TerrainResource;
+    private City city;
     private ArrayList<Revealed> reveals;
 
     public Terrain(int x, int y, String Type, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes,
             CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement,
-            ResourceTypes TerrainResource, ArrayList<Revealed> reveals) {
+            Resource TerrainResource, ArrayList<Revealed> reveals) {
         this.x = x;
         this.y = y;
         this.Type = Type;
@@ -35,6 +36,7 @@ public class Terrain {
         this.TerrrainImprovement = TerrrainImprovement;
         this.TerrainResource = TerrainResource;
         this.reveals = reveals;
+        this.city = null;
     }
 
 
@@ -104,11 +106,11 @@ public class Terrain {
         this.TerrrainImprovement = TerrrainImprovement;
     }
 
-    public ResourceTypes getTerrainResource() {
+    public Resource getTerrainResource() {
         return this.TerrainResource;
     }
 
-    public void setTerrainResource(ResourceTypes TerrainResource) {
+    public void setTerrainResource(Resource TerrainResource) {
         this.TerrainResource = TerrainResource;
     }
 
@@ -120,4 +122,25 @@ public class Terrain {
         this.reveals = reveals;
     }
 
+    public City getCity()
+    {
+        return city;
+    }
+
+    public void setCity(City city)
+    {
+        this.city = city;
+    }
+    public boolean containsUnit(Unit unit2)
+    {
+        if(unit2.equals((Unit) combatUnit))
+        {
+            return true;
+        }
+        else if(unit2.equals((Unit) nonCombatUnit))
+        {
+            return true;
+        }
+        return false;
+    }
 }

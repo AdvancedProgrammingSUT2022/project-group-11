@@ -4,13 +4,10 @@ import java.util.ArrayList;
 
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
-import Model.Units.CombatUnit;
-import Model.Units.NonCombatUnit;
-import Model.Units.UnitTypes;
 
 public class Map {
     private int Iteration = 6;
-    private int ROW = 30;
+    private int ROW = 32;
     private int COL = 16;
 
     private Terrain[][] Terrains = new Terrain[ROW][COL];
@@ -26,6 +23,31 @@ public class Map {
             }
         }
         return null;
+    }
+    public int getIteration() {
+        return this.Iteration;
+    }
+
+    public void setIteration(int Iteration) {
+        this.Iteration = Iteration;
+    }
+
+    
+
+    public int getROW() {
+        return this.ROW;
+    }
+
+    public void setROW(int ROW) {
+        this.ROW = ROW;
+    }
+
+    public int getCOL() {
+        return this.COL;
+    }
+
+    public void setCOL(int COL) {
+        this.COL = COL;
     }
 
     public Terrain[][] getTerrain() {
@@ -69,7 +91,7 @@ public class Map {
     }
 
     /// BETWEENT TWO TAIL
-    public void betweetTwoTailFirstHalf(int i, int j, int l) {
+    private void betweetTwoTailFirstHalf(int i, int j, int l) {
 
         River river;
         if (i > 0 && l < COL - 1 && (river = hasRiver(Terrains[i][l], Terrains[i - 1][l + 1])) != null) {
@@ -82,7 +104,7 @@ public class Map {
 
     }
 
-    public void betweenTwoTailSecondHalf(int i, int j, int l) {
+    private void betweenTwoTailSecondHalf(int i, int j, int l) {
         River river;
         if (l < COL - 1 && (river = hasRiver(Terrains[i][l], Terrains[i][l + 1])) != null) {
             Printmap[i][j] += river.getColor();
@@ -97,7 +119,7 @@ public class Map {
 
 
     // ALGHORITMS
-    public void CivilizationAlghoritm(int iTerrain, int i, int j, int l, Database database) {
+    private void CivilizationAlghoritm(int iTerrain, int i, int j, int l, Database database) {
         String Civilization = "";
         int HowManySpaceLeft = 0;
         int HowManySpaceRight = 0;
@@ -133,7 +155,7 @@ public class Map {
         }
     }
 
-    public void TerrainFeaturesAlghoritm(int iTerrain, int i, int j, int l, User user) {
+    private void TerrainFeaturesAlghoritm(int iTerrain, int i, int j, int l, User user) {
         String TerrainFeatureType = "";
         int HowManySpaceLeft = 0;
         int HowManySpaceRight = 0;
@@ -167,7 +189,7 @@ public class Map {
         }
     }
 
-    public void XandYAlghoritm(int iTerrain, int i, int j, int l) {
+    private void XandYAlghoritm(int iTerrain, int i, int j, int l) {
         String XcenterYcenter = "";
         int HowManySpaceLeft = 0;
         int HowManySpaceRight = 0;
@@ -196,7 +218,7 @@ public class Map {
         }
     }
 
-    public void twocombatAlghoritm(int iTerrain, int i, int j, int l, User user) {
+    private void twocombatAlghoritm(int iTerrain, int i, int j, int l, User user) {
         int HowManySpaceLeft = 0;
         int HowManySpaceRight = 0;
         String AllUnit = "";
@@ -251,13 +273,13 @@ public class Map {
         }
     }
 
-    public void ResourceAlghoritm(int iTerrain, int i, int j, int l, User user) {
+    private void ResourceAlghoritm(int iTerrain, int i, int j, int l, User user) {
         String Resource = "";
         int HowManySpaceLeft = 0;
         int HowManySpaceRight = 0;
         if (Terrains[iTerrain][l].getType().equals("revealed")) {
             if (getRevealedFromArray(user, iTerrain, l).getTerrainResource() != null) {
-                Resource += getRevealedFromArray(user, iTerrain, l).getTerrainResource().getShowResourceMap();
+                Resource += getRevealedFromArray(user, iTerrain, l).getTerrainResource().getResourceType().getShowResourceMap();
             }
             Printmap[i][j] += Color.MAGENTA_BACKGROUND_BRIGHT;
             int HowManySpace = 7 - Resource.length();
@@ -269,7 +291,7 @@ public class Map {
             Printmap[i][j] += Color.RESET;
         } else if (Terrains[iTerrain][l].getType().equals("visible")) {
             if (Terrains[iTerrain][l].getTerrainResource() != null) {
-                Resource += Terrains[iTerrain][l].getTerrainResource().getShowResourceMap();
+                Resource += Terrains[iTerrain][l].getTerrainResource().getResourceType().getShowResourceMap();
             }
             Printmap[i][j] += Terrains[iTerrain][l].getTerrainTypes().getColor();
             int HowManySpace = 7 - Resource.length();
@@ -285,7 +307,7 @@ public class Map {
 
     }
 
-    public void ImprovementAlghoritm(int iTerrain, int i, int j, int l, User user) {
+    private void ImprovementAlghoritm(int iTerrain, int i, int j, int l, User user) {
         String Improvement = "";
         int HowManySpaceLeft = 0;
         int HowManySpaceRight = 0;
@@ -322,9 +344,12 @@ public class Map {
 
 
 
+
+
+
 //  call the alghoritm finction
 
-    public void CivilizationPrintFirstHalf(int i, int j, int l, Database database) {
+    private void CivilizationPrintFirstHalf(int i, int j, int l, Database database) {
         River river;
         if (i > 0 && l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i - 1][l - 1])) != null)) {
             Printmap[i][j] += river.getColor();
@@ -336,15 +361,15 @@ public class Map {
         CivilizationAlghoritm(i, i, j, l, database);
     }
 
-    public void CivilizationPrintSecondHalf(int i, int j, int l, Database database) {
+    private void CivilizationPrintSecondHalf(int i, int j, int l, Database database) {
         CivilizationAlghoritm(i, i, j, l + 1, database);
     }
 
-    public void TerrainFeaturesFirstHalf(int i, int j, int l, User user) {
+    private void TerrainFeaturesFirstHalf(int i, int j, int l, User user) {
         TerrainFeaturesAlghoritm(i - 1, i, j, l + 1, user);
     }
 
-    public void TerrainFeaturesSecondHalf(int i, int j, int l, User user) {
+    private void TerrainFeaturesSecondHalf(int i, int j, int l, User user) {
         River river;
 
         if (l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i][l - 1])) != null)) {
@@ -358,7 +383,7 @@ public class Map {
 
     }
 
-    public void XandYFirstHalf(int i, int j, int l) {
+    private void XandYFirstHalf(int i, int j, int l) {
         River river;
         if (i > 0 && l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i - 1][l - 1])) != null)) {
             Printmap[i][j] += river.getColor();
@@ -370,15 +395,15 @@ public class Map {
         XandYAlghoritm(i, i, j, l);
     }
 
-    public void XandYSecondHalf(int i, int j, int l) {
+    private void XandYSecondHalf(int i, int j, int l) {
         XandYAlghoritm(i, i, j, l + 1);
     }
 
-    public void ResourceFirstHalf(int i, int j, int l, User user) {
+    private void ResourceFirstHalf(int i, int j, int l, User user) {
         ResourceAlghoritm(i - 1, i, j, l + 1, user);
     }
 
-    public void ResourceSecondHalf(int i, int j, int l, User user) {
+    private void ResourceSecondHalf(int i, int j, int l, User user) {
         River river;
 
         if (l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i][l - 1])) != null)) {
@@ -391,7 +416,7 @@ public class Map {
         ResourceAlghoritm(i, i, j, l, user);
     }
 
-    public void twoCombatFirstHalf(int i, int j, int l, User user) {
+    private void twoCombatFirstHalf(int i, int j, int l, User user) {
 
         River river;
         if (i > 0 && l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i - 1][l - 1])) != null)) {
@@ -404,15 +429,15 @@ public class Map {
         twocombatAlghoritm(i, i, j, l, user);
     }
 
-    public void twoCombatSecondHalf(int i, int j, int l, User user) {
+    private void twoCombatSecondHalf(int i, int j, int l, User user) {
         twocombatAlghoritm(i, i, j, l + 1, user);
     }
 
-    public void ImprovementFirstHalf(int i, int j, int l, User user) {
+    private void ImprovementFirstHalf(int i, int j, int l, User user) {
         ImprovementAlghoritm(i - 1, i, j, l + 1, user);
     }
 
-    public void ImprovementSecondHalf(int i, int j, int l, User user) {
+    private void ImprovementSecondHalf(int i, int j, int l, User user) {
         River river;
         if (l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i][l - 1])) != null)) {
             Printmap[i][j] += river.getColor();
@@ -428,7 +453,7 @@ public class Map {
 
 
     // Rows Of Map
-    public void firstRow(int i, int j, int l, boolean check, Database database, User user) {
+    private void firstRow(int i, int j, int l, boolean check, Database database, User user) {
         if (check == true) {
             CivilizationPrintFirstHalf(i, j, l, database);
             betweetTwoTailFirstHalf(i, j, l);
@@ -440,7 +465,7 @@ public class Map {
         }
     }
 
-    public void secondRow(int i, int j, int l, boolean check, Database database, User user) {
+    private void secondRow(int i, int j, int l, boolean check, Database database, User user) {
         if (check == true) {
             XandYFirstHalf(i, j, l);
             betweetTwoTailFirstHalf(i, j, l);
@@ -453,7 +478,7 @@ public class Map {
 
     }
 
-    public void thirdRow(int i, int j, int l, boolean check, User user) {
+    private void thirdRow(int i, int j, int l, boolean check, User user) {
 
         if (check == true) {
             twoCombatFirstHalf(i, j, l, user);
@@ -466,7 +491,7 @@ public class Map {
         }
     }
 
-    public void fourthRow(int i, int j, int l, boolean check, Database database, User user) {
+    private void fourthRow(int i, int j, int l, boolean check, Database database, User user) {
 
         if (check == true) {
             TerrainFeaturesSecondHalf(i, j, l, user);
@@ -479,7 +504,7 @@ public class Map {
         }
     }
 
-    public void fifthRow(int i, int j, int l, boolean check, Database database, User user) {
+    private void fifthRow(int i, int j, int l, boolean check, Database database, User user) {
         if (check == true) {
             ResourceSecondHalf(i, j, l, user);
             betweenTwoTailSecondHalf(i, j, l);
@@ -491,7 +516,7 @@ public class Map {
         }
     }
 
-    public void sixthRow(int i, int j, int l, boolean check, User user) {
+    private void sixthRow(int i, int j, int l, boolean check, User user) {
         if (check == true) {
             ImprovementSecondHalf(i, j, l, user);
             betweenTwoTailSecondHalf(i, j, l);
@@ -507,8 +532,10 @@ public class Map {
 
 
 
+
+
     // initialize Map Before Print For Speciall User
-    public boolean isBlock(int i, int j) {
+    private boolean isBlock(int i, int j) {
         if(i < 0 || i >= ROW){
             return false;
         }
@@ -525,7 +552,7 @@ public class Map {
         return true;
     }
 
-    public void setVisibleEven(int i, int j) {
+    private void setVisibleEven(int i, int j) {
         if (i > 0) {
             Terrains[i - 1][j].setType("visible");
         }
@@ -546,7 +573,7 @@ public class Map {
         }
     }
  
-    public void setVisibleOdd(int i,int j){
+    private void setVisibleOdd(int i,int j){
         if (i > 0) {
             Terrains[i - 1][j].setType("visible");
         }
@@ -570,7 +597,7 @@ public class Map {
     }
 
 
-    public void makeVisibleNearEven(int i,int j){
+    private void makeVisibleNearEven(int i,int j){
         if (isBlock(i - 1, j)) {
             if(j % 2 == 0){
                 setVisibleEven(i - 1, j);
@@ -621,7 +648,7 @@ public class Map {
 
     }
 
-    public void makeVisibleNearOdd(int i,int j){
+    private void makeVisibleNearOdd(int i,int j){
         if (isBlock(i - 1, j)) {
             if(j % 2 == 0){
                 setVisibleEven(i - 1, j);
@@ -674,7 +701,6 @@ public class Map {
 
     }
     
-
     public void initializeMapUser(User user) {
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < COL; j++) {
@@ -712,6 +738,9 @@ public class Map {
             }
         }
     }
+
+
+
 
 
 
@@ -796,6 +825,22 @@ public class Map {
     }
 
 
+
+    // generate map
+    public void generateMap(){
+        for(int i = 0; i < ROW;i++){
+            for(int j = 0; j < COL;j++){
+                Terrains[i][j].setTerrainTypes(TerrainTypes.GRASSLLAND);
+                if(i <= 2 || i >= 29 || j <= 2 || j >= 13){
+                    Terrains[i][j].setTerrainTypes(TerrainTypes.OCEAN);
+                }else if(j >= 9){
+                    Terrains[i][j].setTerrainTypes(TerrainTypes.PLAINS);
+                }else if(i <= 4){
+                    Terrains[i][j].setTerrainTypes(TerrainTypes.PLAINS);
+                }
+            }
+        }
+    }
 
 
 }

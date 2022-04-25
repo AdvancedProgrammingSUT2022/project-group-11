@@ -57,5 +57,44 @@ public enum UnitTypes {
         return this.showMap;
     }
 
+    public int getCost()
+    {
+        return this.cost;
+    }
+
+    public ResourceTypes getResourceRequirements()
+    {
+        return resourceRequirements;
+    }
+
+    public TechnologyTypes getTechnologyRequirements()
+    {
+        return technologyRequirements;
+    }
+
+    public CombatTypes getCombatTypes()
+    {
+        return combatTypes;
+    }
+
+    public int getCombatStrengh()
+    {
+        return combatStrengh;
+    }
+
+    public int getRangedCombatStrengh()
+    {
+        return rangedCombatStrengh;
+    }
+
+    public int getRange()
+    {
+        return Range;
+    }
+
+    public int getMovement()
+    {
+        return movement;
+    }
 
 }

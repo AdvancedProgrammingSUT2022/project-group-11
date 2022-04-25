@@ -136,6 +136,9 @@ public enum TerrainTypes {
     public Color getColor(){
         return this.color;
     }
-    
+    public int getMovementCost()
+    {
+        return this.movementCost;
+    }
 
 }
