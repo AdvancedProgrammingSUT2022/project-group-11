@@ -12,11 +12,11 @@ public class River {
         color = Color.BLUE_BACKGROUND;
     }
 
-    public Terrain getFirstTile() {
+    public Terrain getFirstTerrain() {
         return this.first;
     }
 
-    public Terrain getSecondTile() {
+    public Terrain getSecondTerrain() {
         return this.second;
     }
 

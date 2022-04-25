@@ -115,8 +115,8 @@ public enum BuildingTypes {
         this.requirement = requirement;
     }
 
-    private int cost;
-    private int maintenance;
-    private TechnologyTypes requirement;
-    
+    final int cost;
+    final int maintenance;
+    final TechnologyTypes requirement;
+
 }

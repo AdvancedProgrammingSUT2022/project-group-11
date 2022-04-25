@@ -2,75 +2,103 @@ package Model;
 
 import java.util.ArrayList;
 
+import Model.Technologies.TechnologyTypes;
 import Model.Units.Unit;
 
 public class Civilization {
-    private ArrayList<Unit> units;
-    private ArrayList<City> cities;
-    private ArrayList<Terrain> terrains;
-    private int gold;
-    private int happiness;
 
-    public Civilization(ArrayList<Unit> units, ArrayList<City> cities, ArrayList<Terrain> terrains, int gold, int happiness) {
-        this.units = units;
-        this.cities = cities;
-        this.terrains = terrains;
-        this.gold = gold;
-        this.happiness = happiness;
-    }
+  private ArrayList<Unit> units;
+  private ArrayList<City> cities;
+  private ArrayList<Terrain> terrains;
+  private int gold;
+  private int happiness;
+  private ArrayList<TechnologyTypes> technologies;
+  String name;
+  
+
+  public Civilization(ArrayList<Unit> units, ArrayList<City> cities, ArrayList<Terrain> terrains, int gold, int happiness, ArrayList<TechnologyTypes> technologies, String name) {
+    this.units = units;
+    this.cities = cities;
+    this.terrains = terrains;
+    this.gold = gold;
+    this.happiness = happiness;
+    this.technologies = technologies;
+    this.name = name;
+  }
 
 
-    public ArrayList<Unit> getUnits() {
-        return this.units;
-    }
+  public String getName() {
+    return this.name;
+  }
 
-    public void setUnits(ArrayList<Unit> unit) {
-        this.units = unit;
-    }
+  public ArrayList<Terrain> getTerrains() {
+    return this.terrains;
+  }
 
-    public ArrayList<City> getCities() {
-        return this.cities;
-    }
+  public ArrayList<Unit> getUnits() {
+    return this.units;
+}
 
-    public void setCities(ArrayList<City> cities) {
-        this.cities = cities;
-    }
+public void setUnits(ArrayList<Unit> unit) {
+    this.units = unit;
+}
 
-    public ArrayList<Terrain> getTerrains() {
-        return this.terrains;
-    }
+public void addUnit( Unit unit)
+{
+    this.units.add(unit);
+}
 
-    public void setTerrains(ArrayList<Terrain> terrains) {
-        this.terrains = terrains;
-    }
+public ArrayList<City> getCities() {
+    return this.cities;
+}
 
-    public int getGold() {
-        return this.gold;
-    }
+public void setCities(ArrayList<City> cities) {
+    this.cities = cities;
+}
 
-    public void setGold(int gold) {
-        this.gold = gold;
-    }
 
-    public int getHappiness() {
-        return this.happiness;
-    }
+public void setTerrains(ArrayList<Terrain> terrains) {
+    this.terrains = terrains;
+}
 
-    public void setHappiness(int happiness) {
-        this.happiness = happiness;
-    }
+public int getGold() {
+    return this.gold;
+}
 
-    public boolean containsUnit(Unit unit2)
+public void setGold(int gold) {
+    this.gold = gold;
+}
+
+public int getHappiness() {
+    return this.happiness;
+}
+
+public void setHappiness(int happiness) {
+    this.happiness = happiness;
+}
+
+public boolean containsUnit(Unit unit2)
+{
+    for(Unit unit : units)
     {
-        for(Unit unit : units)
+        if(unit.equals(unit2))
         {
-            if(unit.equals(unit2))
-            {
-                return true;
-            }
+            return true;
         }
-        return false;
     }
+    return false;
+}
+
+
+public ArrayList<TechnologyTypes> getTechnologies()
+{
+    return technologies;
+}
+
+public void setTechnologies(ArrayList<TechnologyTypes> technologies)
+{
+    this.technologies = technologies;
+}
 
 
 }

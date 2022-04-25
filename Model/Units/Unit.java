@@ -1,6 +1,5 @@
 package Model.Units;
 
-import java.sql.Array;
 import java.util.ArrayList;
 
 import Model.Terrain;
@@ -13,17 +12,34 @@ public class Unit {
     private int speed; 
     private boolean isAsleep;
     private boolean isFinished;
+    private ArrayList<Terrain> nextTerrain;
+    private UnitTypes unitType;
+    private boolean isSelected;
 
-    private ArrayList<Terrain> nextTiles;
 
-    public ArrayList<Terrain> getNextTiles() {
-        return this.nextTiles;
+    public Unit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected) {
+        this.x = x;
+        this.y = y;
+        this.number = number;
+        this.militaryPower = militaryPower;
+        this.life = life;
+        this.speed = speed;
+        this.isAsleep = isAsleep;
+        this.isFinished = isFinished;
+        this.unitType = unitType;
+        this.isSelected = isSelected;
     }
 
-    public void setNextTiles(ArrayList<Terrain> nextTiles) {
-        this.nextTiles = nextTiles;
+
+    public ArrayList<Terrain> getNextTerrain() {
+        return this.nextTerrain;
     }
-    
+
+    public void setNextTerrain(ArrayList<Terrain> nextTiles) {
+        this.nextTerrain = nextTiles;
+    }
+
+
 
     public boolean isIsFinished() {
         return this.isFinished;
@@ -79,27 +95,6 @@ public class Unit {
         
     }
 
-    private UnitTypes unitType;
-    private boolean isSelected;
-
-
-
-
-    public Unit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected) {
-        this.x = x;
-        this.y = y;
-        this.number = number;
-        this.militaryPower = militaryPower;
-        this.life = life;
-        this.speed = speed;
-        this.isAsleep = isAsleep;
-        this.isFinished = isFinished;
-        this.unitType = unitType;
-        this.isSelected = isSelected;
-    }
-
-
-         
 
     public boolean isIsSelected() {
         return this.isSelected;
@@ -160,6 +155,7 @@ public class Unit {
         this.y = y;
     }
 
+
     public int getLife() {
         return this.life;
     }
@@ -190,6 +186,6 @@ public class Unit {
 
    
 
-
+    
 
 }

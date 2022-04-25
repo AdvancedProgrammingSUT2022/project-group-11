@@ -645,9 +645,9 @@ public enum TechnologyTypes {
         this.unlocks = unlocks;
     }
 
-    private int cost;
-    private ArrayList<TechnologyTypes> requirement;
-    private ArrayList<TechnologyTypes> technologyUnlocks;
-    private ArrayList<Object> unlocks;
+    int cost;
+    ArrayList<TechnologyTypes> requirement;
+    ArrayList<TechnologyTypes> technologyUnlocks;
+    ArrayList<Object> unlocks;
 
 }
