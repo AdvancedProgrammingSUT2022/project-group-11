@@ -24,7 +24,9 @@ public enum GameEnums {
     UNIT_REMOVE("^UNIT\\sREMOVE\\s(?<subdivision>\\S+)$"),
     UNIT_REPAIR("^UNIT\\sREPAIR$"),
     CREATE_UNIT("^CONSTRUCT UNIT (?<unitName>[A-Za-z]+)"),
-    
+    MAP_SHOW_POSITION("^MAP\\sSHOW\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    MAP_SHOW_CITYNAME("^MAP\\sSHOW\\s(?<subdivision>\\S+)$"),
+    MAP_MOVE("^MAP\\sMOVE\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),  
     INTEGER("^-?\\d+$");
 
     private String regex;

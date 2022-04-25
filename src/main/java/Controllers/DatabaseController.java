@@ -105,6 +105,24 @@ public class DatabaseController {
     }
    
 
+    public void showMapinPosition(Matcher matcher,User user){
+        int x_final = Integer.parseInt(matcher.group("x"));
+        int y_final = Integer.parseInt(matcher.group("y"));
+        Map map = this.getMap();
+        int mapRows = map.getROW();
+        int mapColumns = map.getCOL();
+        if (x_final > mapRows || x_final < 0 || y_final > mapColumns || y_final < 0) {
+            System.out.println("there is no tile with these coordinates");
+        }
+
+        for(int i = x_final; i < x_final + 3;i++){
+            for(int j = 0; j < 6;j++){
+                System.out.println(  map.PrintMapXandY(database, user, x_final, y_final)[i][j]);
+
+            }
+        }
+
+    }
 
     public String selectAndDeslectCombatUnit(User user, int x, int y) {
         if (user.getCivilization().containsUnit((Unit) this.database.getMap().getTerrain()[x][y].getCombatUnit())) {

@@ -10,10 +10,12 @@ public class Map {
     private int Iteration = 6;
     private int ROW = 32;
     private int COL = 16;
+    
 
     private Terrain[][] Terrains = new Terrain[ROW][COL];
     private ArrayList<River> rivers = new ArrayList<River>();
     private String[][] Printmap = new String[ROW][Iteration];
+    private String[][] PrintmapXY = new String[3][Iteration];
 
     public River hasRiver(Terrain TerrainFirst, Terrain TerrainSecond) {
         for (River river : this.rivers) {
@@ -90,6 +92,8 @@ public class Map {
         }
         return null;
     }
+
+
 
     /// BETWEENT TWO TAIL
     private void betweetTwoTailFirstHalf(int i, int j, int l) {
@@ -746,7 +750,7 @@ public class Map {
 
 
     // print map
-    public void SwichCaseFirstHalf(int i, int j, int l, Database database, User user) {
+    public void SwitchCaseFirstHalf(int i, int j, int l, Database database, User user) {
         switch (j) {
             case 0:
                 if (i > 0) {
@@ -773,7 +777,7 @@ public class Map {
         }
     }
 
-    public void SwichCaseSecondHalf(int i, int j, int l, Database database, User user) {
+    public void SwitchCaseSecondHalf(int i, int j, int l, Database database, User user) {
         switch (j) {
 
             case 3:
@@ -811,14 +815,14 @@ public class Map {
             for (int j = 0; j < Iteration / 2; j++) {
                 addSpace(i, j, Iteration / 2 - 1 - j);
                 for (int l = 0; l < COL; l += 2) {
-                    SwichCaseFirstHalf(i, j, l, database, user);
+                    SwitchCaseFirstHalf(i, j, l, database, user);
                 }
 
             }
             for (int j = Iteration / 2; j < Iteration; j++) {
                 addSpace(i, j, j - Iteration / 2);
                 for (int l = 0; l < COL; l += 2) {
-                    SwichCaseSecondHalf(i, j, l, database, user);
+                    SwitchCaseSecondHalf(i, j, l, database, user);
                 }
             }
         }
@@ -827,14 +831,54 @@ public class Map {
 
 
 
+
+
+
+
+
+    public String[][] PrintMapXandY(Database database ,User user,int x,int y){
+       initializeMapUser(user);
+       for(int i = 0 ; i < 3;i++){
+           for(int j = 0; j < Iteration;j++){
+               Printmap[i][j] = "";
+           }
+       }
+       for(int i = x ; i < x + 3;i++){
+
+        for (int j = 0; j < Iteration / 2; j++) {
+            addSpace(i, j, Iteration / 2 - 1 - j);
+            for (int l = y; l < y + 6; l += 2) {
+              SwitchCaseFirstHalf(i, j, l, database, user);
+            }
+
+        }
+        for (int j = Iteration / 2; j < Iteration; j++) {
+            addSpace(i, j, j - Iteration / 2);
+            for (int l = y; l < y + 6; l += 2) {
+                SwitchCaseSecondHalf(i, j, l, database, user);
+            }
+        }
+    }
+
+       return PrintmapXY;
+    
+}
+
+
+
+
+
     // generate map
     public void generateMap(){
         Initializemap();
-
+        randomTerrainAdd();
     }
+   
     private void Initializemap(){
         for(int i = 0; i < ROW;i++){
             for(int j = 0; j < COL;j++){
+                Terrains[i][j].setX(i);
+                Terrains[i][j].setY(j);
                 Terrains[i][j].setTerrainTypes(TerrainTypes.GRASSLLAND);
                 if(i <= 2 || i >= 29 || j <= 1 || j >= 14){
                     Terrains[i][j].setTerrainTypes(TerrainTypes.OCEAN);
@@ -859,19 +903,41 @@ public class Map {
             int j = Math.abs(random.nextInt()) % 11 + 2;
             switch(randNum){
                 case 0:
-                 
+                Terrains[i][j].setTerrainTypes(TerrainTypes.DESERT);
                 break;
                 case 1:
-
+                Terrains[i][j].setTerrainTypes(TerrainTypes.HILLS);
                 break;
                 case 2:
-
+                Terrains[i][j].setTerrainTypes(TerrainTypes.MOUNTAIN);
                 break;
                 case 3:
-
+                Terrains[i][j].setTerrainTypes(TerrainTypes.PLAINS);
                 break;
             }
         }
+        Terrains[0][Math.abs(random.nextInt() % COL)].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[1][Math.abs(random.nextInt() % COL)].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[30][Math.abs(random.nextInt() % COL)].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[31][Math.abs(random.nextInt() % COL)].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[random.nextInt() % ROW][0].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[random.nextInt() % ROW][1].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[random.nextInt() % ROW][14].setTerrainTypes(TerrainTypes.TUNDRA);;
+        Terrains[random.nextInt() % ROW][15].setTerrainTypes(TerrainTypes.TUNDRA);;
+    }
+
+
+
+    public void setRiver(){
+
+    }
+
+    public void setFeature(){
+
+    }
+
+    public void setResource(){
+
     }
 
 
