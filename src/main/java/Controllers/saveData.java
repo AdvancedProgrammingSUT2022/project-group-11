@@ -14,7 +14,6 @@ import com.google.gson.reflect.TypeToken;
 public class saveData{
 
     public void saveUsers(Database database){
-        
         try {
             FileWriter Writer = new FileWriter("src/main/resources/Users.json");
             Writer.write(new Gson().toJson(database.getUsers()));
@@ -22,8 +21,6 @@ public class saveData{
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
     }
     public void loadUsers(Database database){
         try {
@@ -34,5 +31,4 @@ public class saveData{
             e.printStackTrace();
         }
     }
-
 }

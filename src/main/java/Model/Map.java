@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
@@ -828,16 +829,47 @@ public class Map {
 
     // generate map
     public void generateMap(){
+        Initializemap();
+
+    }
+    private void Initializemap(){
         for(int i = 0; i < ROW;i++){
             for(int j = 0; j < COL;j++){
                 Terrains[i][j].setTerrainTypes(TerrainTypes.GRASSLLAND);
-                if(i <= 2 || i >= 29 || j <= 2 || j >= 13){
+                if(i <= 2 || i >= 29 || j <= 1 || j >= 14){
                     Terrains[i][j].setTerrainTypes(TerrainTypes.OCEAN);
-                }else if(j >= 9){
+                }else if(j >= 13){
                     Terrains[i][j].setTerrainTypes(TerrainTypes.PLAINS);
                 }else if(i <= 4){
                     Terrains[i][j].setTerrainTypes(TerrainTypes.PLAINS);
+                }else if(i <= 7 && j >= 11){
+                    Terrains[i][j].setTerrainTypes(TerrainTypes.PLAINS);
+                }else if(i >= 25 && j >= 3 && j <= 5){
+                    Terrains[i][j].setTerrainTypes(TerrainTypes.SNOW);
                 }
+            }
+        }
+    }
+
+    public void randomTerrainAdd(){
+        Random random = new Random();
+        for(int count = 0;count < 200;count++){
+            int randNum = Math.abs(random.nextInt()) % 4;
+            int i = Math.abs(random.nextInt()) % 25 + 3;
+            int j = Math.abs(random.nextInt()) % 11 + 2;
+            switch(randNum){
+                case 0:
+                 
+                break;
+                case 1:
+
+                break;
+                case 2:
+
+                break;
+                case 3:
+
+                break;
             }
         }
     }

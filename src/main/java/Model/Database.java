@@ -23,6 +23,7 @@ public class Database {
     public void setMap(Map map) {
         this.map = map;
     }
+    
     public User getCivilizationUser(Terrain Terrain){
        for (User users : this.Users) {
            if(users.getCivilization().getTerrains().indexOf(Terrain) != -1){
