@@ -2,9 +2,7 @@ package Controllers;
 
 import Model.*;
 import Model.Resources.ResourceTypes;
-import Model.Terrains.TerrainTypes;
 import Model.Units.*;
-import org.w3c.dom.ranges.Range;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;

@@ -112,7 +112,7 @@ public enum TerrainTypes {
         }
     },Color.RED_BACKGROUND);
 
-    TerrainTypes(int food, int product, int gold, int combatModifier, int MP,
+    TerrainTypes(int food, int product, int gold, int combatModifier, int movementCost,
             ArrayList<TerrainFeatureTypes> possibleFeatures, ArrayList<ResourceTypes> possibleResources,Color color) {
         this.food = food;
         this.product = product;
@@ -124,7 +124,7 @@ public enum TerrainTypes {
         this.color = color;
     }
 
-     int food;
+    int food;
     int product;
     int gold;
     int movementCost;
@@ -136,6 +136,7 @@ public enum TerrainTypes {
     public Color getColor(){
         return this.color;
     }
+
     public int getMovementCost()
     {
         return this.movementCost;

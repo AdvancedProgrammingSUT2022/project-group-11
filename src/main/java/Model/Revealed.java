@@ -1,7 +1,6 @@
 package Model;
 
 import Model.Improvements.Improvements;
-import Model.Resources.ResourceTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;

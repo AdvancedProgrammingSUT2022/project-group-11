@@ -6,7 +6,6 @@ import java.util.regex.Matcher;
 
 import Controllers.DatabaseController;
 import Enums.GameEnums;
-import Model.Map;
 import Model.User;
 
 public class GameMenu {
