@@ -109,10 +109,10 @@ public class GameMenu {
                 } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_NAME)) != null) {
                     // todo
                 } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null) {
-                   this.databaseController.showMapinPosition(matcher,user);
+                  
                 }
                 else if((matcher = GameEnums.getMatcher(input, GameEnums.MAP_SHOW_POSITION)) != null){
-
+                    this.databaseController.showMapinPosition(matcher,user);
                 } else {
                     System.out.println("INVALID COMMAND");
                 }
