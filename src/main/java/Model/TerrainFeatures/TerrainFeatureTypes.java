@@ -56,4 +56,7 @@ public enum TerrainFeatureTypes {
     public String getShowFeatures(){
         return this.ShowFeatures;
     }
+    public ArrayList<ResourceTypes> getResourceType(){
+        return this.possibleResourcesFound; 
+    }
 }

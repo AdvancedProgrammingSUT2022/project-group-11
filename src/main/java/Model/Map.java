@@ -15,7 +15,9 @@ public class Map {
     private Terrain[][] Terrains = new Terrain[ROW][COL];
     private ArrayList<River> rivers = new ArrayList<River>();
     private String[][] Printmap = new String[ROW][Iteration];
-    private String[][] PrintmapXY = new String[3][Iteration];
+
+
+
 
     public River hasRiver(Terrain TerrainFirst, Terrain TerrainSecond) {
         for (River river : this.rivers) {
@@ -27,6 +29,17 @@ public class Map {
         }
         return null;
     }
+    public River hasRiver(Terrain TerrainFirst) {
+        for (River river : this.rivers) {
+            if (river.getFirstTerrain() == TerrainFirst) {
+                return river;
+            } else if (river.getSecondTerrain() == TerrainFirst) {
+                return river;
+            }
+        }
+        return null;
+    }
+
     public int getIteration() {
         return this.Iteration;
     }
@@ -92,6 +105,10 @@ public class Map {
         }
         return null;
     }
+
+
+
+
 
 
 
@@ -750,24 +767,24 @@ public class Map {
 
 
     // print map
-    public void SwitchCaseFirstHalf(int i, int j, int l, Database database, User user) {
+    public void SwitchCaseFirstHalf(int i, int j, int l, Database database, User user,int count) {
         switch (j) {
             case 0:
-                if (i > 0) {
+                if (i - count > 0) {
                     firstRow(i, j, l, true, database, user);
                 } else {
                     firstRow(i, j, l, false, database, user);
                 }
                 break;
             case 1:
-                if (i > 0) {
+                if (i - count > 0) {
                     secondRow(i, j, l, true, database, user);
                 } else {
                     secondRow(i, j, l, false, database, user);
                 }
                 break;
             case 2:
-                if (i > 0) {
+                if (i  - count > 0) {
                     thirdRow(i, j, l, true, user);
                 } else {
                     thirdRow(i, j, l, false, user);
@@ -777,25 +794,25 @@ public class Map {
         }
     }
 
-    public void SwitchCaseSecondHalf(int i, int j, int l, Database database, User user) {
+    public void SwitchCaseSecondHalf(int i, int j, int l, Database database, User user,int count) {
         switch (j) {
-
+        
             case 3:
-                if (i != ROW - 1) {
+                if (i != count) {
                     fourthRow(i, j, l, true, database, user);
                 } else {
                     fourthRow(i, j, l, false, database, user);
                 }
                 break;
             case 4:
-                if (i != ROW - 1) {
+                if (i != count) {
                     fifthRow(i, j, l, true, database, user);
                 } else {
                     fifthRow(i, j, l, false, database, user);
                 }
                 break;
             case 5:
-                if (i != ROW - 1) {
+                if (i != count) {
                     sixthRow(i, j, l, true, user);
                 } else {
                     sixthRow(i, j, l, false, user);
@@ -815,25 +832,19 @@ public class Map {
             for (int j = 0; j < Iteration / 2; j++) {
                 addSpace(i, j, Iteration / 2 - 1 - j);
                 for (int l = 0; l < COL; l += 2) {
-                    SwitchCaseFirstHalf(i, j, l, database, user);
+                    SwitchCaseFirstHalf(i, j, l, database, user,0);
                 }
 
             }
             for (int j = Iteration / 2; j < Iteration; j++) {
                 addSpace(i, j, j - Iteration / 2);
                 for (int l = 0; l < COL; l += 2) {
-                    SwitchCaseSecondHalf(i, j, l, database, user);
+                    SwitchCaseSecondHalf(i, j, l, database, user,ROW - 1);
                 }
             }
         }
         return this.Printmap;
     }
-
-
-
-
-
-
 
 
     public String[][] PrintMapXandY(Database database ,User user,int x,int y){
@@ -847,22 +858,29 @@ public class Map {
 
         for (int j = 0; j < Iteration / 2; j++) {
             addSpace(i, j, Iteration / 2 - 1 - j);
-            for (int l = y; l < y + 6; l += 2) {
-              SwitchCaseFirstHalf(i, j, l, database, user);
+            for (int l = 0; l < y + 6; l += 2) {
+              SwitchCaseFirstHalf(i, j, l, database, user,x);
             }
 
         }
         for (int j = Iteration / 2; j < Iteration; j++) {
             addSpace(i, j, j - Iteration / 2);
-            for (int l = y; l < y + 6; l += 2) {
-                SwitchCaseSecondHalf(i, j, l, database, user);
+            for (int l = 0; l < y + 6; l += 2) {
+                SwitchCaseSecondHalf(i, j, l, database, user,x + 2);
             }
         }
     }
-
-       return PrintmapXY;
-    
+       return Printmap;
 }
+
+
+
+
+
+
+
+
+
 
 
 
@@ -894,6 +912,7 @@ public class Map {
             }
         }
     }
+     
 
     public void randomTerrainAdd(){
         Random random = new Random();
@@ -928,11 +947,64 @@ public class Map {
 
 
 
-    public void setRiver(){
-
+    public  boolean isNeighbor(int firstI, int firstJ, int secondI, int secondJ) {
+        if (firstI == secondI && firstJ == secondJ) return false;
+        if (Math.abs(firstI - secondI) >= 2 || Math.abs(firstJ - secondJ) >= 2) return false;
+        if (firstJ == secondJ) {
+            if (Math.abs(firstI - secondI) <= 1) return true;
+            else return false;
+        }
+        if (firstI == secondI) {
+            if (Math.abs(firstJ - secondJ) <= 1) return true;
+            else return false;
+        }
+        if (firstJ % 2 == 1) {
+            if (secondI == firstI - 1) return true;
+            else return false;
+        }
+        if (firstJ % 2 == 0) {
+            if (secondI == firstI + 1) return true;
+            else return false;
+        }
+        return false;
     }
 
+    public void setRiver(){
+        Random random = new Random();
+         for(int i = 0 ; i < ROW;i++){
+            for(int j = 0 ; j < COL;j++){
+                for(int iCordinate = 0;iCordinate < ROW;iCordinate++){
+                      for(int jCordinate = 0; jCordinate < COL;j++){
+                            if(isNeighbor(i, j, iCordinate, jCordinate)){
+                                if(Terrains[i][j].getTerrainTypes() != TerrainTypes.DESERT && Terrains[iCordinate][jCordinate].getTerrainTypes() != TerrainTypes.DESERT){
+                                    if (random.nextInt() % 4 == 0) {
+                                        River river = new River(Terrains[i][j],Terrains[iCordinate][jCordinate]);
+                                        rivers.add(river);
+                                    }
+                                }
+                            }
+                      }
+                }
+            }
+         }
+    }
+
+
     public void setFeature(){
+        Random random = new Random();
+       TerrainFeatureTypes[] featureArray = {TerrainFeatureTypes.FLOODPLAINS, TerrainFeatureTypes.OASIS,
+        TerrainFeatureTypes.FOREST, TerrainFeatureTypes.ICE,
+        TerrainFeatureTypes.JUNGLE, TerrainFeatureTypes.MARSH};
+        for(int i = 0 ; i< ROW;i++){
+            for(int j = 0; j < COL;j++){
+                if(hasRiver(Terrains[i][j]) != null){
+
+
+                }else{
+
+                }
+            }
+        }
 
     }
 
