@@ -140,6 +140,10 @@ public enum TerrainTypes {
     public int getMovementCost()
     {
         return this.movementCost;
+
+    }
+    public ArrayList<TerrainFeatureTypes> getPossibleFeatures(){
+        return this.possibleFeatures;
     }
 
 }

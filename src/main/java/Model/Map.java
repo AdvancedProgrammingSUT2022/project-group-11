@@ -194,7 +194,7 @@ public class Map {
             addSpace(i, j, HowManySpaceRight);
             Printmap[i][j] += Color.RESET;
         } else if (Terrains[iTerrain][l].getType().equals("visible")) {
-            if (Terrains[iTerrain][l].getTerrainFeatureTypes() != null) {
+            if (Terrains[iTerrain][l].getTerrainFeatureTypes() != null && Terrains[iTerrain][l].getTerrainFeatureTypes().size() > 0) {
                 TerrainFeatureType += Terrains[iTerrain][l].getTerrainFeatureTypes().get(0).getShowFeatures();
             }
             int HowManySpace = 9 - TerrainFeatureType.length();
@@ -896,8 +896,9 @@ public class Map {
     private void Initializemap(){
         for(int i = 0; i < ROW;i++){
             for(int j = 0; j < COL;j++){
-                Terrains[i][j] = new Terrain(i, j, null, null,  new ArrayList<TerrainFeatureTypes>(), null, null, null, null, null);
-                Terrains[i][j].setTerrainTypes(TerrainTypes.GRASSLLAND);
+               // Resource resource = new Resource(ResourceTypes.COAL);
+                Terrains[i][j] = new Terrain(i, j, null, TerrainTypes.GRASSLLAND,  new ArrayList<TerrainFeatureTypes>(), null, null, null, null, null);
+             
                 if(i <= 2 || i >= 29 || j <= 1 || j >= 14){
                     Terrains[i][j].setTerrainTypes(TerrainTypes.OCEAN);
                 }else if(j >= 13){
@@ -912,8 +913,7 @@ public class Map {
             }
         }
     }
-     
-
+    
     public void randomTerrainAdd(){
         Random random = new Random();
         for(int count = 0;count < 200;count++){
@@ -945,8 +945,6 @@ public class Map {
         Terrains[Math.abs(random.nextInt() % ROW)][15].setTerrainTypes(TerrainTypes.TUNDRA);;
     }
 
-
-
     public  boolean isNeighbor(int firstI, int firstJ, int secondI, int secondJ) {
         if (firstI == secondI && firstJ == secondJ) return false;
         if (Math.abs(firstI - secondI) >= 2 || Math.abs(firstJ - secondJ) >= 2) return false;
@@ -977,7 +975,7 @@ public class Map {
                       for(int jCordinate = 0; jCordinate < COL;jCordinate++){
                             if(isNeighbor(i, j, iCordinate, jCordinate)){
                                 if(Terrains[i][j].getTerrainTypes() != TerrainTypes.DESERT && Terrains[iCordinate][jCordinate].getTerrainTypes() != TerrainTypes.DESERT){
-                                    if (random.nextInt() % 4 == 0 && hasRiver(Terrains[i][j],Terrains[iCordinate][jCordinate]) == null) {
+                                    if (random.nextInt() % 3 == 0 && Terrains[i][j].getTerrainTypes() != TerrainTypes.OCEAN && Terrains[iCordinate][jCordinate].getTerrainTypes() != TerrainTypes.OCEAN && hasRiver(Terrains[i][j],Terrains[iCordinate][jCordinate]) == null) {
                                         River river = new River(Terrains[i][j],Terrains[iCordinate][jCordinate]);
                                         rivers.add(river);
                                     }
@@ -989,31 +987,14 @@ public class Map {
          }
     }
 
-
     public void setFeature(){
         Random random = new Random();
-       TerrainFeatureTypes[] featureArray = {TerrainFeatureTypes.FLOODPLAINS, TerrainFeatureTypes.OASIS,
-        TerrainFeatureTypes.FOREST, TerrainFeatureTypes.ICE,
-        TerrainFeatureTypes.JUNGLE, TerrainFeatureTypes.MARSH};
+       
         for(int i = 0 ; i< ROW;i++){
             for(int j = 0; j < COL;j++){
-                if(hasRiver(Terrains[i][j]) != null){
-                    if (Math.abs(random.nextInt()) % 2 == 0)
-                    Terrains[i][j].setTerrainFeatureTypes(featureArray[0]);
-                else {
-                    if (Terrains[i][j].getTerrainTypes() == TerrainTypes.DESERT)
-                        Terrains[i][j].setTerrainFeatureTypes(featureArray[Math.abs(random.nextInt()) % 5 + 1]);
-                    else
-                        Terrains[i][j].setTerrainFeatureTypes(featureArray[Math.abs(random.nextInt()) % 4 + 2]);
-                }
-
-                }else if(Terrains[i][j].getTerrainTypes() == TerrainTypes.DESERT){
-                    if (Math.abs(random.nextInt()) % 2 == 0)
-                    Terrains[i][j].setTerrainFeatureTypes(featureArray[1]);
-                else Terrains[i][j].setTerrainFeatureTypes(featureArray[Math.abs(random.nextInt()) % 4 + 2]);
-                }else{
-                    Terrains[i][j].setTerrainFeatureTypes(featureArray[Math.abs(random.nextInt()) % 4 + 2]);
-                }
+                ArrayList <TerrainFeatureTypes> possibleTerrainFeature = Terrains[i][j].getTerrainTypes().getPossibleFeatures();
+                if(possibleTerrainFeature != null) 
+                Terrains[i][j].setTerrainFeatureTypes(possibleTerrainFeature.get(Math.abs(random.nextInt()) % possibleTerrainFeature.size()));
             }
         }
 
@@ -1021,6 +1002,7 @@ public class Map {
 
     public ArrayList<Resource> findAllPossiblResource(Terrain terrain){
         ArrayList<Resource> possibleResource = new ArrayList<Resource>();
+        possibleResource.clear();
         ResourceTypes[] AllpossibleResource = ResourceTypes.values();
         for(int i = 0 ; i < AllpossibleResource.length;i++){
             if(AllpossibleResource[i].getObject().indexOf(terrain.getTerrainTypes()) != -1){
@@ -1043,7 +1025,7 @@ public class Map {
         for(int i = 0 ; i < ROW;i++){
             for(int j = 0; j < COL;j++){
                  ArrayList<Resource> possibleResource = findAllPossiblResource(Terrains[i][j]);
-                 if (possibleResource.size() > 0 && random.nextInt() % 4 == 0)
+                 if (possibleResource.size() > 0 && Math.abs(random.nextInt()) % 2 == 0)
                     Terrains[i][j].setTerrainResource(possibleResource.get(Math.abs(random.nextInt()) % possibleResource.size()));
             }
         }
