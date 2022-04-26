@@ -115,9 +115,10 @@ public class DatabaseController {
             System.out.println("there is no tile with these coordinates");
         }
 
+        String[][] result = map.PrintMapXandY(database, user, x_final, y_final);
         for(int i = x_final; i < x_final + 3;i++){
-            for(int j = 0; j < 6;j++){
-                System.out.println(  map.PrintMapXandY(database, user, x_final, y_final)[i][j]);
+            for(int j = 0; j < map.getIteration();j++){
+                System.out.println(result[i][j]);
 
             }
         }
