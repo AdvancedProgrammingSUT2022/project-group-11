@@ -7,8 +7,14 @@ public class Resource {
     private int food;
     private int gold;
     private int production;
-    private String name;
     private ResourceTypes resourceType;
+
+    public Resource(ResourceTypes resourceType){
+        this.food = resourceType.getFood();
+        this.gold = resourceType.getGold();
+        this.production = resourceType.getProduction();
+        this.resourceType = resourceType; 
+    }
 
     public int getFood() {
         return this.food;
@@ -32,14 +38,6 @@ public class Resource {
 
     public void setProduction(int production) {
         this.production = production;
-    }
-
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public ResourceTypes getResourceType()

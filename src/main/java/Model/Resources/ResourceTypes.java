@@ -177,4 +177,16 @@ public enum ResourceTypes {
     public String getShowResourceMap(){
         return this.ShowResourceMap;
     }
+    public  ArrayList<Object> getObject(){
+        return this.canBeFoundOn;
+    }
+    public int getFood(){
+        return this.food;
+    }
+    public int getGold(){
+        return this.gold;
+    }
+    public int getProduction(){
+        return this.production;
+    }
 }
