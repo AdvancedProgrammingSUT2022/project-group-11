@@ -1003,15 +1003,21 @@ public class Map {
     public ArrayList<Resource> findAllPossiblResource(Terrain terrain){
         ArrayList<Resource> possibleResource = new ArrayList<Resource>();
         possibleResource.clear();
-        ResourceTypes[] AllpossibleResource = ResourceTypes.values();
+        ResourceTypes[] AllpossibleResource = {ResourceTypes.BANANAS,
+            ResourceTypes.CATTLE,ResourceTypes.DEER,ResourceTypes.SHEEP,ResourceTypes.WHEAT,ResourceTypes.COAL
+            ,ResourceTypes.HORSES,ResourceTypes.IRON,ResourceTypes.COTTON,ResourceTypes.DYES,ResourceTypes.FURS,
+            ResourceTypes.GEMS,ResourceTypes.GOLD,ResourceTypes.INCENSE,ResourceTypes.IVORY,ResourceTypes.MARBLE,
+            ResourceTypes.SILK,ResourceTypes.SILVER,ResourceTypes.SUGAR};
+      
         for(int i = 0 ; i < AllpossibleResource.length;i++){
-            if(AllpossibleResource[i].getObject().indexOf(terrain.getTerrainTypes()) != -1){
+          
+            if( AllpossibleResource[i].getObject() != null || AllpossibleResource[i].getObject().indexOf(terrain.getTerrainTypes()) != -1){
                 Resource resource = new Resource(AllpossibleResource[i]);
                 possibleResource.add(resource);
             }
             for(int j = 0; j < terrain.getTerrainFeatureTypes().size();j++){
 
-                if(AllpossibleResource[i].getObject().indexOf(terrain.getTerrainFeatureTypes().get(j)) != -1){
+                if( AllpossibleResource[i].getObject() != null || AllpossibleResource[i].getObject().indexOf(terrain.getTerrainFeatureTypes().get(j)) != -1){
                     Resource resource = new Resource(AllpossibleResource[i]);
                     possibleResource.add(resource);
                 }
