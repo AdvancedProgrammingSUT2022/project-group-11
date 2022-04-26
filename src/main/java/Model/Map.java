@@ -71,6 +71,10 @@ public class Map {
         return this.Terrains;
     }
 
+
+
+
+    
     /// ADD SPACE FOR FIRST IN ROWS
     public void addSpace(int row, int col, int count) {
         for (int i = 0; i < count; i++) {
@@ -368,6 +372,18 @@ public class Map {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
 //  call the alghoritm finction
 
     private void CivilizationPrintFirstHalf(int i, int j, int l, Database database) {
@@ -473,6 +489,18 @@ public class Map {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
     // Rows Of Map
     private void firstRow(int i, int j, int l, boolean check, Database database, User user) {
         if (check == true) {
@@ -548,6 +576,9 @@ public class Map {
             addSpace(i, j, 9);
         }
     }
+
+
+
 
 
 
@@ -764,6 +795,10 @@ public class Map {
 
 
 
+
+
+
+
     // print map
     public void SwitchCaseFirstHalf(int i, int j, int l, Database database, User user,int count) {
         switch (j) {
@@ -914,7 +949,7 @@ public class Map {
         }
     }
     
-    public void randomTerrainAdd(){
+    private void randomTerrainAdd(){
         Random random = new Random();
         for(int count = 0;count < 200;count++){
             int randNum = Math.abs(random.nextInt()) % 4;
@@ -945,7 +980,7 @@ public class Map {
         Terrains[Math.abs(random.nextInt() % ROW)][15].setTerrainTypes(TerrainTypes.TUNDRA);;
     }
 
-    public  boolean isNeighbor(int firstI, int firstJ, int secondI, int secondJ) {
+    private  boolean isNeighbor(int firstI, int firstJ, int secondI, int secondJ) {
         if (firstI == secondI && firstJ == secondJ) return false;
         if (Math.abs(firstI - secondI) >= 2 || Math.abs(firstJ - secondJ) >= 2) return false;
         if (firstJ == secondJ) {
@@ -967,7 +1002,7 @@ public class Map {
         return false;
     }
 
-    public void setRiver(){
+    private void setRiver(){
         Random random = new Random();
          for(int i = 0 ; i < ROW;i++){
             for(int j = 0 ; j < COL;j++){
@@ -987,7 +1022,7 @@ public class Map {
          }
     }
 
-    public void setFeature(){
+    private void setFeature(){
         Random random = new Random();
        
         for(int i = 0 ; i< ROW;i++){
@@ -1000,7 +1035,7 @@ public class Map {
 
     }
 
-    public ArrayList<Resource> findAllPossiblResource(Terrain terrain){
+    private ArrayList<Resource> findAllPossiblResource(Terrain terrain){
         ArrayList<Resource> possibleResource = new ArrayList<Resource>();
         possibleResource.clear();
         ResourceTypes[] AllpossibleResource = {ResourceTypes.BANANAS,
@@ -1026,7 +1061,7 @@ public class Map {
         return possibleResource;
     }
 
-    public void setResource(){
+    private void setResource(){
         Random random = new Random();
         for(int i = 0 ; i < ROW;i++){
             for(int j = 0; j < COL;j++){
@@ -1037,7 +1072,7 @@ public class Map {
         }
     }
 
-    public void nullImprovementAndCombat(){
+    private void nullImprovementAndCombat(){
         for(int i = 0 ; i < ROW;i++){
             for(int j = 0; j < COL;j++){
               Terrains[i][j].setTerrrainImprovement(null);
