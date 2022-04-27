@@ -1,8 +1,6 @@
 
 import java.util.ArrayList;
-import java.util.Scanner;
 
-import Controllers.DatabaseController;
 import Model.Civilization;
 import Model.Database;
 import Model.Map;
