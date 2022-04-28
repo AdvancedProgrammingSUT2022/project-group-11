@@ -113,49 +113,55 @@ public class DatabaseController {
         return "you do not have access to this unit";
     }
 
+    public String changingTheStateOfACombatUnit(CombatUnit combatUnit, String action) {
+        if (action.equals("sleep")) {
+            combatUnit.setIsAsleep(true);
+            combatUnit.setIsSelected(false);
+        } else if (action.equals("alert")) {
+            combatUnit.setAlert(true);
+        } else if (action.equals("fortify")) {
+            combatUnit.setFortify(true);
+        } else if (action.equals("fortify until heal")) {
+            combatUnit.setFortifyUntilHeal(true);
+        } else if (action.equals("garrison")) {
+            combatUnit.setIsGarrisoned(true);
+        } else if (action.equals("wake")) {
+            combatUnit.setIsAsleep(false);
+        } else if (action.equals("delete")) {
+            combatUnit = null;
+        } else if (action.equals("setup ranged")) {
+            if (combatUnit instanceof RangedCombatUnit) {
+                RangedCombatUnit rangedCombatUnit = (RangedCombatUnit) combatUnit;
+                rangedCombatUnit.setIsSetUpForRangedAttack(true);
+            } else {
+                return "this unit is not a ranged combat unit!";
+            }
+        }
+        combatUnit.setIsFinished(true);
+        return "action completed";
+    }
+
+    public String changingTheStateOfANonCombatUnit(NonCombatUnit nonCombatUnit, String action) {
+        if (action.equals("sleep")) {
+            nonCombatUnit.setIsAsleep(true);
+        } else if (action.equals("wake")) {
+            nonCombatUnit.setIsAsleep(false);
+        } else if (action.equals("delete")) {
+            nonCombatUnit = null;
+        }
+        nonCombatUnit.setIsFinished(true);
+        return "action completed";
+    }
+
     public String changingTheStateOfAUnit(String action) {
         CombatUnit combatUnit = getSelectedCombatUnit();
         NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
 
         if (combatUnit != null) {
-
-            if (action.equals("sleep")) {
-                combatUnit.setIsAsleep(true);
-                combatUnit.setIsSelected(false);
-            } else if (action.equals("alert")) {
-                combatUnit.setAlert(true);
-            } else if (action.equals("fortify")) {
-                combatUnit.setFortify(true);
-            } else if (action.equals("fortify until heal")) {
-                combatUnit.setFortifyUntilHeal(true);
-            } else if (action.equals("garrison")) {
-                combatUnit.setIsGarrisoned(true);
-            } else if (action.equals("wake")) {
-                combatUnit.setIsAsleep(false);
-            } else if (action.equals("delete")) {
-                combatUnit = null;
-            } else if (action.equals("setup ranged")) {
-                if (combatUnit instanceof RangedCombatUnit) {
-                    RangedCombatUnit rangedCombatUnit = (RangedCombatUnit) combatUnit;
-                    rangedCombatUnit.setIsSetUpForRangedAttack(true);
-                } else {
-                    return "this unit is not a ranged combat unit!";
-                }
-            }
-
-        } else if (nonCombatUnit != null) {
-
-            if (action.equals("sleep")) {
-                nonCombatUnit.setIsAsleep(true);
-            } else if (action.equals("wake")) {
-                nonCombatUnit.setIsAsleep(false);
-            } else if (action.equals("delete")) {
-                nonCombatUnit = null;
-            }
-
+            return changingTheStateOfACombatUnit(combatUnit, action);
+        } else {
+            return changingTheStateOfANonCombatUnit(nonCombatUnit, action);
         }
-
-        return "action completed";
 
     }
 
@@ -210,7 +216,13 @@ public class DatabaseController {
         return true;
     }
 
-    public String unitMovement(int x_final, int y_final) {
+    public void setAllUnitsUnifinished(User user) {
+        for (Unit unit : user.getCivilization().getUnits()) {
+            unit.setIsFinished(false);
+        }
+    }
+
+    public String unitMovement(int x_final, int y_final, User user) {
         Map map = this.getMap();
         int mapRows = map.getROW();
         int mapColumns = map.getCOL();
@@ -221,11 +233,17 @@ public class DatabaseController {
         NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
 
         if (combatUnit != null) {
+            if (user.getCivilization().containsUnit((Unit) combatUnit)) {
+                return "you have another combat unit in this tile";
+            }
             ArrayList<Terrain> path = new ArrayList<>();
             ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<ArrayList<Terrain>>();
             addingAllPath(0, combatUnit.getX(), combatUnit.getY(), x_final, y_final, map, path, allPaths);
             combatUnit.setNextTerrain(findingTheShortestPath(allPaths));
         } else if (nonCombatUnit != null) {
+            if (user.getCivilization().containsUnit((Unit) nonCombatUnit)) {
+                return "you have another non combat unit in this tile";
+            }
             ArrayList<Terrain> path = new ArrayList<>();
             ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<ArrayList<Terrain>>();
             addingAllPath(0, nonCombatUnit.getX(), nonCombatUnit.getY(), x_final, y_final, map, path, allPaths);
@@ -285,11 +303,9 @@ public class DatabaseController {
     public void addingAllPath(int turn, int x_beginning, int y_beginning, int x_final, int y_final,
             Map map, ArrayList<Terrain> path, ArrayList<ArrayList<Terrain>> allPaths) {
         Terrain[][] copy_map = map.getTerrain();
-        if (turn == 10 && (x_beginning == x_final && y_beginning == y_final)) {
+        if (turn == 10 || (x_beginning == x_final && y_beginning == y_final)) {
             allPaths.add(path);
 
-        } else if (turn == 10) {
-            return;
         } else {
             for (int i = -1; i < 2; i++) {
                 for (int j = -1; j < 2; j++) {

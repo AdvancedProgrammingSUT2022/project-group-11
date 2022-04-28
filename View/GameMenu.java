@@ -20,6 +20,7 @@ public class GameMenu {
     public void run(Scanner scanner) {
 
         for (User user : users) {
+            this.databaseController.setAllUnitsUnifinished(user);
             while (this.databaseController.isAllTasksFinished(user)) {
 
                 Matcher matcher;
@@ -194,7 +195,7 @@ public class GameMenu {
     private void moveUnit(User user, Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        System.out.println(this.databaseController.unitMovement(x, y));
+        System.out.println(this.databaseController.unitMovement(x, y,user));
 
 
     }

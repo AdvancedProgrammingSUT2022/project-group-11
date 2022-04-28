@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import Model.Terrain;
 
-
 public class Unit {
     private int x,y;
     private int number;
