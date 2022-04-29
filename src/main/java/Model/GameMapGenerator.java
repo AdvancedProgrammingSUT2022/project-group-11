@@ -106,6 +106,11 @@ public class GameMapGenerator {
         }
     }
 
+
+
+
+    
+
     // ALGHORITMS
     private void CivilizationAlghoritm(int iTerrain, int i, int j, int l, Database database) {
         String Civilization = "";
@@ -331,6 +336,11 @@ public class GameMapGenerator {
 
     }
 
+
+
+
+
+
     // call the alghoritm finction
 
     private void CivilizationPrintFirstHalf(int i, int j, int l, Database database) {
@@ -432,6 +442,11 @@ public class GameMapGenerator {
         }
         ImprovementAlghoritm(i, i, j, l, user);
     }
+
+
+
+
+
 
     // Rows Of Map
     private void firstRow(int i, int j, int l, boolean check, Database database, User user) {
@@ -614,6 +629,7 @@ public class GameMapGenerator {
         }
         return Printmap;
     }
+
 
     // initialize Map Before Print For Speciall User
     private boolean isBlock(int i, int j) {
