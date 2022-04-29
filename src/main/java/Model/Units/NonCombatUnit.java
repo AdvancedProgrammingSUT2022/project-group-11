@@ -9,4 +9,8 @@ public class NonCombatUnit extends Unit {
     //TODO Auto-generated constructor stub
 }
 
+  public NonCombatUnit clone(){
+      return new NonCombatUnit(this.getX(), this.getY(), this.getNumber(), this.getMilitaryPower(), this.getLife(), this.getSpeed(), this.getIsAsleep(), this.getIsFinished(), this.getUnitType(), this.getIsSelected());
+  }
+
 }

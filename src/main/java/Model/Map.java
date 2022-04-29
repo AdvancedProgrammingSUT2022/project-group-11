@@ -76,8 +76,6 @@ public class Map {
         return null;
     }
 
-   
-
 
     public String[][] printMap(Database database, User user) {
         GameMapGenerator newGameMapGenerator = new GameMapGenerator(Terrains, rivers,ROW,COL,Iteration);
@@ -93,6 +91,25 @@ public class Map {
     }
 
 
+
+    // set Revealed
+    public void setRevealed(User user,int i,int j){
+
+        int index = -1;
+        for(int count = 0 ; count < Terrains[i][j].getReveals().size();count++){
+            if(Terrains[i][j].getReveals().get(count).getUser() == user){
+               index = count;
+               break;
+            }
+        }
+        if(index != -1){
+            Terrains[i][j].getReveals().remove(index);
+        }
+
+        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), Terrains[i][j].getCombatUnit().clone(), Terrains[i][j].getNonCombatUnit().clone(), Terrains[i][j].getTerrrainImprovement(), Terrains[i][j].getTerrainResource().clone());
+        Terrains[i][j].setReveals(reveal);
+
+    }
 
     // generate map
     public void generateMap(){

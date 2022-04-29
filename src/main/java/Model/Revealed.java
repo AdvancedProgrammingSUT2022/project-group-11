@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.ArrayList;
+
 import Model.Improvements.Improvements;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
@@ -10,13 +12,13 @@ public class Revealed{
 
     private User user;
     private TerrainTypes terrainTypes;
-    private TerrainFeatureTypes terrainFeatureTypes;
+    private ArrayList<TerrainFeatureTypes> terrainFeatureTypes;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
     private Improvements TerrrainImprovement;
     private Resource TerrainResource;
 
-    public Revealed(User user, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement, Resource TerrainResource) {
+    public Revealed(User user, TerrainTypes terrainTypes, ArrayList<TerrainFeatureTypes> terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement, Resource TerrainResource) {
         this.user = user;
         this.terrainTypes = terrainTypes;
         this.terrainFeatureTypes = terrainFeatureTypes;
@@ -28,7 +30,7 @@ public class Revealed{
 
 
 
-    
+
 
 
     public User getUser() {
@@ -47,11 +49,11 @@ public class Revealed{
         this.terrainTypes = terrainTypes;
     }
 
-    public TerrainFeatureTypes getTerrainFeatureTypes() {
+    public ArrayList<TerrainFeatureTypes> getTerrainFeatureTypes() {
         return this.terrainFeatureTypes;
     }
 
-    public void setTerrainFeatureTypes(TerrainFeatureTypes terrainFeatureTypes) {
+    public void setTerrainFeatureTypes(ArrayList<TerrainFeatureTypes> terrainFeatureTypes) {
         this.terrainFeatureTypes = terrainFeatureTypes;
     }
 

@@ -118,8 +118,8 @@ public class Terrain {
         return this.reveals;
     }
 
-    public void setReveals(ArrayList<Revealed> reveals) {
-        this.reveals = reveals;
+    public void setReveals(Revealed reveals) {
+        this.reveals.add(reveals);
     }
 
     public City getCity()
