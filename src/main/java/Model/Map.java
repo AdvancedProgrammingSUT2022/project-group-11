@@ -50,6 +50,9 @@ public class Map {
     public Terrain[][] getTerrain() {
         return this.Terrains;
     }
+    public ArrayList<River> getRiver(){
+        return this.rivers;
+    }
 
 
 
