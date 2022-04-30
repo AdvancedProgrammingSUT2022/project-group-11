@@ -28,6 +28,9 @@ public class Map {
     public void setIteration(int Iteration) {
         this.Iteration = Iteration;
     }
+    public void setRiver(ArrayList<River> rivers){
+        this.rivers = rivers;
+    }
 
     
 
