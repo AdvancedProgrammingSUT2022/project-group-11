@@ -107,6 +107,24 @@ public class MapGeneratorTest {
        Assertions.assertFalse(terrainRevealed.getReveals().contains(reveal));
     }
 
+    @Test
+    public void setRevealedTestHasAddUser(){
+        terrainRevealed = new Terrain(3, 4, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+        reveals = new ArrayList<Revealed>();
+        reveal.setUser(user);
+        reveals.add(reveal);
+        reveals.add(revealTwo);
+        Map map = new Map();
+        terrainRevealed.setRevealedTest(reveals);
+        map.setTerrainTest(terrainRevealed, 3, 4);
+        when(reveal.getUser()).thenReturn(user);
+        map.setRevealed(user, 3, 4);
+       Assertions.assertTrue(terrainRevealed.getReveals().get(1).getUser() == user);
+    }
+
+
+  
+
 
 
 
