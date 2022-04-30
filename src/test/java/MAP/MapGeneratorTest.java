@@ -1,10 +1,12 @@
 package MAP;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.Mockito.when;
+
 
 import java.util.ArrayList;
 
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -24,6 +26,7 @@ public class MapGeneratorTest {
     Terrain terrainTwo;
     @Mock
     ArrayList<River> rivers;
+    
     @Test
     public void hasRiverTest() {
         Map map = new Map();
@@ -34,5 +37,17 @@ public class MapGeneratorTest {
         River checkRiver = map.hasRiver(terrainOne, terrainTwo);
         assertNotNull(checkRiver);
     }
+
+    @Test
+    public void hasNotRiverTest() {
+        Map map = new Map();
+        rivers = new ArrayList<River>();
+        river = new River(null, terrainTwo);
+        rivers.add(river);
+        map.setRiver(rivers);
+        River checkRiver = map.hasRiver(terrainOne, terrainTwo);
+        Assertions.assertNull(checkRiver);
+    }
+
 
 }
