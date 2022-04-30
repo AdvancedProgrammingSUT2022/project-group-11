@@ -1,12 +1,11 @@
 package MAP;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 
 import java.util.ArrayList;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -35,7 +34,7 @@ public class MapGeneratorTest {
         rivers.add(river);
         map.setRiver(rivers);
         River checkRiver = map.hasRiver(terrainOne, terrainTwo);
-        assertNotNull(checkRiver);
+        Assertions.assertNotNull(checkRiver);
     }
 
     @Test
@@ -48,6 +47,32 @@ public class MapGeneratorTest {
         River checkRiver = map.hasRiver(terrainOne, terrainTwo);
         Assertions.assertNull(checkRiver);
     }
+
+    @Test
+    public void hasRiverSecondTest(){
+        Map map = new Map();
+        rivers = new ArrayList<River>();
+        river = new River(terrainOne, null);
+        rivers.add(river);
+        map.setRiver(rivers);
+        River checkRiver = map.hasRiver(terrainOne);
+        Assertions.assertNotNull(checkRiver);
+    }
+
+    @Test
+    public void hasNotRiverSecondTest(){
+        Map map = new Map();
+        rivers = new ArrayList<River>();
+        river = new River(null, terrainOne);
+        rivers.add(river);
+        map.setRiver(rivers);
+        River checkRiver = map.hasRiver(terrainTwo);
+        Assertions.assertNull(checkRiver);
+    }
+
+
+
+
 
 
 }
