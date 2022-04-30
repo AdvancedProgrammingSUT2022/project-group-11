@@ -59,6 +59,8 @@ public class LoginMenu
                     ArrayList<User> players = mainMenu.run(scanner);
                     if (players != null )
                     {
+                        GameMenu gameMenu = new GameMenu(databaseController, players);
+                        gameMenu.run(scanner);
                         // play game
                     }
                 }

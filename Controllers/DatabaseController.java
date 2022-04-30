@@ -7,6 +7,7 @@ import Model.Technologies.TechnologyTypes;
 import Model.Units.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.regex.Matcher;
 
 import javax.swing.tree.TreeCellEditor;
@@ -222,8 +223,7 @@ public class DatabaseController {
 
     public void setAllUnitsUnifinished(User user) {
         for (Unit unit : user.getCivilization().getUnits()) {
-            if(unit.getIsAsleep()==false)
-            {
+            if (unit.getIsAsleep() == false) {
                 unit.setIsFinished(false);
             }
 
@@ -780,124 +780,199 @@ public class DatabaseController {
         return "invalid unit name";
     }
 
-    public void changingUnitsParameters(User user)
-    {
-        for(Unit unit : user.getCivilization().getUnits())
-        {
-            if(unit instanceof CombatUnit)
-            {
-                changingCombatUnitsParameters((CombatUnit)unit);
-            }
-            else{
-                changingNonCombatUnitParameters((NonCombatUnit)unit);
+    public void changingUnitsParameters(User user) {
+        for (Unit unit : user.getCivilization().getUnits()) {
+            if (unit instanceof CombatUnit) {
+                changingCombatUnitsParameters((CombatUnit) unit);
+            } else {
+                changingNonCombatUnitParameters((NonCombatUnit) unit);
             }
         }
     }
 
-    public void changingCombatUnitsParameters(CombatUnit combatUnit)
-    {
-        if(combatUnit.getIsAsleep())
-        {
+    public void changingCombatUnitsParameters(CombatUnit combatUnit) {
+        if (combatUnit.getIsAsleep()) {
 
-        }
-        else if(combatUnit.getAlert())
-        {
+        } else if (combatUnit.getAlert()) {
 
-        }
-        else if(combatUnit.getIsGarrisoned())
-        {
+        } else if (combatUnit.getIsGarrisoned()) {
 
-        }
-        else if(combatUnit.getFortify())
-        {
+        } else if (combatUnit.getFortify()) {
 
-        }
-        else if(combatUnit.getFortifyUntilHeal())
-        {
+        } else if (combatUnit.getFortifyUntilHeal()) {
 
         }
     }
 
-    public void changingNonCombatUnitParameters(NonCombatUnit nonCombatUnit)
-    {
-        if(nonCombatUnit.getIsAsleep())
-        {
+    public void changingNonCombatUnitParameters(NonCombatUnit nonCombatUnit) {
+        if (nonCombatUnit.getIsAsleep()) {
 
         }
     }
 
-    public String choosingATechnologyToStudy(User user,TechnologyTypes technologyType)
-    {
-        for(TechnologyTypes technologyType2 : technologyType.getRequirements())
-        {
-            if(!isContainTechnology(user,technologyType2))
-            {
+    public String choosingATechnologyToStudy(User user, TechnologyTypes technologyType) {
+        for (TechnologyTypes technologyType2 : technologyType.getRequirements()) {
+            if (!isContainTechnology(user, technologyType2)) {
                 return "you do not have required prerequisites";
-            }
-            else if(isContainTechnology(user,technologyType2) && getTechnologyByTechnologyType(user, technologyType).getIsAvailabe()==true)
-            {
+            } else if (isContainTechnology(user, technologyType2)
+                    && getTechnologyByTechnologyType(user, technologyType).getIsAvailabe() == true) {
                 return "you do not have required prerequisites";
             }
         }
-        for(Technology technology : user.getCivilization().getTechnologies())
-        {
+        for (Technology technology : user.getCivilization().getTechnologies()) {
             technology.setUnderResearch(false);
         }
-        user.getCivilization().getTechnologies().add(new Technology(true, 0, technologyType,false));
+        user.getCivilization().getTechnologies().add(new Technology(true, 0, technologyType, false));
         return "Technology is under research";
     }
 
-
-    
-    public boolean isContainTechnology(User user,TechnologyTypes technologyType)
-    {
-        for(Technology technology : user.getCivilization().getTechnologies())
-        {
-            if(technology.getTechnologyType().equals(technologyType))
-            {
+    public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
+        for (Technology technology : user.getCivilization().getTechnologies()) {
+            if (technology.getTechnologyType().equals(technologyType)) {
                 return true;
             }
         }
         return false;
     }
 
-    public Technology getTechnologyByTechnologyType(User user,TechnologyTypes technologyType)
-    {
-        for(Technology technology : user.getCivilization().getTechnologies())
-        {
-            if(technology.getTechnologyType().equals(technologyType))
-            {
+    public Technology getTechnologyByTechnologyType(User user, TechnologyTypes technologyType) {
+        for (Technology technology : user.getCivilization().getTechnologies()) {
+            if (technology.getTechnologyType().equals(technologyType)) {
                 return technology;
             }
         }
         return null;
     }
 
-    public String researchInfo(User user)
-    {
+    public String researchInfo(User user) {
         return getUnderResearchTechnology(user).toString();
     }
 
-    public String unitsInfo(User user)
-    {
+    public String unitsInfo(User user) {
         StringBuilder unitsInformation = new StringBuilder();
-        for(Unit unit : user.getCivilization().getUnits())
-        {
+        for (Unit unit : user.getCivilization().getUnits()) {
             unitsInformation.append(unit.toString());
         }
         return unitsInformation.toString();
     }
 
-    public Technology getUnderResearchTechnology(User user)
-    {
-        for(Technology technology : user.getCivilization().getTechnologies())
-        {
-            if(technology.getUnderResearch())
-            {
+    public Technology getUnderResearchTechnology(User user) {
+        for (Technology technology : user.getCivilization().getTechnologies()) {
+            if (technology.getUnderResearch()) {
                 return technology;
             }
         }
         return null;
+    }
+
+    public Terrain getTerrainByCoordinates(int x, int y) {
+        return this.database.getMap().getTerrain()[x][y];
+    }
+
+    public void setTerrainsOfEachCivilization(User user) {
+
+        ArrayList<Terrain> terrains = new ArrayList<>();
+
+        for (Unit unit : user.getCivilization().getUnits()) {
+            terrains.add(getTerrainByCoordinates(unit.getX(), unit.getY()));
+        }
+
+        // todo add cities tiles
+
+        user.getCivilization().setTerrains(terrains);
+    }
+
+    public void setCivilizations(ArrayList<User> users) {
+
+        setCivilizationsName();
+        ArrayList<Integer> indeces = setIndeces(users);
+        int i = 0;
+        for (User user : users) {
+
+            Civilization civilization = new Civilization(null, null, null, 10000, 100, null,
+                    this.database.getCivilizationsName().get(indeces.get(i)));
+            user.setCivilization(civilization);
+            setTerrainsOfEachCivilization(user);
+            createUnitForEachCivilization(user);
+            i++;
+        }
+    }
+
+    public void setCivilizationsName() {
+        this.database.getCivilizationsName().add("Incan");
+        this.database.getCivilizationsName().add("Aztec");
+        this.database.getCivilizationsName().add("Roman");
+        this.database.getCivilizationsName().add("Ancient Greek");
+        this.database.getCivilizationsName().add("Chinese");
+        this.database.getCivilizationsName().add("Maya");
+        this.database.getCivilizationsName().add("Ancient Egyptian");
+        this.database.getCivilizationsName().add("Indus Valley");
+        this.database.getCivilizationsName().add("Mesopotamian");
+    }
+
+    public ArrayList<Integer> setIndeces(ArrayList<User> users) {
+        Random rand = new Random();
+        ArrayList<Integer> indeces = new ArrayList<>();
+        for (int i = 0; i < users.size(); i++) {
+            int nextIndex = rand.nextInt(10);
+            while (isConatainInteger(indeces, nextIndex)) {
+                nextIndex = rand.nextInt();
+            }
+
+            indeces.add(nextIndex);
+        }
+
+        return indeces;
+
+    }
+
+    public boolean isConatainInteger(ArrayList<Integer> indeces, int random) {
+        for (Integer integer : indeces) {
+            if (integer.intValue() == random) {
+
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void createUnitForEachCivilization(User user) {
+        ArrayList<Integer> unitsCoordinates = findingEmptyTiles();
+        NonCombatUnit newSettler = new NonCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0,
+                false, false,
+                UnitTypes.SETTLER, false);
+        NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1,
+                0, 0, 0, 0, false,
+                false, UnitTypes.WARRIOR, false, false, false, false, false);
+        getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)].setCombatUnit(newWarrior);
+        getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1) + 1].setNonCombatUnit(newSettler);
+        user.getCivilization().getUnits().add((Unit) newSettler);
+        user.getCivilization().getUnits().add((Unit) newWarrior);
+
+    }
+
+    public ArrayList<Integer> findingEmptyTiles() {
+        Random rand = new Random();
+        ArrayList<Integer> coordinates = new ArrayList<>();
+        int x = rand.nextInt(5, 25);
+        int y = rand.nextInt(5, 13);
+        while (!isTerrainEmpty(x, y)) {
+            x = rand.nextInt(5, 25);
+            y = rand.nextInt(5, 13);
+        }
+        coordinates.add(x);
+        coordinates.add(y);
+        return coordinates;
+
+    }
+
+    public boolean isTerrainEmpty(int x, int y) {
+
+        if (this.getMap().getTerrain()[x][y].getCombatUnit() != null
+                || this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() != null) {
+            return false;
+        }
+        return true;
     }
 
 }

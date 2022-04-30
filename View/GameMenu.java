@@ -18,105 +18,106 @@ public class GameMenu {
     }
 
     public void run(Scanner scanner) {
+        while (true) {
+            for (User user : users) {
+                this.databaseController.setAllUnitsUnifinished(user);
+                while (this.databaseController.isAllTasksFinished(user)) {
 
-        for (User user : users) {
-            this.databaseController.setAllUnitsUnifinished(user);
-            while (this.databaseController.isAllTasksFinished(user)) {
+                    Matcher matcher;
+                    String input = scanner.nextLine();
+                    // input.replaceFirst("^\\s*", "");
+                    // input = input.trim().replaceAll("\\s+", " ");
+                    if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
 
-                Matcher matcher;
-                String input = scanner.nextLine();
-                // input.replaceFirst("^\\s*", "");
-                // input = input.trim().replaceAll("\\s+", " ");
-                if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
+                        showInfo(matcher, user);
 
-                    showInfo(matcher,user);
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
+                        selectUnit(user, matcher);
+                        while (this.databaseController.HasoneUnitBeenSelected()) {
+                            input = scanner.nextLine();
+                            if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_MOVETO)) != null) {
+                                moveUnit(user, matcher);
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
+                                this.databaseController.changingTheStateOfAUnit("sleep");
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
+                                if (this.databaseController.getSelectedCombatUnit() == null) {
+                                    System.out.println("this unit is not a combat unit");
+                                } else {
+                                    System.out.println(this.databaseController.changingTheStateOfAUnit("alert"));
 
-                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
-                    selectUnit(user, matcher);
-                    while (this.databaseController.HasoneUnitBeenSelected()) {
-                        input = scanner.nextLine();
-                        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_MOVETO)) != null) {
-                            moveUnit(user, matcher);
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
-                            this.databaseController.changingTheStateOfAUnit("sleep");
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
-                            if (this.databaseController.getSelectedCombatUnit() == null) {
-                                System.out.println("this unit is not a combat unit");
-                            } else {
-                                System.out.println(this.databaseController.changingTheStateOfAUnit("alert"));
+                                }
+
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY)) != null) {
+                                if (this.databaseController.getSelectedCombatUnit() == null) {
+                                    System.out.println("this unit is not a combat unit");
+                                } else {
+                                    System.out.println(this.databaseController.changingTheStateOfAUnit("fortify"));
+
+                                }
+
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY_HEAL)) != null) {
+                                if (this.databaseController.getSelectedCombatUnit() == null) {
+                                    System.out.println("this unit is not a combat unit");
+                                } else {
+                                    System.out.println(
+                                            this.databaseController.changingTheStateOfAUnit("fortify until heal"));
+
+                                }
+
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_GARRISON)) != null) {
+                                if (this.databaseController.getSelectedCombatUnit() == null) {
+                                    System.out.println("this unit is not a combat unit");
+                                } else {
+                                    System.out.println(this.databaseController.changingTheStateOfAUnit("garrison"));
+
+                                }
+
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SETUP_RANGED)) != null) {
+                                if (this.databaseController.getSelectedCombatUnit() == null) {
+                                    System.out.println("this unit is not a combat unit");
+                                } else if (this.databaseController.getSelectedCombatUnit() != null) {
+                                    System.out
+                                            .println(this.databaseController.changingTheStateOfAUnit("setup ranged"));
+
+                                }
+
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ATTACK)) != null) {
+
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FOUND_CITY)) != null) {
+
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_CANCEL_MISSION)) != null) {
+
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_WAKE)) != null) {
+                                System.out.println(this.databaseController.changingTheStateOfAUnit("wake"));
+
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
+                                System.out.println(this.databaseController.changingTheStateOfAUnit("delete"));
+
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+                                buildUnit(matcher);
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
+                                if (matcher.group("subdivision").equals("JUNGLE")) {
+
+                                } else if (matcher.group("subdivision").equals("ROUTE")) {
+
+                                } else {
+                                    System.out.println("INVALID COMMAND");
+                                }
 
                             }
-
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY)) != null) {
-                            if (this.databaseController.getSelectedCombatUnit() == null) {
-                                System.out.println("this unit is not a combat unit");
-                            } else {
-                                System.out.println(this.databaseController.changingTheStateOfAUnit("fortify"));
-
-                            }
-
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY_HEAL)) != null) {
-                            if (this.databaseController.getSelectedCombatUnit() == null) {
-                                System.out.println("this unit is not a combat unit");
-                            } else {
-                                System.out.println(
-                                        this.databaseController.changingTheStateOfAUnit("fortify until heal"));
-
-                            }
-
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_GARRISON)) != null) {
-                            if (this.databaseController.getSelectedCombatUnit() == null) {
-                                System.out.println("this unit is not a combat unit");
-                            } else {
-                                System.out.println(this.databaseController.changingTheStateOfAUnit("garrison"));
-
-                            }
-
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SETUP_RANGED)) != null) {
-                            if (this.databaseController.getSelectedCombatUnit() == null) {
-                                System.out.println("this unit is not a combat unit");
-                            } else if (this.databaseController.getSelectedCombatUnit() != null) {
-                                System.out
-                                        .println(this.databaseController.changingTheStateOfAUnit("setup ranged"));
-
-                            }
-
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ATTACK)) != null) {
-
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FOUND_CITY)) != null) {
-
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_CANCEL_MISSION)) != null) {
-
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_WAKE)) != null) {
-                            System.out.println(this.databaseController.changingTheStateOfAUnit("wake"));
-
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
-                            System.out.println(this.databaseController.changingTheStateOfAUnit("delete"));
-
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
-                            buildUnit(matcher);
-                        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
-                            if (matcher.group("subdivision").equals("JUNGLE")) {
-
-                            } else if (matcher.group("subdivision").equals("ROUTE")) {
-
-                            } else {
-                                System.out.println("INVALID COMMAND");
-                            }
-
                         }
+
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_NAME)) != null) {
+                        // todo
+                    } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null) {
+                        // todo
+
+                    } else {
+                        System.out.println("INVALID COMMAND");
                     }
-
-                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_NAME)) != null) {
-                    // todo
-                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null) {
-                    // todo
-
-                } else {
-                    System.out.println("INVALID COMMAND");
                 }
-            }
 
+            }
         }
 
     }
