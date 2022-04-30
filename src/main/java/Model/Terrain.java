@@ -122,6 +122,10 @@ public class Terrain {
         this.reveals.add(reveals);
     }
 
+    public void setRevealedTest(ArrayList<Revealed> reveals){
+       this.reveals = reveals;
+    }
+
     public City getCity()
     {
         return city;

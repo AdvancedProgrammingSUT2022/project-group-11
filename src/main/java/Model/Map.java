@@ -32,6 +32,17 @@ public class Map {
         this.rivers = rivers;
     }
 
+    public void setTerrainTest(Terrain terrain,int i,int j){
+        this.Terrains[i][j] = terrain;
+        
+    }
+
+    
+
+    public void setTerrains(Terrain terrains[][]){
+      this.Terrains = terrains;
+    }
+
     
 
     public int getROW() {

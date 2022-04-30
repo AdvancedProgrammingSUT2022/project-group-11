@@ -524,6 +524,11 @@ public class GameMapGenerator {
         }
     }
 
+
+
+
+
+    
     // print map
     public void SwitchCaseFirstHalf(int i, int j, int l, Database database, User user, int count) {
         switch (j) {
@@ -629,6 +634,10 @@ public class GameMapGenerator {
         }
         return Printmap;
     }
+
+
+
+
 
 
     // initialize Map Before Print For Speciall User
