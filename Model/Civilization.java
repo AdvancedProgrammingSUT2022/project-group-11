@@ -10,10 +10,12 @@ public class Civilization {
   private ArrayList<Unit> units;
   private ArrayList<City> cities;
   private ArrayList<Terrain> terrains;
+  private ArrayList<Terrain> visibleTerrains;
+  private ArrayList<Terrain> revealedTerrains;
   private int gold;
   private int happiness;
   private ArrayList<Technology> technologies;
-  String name;
+  private String name;
   
 
   public Civilization(ArrayList<Unit> units, ArrayList<City> cities, ArrayList<Terrain> terrains, int gold, int happiness, ArrayList<Technology> technologies, String name) {
@@ -25,6 +27,26 @@ public class Civilization {
     this.technologies = technologies;
     this.name = name;
   }
+
+    public ArrayList<Terrain> getVisibleTerrains() {
+        return this.visibleTerrains;
+    }
+
+    public void setVisibleTerrains(ArrayList<Terrain> visibleTerrains) {
+        this.visibleTerrains = visibleTerrains;
+    }
+
+    public ArrayList<Terrain> getRevealedTerrains() {
+        return this.revealedTerrains;
+    }
+
+    public void setRevealedTerrains(ArrayList<Terrain> revealedTerrains) {
+        this.revealedTerrains = revealedTerrains;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+
 
 
   public String getName() {

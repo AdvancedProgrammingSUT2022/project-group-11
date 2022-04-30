@@ -1,3 +1,4 @@
+
 package Model.Units;
 
 public class NonCombatUnit extends Unit {
@@ -8,5 +9,9 @@ public class NonCombatUnit extends Unit {
     super(x, y, number, militaryPower, life, speed, isAsleep, isFinished, unitType, isSelected);
     //TODO Auto-generated constructor stub
 }
+
+  public NonCombatUnit clone(){
+      return new NonCombatUnit(this.getX(), this.getY(), this.getNumber(), this.getMilitaryPower(), this.getLife(), this.getSpeed(), this.getIsAsleep(), this.getIsFinished(), this.getUnitType(), this.getIsSelected());
+  }
 
 }

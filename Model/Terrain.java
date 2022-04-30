@@ -15,7 +15,7 @@ public class Terrain {
     private int y;
     private String Type;
     private TerrainTypes terrainTypes;
-    private TerrainFeatureTypes terrainFeatureTypes;
+    private ArrayList<TerrainFeatureTypes> terrainFeatureTypes;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
     private Improvements TerrrainImprovement;
@@ -23,7 +23,7 @@ public class Terrain {
     private City city;
     private ArrayList<Revealed> reveals;
 
-    public Terrain(int x, int y, String Type, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes,
+    public Terrain(int x, int y, String Type, TerrainTypes terrainTypes,  ArrayList<TerrainFeatureTypes> terrainFeatureTypes,
             CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement,
             Resource TerrainResource, ArrayList<Revealed> reveals) {
         this.x = x;
@@ -74,12 +74,12 @@ public class Terrain {
         this.terrainTypes = terrainTypes;
     }
 
-    public TerrainFeatureTypes getTerrainFeatureTypes() {
+    public  ArrayList<TerrainFeatureTypes> getTerrainFeatureTypes() {
         return this.terrainFeatureTypes;
     }
 
     public void setTerrainFeatureTypes(TerrainFeatureTypes terrainFeatureTypes) {
-        this.terrainFeatureTypes = terrainFeatureTypes;
+        this.terrainFeatureTypes.add(terrainFeatureTypes);
     }
 
     public CombatUnit getCombatUnit() {
@@ -118,8 +118,12 @@ public class Terrain {
         return this.reveals;
     }
 
-    public void setReveals(ArrayList<Revealed> reveals) {
-        this.reveals = reveals;
+    public void setReveals(Revealed reveals) {
+        this.reveals.add(reveals);
+    }
+
+    public void setRevealedTest(ArrayList<Revealed> reveals){
+       this.reveals = reveals;
     }
 
     public City getCity()
