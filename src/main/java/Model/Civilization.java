@@ -2,7 +2,8 @@ package Model;
 
 import java.util.ArrayList;
 
-import Model.Technologies.TechnologyTypes;
+import Model.Technologies.Technology;
+
 import Model.Units.Unit;
 
 public class Civilization {
@@ -10,13 +11,15 @@ public class Civilization {
   private ArrayList<Unit> units;
   private ArrayList<City> cities;
   private ArrayList<Terrain> terrains;
+  private ArrayList<Terrain> visibleTerrains;
+  private ArrayList<Terrain> revealedTerrains;
   private int gold;
   private int happiness;
-  private ArrayList<TechnologyTypes> technologies;
+  private ArrayList<Technology> technologies;
   String name;
   
 
-  public Civilization(ArrayList<Unit> units, ArrayList<City> cities, ArrayList<Terrain> terrains, int gold, int happiness, ArrayList<TechnologyTypes> technologies, String name) {
+  public Civilization(ArrayList<Unit> units, ArrayList<City> cities, ArrayList<Terrain> terrains, int gold, int happiness, ArrayList<Technology> technologies, String name) {
     this.units = units;
     this.cities = cities;
     this.terrains = terrains;
@@ -25,6 +28,23 @@ public class Civilization {
     this.technologies = technologies;
     this.name = name;
   }
+
+  public ArrayList<Terrain> getVisibleTerrains() {
+    return this.visibleTerrains;
+}
+
+public void setVisibleTerrains(ArrayList<Terrain> visibleTerrains) {
+    this.visibleTerrains = visibleTerrains;
+}
+
+public ArrayList<Terrain> getRevealedTerrains() {
+    return this.revealedTerrains;
+}
+
+public void setRevealedTerrains(ArrayList<Terrain> revealedTerrains) {
+    this.revealedTerrains = revealedTerrains;
+}
+
 
 
   public String getName() {
@@ -90,14 +110,29 @@ public boolean containsUnit(Unit unit2)
 }
 
 
-public ArrayList<TechnologyTypes> getTechnologies()
+public ArrayList<Technology> getTechnologies()
 {
     return technologies;
 }
 
-public void setTechnologies(ArrayList<TechnologyTypes> technologies)
+public void setTechnologies(ArrayList<Technology> technologies)
 {
     this.technologies = technologies;
+}
+
+public void setAvailablity()
+{
+    for(Technology technology : this.technologies)
+    {
+        if(technology.getIsAvailabe() == false)
+        {
+            technology.setCostsForResearch(technology.getCostsForResearch()+ 10);
+            if(technology.getCostsForResearch() >= technology.getTechnologyType().getCost())
+            {
+                technology.setIsAvailabe(true);
+            }
+        }
+    }
 }
 
 

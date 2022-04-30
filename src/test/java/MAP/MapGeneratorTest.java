@@ -78,7 +78,6 @@ public class MapGeneratorTest {
 
     @Mock
     Terrain terrainRevealed;
-    
     @Mock
     User user;
     @Mock
@@ -120,6 +119,15 @@ public class MapGeneratorTest {
         when(reveal.getUser()).thenReturn(user);
         map.setRevealed(user, 3, 4);
        Assertions.assertTrue(terrainRevealed.getReveals().get(1).getUser() == user);
+    }
+
+
+    @Mock
+    Terrain terrainInitialize;
+
+    @Test 
+    public void InitializeMapTest(){
+        Map map = new Map();
     }
 
 
