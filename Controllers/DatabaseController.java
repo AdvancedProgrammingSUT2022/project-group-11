@@ -2,10 +2,14 @@ package Controllers;
 
 import Model.*;
 import Model.Resources.ResourceTypes;
+import Model.Technologies.Technology;
+import Model.Technologies.TechnologyTypes;
 import Model.Units.*;
 
 import java.util.ArrayList;
 import java.util.regex.Matcher;
+
+import javax.swing.tree.TreeCellEditor;
 
 public class DatabaseController {
     private Database database;
@@ -218,7 +222,11 @@ public class DatabaseController {
 
     public void setAllUnitsUnifinished(User user) {
         for (Unit unit : user.getCivilization().getUnits()) {
-            unit.setIsFinished(false);
+            if(unit.getIsAsleep()==false)
+            {
+                unit.setIsFinished(false);
+            }
+
         }
     }
 
@@ -770,6 +778,126 @@ public class DatabaseController {
 
         }
         return "invalid unit name";
+    }
+
+    public void changingUnitsParameters(User user)
+    {
+        for(Unit unit : user.getCivilization().getUnits())
+        {
+            if(unit instanceof CombatUnit)
+            {
+                changingCombatUnitsParameters((CombatUnit)unit);
+            }
+            else{
+                changingNonCombatUnitParameters((NonCombatUnit)unit);
+            }
+        }
+    }
+
+    public void changingCombatUnitsParameters(CombatUnit combatUnit)
+    {
+        if(combatUnit.getIsAsleep())
+        {
+
+        }
+        else if(combatUnit.getAlert())
+        {
+
+        }
+        else if(combatUnit.getIsGarrisoned())
+        {
+
+        }
+        else if(combatUnit.getFortify())
+        {
+
+        }
+        else if(combatUnit.getFortifyUntilHeal())
+        {
+
+        }
+    }
+
+    public void changingNonCombatUnitParameters(NonCombatUnit nonCombatUnit)
+    {
+        if(nonCombatUnit.getIsAsleep())
+        {
+
+        }
+    }
+
+    public String choosingATechnologyToStudy(User user,TechnologyTypes technologyType)
+    {
+        for(TechnologyTypes technologyType2 : technologyType.getRequirements())
+        {
+            if(!isContainTechnology(user,technologyType2))
+            {
+                return "you do not have required prerequisites";
+            }
+            else if(isContainTechnology(user,technologyType2) && getTechnologyByTechnologyType(user, technologyType).getIsAvailabe()==true)
+            {
+                return "you do not have required prerequisites";
+            }
+        }
+        for(Technology technology : user.getCivilization().getTechnologies())
+        {
+            technology.setUnderResearch(false);
+        }
+        user.getCivilization().getTechnologies().add(new Technology(true, 0, technologyType,false));
+        return "Technology is under research";
+    }
+
+
+    
+    public boolean isContainTechnology(User user,TechnologyTypes technologyType)
+    {
+        for(Technology technology : user.getCivilization().getTechnologies())
+        {
+            if(technology.getTechnologyType().equals(technologyType))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Technology getTechnologyByTechnologyType(User user,TechnologyTypes technologyType)
+    {
+        for(Technology technology : user.getCivilization().getTechnologies())
+        {
+            if(technology.getTechnologyType().equals(technologyType))
+            {
+                return technology;
+            }
+        }
+        return null;
+    }
+
+    public String researchInfo(User user)
+    {
+        return getUnderResearchTechnology(user).toString();
+    }
+
+    public String unitsInfo(User user)
+    {
+        StringBuilder unitsInformation = new StringBuilder();
+        for(Unit unit : user.getCivilization().getUnits())
+        {
+            unitsInformation.append(unit.toString());
+        }
+        return unitsInformation.toString();
+    }
+
+    public Technology getUnderResearchTechnology(User user)
+    {
+        for(Technology technology : user.getCivilization().getTechnologies())
+        {
+            if(technology.getUnderResearch())
+            {
+                return technology;
+            }
+        }
+        return null;
     }
 
 }

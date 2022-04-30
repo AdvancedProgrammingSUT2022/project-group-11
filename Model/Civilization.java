@@ -2,7 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
-import Model.Technologies.TechnologyTypes;
+import Model.Technologies.Technology;
 import Model.Units.Unit;
 
 public class Civilization {
@@ -12,11 +12,11 @@ public class Civilization {
   private ArrayList<Terrain> terrains;
   private int gold;
   private int happiness;
-  private ArrayList<TechnologyTypes> technologies;
+  private ArrayList<Technology> technologies;
   String name;
   
 
-  public Civilization(ArrayList<Unit> units, ArrayList<City> cities, ArrayList<Terrain> terrains, int gold, int happiness, ArrayList<TechnologyTypes> technologies, String name) {
+  public Civilization(ArrayList<Unit> units, ArrayList<City> cities, ArrayList<Terrain> terrains, int gold, int happiness, ArrayList<Technology> technologies, String name) {
     this.units = units;
     this.cities = cities;
     this.terrains = terrains;
@@ -90,14 +90,29 @@ public boolean containsUnit(Unit unit2)
 }
 
 
-public ArrayList<TechnologyTypes> getTechnologies()
+public ArrayList<Technology> getTechnologies()
 {
     return technologies;
 }
 
-public void setTechnologies(ArrayList<TechnologyTypes> technologies)
+public void setTechnologies(ArrayList<Technology> technologies)
 {
     this.technologies = technologies;
+}
+
+public void setAvailablity()
+{
+    for(Technology technology: this.technologies)
+    {
+        if(technology.getIsAvailabe() == false)
+        {
+            technology.setCostsForResearch(technology.getCostsForResearch()+ 10);
+            if(technology.getCostsForResearch() >= technology.getTechnologyType().getCost())
+            {
+                technology.setIsAvailabe(true);
+            }
+        }
+    }
 }
 
 

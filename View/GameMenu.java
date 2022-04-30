@@ -29,7 +29,7 @@ public class GameMenu {
                 // input = input.trim().replaceAll("\\s+", " ");
                 if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
 
-                    showInfo(matcher);
+                    showInfo(matcher,user);
 
                 } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
                     selectUnit(user, matcher);
@@ -121,10 +121,11 @@ public class GameMenu {
 
     }
 
-    private void showInfo(Matcher matcher) {
+    private void showInfo(Matcher matcher, User user) {
         if (matcher.group("section").equals("RESEARCH")) {
-
+            System.out.println(databaseController.researchInfo(user));
         } else if (matcher.group("section").equals("UNITS")) {
+            System.out.println(databaseController.unitsInfo(user));
 
         } else if (matcher.group("section").equals("CITIIES")) {
 
@@ -195,8 +196,7 @@ public class GameMenu {
     private void moveUnit(User user, Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
-        System.out.println(this.databaseController.unitMovement(x, y,user));
-
+        System.out.println(this.databaseController.unitMovement(x, y, user));
 
     }
 

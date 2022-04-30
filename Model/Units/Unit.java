@@ -9,6 +9,7 @@ public class Unit {
     private int number;
     private int militaryPower; 
     private int life; 
+
     private int speed; 
     private boolean isAsleep;
     private boolean isFinished;
@@ -64,6 +65,10 @@ public class Unit {
 
     }
     public void fortify(){
+
+    }
+    public void sleep()
+    {
 
     }
     public void fortifyUntilHeal(){
@@ -185,6 +190,20 @@ public class Unit {
     }
 
    
+
+    @Override
+    public String toString() {
+        return "{" +
+            " x='" + getX() + "'" +
+            ", y='" + getY() + "'" +
+            ", number='" + getNumber() + "'" +
+            ", militaryPower='" + getMilitaryPower() + "'" +
+            ", life='" + getLife() + "'" +
+            ", speed='" + getSpeed() + "'" +
+            ", isAsleep='" + isIsAsleep() + "'" +
+            ", unitType='" + getUnitType() + "'" +
+            "}";
+    }
 
     
 

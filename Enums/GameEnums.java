@@ -27,7 +27,7 @@ public enum GameEnums {
     MAP_SHOW_POSITION("^MAP\\sSHOW\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     MAP_SHOW_CITYNAME("^MAP\\sSHOW\\s(?<subdivision>\\S+)$"),
     MAP_MOVE("^MAP\\sMOVE\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),    
-    INTEGER("^-?\\d+$");
+    INFO_RESEARCH("INFO RESEARCH"),    INTEGER("^-?\\d+$");
 
     private String regex;
 
