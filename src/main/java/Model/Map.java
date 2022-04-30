@@ -146,12 +146,11 @@ public class Map {
         nullImprovementAndCombat();
     }
    
-    private void Initializemap(){
+    public void Initializemap(){
         for(int i = 0; i < ROW;i++){
             for(int j = 0; j < COL;j++){
                // Resource resource = new Resource(ResourceTypes.COAL);
                 Terrains[i][j] = new Terrain(i, j, null, TerrainTypes.GRASSLLAND,  new ArrayList<TerrainFeatureTypes>(), null, null, null, null, null);
-             
                 if(i <= 2 || i >= 29 || j <= 1 || j >= 14){
                     Terrains[i][j].setTerrainTypes(TerrainTypes.OCEAN);
                 }else if(j >= 13){
@@ -164,6 +163,7 @@ public class Map {
                     Terrains[i][j].setTerrainTypes(TerrainTypes.SNOW);
                 }
             }
+            
         }
     }
     
