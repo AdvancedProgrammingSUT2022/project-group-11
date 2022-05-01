@@ -276,6 +276,7 @@ public class DatabaseController {
         NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
 
         if (combatUnit != null) {
+            System.out.println("hell");
             if (user.getCivilization().containsCombatUnit(x_final, y_final)) {
                 return "you have another combat unit in this tile";
             }
@@ -286,6 +287,7 @@ public class DatabaseController {
             combatUnit.setIsSelected(false);
             combatUnit.setIsFinished(true);
         } else if (nonCombatUnit != null) {
+            System.out.println("hell2");
             if (user.getCivilization().containsNonCombatUnit(x_final, y_final)) {
                 return "you have another non combat unit in this tile";
             }
