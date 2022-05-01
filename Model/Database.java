@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 public class Database {
     private ArrayList<User> Users;
-    private ArrayList<String> civilizationsName;
+    private ArrayList<String> civilizationsName = new ArrayList<>();
 
-    private Map map;
+    private Map map = new Map();
     private int turn;
 
     public ArrayList<String> getCivilizationsName() {

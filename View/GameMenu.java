@@ -18,11 +18,13 @@ public class GameMenu {
     }
 
     public void run(Scanner scanner) {
+        this.databaseController.getMap().generateMap();
         this.databaseController.setCivilizations(users);
         while (true) {
             for (User user : users) {
+                System.out.println(user.getUsername() + "'s turn");
                 this.databaseController.setAllUnitsUnifinished(user);
-                while (this.databaseController.isAllTasksFinished(user)) {
+                while (!this.databaseController.isAllTasksFinished(user)) {
 
                     Matcher matcher;
                     String input = scanner.nextLine();

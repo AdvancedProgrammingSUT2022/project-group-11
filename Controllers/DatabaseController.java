@@ -887,7 +887,7 @@ public class DatabaseController {
         int i = 0;
         for (User user : users) {
 
-            Civilization civilization = new Civilization(null, null, null, 10000, 100, null,
+            Civilization civilization = new Civilization(10000, 100,
                     this.database.getCivilizationsName().get(indeces.get(i)));
             user.setCivilization(civilization);
             createUnitForEachCivilization(user);
@@ -906,6 +906,7 @@ public class DatabaseController {
         this.database.getCivilizationsName().add("Ancient Egyptian");
         this.database.getCivilizationsName().add("Indus Valley");
         this.database.getCivilizationsName().add("Mesopotamian");
+        this.database.getCivilizationsName().add("Persian");
     }
 
     public ArrayList<Integer> setIndeces(ArrayList<User> users) {
@@ -914,7 +915,7 @@ public class DatabaseController {
         for (int i = 0; i < users.size(); i++) {
             int nextIndex = rand.nextInt(10);
             while (isConatainInteger(indeces, nextIndex)) {
-                nextIndex = rand.nextInt();
+                nextIndex = rand.nextInt(10);
             }
 
             indeces.add(nextIndex);
