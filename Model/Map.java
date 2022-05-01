@@ -16,8 +16,9 @@ public class Map {
 
     private Terrain[][] Terrains = new Terrain[ROW][COL];
     private ArrayList<River> rivers = new ArrayList<River>();
-    private String[][] Printmap = new String[ROW][Iteration];
+    private String[][] PrintMap = new String[ROW][Iteration];
     
+
 
 
 
@@ -96,15 +97,15 @@ public class Map {
 
     public String[][] printMap(Database database, User user) {
         GameMapGenerator newGameMapGenerator = new GameMapGenerator(Terrains, rivers,ROW,COL,Iteration);
-        Printmap = newGameMapGenerator.printMap(database, user);
-        return Printmap;
+        PrintMap = newGameMapGenerator.printMap(database, user);
+        return PrintMap;
     }
 
 
     public String[][] PrintMapXandY(Database database ,User user,int x,int y){
         GameMapGenerator newGameMapGenerator = new GameMapGenerator(Terrains, rivers,ROW,COL,Iteration);
-        Printmap = newGameMapGenerator.PrintMapXandY(database, user, x, y);
-        return Printmap;
+        PrintMap = newGameMapGenerator.PrintMapXandY(database, user, x, y);
+        return PrintMap;
     }
 
  // set Revealed
@@ -199,12 +200,10 @@ public class Map {
             else return false;
         }
         if (firstJ % 2 == 1) {
-            if (secondI == firstI - 1) return true;
-            else return false;
+            return secondI == firstI - 1;
         }
         if (firstJ % 2 == 0) {
-            if (secondI == firstI + 1) return true;
-            else return false;
+            return secondI == firstI + 1;
         }
         return false;
     }
@@ -236,13 +235,13 @@ public class Map {
             for(int j = 0; j < COL;j++){
                 ArrayList <TerrainFeatureTypes> possibleTerrainFeature = Terrains[i][j].getTerrainTypes().getPossibleFeatures();
                 if(possibleTerrainFeature != null) 
-                Terrains[i][j].setTerrainFeatureTypes(possibleTerrainFeature.get(Math.abs(random.nextInt()) % possibleTerrainFeature.size()));
+                    Terrains[i][j].setTerrainFeatureTypes(possibleTerrainFeature.get(Math.abs(random.nextInt()) % possibleTerrainFeature.size()));
             }
         }
 
     }
 
-    private ArrayList<Resource> findAllPossiblResource(Terrain terrain){
+    private ArrayList<Resource> findAllPossibleResource(Terrain terrain){
         ArrayList<Resource> possibleResource = new ArrayList<Resource>();
         possibleResource.clear();
         ResourceTypes[] AllpossibleResource = {ResourceTypes.BANANAS,
@@ -250,17 +249,17 @@ public class Map {
             ,ResourceTypes.HORSES,ResourceTypes.IRON,ResourceTypes.COTTON,ResourceTypes.DYES,ResourceTypes.FURS,
             ResourceTypes.GEMS,ResourceTypes.GOLD,ResourceTypes.INCENSE,ResourceTypes.IVORY,ResourceTypes.MARBLE,
             ResourceTypes.SILK,ResourceTypes.SILVER,ResourceTypes.SUGAR};
-      
-        for(int i = 0 ; i < AllpossibleResource.length;i++){
-          
-            if( AllpossibleResource[i].getObject() != null || AllpossibleResource[i].getObject().indexOf(terrain.getTerrainTypes()) != -1){
-                Resource resource = new Resource(AllpossibleResource[i]);
+
+        for (ResourceTypes resourceTypes : AllpossibleResource) {
+
+            if (resourceTypes.getObject() != null || resourceTypes.getObject().indexOf(terrain.getTerrainTypes()) != -1) {
+                Resource resource = new Resource(resourceTypes);
                 possibleResource.add(resource);
             }
-            for(int j = 0; j < terrain.getTerrainFeatureTypes().size();j++){
+            for (int j = 0; j < terrain.getTerrainFeatureTypes().size(); j++) {
 
-                if( AllpossibleResource[i].getObject() != null || AllpossibleResource[i].getObject().indexOf(terrain.getTerrainFeatureTypes().get(j)) != -1){
-                    Resource resource = new Resource(AllpossibleResource[i]);
+                if (resourceTypes.getObject() != null || resourceTypes.getObject().contains(terrain.getTerrainFeatureTypes().get(j))) {
+                    Resource resource = new Resource(resourceTypes);
                     possibleResource.add(resource);
                 }
             }
@@ -272,7 +271,7 @@ public class Map {
         Random random = new Random();
         for(int i = 0 ; i < ROW;i++){
             for(int j = 0; j < COL;j++){
-                 ArrayList<Resource> possibleResource = findAllPossiblResource(Terrains[i][j]);
+                 ArrayList<Resource> possibleResource = findAllPossibleResource(Terrains[i][j]);
                  if (possibleResource.size() > 0 && Math.abs(random.nextInt()) % 2 == 0)
                     Terrains[i][j].setTerrainResource(possibleResource.get(Math.abs(random.nextInt()) % possibleResource.size()));
             }

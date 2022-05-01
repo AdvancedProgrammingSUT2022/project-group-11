@@ -3,6 +3,8 @@ package Model;
 import java.util.ArrayList;
 
 import Model.Technologies.Technology;
+import Model.Units.CombatUnit;
+import Model.Units.NonCombatUnit;
 import Model.Units.Unit;
 
 public class Civilization {
@@ -97,6 +99,31 @@ public class Civilization {
             if (unit.equals(unit2)) {
                 return true;
             }
+
+        }
+        return false;
+    }
+
+    public boolean containsCombatUnit(int x, int y) {
+        for (Unit unit : units) {
+            if (unit instanceof CombatUnit) {
+                if (unit.getX() == x && unit.getY() == y) {
+                    return true;
+                }
+            }
+
+        }
+        return false;
+    }
+
+    public boolean containsNonCombatUnit(int x, int y) {
+        for (Unit unit : units) {
+            if (unit instanceof NonCombatUnit) {
+                if (unit.getX() == x && unit.getY() == y) {
+                    return true;
+                }
+            }
+
         }
         return false;
     }

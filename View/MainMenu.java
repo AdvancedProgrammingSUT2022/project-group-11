@@ -39,7 +39,6 @@ public class MainMenu
                     users.add(this.databaseController.getUserByUsername(username));
                     input = input.substring(9 + 1 + username.length());
                 }
-                users.add(this.user);
                 return users;
             }
             else if ((matcher = getCommandMatcher(input, MenuEnums.SHOWCURRENT.getRegex())).matches())

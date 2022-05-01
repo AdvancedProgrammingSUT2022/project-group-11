@@ -18,8 +18,10 @@ public class GameMenu {
     }
 
     public void run(Scanner scanner) {
+
         this.databaseController.getMap().generateMap();
         this.databaseController.setCivilizations(users);
+
         while (true) {
             for (User user : users) {
                 System.out.println(user.getUsername() + "'s turn");
@@ -108,6 +110,9 @@ public class GameMenu {
                                 }
 
                             }
+                            else {
+                                System.out.println("INVALID COMMAND");
+                            }
                         }
 
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_NAME)) != null) {
@@ -115,6 +120,14 @@ public class GameMenu {
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null) {
                         // todo
 
+                    } else if (input.equals("show map")) {
+                        String[][] result = this.databaseController.getMap()
+                                .printMap(this.databaseController.getDatabase(), user);
+                        for (int i = 0; i < this.databaseController.getMap().getROW(); i++) {
+                            for (int j = 0; j < this.databaseController.getMap().getIteration(); j++) {
+                                System.out.println(result[i][j]);
+                            }
+                        }
                     } else {
                         System.out.println("INVALID COMMAND");
                     }
@@ -158,13 +171,13 @@ public class GameMenu {
         if (matcher.group("subdivision").equals("COMBAT")) {
             int x = Integer.parseInt(matcher.group("x"));
             int y = Integer.parseInt(matcher.group("y"));
-            System.out.println(this.databaseController.selectAndDeslectCombatUnit(user, x, y));
+            System.out.println(this.databaseController.selectAndDeselectCombatUnit(user, x, y));
 
         } else if (matcher.group("subdivision").equals("NONCOMBAT")) {
             int x = Integer.parseInt(matcher.group("x"));
             int y = Integer.parseInt(matcher.group("y"));
 
-            System.out.println(this.databaseController.selectAndDeslectNonCombatUnit(user, x, y));
+            System.out.println(this.databaseController.selectAndDeselectNonCombatUnit(user, x, y));
 
         } else {
             System.out.println("INVALID COMMAND");
