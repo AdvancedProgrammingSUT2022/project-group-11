@@ -10,8 +10,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.regex.Matcher;
 
-import javax.swing.tree.TreeCellEditor;
-
 public class DatabaseController {
     private Database database;
 
@@ -892,8 +890,8 @@ public class DatabaseController {
             Civilization civilization = new Civilization(null, null, null, 10000, 100, null,
                     this.database.getCivilizationsName().get(indeces.get(i)));
             user.setCivilization(civilization);
-            setTerrainsOfEachCivilization(user);
             createUnitForEachCivilization(user);
+            setTerrainsOfEachCivilization(user);
             i++;
         }
     }

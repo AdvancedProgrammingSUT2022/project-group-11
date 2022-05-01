@@ -18,6 +18,7 @@ public class GameMenu {
     }
 
     public void run(Scanner scanner) {
+        this.databaseController.setCivilizations(users);
         while (true) {
             for (User user : users) {
                 this.databaseController.setAllUnitsUnifinished(user);
