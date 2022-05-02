@@ -1089,16 +1089,16 @@ public class DatabaseController {
             city.setFood(firstFood - 2 * numberOfcitizen);
         }
         /*
-         * citizens add food  when work 
+         * citizens add food when work
          * tara complete city
          * 
          */
-       
+
         ArrayList<City> allCitiesHaveSettler = new ArrayList<City>();
         for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
-           if(allTerrain.getNonCombatUnit().getUnitType() == UnitTypes.SETTLER){
-               allCitiesHaveSettler.add(allTerrain.getCity());
-           }
+            if (allTerrain.getNonCombatUnit().getUnitType() == UnitTypes.SETTLER) {
+                allCitiesHaveSettler.add(allTerrain.getCity());
+            }
         }
 
         int divide = 1;
@@ -1107,32 +1107,35 @@ public class DatabaseController {
         }
 
         for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
-            if(allCitiesHaveSettler.contains(allTerrain.getCity()) == false){
+            if (allCitiesHaveSettler.contains(allTerrain.getCity()) == false) {
                 int food = 0;
                 if (allTerrain.getTerrainTypes() != null) {
                     food += allTerrain.getTerrainTypes().getFood();
                 }
-                if(allTerrain.getTerrainFeatureTypes() != null){
+                if (allTerrain.getTerrainFeatureTypes() != null) {
                     for (TerrainFeatureTypes allTerrainFeature : allTerrain.getTerrainFeatureTypes()) {
-    
+
                         food += allTerrainFeature.getFood();
                     }
                 }
-                
+
                 if (allTerrain.getTerrainResource() != null && allTerrain.getBooleanResource() == true) {
                     food += allTerrain.getTerrainResource().getFood();
                 }
                 if (allTerrain.getTerrrainImprovement() != null) {
                     food += allTerrain.getTerrrainImprovement().getFood();
                 }
-    
+
                 allTerrain.getCity().setFood(allTerrain.getCity().getFood() + food / divide);
             }
-            
+
         }
 
-
         // roshd shahr
+
+    }
+
+    public void setHappiness(User user) {
 
     }
 
