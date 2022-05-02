@@ -2,7 +2,9 @@ package Model;
 
 import java.util.ArrayList;
 
-public class City{
+import Model.Buildings.BuildingTypes;
+
+public class City {
     private final Civilization founder;
     private Civilization owner;
     private boolean isPuppet;
@@ -15,9 +17,12 @@ public class City{
     private boolean garrisoned;
     private boolean isCaptured;
     private ArrayList<Citizen> citizens;
+    private int gold;
+ 
 
-
-    public City(Civilization founder, Civilization owner, boolean isPuppet, Terrain centralTerrain, int HP, String type, int combatStrength, boolean iConstructingUnit, int rangedCombatStrength, boolean garrisoned, boolean isCaptured, ArrayList<Citizen> citizens) {
+    public City(Civilization founder, Civilization owner, boolean isPuppet, Terrain centralTerrain, int HP, String type,
+            int combatStrength, boolean iConstructingUnit, int rangedCombatStrength, boolean garrisoned,
+            boolean isCaptured, ArrayList<Citizen> citizens, int gold) {
         this.founder = founder;
         this.owner = owner;
         this.isPuppet = isPuppet;
@@ -30,13 +35,19 @@ public class City{
         this.garrisoned = garrisoned;
         this.isCaptured = isCaptured;
         this.citizens = citizens;
+        this.gold = gold;
+       
     }
 
-
+    public void setGold(int gold){
+      this.gold = gold;
+    }
+    public int getGold(){
+        return this.gold;
+    }
     public Civilization getFounder() {
         return this.founder;
     }
-
 
     public Civilization getOwner() {
         return this.owner;
@@ -61,8 +72,6 @@ public class City{
     public Terrain getCentralTerrain() {
         return this.centralTerrain;
     }
-
-
 
     public int getHP() {
         return this.HP;
@@ -180,5 +189,4 @@ public class City{
         return this;
     }
 
-   
 }

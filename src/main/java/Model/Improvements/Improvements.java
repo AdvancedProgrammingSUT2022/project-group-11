@@ -147,5 +147,8 @@ public enum Improvements {
     public String getShowImprovement(){
         return this.ShowImprovement;
     }
+    public int getGold(){
+        return this.gold;
+    }
 
 }

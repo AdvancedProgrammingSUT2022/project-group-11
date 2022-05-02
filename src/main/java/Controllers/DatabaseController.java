@@ -4,6 +4,7 @@ import Model.*;
 import Model.Resources.ResourceTypes;
 import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
+import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Units.*;
 
 import java.util.ArrayList;
@@ -1026,4 +1027,23 @@ public class DatabaseController {
                 && this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() == null;
     }
 
+
+    public void addGoldToUser(User user){
+        for (Terrain allTerrains : user.getCivilization().getTerrains()) {
+            int gold = allTerrains.getCity().getGold();
+             gold += allTerrains.getTerrainTypes().getGold();
+             for (TerrainFeatureTypes allTerrainFeature : allTerrains.getTerrainFeatureTypes()) {
+                 gold += allTerrainFeature.getGold();
+             }
+             gold += allTerrains.getTerrainResource().getGold();
+             gold += allTerrains.getTerrrainImprovement().getGold();
+            allTerrains.getCity().setGold(gold);
+        }
+        for (City city : user.getCivilization().getCities()) {
+            int gold = city.getGold();
+            user.getCivilization().increaseGold(gold);
+        }
+
+        
+    }
 }

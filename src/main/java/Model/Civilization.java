@@ -147,4 +147,8 @@ public class Civilization {
         }
     }
 
+    public void increaseGold(int gold){
+        this.gold += gold;
+    }
+
 }

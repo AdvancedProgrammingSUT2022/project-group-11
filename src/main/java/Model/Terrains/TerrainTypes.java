@@ -146,4 +146,7 @@ public enum TerrainTypes {
         return this.possibleFeatures;
     }
 
+    public int getGold(){
+        return this.gold;
+    }
 }

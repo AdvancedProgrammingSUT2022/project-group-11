@@ -59,4 +59,7 @@ public enum TerrainFeatureTypes {
     public ArrayList<ResourceTypes> getResourceType(){
         return this.possibleResourcesFound; 
     }
+    public int getGold(){
+        return this.gold;
+    }
 }

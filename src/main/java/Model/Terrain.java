@@ -36,7 +36,7 @@ public class Terrain {
         this.TerrrainImprovement = TerrrainImprovement;
         this.TerrainResource = TerrainResource;
         this.reveals = reveals;
-        this.city = null;
+       // this.city = null;
     }
 
 
