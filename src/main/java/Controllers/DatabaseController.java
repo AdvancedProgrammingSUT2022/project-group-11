@@ -1093,7 +1093,13 @@ public class DatabaseController {
          * tara complete city
          * 
          */
-        
+       
+        ArrayList<City> allCitiesHaveSettler = new ArrayList<City>();
+        for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
+           if(allTerrain.getNonCombatUnit().getUnitType() == UnitTypes.SETTLER){
+               allCitiesHaveSettler.add(allTerrain.getCity());
+           }
+        }
 
         int divide = 1;
         if (user.getCivilization().getHappiness() < 0) {
@@ -1101,13 +1107,7 @@ public class DatabaseController {
         }
 
         for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
-            boolean haveSettler = false;
-            if(allTerrain.getNonCombatUnit().getUnitType() == UnitTypes.SETTLER){
-                haveSettler = true;
-                
-            }
-            if(haveSettler == false)
-            {
+            if(allCitiesHaveSettler.contains(allTerrain.getCity()) == false){
                 int food = 0;
                 if (allTerrain.getTerrainTypes() != null) {
                     food += allTerrain.getTerrainTypes().getFood();
@@ -1128,7 +1128,7 @@ public class DatabaseController {
     
                 allTerrain.getCity().setFood(allTerrain.getCity().getFood() + food / divide);
             }
-           
+            
         }
 
 
