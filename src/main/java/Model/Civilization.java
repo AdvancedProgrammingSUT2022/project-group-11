@@ -11,6 +11,7 @@ public class Civilization {
 
     private ArrayList<Unit> units = new ArrayList<>();
     private ArrayList<City> cities = new ArrayList<>();
+    private ArrayList<Terrain> ownedTerrains = new ArrayList<>();
     private ArrayList<Terrain> terrains = new ArrayList<>();
     private ArrayList<Terrain> visibleTerrains = new ArrayList<>();
     private ArrayList<Terrain> revealedTerrains = new ArrayList<>();
@@ -26,6 +27,12 @@ public class Civilization {
         this.name = name;
     }
 
+    public void setOwnedTerrains( ArrayList<Terrain> ownedTerrains){
+        this.ownedTerrains = ownedTerrains;
+    }
+    public  ArrayList<Terrain> getOwnedTerrains(){
+        return this.ownedTerrains;
+    }
     public ArrayList<Terrain> getVisibleTerrains() {
         return this.visibleTerrains;
     }

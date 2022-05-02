@@ -150,5 +150,8 @@ public enum Improvements {
     public int getGold(){
         return this.gold;
     }
+    public int getFood(){
+        return this.food;
+    }
 
 }

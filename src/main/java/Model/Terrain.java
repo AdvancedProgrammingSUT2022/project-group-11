@@ -20,6 +20,7 @@ public class Terrain {
     private NonCombatUnit nonCombatUnit;
     private Improvements TerrrainImprovement;
     private Resource TerrainResource;
+    private boolean unlockResource;
     private City city;
     private ArrayList<Revealed> reveals;
 
@@ -40,6 +41,14 @@ public class Terrain {
     }
 
 
+    
+    public void setBooleanResource(boolean bool){
+        this.unlockResource = bool;
+    }
+    public boolean getBooleanResource(){
+        return this.unlockResource;
+    }
+ 
    
 
     public int getX() {

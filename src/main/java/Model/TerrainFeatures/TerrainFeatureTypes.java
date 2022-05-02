@@ -62,4 +62,7 @@ public enum TerrainFeatureTypes {
     public int getGold(){
         return this.gold;
     }
+    public int getFood(){
+        return this.food;
+    }
 }
