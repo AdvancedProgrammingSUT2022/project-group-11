@@ -8,13 +8,13 @@ import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 
 public enum Improvements {
-    CAMP(0, 0, 0, new ArrayList<ResourceTypes>() {
+    CAMP(0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.FURS);
             add(ResourceTypes.IVORY);
             add(ResourceTypes.DEER);
         }
-    }, TechnologyTypes.AGRICULTURE, new ArrayList<Object>() {
+    }, TechnologyTypes.AGRICULTURE, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
             add(TerrainTypes.TUNDRA);
@@ -23,23 +23,23 @@ public enum Improvements {
         }
     },"CAM"),
 
-    FARM(1, 0, 0, new ArrayList<ResourceTypes>() {
+    FARM(1, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.WHEAT);
         }
-    }, TechnologyTypes.AGRICULTURE, new ArrayList<Object>() {
+    }, TechnologyTypes.AGRICULTURE, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
         }
     },"FAR"),
-    LUMBERMILL(0, 1, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<Object>() {
+    LUMBERMILL(0, 1, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
         }
     },"LUM"),
-    MINE(0, 1, 0, new ArrayList<ResourceTypes>() {
+    MINE(0, 1, 0, new ArrayList<>() {
         {
             add(ResourceTypes.WHEAT);
             add(ResourceTypes.IRON);
@@ -48,7 +48,7 @@ public enum Improvements {
             add(ResourceTypes.GOLD);
             add(ResourceTypes.SILVER);
         }
-    }, TechnologyTypes.MINING, new ArrayList<Object>() {
+    }, TechnologyTypes.MINING, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
             add(TerrainTypes.PLAINS);
@@ -59,13 +59,13 @@ public enum Improvements {
             add(TerrainTypes.HILLS);
         }
     },"MIN"),
-    PASTURE(0, 0, 0, new ArrayList<ResourceTypes>() {
+    PASTURE(0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.HORSES);
             add(ResourceTypes.CATTLE);
             add(ResourceTypes.SHEEP);
         }
-    }, TechnologyTypes.ANIMAL_HUSBANDARY, new ArrayList<Object>() {
+    }, TechnologyTypes.ANIMAL_HUSBANDARY, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
@@ -74,7 +74,7 @@ public enum Improvements {
             add(TerrainTypes.HILLS);
         }
     },"PAS"),
-    PLANTATION(0, 0, 0, new ArrayList<ResourceTypes>() {
+    PLANTATION(0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.BANANAS);
             add(ResourceTypes.DYES);
@@ -83,7 +83,7 @@ public enum Improvements {
             add(ResourceTypes.COTTON);
             add(ResourceTypes.INCENSE);
         }
-    }, TechnologyTypes.CALENDAR, new ArrayList<Object>() {
+    }, TechnologyTypes.CALENDAR, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
@@ -94,11 +94,11 @@ public enum Improvements {
             add(TerrainFeatureTypes.JUNGLE);
         }
     },"PLA"),
-    QUARRY(0, 0, 0, new ArrayList<ResourceTypes>() {
+    QUARRY(0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.MARBLE);
         }
-    }, TechnologyTypes.MASONRY, new ArrayList<Object>() {
+    }, TechnologyTypes.MASONRY, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
@@ -107,7 +107,7 @@ public enum Improvements {
             add(TerrainTypes.HILLS);
         }
     },"QUA"),
-    TRADINGPOST(0, 0, 1, null, TechnologyTypes.TRAPPING, new ArrayList<Object>() {
+    TRADINGPOST(0, 0, 1, null, TechnologyTypes.TRAPPING, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
@@ -115,7 +115,7 @@ public enum Improvements {
             add(TerrainTypes.TUNDRA);
         }
     },"TRA"),
-    MANUFACTORY(0, 2, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<Object>() {
+    MANUFACTORY(0, 2, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);

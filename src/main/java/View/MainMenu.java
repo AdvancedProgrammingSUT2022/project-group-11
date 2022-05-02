@@ -33,13 +33,12 @@ public class MainMenu
                 users.add(this.databaseController.getUserByUsername(username));
                 input = input.substring(19 + username.length() + 1);
                 matcher = getCommandMatcher(input, "(--player\\d+|-p\\d+) (?<username>[A-Za-z0-9]+)");
-                while ( matcher.find())
+                while (matcher.find())
                 {
                     username = matcher.group("username");
                     users.add(this.databaseController.getUserByUsername(username));
                     input = input.substring(9 + 1 + username.length());
                 }
-                users.add(this.user);
                 return users;
             }
             else if ((matcher = getCommandMatcher(input, MenuEnums.SHOWCURRENT.getRegex())).matches())
@@ -64,6 +63,9 @@ public class MainMenu
                 }
                 else
                     System.out.println("invalid command");
+            }
+            else{
+                System.out.println("invalid command");
             }
         }
         return null;

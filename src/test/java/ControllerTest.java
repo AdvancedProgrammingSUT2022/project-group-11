@@ -1,18 +1,36 @@
+/*import java.util.ArrayList;
+
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import Controllers.DatabaseController;
+import Model.Database;
 import Model.User;
 
-public class ControllerTest{
+
+@ExtendWith(MockitoExtension.class)
+ public class ControllerTest{
 
     @Mock
-    User user;
-    
+    Database database;
+    @Mock
+    User userOne;
+    @Mock
+    User userTwo;
+    @Mock
+    ArrayList<User> users;
+    @Mock
+    User userAdded;
 
-    @ExtendWith(MockitoExtension.class)
+    @Test
     public void createUser(){
-
+        users = new ArrayList<User>();
+        users.add(userOne);
+        users.add(userTwo);
+       DatabaseController databaseController = new DatabaseController(database);
     }
     
 }
+*/

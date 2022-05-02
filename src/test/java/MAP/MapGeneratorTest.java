@@ -1,7 +1,7 @@
 package MAP;
 
 
-import static org.mockito.Mockito.verify;
+
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -32,15 +32,16 @@ public class MapGeneratorTest {
     @Mock
     Terrain terrainTwo;
     @Mock
-    ArrayList<River> rivers;
+     ArrayList<River> rivers;
     
     @Test
     public void hasRiverTest() {
         Map map = new Map();
-        rivers = new ArrayList<River>();
-        river = new River(terrainOne, terrainTwo);
+        ArrayList<River> rivers = new ArrayList<River>();
         rivers.add(river);
         map.setRiver(rivers);
+        when(river.getFirstTerrain()).thenReturn(terrainOne);
+        when(river.getSecondTerrain()).thenReturn(terrainTwo);
         River checkRiver = map.hasRiver(terrainOne, terrainTwo);
         Assertions.assertNotNull(checkRiver);
     }
@@ -48,10 +49,11 @@ public class MapGeneratorTest {
     @Test
     public void hasNotRiverTest() {
         Map map = new Map();
-        rivers = new ArrayList<River>();
-        river = new River(null, terrainTwo);
+        ArrayList<River> rivers = new ArrayList<River>();
         rivers.add(river);
         map.setRiver(rivers);
+        when(river.getFirstTerrain()).thenReturn(null);
+        when(river.getSecondTerrain()).thenReturn(terrainOne);
         River checkRiver = map.hasRiver(terrainOne, terrainTwo);
         Assertions.assertNull(checkRiver);
     }
@@ -125,6 +127,8 @@ public class MapGeneratorTest {
 
 
     @Mock
+    Terrain terrainInitialize;
+   
     Terrain terrains[][];
    
     @Test 
@@ -182,14 +186,17 @@ public class MapGeneratorTest {
         map.setTerrains(terrains);
         map.Initializemap();  ;
        Assertions.assertTrue(terrains[27][4].getTerrainTypes() == TerrainTypes.SNOW);
+       Assertions.assertTrue(terrains[27][4].getTerrainTypes() == TerrainTypes.SNOW);
     }
 
-    
+    @Test
+
+    public void randomTerrainAdd(){
+        
+    }
 
 
   
-
-
 
 
 

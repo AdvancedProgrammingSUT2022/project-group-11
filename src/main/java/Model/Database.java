@@ -4,10 +4,19 @@ import java.util.ArrayList;
 
 public class Database {
     private ArrayList<User> Users;
-    private Map map;
+    private ArrayList<String> civilizationsName = new ArrayList<>();
+
+    private Map map = new Map();
     private int turn;
 
+    public ArrayList<String> getCivilizationsName() {
+        return this.civilizationsName;
+    }
 
+    public void setCivilizationsName(ArrayList<String> civilizationsName) {
+        this.civilizationsName = civilizationsName;
+    }
+    
 
     public int getTurn() {
         return this.turn;

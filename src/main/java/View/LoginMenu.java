@@ -47,7 +47,7 @@ public class LoginMenu
             || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER5.getRegex())).matches()
             || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER6.getRegex())).matches() )
             {
-                this.databaseController.createUser(matcher);
+                System.out.println(this.databaseController.createUser(matcher)); 
             }
             else if ( (matcher = getCommandMatcher(input, MenuEnums.USERLOGIN.getRegex())).matches()
                         || (matcher = getCommandMatcher(input, MenuEnums.USERLOGIN2.getRegex())).matches())
@@ -59,6 +59,8 @@ public class LoginMenu
                     ArrayList<User> players = mainMenu.run(scanner);
                     if (players != null )
                     {
+                        GameMenu gameMenu = new GameMenu(databaseController, players);
+                        gameMenu.run(scanner);
                         // play game
                     }
                 }
