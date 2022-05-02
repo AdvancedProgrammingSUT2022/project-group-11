@@ -118,5 +118,7 @@ public enum BuildingTypes {
     final int cost;
     final int maintenance;
     final TechnologyTypes requirement;
-
+    public int getMeintenance(){
+        return this.maintenance;
+    }
 }

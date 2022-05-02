@@ -18,11 +18,11 @@ public class City {
     private boolean isCaptured;
     private ArrayList<Citizen> citizens;
     private int gold;
- 
+    private ArrayList<BuildingTypes> buildings;
 
     public City(Civilization founder, Civilization owner, boolean isPuppet, Terrain centralTerrain, int HP, String type,
             int combatStrength, boolean iConstructingUnit, int rangedCombatStrength, boolean garrisoned,
-            boolean isCaptured, ArrayList<Citizen> citizens, int gold) {
+            boolean isCaptured, ArrayList<Citizen> citizens, int gold,ArrayList<BuildingTypes> buildings) {
         this.founder = founder;
         this.owner = owner;
         this.isPuppet = isPuppet;
@@ -36,9 +36,17 @@ public class City {
         this.isCaptured = isCaptured;
         this.citizens = citizens;
         this.gold = gold;
-       
+        this.buildings = buildings;
     }
 
+    public void setBuildings(ArrayList<BuildingTypes> buildings){
+        this.buildings = buildings;
+    }
+
+
+    public ArrayList<BuildingTypes> getBuildings(){
+        return this.buildings;
+    }
     public void setGold(int gold){
       this.gold = gold;
     }

@@ -132,8 +132,9 @@ public class GameMenu {
                         System.out.println("INVALID COMMAND");
                     }
                 }
-
+                 this.databaseController.addGoldToUser(user);
             }
+       
         }
 
     }

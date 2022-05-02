@@ -1,6 +1,7 @@
 package Controllers;
 
 import Model.*;
+import Model.Buildings.BuildingTypes;
 import Model.Resources.ResourceTypes;
 import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
@@ -1044,6 +1045,14 @@ public class DatabaseController {
             user.getCivilization().increaseGold(gold);
         }
 
-        
+        int numberOfUnits = user.getCivilization().getUnits().size();
+        user.getCivilization().increaseGold(-numberOfUnits * database.getTurn());
+        for (City city : user.getCivilization().getCities()) {
+           for (BuildingTypes cityBuildings : city.getBuildings()) {
+               user.getCivilization().increaseGold(-cityBuildings.getMeintenance() * database.getTurn());
+           }
+        }
+
+
     }
 }
