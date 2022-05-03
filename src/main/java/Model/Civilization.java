@@ -19,6 +19,7 @@ public class Civilization {
     private int happiness;
     private ArrayList<Technology> technologies = new ArrayList<>();
     private String name;
+    private boolean canBuySettler;
 
     public Civilization(int gold, int happiness, String name) {
 
@@ -27,6 +28,12 @@ public class Civilization {
         this.name = name;
     }
 
+    public void setBooleanSettlerBuy(boolean bool){
+        this.canBuySettler = bool;
+    }
+    public boolean getBooleanSettlerBuy(){
+        return this.canBuySettler;
+    }
     public void setOwnedTerrains( ArrayList<Terrain> ownedTerrains){
         this.ownedTerrains = ownedTerrains;
     }

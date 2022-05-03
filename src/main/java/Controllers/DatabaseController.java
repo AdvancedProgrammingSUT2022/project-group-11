@@ -414,6 +414,7 @@ public class DatabaseController {
         String lackResources = "You lack the required resources to construct this unit";
         String unitAlreadyExists = "There is already a unit in this tile";
         String noCityHere = "There is no city in the tile you selected";
+        String minusHappiness = "you do not have positive happiness to buy settler";
         if (tile.getCity() == null) {
             return noCityHere;
         }
@@ -470,6 +471,9 @@ public class DatabaseController {
 
                 break;
             case "SETTLER":
+                if(civilization.getBooleanSettlerBuy() == false){
+                    return minusHappiness;
+                }
                 if (money < UnitTypes.SETTLER.getCost()) {
                     return notEnoughMoney;
                 } else if (tile.getNonCombatUnit() != null) {
@@ -969,6 +973,7 @@ public class DatabaseController {
             Civilization civilization = new Civilization(10000, 100,
                     this.database.getCivilizationsName().get(indices.get(i)));
             user.setCivilization(civilization);
+            user.getCivilization().setBooleanSettlerBuy(true);
             createUnitForEachCivilization(user);
             setTerrainsOfEachCivilization(user);
             i++;
@@ -1135,7 +1140,50 @@ public class DatabaseController {
 
     }
 
-    public void setHappiness(User user) {
+    public void setHappinessUser(User user) {
+
+        // without building
+        //  without technology
+
+        ResourceTypes[] luxuryResource = { ResourceTypes.COTTON, ResourceTypes.DYES, ResourceTypes.FURS,
+                ResourceTypes.GEMS,
+                ResourceTypes.GEMS, ResourceTypes.GOLD, ResourceTypes.INCENSE, ResourceTypes.IVORY,
+                ResourceTypes.MARBLE,
+                ResourceTypes.SILK, ResourceTypes.SILVER, ResourceTypes.SUGAR };
+        ArrayList<ResourceTypes> happinessLuxuryIncrease = new ArrayList<>();
+
+        for (Terrain allTerrains : user.getCivilization().getOwnedTerrains()) {
+            if (allTerrains.getTerrainResource() != null && allTerrains.getBooleanResource() == true) {
+                for (int i = 0; i < luxuryResource.length; i++) {
+                    if (luxuryResource[i] == allTerrains.getTerrainResource().getResourceType()) {
+                        if (happinessLuxuryIncrease
+                                .contains(allTerrains.getTerrainResource().getResourceType()) == false) {
+                                happinessLuxuryIncrease.add(luxuryResource[i]);
+                        }
+                    }
+                }
+
+            }
+        }
+     
+        user.getCivilization().setHappiness(user.getCivilization().getHappiness() + 4 * happinessLuxuryIncrease.size());
+      
+        if(user.getCivilization().getHappiness() < 0){
+              for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
+                  if(allTerrain.getCombatUnit() != null){
+                      allTerrain.getCombatUnit().setMilitaryPower(allTerrain.getCombatUnit().getMilitaryPower() - allTerrain.getCombatUnit().getMilitaryPower() / 4);
+                  }
+              }
+              user.getCivilization().setBooleanSettlerBuy(false);
+        }else{
+            for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
+                if(allTerrain.getCombatUnit() != null){
+                //    allTerrain.getCombatUnit().setMilitaryPower();
+                }
+            }
+              user.getCivilization().setBooleanSettlerBuy(true);
+        }
+
 
     }
 
