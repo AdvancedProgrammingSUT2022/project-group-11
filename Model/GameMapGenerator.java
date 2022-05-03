@@ -14,13 +14,13 @@ public class GameMapGenerator {
     private ArrayList<River> rivers = new ArrayList<River>();
     private String[][] Printmap;
 
-    public GameMapGenerator(Terrain Terrains[][], ArrayList<River> rivers, int ROW, int COL, int Iteration) {
+    public GameMapGenerator(Terrain Terrains[][], ArrayList<River> rivers,int ROW,int COL,int Iteration) {
         this.Terrains = Terrains;
         this.rivers = rivers;
         this.ROW = ROW;
         this.COL = COL;
         this.Iteration = Iteration;
-        this.Printmap = new String[ROW][Iteration];
+        this.Printmap =  new String[ROW][Iteration];
     }
 
     public River hasRiver(Terrain TerrainFirst, Terrain TerrainSecond) {
@@ -105,6 +105,11 @@ public class GameMapGenerator {
             Printmap[i][j] += "/";
         }
     }
+
+
+
+
+
 
     // ALGHORITMS
     private void CivilizationAlghoritm(int iTerrain, int i, int j, int l, Database database) {
@@ -331,6 +336,11 @@ public class GameMapGenerator {
 
     }
 
+
+
+
+
+
     // call the alghoritm finction
 
     private void CivilizationPrintFirstHalf(int i, int j, int l, Database database) {
@@ -433,6 +443,11 @@ public class GameMapGenerator {
         ImprovementAlghoritm(i, i, j, l, user);
     }
 
+
+
+
+
+
     // Rows Of Map
     private void firstRow(int i, int j, int l, boolean check, Database database, User user) {
         if (check == true) {
@@ -509,6 +524,11 @@ public class GameMapGenerator {
         }
     }
 
+
+
+
+
+
     // print map
     public void SwitchCaseFirstHalf(int i, int j, int l, Database database, User user, int count) {
         switch (j) {
@@ -565,7 +585,7 @@ public class GameMapGenerator {
     }
 
     public String[][] printMap(Database database, User user) {
-        initializeMapUser(user);
+
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < Iteration; j++) {
                 Printmap[i][j] = "";
@@ -590,7 +610,7 @@ public class GameMapGenerator {
     }
 
     public String[][] PrintMapXandY(Database database, User user, int x, int y) {
-        initializeMapUser(user);
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < Iteration; j++) {
                 Printmap[i][j] = "";
@@ -614,246 +634,5 @@ public class GameMapGenerator {
         }
         return Printmap;
     }
-
-    // initialize Map Before Print For Speciall User
-    private boolean isBlock(int i, int j) {
-        if (i < 0 || i >= ROW) {
-            return false;
-        }
-        if (j < 0 || j >= COL) {
-            return false;
-        }
-        if (Terrains[i][j].getTerrainTypes() == TerrainTypes.MOUNTAIN) {
-            return false;
-        } else if (Terrains[i][j].getTerrainTypes() == TerrainTypes.HILLS) {
-            return false;
-        } else if (Terrains[i][j].getTerrainFeatureTypes().indexOf(TerrainFeatureTypes.JUNGLE) != -1) {
-            return false;
-        }
-        return true;
-    }
-
-    private void setVisibleEven(int i, int j) {
-        if (i > 0) {
-            Terrains[i - 1][j].setType("visible");
-        }
-        if (i > 0 && j > 0) {
-            Terrains[i - 1][j - 1].setType("visible");
-        }
-        if (j > 0) {
-            Terrains[i][j - 1].setType("visible");
-        }
-        if (i < ROW - 1) {
-            Terrains[i + 1][j].setType("visible");
-        }
-        if (j < COL - 1) {
-            Terrains[i][j + 1].setType("visible");
-        }
-        if (i > 0 && j < COL - 1) {
-            Terrains[i - 1][j + 1].setType("visible");
-        }
-    }
-
-    private void setVisibleOdd(int i, int j) {
-        if (i > 0) {
-            Terrains[i - 1][j].setType("visible");
-        }
-        if (j > 0) {
-            Terrains[i][j - 1].setType("visible");
-        }
-        if (i < ROW - 1 && j > 0) {
-            Terrains[i + 1][j - 1].setType("visible");
-        }
-        if (i < ROW - 1) {
-            Terrains[i + 1][j].setType("visible");
-        }
-        if (i < ROW - 1 && j < COL - 1) {
-            Terrains[i + 1][j + 1].setType("visible");
-        }
-        if (j < COL - 1) {
-            Terrains[i][j + 1].setType("visible");
-        }
-
-    }
-
-    private void makeVisibleNearEven(int i, int j) {
-        if (isBlock(i - 1, j)) {
-            if (j % 2 == 0) {
-                setVisibleEven(i - 1, j);
-            } else {
-                setVisibleOdd(i - 1, j);
-            }
-        }
-        if (isBlock(i - 1, j - 1)) {
-            if ((j - 1) % 2 == 0) {
-
-                setVisibleEven(i - 1, j - 1);
-            } else {
-                setVisibleOdd(i - 1, j - 1);
-            }
-        }
-        if (isBlock(i, j - 1)) {
-            if ((j - 1) % 2 == 0) {
-                setVisibleEven(i, j - 1);
-            } else {
-
-                setVisibleOdd(i, j - 1);
-            }
-
-        }
-        if (isBlock(i + 1, j)) {
-            if (j % 2 == 0) {
-                setVisibleEven(i + 1, j);
-            } else {
-                setVisibleOdd(i + 1, j);
-            }
-        }
-        if (isBlock(i, j + 1)) {
-            if ((j + 1) % 2 == 0) {
-
-                setVisibleEven(i, j + 1);
-            } else {
-                setVisibleOdd(i, j + 1);
-            }
-        }
-        if (isBlock(i - 1, j + 1)) {
-            if ((j + 1) % 2 == 0) {
-
-                setVisibleEven(i - 1, j + 1);
-            } else {
-                setVisibleOdd(i - 1, j + 1);
-            }
-        }
-
-    }
-
-    private void makeVisibleNearOdd(int i, int j) {
-        if (isBlock(i - 1, j)) {
-            if (j % 2 == 0) {
-                setVisibleEven(i - 1, j);
-            } else {
-                setVisibleOdd(i - 1, j);
-            }
-        }
-        if (isBlock(i + 1, j - 1)) {
-            if ((j - 1) % 2 == 0) {
-
-                setVisibleEven(i + 1, j - 1);
-            } else {
-                setVisibleOdd(i + 1, j - 1);
-            }
-        }
-        if (isBlock(i, j - 1)) {
-            if ((j - 1) % 2 == 0) {
-                setVisibleEven(i, j - 1);
-            } else {
-
-                setVisibleOdd(i, j - 1);
-            }
-
-        }
-
-        if (isBlock(i + 1, j)) {
-            if (j % 2 == 0) {
-                setVisibleEven(i + 1, j);
-            } else {
-                setVisibleOdd(i + 1, j);
-            }
-        }
-        if (isBlock(i, j + 1)) {
-            if ((j + 1) % 2 == 0) {
-
-                setVisibleEven(i, j + 1);
-            } else {
-                setVisibleOdd(i, j + 1);
-            }
-        }
-        if (isBlock(i + 1, j + 1)) {
-            if ((j + 1) % 2 == 0) {
-
-                setVisibleEven(i + 1, j + 1);
-            } else {
-                setVisibleOdd(i + 1, j + 1);
-            }
-        }
-
-    }
-
-    public void initializeMapUser(User user) {
-        for (int i = 0; i < ROW; i++) {
-            for (int j = 0; j < COL; j++) {
-                Terrains[i][j].setType("fog of war");
-            }
-        }
-
-        ArrayList<Terrain> Tiles = user.getCivilization().getTerrains();
-        for (Terrain tile : Tiles) {
-            int i = tile.getX();
-            int j = tile.getY();
-            Terrains[i][j].setType("visible");
-            if (isBlock(i, j)) {
-                if (j % 2 == 0) {
-                    setVisibleEven(i, j);
-                    makeVisibleNearEven(i, j);
-                } else {
-                    setVisibleOdd(i, j);
-                    makeVisibleNearOdd(i, j);
-                }
-
-            }
-        }
-
-        ArrayList<Terrain> visibleTerrains = new ArrayList<>();
-        for (int i = 0; i < ROW; i++) {
-            for (int j = 0; j < COL; j++) {
-                if (Terrains[i][j].getType().equals("visible")) {
-                    visibleTerrains.add(Terrains[i][j]);
-                }
-            }
-        }
-
-        for (Terrain tile : user.getCivilization().getVisibleTerrains()) {
-            if (!tile.getType().equals("visible")) {
-                user.getCivilization().getRevealedTerrains().add(tile);
-            }
-        }
-        
-        for (Terrain tile : user.getCivilization().getRevealedTerrains()) {
-            if (tile.getType().equals("visible")) {
-                user.getCivilization().getRevealedTerrains().remove(tile);
-            }
-        }
-
-        user.getCivilization().setVisibleTerrains(visibleTerrains);
-
-        for(Terrain terrain : user.getCivilization().getRevealedTerrains())
-        {
-            terrain.setType("revealed");
-        }
-
-        for(Terrain terrain : user.getCivilization().getRevealedTerrains())
-        {
-            setRevealed(user, terrain.getX(), terrain.getY());
-        }
-
-    }
-    public void setRevealed(User user,int i,int j){
-
-        int index = -1;
-        for(int count = 0 ; count < Terrains[i][j].getReveals().size();count++){
-            if(Terrains[i][j].getReveals().get(count).getUser() == user){
-               index = count;
-               break;
-            }
-        }
-        if(index != -1){
-            Terrains[i][j].getReveals().remove(index);
-        }
-    
-        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), Terrains[i][j].getCombatUnit().clone(), Terrains[i][j].getNonCombatUnit().clone(), Terrains[i][j].getTerrrainImprovement(), Terrains[i][j].getTerrainResource().clone());
-        Terrains[i][j].setReveals(reveal);
-    
-    }
-
 
 }

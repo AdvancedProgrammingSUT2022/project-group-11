@@ -25,7 +25,7 @@ public class GameMenu {
         while (true) {
             for (User user : users) {
                 System.out.println(user.getUsername() + "'s turn");
-                this.databaseController.setAllUnitsUnifinished(user);
+                this.databaseController.setAllUnitsUnfinished(user);
                 while (!this.databaseController.isAllTasksFinished(user)) {
 
                     Matcher matcher;
@@ -109,18 +109,18 @@ public class GameMenu {
                                     System.out.println("INVALID COMMAND");
                                 }
 
-                            }
-                            else {
+                            } else {
                                 System.out.println("INVALID COMMAND");
                             }
-                        }
 
+
+                        }
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_NAME)) != null) {
                         // todo
                     } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null) {
                         // todo
 
-                    } else if (input.equals("show map")) {
+                    } else if (input.equals("SHOW MAP")) {
                         String[][] result = this.databaseController.getMap()
                                 .printMap(this.databaseController.getDatabase(), user);
                         for (int i = 0; i < this.databaseController.getMap().getROW(); i++) {
@@ -132,8 +132,10 @@ public class GameMenu {
                         System.out.println("INVALID COMMAND");
                     }
                 }
-
+                this.databaseController.movementOfAllUnits(user);
+                this.databaseController.setTerrainsOfEachCivilization(user);
             }
+
         }
 
     }

@@ -105,8 +105,7 @@ public class DatabaseController {
         if (x > mapRows || x < 0 || y > mapColumns || y < 0) {
             return "there is no tile with these coordinates";
         }
-        if(this.database.getMap().getTerrain()[x][y].getCombatUnit()!=null && this.database.getMap().getTerrain()[x][y].getCombatUnit().getIsFinished())
-        {
+        if (this.database.getMap().getTerrain()[x][y].getCombatUnit() != null && this.database.getMap().getTerrain()[x][y].getCombatUnit().getIsFinished()) {
             return "you have selected this unit before";
         }
         if (user.getCivilization().containsUnit(this.database.getMap().getTerrain()[x][y].getCombatUnit())) {
@@ -125,13 +124,11 @@ public class DatabaseController {
         if (x > mapRows || x < 0 || y > mapColumns || y < 0) {
             return "there is no tile with these coordinates";
         }
-        if(this.database.getMap().getTerrain()[x][y].getNonCombatUnit()!=null && this.database.getMap().getTerrain()[x][y].getNonCombatUnit().getIsFinished())
-        {
+        if (this.database.getMap().getTerrain()[x][y].getNonCombatUnit() != null && this.database.getMap().getTerrain()[x][y].getNonCombatUnit().getIsFinished()) {
             return "you have selected this unit before";
         }
         if (user.getCivilization().containsUnit(this.database.getMap().getTerrain()[x][y].getNonCombatUnit())) {
-            boolean initialIsSelectedValue = this.database.getMap().getTerrain()[x][y].getNonCombatUnit()
-                    .getIsSelected();
+            boolean initialIsSelectedValue = this.database.getMap().getTerrain()[x][y].getNonCombatUnit().getIsSelected();
             this.database.getMap().getTerrain()[x][y].getNonCombatUnit().setIsSelected(!initialIsSelectedValue);
             return "Noncombat unit was selected";
         }
@@ -170,6 +167,7 @@ public class DatabaseController {
                 }
                 break;
         }
+        combatUnit.getNextTerrain().clear();
         combatUnit.setIsFinished(true);
         combatUnit.setIsSelected(false);
         return "action completed";
@@ -185,6 +183,7 @@ public class DatabaseController {
         }
         nonCombatUnit.setIsFinished(true);
         nonCombatUnit.setIsSelected(false);
+        nonCombatUnit.getNextTerrain().clear();
         return "action completed";
     }
 
@@ -206,11 +205,7 @@ public class DatabaseController {
         int column = this.database.getMap().getCOL();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                if ((this.database.getMap().getTerrain()[i][j].getCombatUnit() != null
-                        && this.database.getMap().getTerrain()[i][j].getCombatUnit().isIsSelected())
-                        || (this.database.getMap().getTerrain()[i][j].getNonCombatUnit() != null
-                        && this.database.getMap().getTerrain()[i][j].getNonCombatUnit()
-                        .isIsSelected())) {
+                if ((this.database.getMap().getTerrain()[i][j].getCombatUnit() != null && this.database.getMap().getTerrain()[i][j].getCombatUnit().isIsSelected()) || (this.database.getMap().getTerrain()[i][j].getNonCombatUnit() != null && this.database.getMap().getTerrain()[i][j].getNonCombatUnit().isIsSelected())) {
                     isSelected = true;
                     break;
                 }
@@ -224,8 +219,7 @@ public class DatabaseController {
         int column = this.database.getMap().getCOL();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                if (this.database.getMap().getTerrain()[i][j].getCombatUnit() != null
-                        && this.database.getMap().getTerrain()[i][j].getCombatUnit().isIsSelected()) {
+                if (this.database.getMap().getTerrain()[i][j].getCombatUnit() != null && this.database.getMap().getTerrain()[i][j].getCombatUnit().isIsSelected()) {
                     return this.database.getMap().getTerrain()[i][j].getCombatUnit();
                 }
             }
@@ -238,8 +232,7 @@ public class DatabaseController {
         int column = this.database.getMap().getCOL();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                if (this.database.getMap().getTerrain()[i][j].getNonCombatUnit() != null
-                        && this.database.getMap().getTerrain()[i][j].getNonCombatUnit().isIsSelected()) {
+                if (this.database.getMap().getTerrain()[i][j].getNonCombatUnit() != null && this.database.getMap().getTerrain()[i][j].getNonCombatUnit().isIsSelected()) {
                     return this.database.getMap().getTerrain()[i][j].getNonCombatUnit();
                 }
             }
@@ -256,9 +249,9 @@ public class DatabaseController {
         return true;
     }
 
-    public void setAllUnitsUnifinished(User user) {
+    public void setAllUnitsUnfinished(User user) {
         for (Unit unit : user.getCivilization().getUnits()) {
-            if (!unit.getIsAsleep()) {
+            if (!unit.getIsAsleep() || !unit.getNextTerrain().isEmpty()) {
                 unit.setIsFinished(false);
             }
 
@@ -276,20 +269,29 @@ public class DatabaseController {
         NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
 
         if (combatUnit != null) {
-            System.out.println("hell");
             if (user.getCivilization().containsCombatUnit(x_final, y_final)) {
                 return "you have another combat unit in this tile";
+            }
+            if(combatUnit.getNextTerrain() != null)
+            {
+                combatUnit.getNextTerrain().clear();
             }
             ArrayList<Terrain> path = new ArrayList<>();
             ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
             addingAllPath(0, combatUnit.getX(), combatUnit.getY(), x_final, y_final, map, path, allPaths);
             combatUnit.setNextTerrain(findingTheShortestPath(allPaths));
+            for (Terrain terrain : combatUnit.getNextTerrain()) {
+                System.out.println(terrain.getX() + " Mani " + terrain.getY());
+            }
             combatUnit.setIsSelected(false);
             combatUnit.setIsFinished(true);
         } else if (nonCombatUnit != null) {
-            System.out.println("hell2");
             if (user.getCivilization().containsNonCombatUnit(x_final, y_final)) {
                 return "you have another non combat unit in this tile";
+            }
+            if(nonCombatUnit.getNextTerrain() != null)
+            {
+                nonCombatUnit.getNextTerrain().clear();
             }
             ArrayList<Terrain> path = new ArrayList<>();
             ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
@@ -302,38 +304,48 @@ public class DatabaseController {
         return "action completed";
     }
 
+    public void movementOfAllUnits(User user)
+    {
+        for(Unit unit : user.getCivilization().getUnits())
+        {
+            movementAsLongAsItHasMP(unit);
+        }
+    }
+
     public void movementAsLongAsItHasMP(Unit unit) {
         int indexOfLastTerrain;
         int movementCost = 0;
+            if(unit.getNextTerrain() == null)
+            {
+                return;
+            }
 
         for (indexOfLastTerrain = 0; indexOfLastTerrain < unit.getNextTerrain().size(); indexOfLastTerrain++) {
+            Terrain terrain = findingTheContainerTerrain(unit);
+            if (unit instanceof CombatUnit) {
+                terrain.setCombatUnit(null);
+                unit.getNextTerrain().get(indexOfLastTerrain).setCombatUnit((CombatUnit) unit);
+            } else if (unit instanceof NonCombatUnit) {
+                terrain.setNonCombatUnit(null);
+                unit.getNextTerrain().get(indexOfLastTerrain).setNonCombatUnit((NonCombatUnit) unit);
+            }
+
+            unit.setXAndY(unit.getNextTerrain().get(indexOfLastTerrain).getX(), unit.getNextTerrain().get(indexOfLastTerrain).getY());
             movementCost += unit.getNextTerrain().get(indexOfLastTerrain).getTerrainTypes().getMovementCost();
             if (movementCost > unit.getUnitType().getMovement()) {
                 break;
-            } else {
-                Terrain terrain = findingTheContainerTerrain(unit);
-                if (unit instanceof CombatUnit) {
-                    terrain.setCombatUnit(null);
-                    unit.getNextTerrain().get(indexOfLastTerrain).setCombatUnit((CombatUnit) unit);
-                } else if (unit instanceof NonCombatUnit) {
-                    terrain.setNonCombatUnit(null);
-                    unit.getNextTerrain().get(indexOfLastTerrain).setNonCombatUnit((NonCombatUnit) unit);
-                }
-
-                unit.setXAndY(unit.getNextTerrain().get(indexOfLastTerrain).getX(),
-                        unit.getNextTerrain().get(indexOfLastTerrain).getY());
-
             }
-            deletingTerrainsFromListofUnitTerrains(indexOfLastTerrain, unit);
         }
 
-    }
-
-    public void deletingTerrainsFromListofUnitTerrains(int indexOfLastTerrain, Unit unit) {
+        ArrayList<Terrain> needToRemove = new ArrayList<>();
         for (int i = 0; i < indexOfLastTerrain; i++) {
-            unit.getNextTerrain().remove(unit.getNextTerrain().get(i));
+            needToRemove.add(unit.getNextTerrain().get(i));
         }
+        unit.getNextTerrain().removeAll(needToRemove);
+
+
     }
+
 
     public Terrain findingTheContainerTerrain(Unit unit) {
         Map map = this.getMap();
@@ -349,37 +361,39 @@ public class DatabaseController {
         return null;
     }
 
-    public void addingAllPath(int turn, int x_beginning, int y_beginning, int x_final, int y_final,
-                              Map map, ArrayList<Terrain> path, ArrayList<ArrayList<Terrain>> allPaths) {
+    public void addingAllPath(int turn, int x_beginning, int y_beginning, int x_final, int y_final, Map map, ArrayList<Terrain> path, ArrayList<ArrayList<Terrain>> allPaths) {
         Terrain[][] copy_map = map.getTerrain();
-        if (turn == 10 || (x_beginning == x_final && y_beginning == y_final)) {
+        if ((x_beginning == x_final && y_beginning == y_final)) {
             allPaths.add(path);
+            return;
+        }
+        if ((turn >= 10 && turn <= 20) && allPaths.size() > 0) {
+            return;
+        }
+        if (turn == 20) {
+            return;
+        }
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                if (x_beginning + i < 0 || x_beginning + i >= map.getROW() || y_beginning + j < 0 || y_beginning + j >= map.getCOL()) {
 
-        } else {
-            for (int i = -1; i < 2; i++) {
-                for (int j = -1; j < 2; j++) {
-                    if (x_beginning + i < 0 || x_beginning + i >= map.getROW() || y_beginning + j < 0
-                            || y_beginning + j >= map.getCOL()) {
+                } else if (y_beginning % 2 == 0 && ((i == 0 && j == 0) || (i == 1 && j == -1) || (i == 1 && j == 1))) {
 
-                    } else if (y_beginning % 2 == 0 && ((i == 0 && j == 0) || (i == -1 && j == 1) || (i == -1 && j == -1) )) {
-
-                    } else if (y_beginning % 2 == 1 && ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == -1))) {
+                } else if (y_beginning % 2 == 1 && ((i == 0 && j == 0) || (i == -1 && j == 1) || (i == -1 && j == -1))) {
 
 
-                    } else {
-                        ArrayList<Terrain> path_copy = new ArrayList<>(path);
-                        path_copy.add(copy_map[x_beginning + i][y_beginning + j]);
-                        if (map.hasRiver(copy_map[x_beginning][y_beginning],
-                                copy_map[x_beginning + i][y_beginning + j]) != null) {
-                            continue;
-                        }
-                        addingAllPath(
-                                turn + 1, x_beginning + i, y_beginning + j, x_final, y_final, map, path_copy, allPaths);
+                } else {
+                    ArrayList<Terrain> path_copy = new ArrayList<>(path);
+                    path_copy.add(copy_map[x_beginning + i][y_beginning + j]);
+                    if (map.hasRiver(copy_map[x_beginning][y_beginning], copy_map[x_beginning + i][y_beginning + j]) != null) {
+                        continue;
                     }
-
+                    addingAllPath(turn + 1, x_beginning + i, y_beginning + j, x_final, y_final, map, path_copy, allPaths);
                 }
+
             }
         }
+
     }
 
     public ArrayList<Terrain> findingTheShortestPath(ArrayList<ArrayList<Terrain>> allPaths) {
@@ -390,6 +404,10 @@ public class DatabaseController {
                 movementCostOfTheShortestPath = calculatingTheMovementCost(path);
                 shortestPath = path;
             }
+        }
+        for (Terrain terrain : shortestPath) {
+            System.out.println("hello");
+            System.out.println(terrain.getX() + " " + terrain.getY());
         }
         return shortestPath;
     }
@@ -424,8 +442,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    RangedCombatUnit newArcher = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false,
-                            UnitTypes.ARCHER, false, false, false, false, false, false);
+                    RangedCombatUnit newArcher = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.ARCHER, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.ARCHER.getCost());
                     civilization.addUnit(newArcher);
                     tile.setCombatUnit(newArcher);
@@ -441,8 +458,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    RangedCombatUnit newChariotArcher = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.CHARIOT_ARCHER, false, false, false, false, false, false);
+                    RangedCombatUnit newChariotArcher = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.CHARIOT_ARCHER, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.CHARIOT_ARCHER.getCost());
                     civilization.addUnit(newChariotArcher);
                     tile.setCombatUnit(newChariotArcher);
@@ -455,8 +471,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newScout = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.SCOUT, false, false, false, false, false);
+                    NonRangedCombatUnit newScout = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.SCOUT, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.SCOUT.getCost());
                     civilization.addUnit(newScout);
                     tile.setCombatUnit(newScout);
@@ -469,8 +484,7 @@ public class DatabaseController {
                 } else if (tile.getNonCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonCombatUnit newSettler = new NonCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false,
-                            UnitTypes.SETTLER, false);
+                    NonCombatUnit newSettler = new NonCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
                     civilization.setGold(money - UnitTypes.SETTLER.getCost());
                     civilization.addUnit(newSettler);
                     tile.setNonCombatUnit(newSettler);
@@ -483,8 +497,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newScout = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.SPEARMAN, false, false, false, false, false);
+                    NonRangedCombatUnit newScout = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.SPEARMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.SPEARMAN.getCost());
                     civilization.addUnit(newScout);
                     tile.setCombatUnit(newScout);
@@ -497,8 +510,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.WARRIOR, false, false, false, false, false);
+                    NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.WARRIOR.getCost());
                     civilization.addUnit(newWarrior);
                     tile.setCombatUnit(newWarrior);
@@ -511,8 +523,7 @@ public class DatabaseController {
                 } else if (tile.getNonCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonCombatUnit newWorker = new NonCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false,
-                            UnitTypes.WORKER, false);
+                    NonCombatUnit newWorker = new NonCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.WORKER, false);
                     civilization.setGold(money - UnitTypes.WORKER.getCost());
                     civilization.addUnit(newWorker);
                     tile.setNonCombatUnit(newWorker);
@@ -522,16 +533,14 @@ public class DatabaseController {
             case "CATAPULT":
                 if (money < UnitTypes.CATAPULT.getCost()) {
                     return notEnoughMoney;
-                } else if (!tile.getTerrainResource().getResourceType()
-                        .equals(UnitTypes.CATAPULT.getResourceRequirements())) {
+                } else if (!tile.getTerrainResource().getResourceType().equals(UnitTypes.CATAPULT.getResourceRequirements())) {
                     return lackResources;
                 } else if (!civilization.getTechnologies().contains(UnitTypes.CATAPULT.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    RangedCombatUnit newCatapult = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false,
-                            UnitTypes.CATAPULT, false, false, false, false, false, false);
+                    RangedCombatUnit newCatapult = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.CATAPULT, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.CATAPULT.getCost());
                     civilization.addUnit(newCatapult);
                     tile.setCombatUnit(newCatapult);
@@ -541,16 +550,14 @@ public class DatabaseController {
             case "HORSESMAN":
                 if (money < UnitTypes.HORSESMAN.getCost()) {
                     return notEnoughMoney;
-                } else if (!tile.getTerrainResource().getResourceType()
-                        .equals(UnitTypes.HORSESMAN.getResourceRequirements())) {
+                } else if (!tile.getTerrainResource().getResourceType().equals(UnitTypes.HORSESMAN.getResourceRequirements())) {
                     return lackResources;
                 } else if (!civilization.getTechnologies().contains(UnitTypes.HORSESMAN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newHorsesman = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.HORSESMAN, false, false, false, false, false);
+                    NonRangedCombatUnit newHorsesman = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.HORSESMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.HORSESMAN.getCost());
                     civilization.addUnit(newHorsesman);
                     tile.setCombatUnit(newHorsesman);
@@ -560,16 +567,14 @@ public class DatabaseController {
             case "SWORDSMAN":
                 if (money < UnitTypes.SWORDSMAN.getCost()) {
                     return notEnoughMoney;
-                } else if (!tile.getTerrainResource().getResourceType()
-                        .equals(UnitTypes.SWORDSMAN.getResourceRequirements())) {
+                } else if (!tile.getTerrainResource().getResourceType().equals(UnitTypes.SWORDSMAN.getResourceRequirements())) {
                     return lackResources;
                 } else if (!civilization.getTechnologies().contains(UnitTypes.SWORDSMAN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newSwordsman = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.SWORDSMAN, false, false, false, false, false);
+                    NonRangedCombatUnit newSwordsman = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.SWORDSMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.SWORDSMAN.getCost());
                     civilization.addUnit(newSwordsman);
                     tile.setCombatUnit(newSwordsman);
@@ -584,8 +589,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    RangedCombatUnit newCrossbowman = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.CROSSBOWMAN, false, false, false, false, false, false);
+                    RangedCombatUnit newCrossbowman = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.CROSSBOWMAN, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.CROSSBOWMAN.getCost());
                     civilization.addUnit(newCrossbowman);
                     tile.setCombatUnit(newCrossbowman);
@@ -595,16 +599,14 @@ public class DatabaseController {
             case "KNIGHT":
                 if (money < UnitTypes.HORSESMAN.getCost()) {
                     return notEnoughMoney;
-                } else if (!tile.getTerrainResource().getResourceType()
-                        .equals(UnitTypes.KNIGHT.getResourceRequirements())) {
+                } else if (!tile.getTerrainResource().getResourceType().equals(UnitTypes.KNIGHT.getResourceRequirements())) {
                     return lackResources;
                 } else if (!civilization.getTechnologies().contains(UnitTypes.HORSESMAN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newKnight = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.KNIGHT, false, false, false, false, false);
+                    NonRangedCombatUnit newKnight = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.KNIGHT, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.KNIGHT.getCost());
                     civilization.addUnit(newKnight);
                     tile.setCombatUnit(newKnight);
@@ -615,16 +617,14 @@ public class DatabaseController {
             case "LONGSWORDSMAN":
                 if (money < UnitTypes.LONGSWORDSMAN.getCost()) {
                     return notEnoughMoney;
-                } else if (!tile.getTerrainResource().getResourceType()
-                        .equals(UnitTypes.LONGSWORDSMAN.getResourceRequirements())) {
+                } else if (!tile.getTerrainResource().getResourceType().equals(UnitTypes.LONGSWORDSMAN.getResourceRequirements())) {
                     return lackResources;
                 } else if (!civilization.getTechnologies().contains(UnitTypes.LONGSWORDSMAN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newLong = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.LONGSWORDSMAN, false, false, false, false, false);
+                    NonRangedCombatUnit newLong = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.LONGSWORDSMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.LONGSWORDSMAN.getCost());
                     civilization.addUnit(newLong);
                     tile.setCombatUnit(newLong);
@@ -639,8 +639,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newPikeman = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.PIKEMAN, false, false, false, false, false);
+                    NonRangedCombatUnit newPikeman = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.PIKEMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.PIKEMAN.getCost());
                     civilization.addUnit(newPikeman);
                     tile.setCombatUnit(newPikeman);
@@ -650,16 +649,14 @@ public class DatabaseController {
             case "TREBUCHET":
                 if (money < UnitTypes.TREBUCHET.getCost()) {
                     return notEnoughMoney;
-                } else if (!tile.getTerrainResource().getResourceType()
-                        .equals(UnitTypes.TREBUCHET.getResourceRequirements())) {
+                } else if (!tile.getTerrainResource().getResourceType().equals(UnitTypes.TREBUCHET.getResourceRequirements())) {
                     return lackResources;
                 } else if (!civilization.getTechnologies().contains(UnitTypes.TREBUCHET.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    RangedCombatUnit newTrebuchet = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false,
-                            UnitTypes.TREBUCHET, false, false, false, false, false, false);
+                    RangedCombatUnit newTrebuchet = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.TREBUCHET, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.TREBUCHET.getCost());
                     civilization.addUnit(newTrebuchet);
                     tile.setCombatUnit(newTrebuchet);
@@ -675,8 +672,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    RangedCombatUnit newCannon = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false,
-                            UnitTypes.CANNON, false, false, false, false, false, false);
+                    RangedCombatUnit newCannon = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.CANNON, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.CANNON.getCost());
                     civilization.addUnit(newCannon);
                     tile.setCombatUnit(newCannon);
@@ -687,16 +683,14 @@ public class DatabaseController {
             case "CAVALRY":
                 if (money < UnitTypes.CAVALRY.getCost()) {
                     return notEnoughMoney;
-                } else if (!tile.getTerrainResource().getResourceType()
-                        .equals(UnitTypes.CAVALRY.getResourceRequirements())) {
+                } else if (!tile.getTerrainResource().getResourceType().equals(UnitTypes.CAVALRY.getResourceRequirements())) {
                     return lackResources;
                 } else if (!civilization.getTechnologies().contains(UnitTypes.CAVALRY.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.CAVALRY, false, false, false, false, false);
+                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.CAVALRY, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.CAVALRY.getCost());
                     civilization.addUnit(newUnit);
                     tile.setCombatUnit(newUnit);
@@ -707,16 +701,14 @@ public class DatabaseController {
             case "LANCER":
                 if (money < UnitTypes.LANCER.getCost()) {
                     return notEnoughMoney;
-                } else if (!tile.getTerrainResource().getResourceType()
-                        .equals(UnitTypes.LANCER.getResourceRequirements())) {
+                } else if (!tile.getTerrainResource().getResourceType().equals(UnitTypes.LANCER.getResourceRequirements())) {
                     return lackResources;
                 } else if (!civilization.getTechnologies().contains(UnitTypes.LANCER.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.LANCER, false, false, false, false, false);
+                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.LANCER, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.LANCER.getCost());
                     civilization.addUnit(newUnit);
                     tile.setCombatUnit(newUnit);
@@ -731,8 +723,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.MUSKETMAN, false, false, false, false, false);
+                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.MUSKETMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.MUSKETMAN.getCost());
                     civilization.addUnit(newUnit);
                     tile.setCombatUnit(newUnit);
@@ -747,8 +738,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.RIFLEMAN, false, false, false, false, false);
+                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.RIFLEMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.RIFLEMAN.getCost());
                     civilization.addUnit(newUnit);
                     tile.setCombatUnit(newUnit);
@@ -764,8 +754,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.ANTI_TANKGUN, false, false, false, false, false);
+                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.ANTI_TANKGUN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.ANTI_TANKGUN.getCost());
                     civilization.addUnit(newUnit);
                     tile.setCombatUnit(newUnit);
@@ -780,8 +769,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    RangedCombatUnit newUnit = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false,
-                            UnitTypes.ARTILLERY, false, false, false, false, false, false);
+                    RangedCombatUnit newUnit = new RangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.ARTILLERY, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.ARTILLERY.getCost());
                     civilization.addUnit(newUnit);
                     tile.setCombatUnit(newUnit);
@@ -796,8 +784,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.INFANTRY, false, false, false, false, false);
+                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.INFANTRY, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.INFANTRY.getCost());
                     civilization.addUnit(newUnit);
                     tile.setCombatUnit(newUnit);
@@ -813,8 +800,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.PANZER, false, false, false, false, false);
+                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.PANZER, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.PANZER.getCost());
                     civilization.addUnit(newUnit);
                     tile.setCombatUnit(newUnit);
@@ -829,8 +815,7 @@ public class DatabaseController {
                 } else if (tile.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false,
-                            false, UnitTypes.TANK, false, false, false, false, false);
+                    NonRangedCombatUnit newUnit = new NonRangedCombatUnit(tile.getX(), tile.getY(), 0, 0, 0, 0, false, false, UnitTypes.TANK, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.TANK.getCost());
                     civilization.addUnit(newUnit);
                     tile.setCombatUnit(newUnit);
@@ -875,8 +860,7 @@ public class DatabaseController {
         for (TechnologyTypes technologyType2 : technologyType.getRequirements()) {
             if (!isContainTechnology(user, technologyType2)) {
                 return "you do not have required prerequisites";
-            } else if (isContainTechnology(user, technologyType2)
-                    && getTechnologyByTechnologyType(user, technologyType).getIsAvailabe()) {
+            } else if (isContainTechnology(user, technologyType2) && getTechnologyByTechnologyType(user, technologyType).getIsAvailabe()) {
                 return "you do not have required prerequisites";
             }
         }
@@ -945,13 +929,12 @@ public class DatabaseController {
 
     public void setCivilizations(ArrayList<User> users) {
 
-        setCivilizationsName();
+        this.database.setCivilizationsName(new ArrayList<>(List.of("I", "A", "R", "An", "C", "M", "Anc", "I", "Me", "Pe")));
         ArrayList<Integer> indices = setIndices(users);
         int i = 0;
         for (User user : users) {
 
-            Civilization civilization = new Civilization(10000, 100,
-                    this.database.getCivilizationsName().get(indices.get(i)));
+            Civilization civilization = new Civilization(10000, 100, this.database.getCivilizationsName().get(indices.get(i)));
             user.setCivilization(civilization);
             createUnitForEachCivilization(user);
             setTerrainsOfEachCivilization(user);
@@ -959,10 +942,6 @@ public class DatabaseController {
         }
     }
 
-    public void setCivilizationsName() {
-
-        this.database.setCivilizationsName(new ArrayList<>(List.of("I", "A", "R", "An", "C", "M", "Anc", "I", "Me", "Pe")));
-    }
 
     public ArrayList<Integer> setIndices(ArrayList<User> users) {
         Random rand = new Random();
@@ -980,8 +959,8 @@ public class DatabaseController {
 
     }
 
-    public boolean isContainInteger(ArrayList<Integer> indeces, int random) {
-        for (Integer integer : indeces) {
+    public boolean isContainInteger(ArrayList<Integer> indices, int random) {
+        for (Integer integer : indices) {
             if (integer == random) {
 
                 return true;
@@ -992,12 +971,8 @@ public class DatabaseController {
 
     public void createUnitForEachCivilization(User user) {
         ArrayList<Integer> unitsCoordinates = findingEmptyTiles();
-        NonCombatUnit newSettler = new NonCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0,
-                false, false,
-                UnitTypes.SETTLER, false);
-        NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1,
-                0, 0, 0, 0, false,
-                false, UnitTypes.WARRIOR, false, false, false, false, false);
+        NonCombatUnit newSettler = new NonCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
+        NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1), 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)].setCombatUnit(newWarrior);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1) + 1].setNonCombatUnit(newSettler);
         user.getCivilization().getUnits().add(newSettler);
@@ -1022,8 +997,7 @@ public class DatabaseController {
 
     public boolean isTerrainEmpty(int x, int y) {
 
-        return this.getMap().getTerrain()[x][y].getCombatUnit() == null
-                && this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() == null;
+        return this.getMap().getTerrain()[x][y].getCombatUnit() == null && this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() == null;
     }
 
 }
