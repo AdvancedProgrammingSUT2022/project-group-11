@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
+import Model.City.City;
 import Model.Technologies.TechnologyTypes;
 import Model.Units.Unit;
 
@@ -12,6 +13,7 @@ public class Civilization {
     private int gold;
     private int happiness;
     private ArrayList<TechnologyTypes> technologies;
+    private int science;
 
     public Civilization(ArrayList<Unit> units, ArrayList<City> cities, ArrayList<Terrain> terrains, int gold, int happiness) {
         this.units = units;
@@ -88,5 +90,46 @@ public class Civilization {
     public void setTechnologies(ArrayList<TechnologyTypes> technologies)
     {
         this.technologies = technologies;
+    }
+
+    public void addCity ( City city)
+    {
+        this.cities.add(city);
+    }
+
+    public void removeUnit( Unit unit)
+    {
+        for (Unit testUnit : this.units)
+        {
+            if (testUnit.equals(unit))
+            {
+                this.units.remove(testUnit);
+                return;
+            }
+
+        }
+    }
+
+    public int getScience()
+    {
+        return science;
+    }
+
+    public void setScience(int science)
+    {
+        this.science = science;
+    }
+
+    public void removeCity(City city )
+    {
+        for ( City cityTest : this.cities)
+        {
+            if ( cityTest.equals(city))
+            {
+                this.cities.remove(city);
+                return;
+            }
+
+        }
     }
 }

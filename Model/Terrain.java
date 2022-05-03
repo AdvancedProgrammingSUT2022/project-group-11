@@ -1,5 +1,6 @@
 package Model;
 
+import Model.City.City;
 import Model.Terrains.TerrainTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Units.CombatUnit;
@@ -17,6 +18,8 @@ public class Terrain {
     private NonCombatUnit nonCombatUnit;
     private Resource resource;
     private City city;
+    private boolean isBeingWorkedOn;
+
 
     Terrain(int x, int y, String Type, TerrainTypes terrainTypes, TerrainFeatureTypes terrainFeatureTypes, CombatUnit combatUnit,NonCombatUnit nonCombatUnit) {
         this.x = x;
@@ -27,6 +30,7 @@ public class Terrain {
         this.combatUnit = combatUnit;
         this.nonCombatUnit = nonCombatUnit;
         this.city = null;
+        this.isBeingWorkedOn = false;
     }
 
 
@@ -117,5 +121,27 @@ public class Terrain {
             return true;
         }
         return false;
+    }
+
+    public boolean isBeingWorkedOn()
+    {
+        return isBeingWorkedOn;
+    }
+
+    public void setBeingWorkedOn(boolean beingWorkedOn)
+    {
+        isBeingWorkedOn = beingWorkedOn;
+    }
+
+    public int getGold ()
+    {
+        if (this.isBeingWorkedOn == false)
+        {
+            return 0;
+        }
+        else
+        {
+
+        }
     }
 }

@@ -11,12 +11,14 @@ public class CombatUnit extends Unit {
         this.alert = alert;
         this.fortify = fortify;
         this.fortifyUntilHeal = fortifyUntilHeal;
+        this.CombatStrength = 10;
     }
 
     private boolean isGarrisoned;
     private boolean alert;
     private boolean fortify;
     private boolean fortifyUntilHeal;
+    private int CombatStrength;
 
     public boolean isIsGarrisoned() {
         return this.isGarrisoned;
@@ -66,4 +68,13 @@ public class CombatUnit extends Unit {
         this.fortifyUntilHeal = fortifyUntilHeal;
     }
 
+    public int getCombatStrength()
+    {
+        return CombatStrength;
+    }
+
+    public void setCombatStrength(int combatStrength)
+    {
+        CombatStrength = combatStrength;
+    }
 }
