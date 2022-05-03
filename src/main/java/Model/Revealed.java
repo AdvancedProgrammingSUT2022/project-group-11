@@ -17,8 +17,9 @@ public class Revealed{
     private NonCombatUnit nonCombatUnit;
     private Improvements TerrrainImprovement;
     private Resource TerrainResource;
+    private boolean unlockResource;
 
-    public Revealed(User user, TerrainTypes terrainTypes, ArrayList<TerrainFeatureTypes> terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement, Resource TerrainResource) {
+    public Revealed(User user, TerrainTypes terrainTypes, ArrayList<TerrainFeatureTypes> terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement, Resource TerrainResource,boolean bool) {
         this.user = user;
         this.terrainTypes = terrainTypes;
         this.terrainFeatureTypes = terrainFeatureTypes;
@@ -26,12 +27,17 @@ public class Revealed{
         this.nonCombatUnit = nonCombatUnit;
         this.TerrrainImprovement = TerrrainImprovement;
         this.TerrainResource = TerrainResource;
+        this.unlockResource = bool;
     }
 
+  
+    public void setBooleanResource(boolean bool){
+        this.unlockResource = bool;
+    }
 
-
-
-
+    public boolean getBooleanResource(){
+        return this.unlockResource;
+    }
 
     public User getUser() {
         return this.user;

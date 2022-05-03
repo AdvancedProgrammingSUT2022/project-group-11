@@ -1048,6 +1048,9 @@ public class DatabaseController {
                 && this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() == null;
     }
 
+
+
+
     public void addGoldToUser(User user) {
         for (Terrain allTerrains : user.getCivilization().getOwnedTerrains()) {
             int gold = allTerrains.getCity().getGold();
@@ -1086,6 +1089,7 @@ public class DatabaseController {
         // gold == 0?
 
     }
+
 
     public void consumptFood(User user) {
         for (City city : user.getCivilization().getCities()) {
@@ -1140,6 +1144,8 @@ public class DatabaseController {
 
     }
 
+    
+
     public void setHappinessUser(User user) {
 
         // without building
@@ -1178,7 +1184,7 @@ public class DatabaseController {
         }else{
             for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
                 if(allTerrain.getCombatUnit() != null){
-                //    allTerrain.getCombatUnit().setMilitaryPower();
+                //    militry power
                 }
             }
               user.getCivilization().setBooleanSettlerBuy(true);

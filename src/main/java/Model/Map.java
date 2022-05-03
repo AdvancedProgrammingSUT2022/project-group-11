@@ -128,7 +128,7 @@ public class Map {
             Terrains[i][j].getReveals().remove(index);
         }
 
-        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), Terrains[i][j].getCombatUnit().clone(), Terrains[i][j].getNonCombatUnit().clone(), Terrains[i][j].getTerrrainImprovement(), Terrains[i][j].getTerrainResource().clone());
+        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), Terrains[i][j].getCombatUnit().clone(), Terrains[i][j].getNonCombatUnit().clone(), Terrains[i][j].getTerrrainImprovement(), Terrains[i][j].getTerrainResource().clone(),Terrains[i][j].getBooleanResource());
         Terrains[i][j].setReveals(reveal);
 
     }
@@ -530,6 +530,17 @@ public class Map {
         for(Terrain terrain : user.getCivilization().getRevealedTerrains())
         {
             setRevealed(user, terrain.getX(), terrain.getY());
+        }
+        for(int i = 0; i < ROW;i++){
+            for(int j = 0; j < COL;j++){
+                if(Terrains[i][j].getType().equals("visible")){
+                    if(Terrains[i][j].getTerrrainImprovement() == Terrains[i][j].getTerrainResource().getResourceType().getRequiredImprovements()){
+                        Terrains[i][j].setBooleanResource(true);
+                    }else{
+                        Terrains[i][j].setBooleanResource(false);
+                    }
+                }
+            }
         }
     }
 }
