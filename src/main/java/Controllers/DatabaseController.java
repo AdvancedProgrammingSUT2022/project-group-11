@@ -2,6 +2,7 @@ package Controllers;
 
 import Model.*;
 import Model.Buildings.BuildingTypes;
+import Model.City.City;
 import Model.Resources.ResourceTypes;
 import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
@@ -172,6 +173,7 @@ public class DatabaseController {
                 }
                 break;
         }
+        combatUnit.getNextTerrain().clear();
         combatUnit.setIsFinished(true);
         combatUnit.setIsSelected(false);
         return "action completed";
@@ -187,6 +189,7 @@ public class DatabaseController {
         }
         nonCombatUnit.setIsFinished(true);
         nonCombatUnit.setIsSelected(false);
+        nonCombatUnit.getNextTerrain().clear();
         return "action completed";
     }
 
@@ -258,9 +261,9 @@ public class DatabaseController {
         return true;
     }
 
-    public void setAllUnitsUnifinished(User user) {
+    public void setAllUnitsUnfinished(User user) {
         for (Unit unit : user.getCivilization().getUnits()) {
-            if (!unit.getIsAsleep()) {
+            if (!unit.getIsAsleep() || !unit.getNextTerrain().isEmpty()) {
                 unit.setIsFinished(false);
             }
 
@@ -278,20 +281,29 @@ public class DatabaseController {
         NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
 
         if (combatUnit != null) {
-            System.out.println("hell");
             if (user.getCivilization().containsCombatUnit(x_final, y_final)) {
                 return "you have another combat unit in this tile";
+            }
+            if(combatUnit.getNextTerrain() != null)
+            {
+                combatUnit.getNextTerrain().clear();
             }
             ArrayList<Terrain> path = new ArrayList<>();
             ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
             addingAllPath(0, combatUnit.getX(), combatUnit.getY(), x_final, y_final, map, path, allPaths);
             combatUnit.setNextTerrain(findingTheShortestPath(allPaths));
+            for (Terrain terrain : combatUnit.getNextTerrain()) {
+                System.out.println(terrain.getX() + " Mani " + terrain.getY());
+            }
             combatUnit.setIsSelected(false);
             combatUnit.setIsFinished(true);
         } else if (nonCombatUnit != null) {
-            System.out.println("hell2");
             if (user.getCivilization().containsNonCombatUnit(x_final, y_final)) {
                 return "you have another non combat unit in this tile";
+            }
+            if(nonCombatUnit.getNextTerrain() != null)
+            {
+                nonCombatUnit.getNextTerrain().clear();
             }
             ArrayList<Terrain> path = new ArrayList<>();
             ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
@@ -304,38 +316,48 @@ public class DatabaseController {
         return "action completed";
     }
 
+    public void movementOfAllUnits(User user)
+    {
+        for(Unit unit : user.getCivilization().getUnits())
+        {
+            movementAsLongAsItHasMP(unit);
+        }
+    }
+
     public void movementAsLongAsItHasMP(Unit unit) {
         int indexOfLastTerrain;
         int movementCost = 0;
+            if(unit.getNextTerrain() == null)
+            {
+                return;
+            }
 
         for (indexOfLastTerrain = 0; indexOfLastTerrain < unit.getNextTerrain().size(); indexOfLastTerrain++) {
+            Terrain terrain = findingTheContainerTerrain(unit);
+            if (unit instanceof CombatUnit) {
+                terrain.setCombatUnit(null);
+                unit.getNextTerrain().get(indexOfLastTerrain).setCombatUnit((CombatUnit) unit);
+            } else if (unit instanceof NonCombatUnit) {
+                terrain.setNonCombatUnit(null);
+                unit.getNextTerrain().get(indexOfLastTerrain).setNonCombatUnit((NonCombatUnit) unit);
+            }
+
+            unit.setXAndY(unit.getNextTerrain().get(indexOfLastTerrain).getX(), unit.getNextTerrain().get(indexOfLastTerrain).getY());
             movementCost += unit.getNextTerrain().get(indexOfLastTerrain).getTerrainTypes().getMovementCost();
             if (movementCost > unit.getUnitType().getMovement()) {
                 break;
-            } else {
-                Terrain terrain = findingTheContainerTerrain(unit);
-                if (unit instanceof CombatUnit) {
-                    terrain.setCombatUnit(null);
-                    unit.getNextTerrain().get(indexOfLastTerrain).setCombatUnit((CombatUnit) unit);
-                } else if (unit instanceof NonCombatUnit) {
-                    terrain.setNonCombatUnit(null);
-                    unit.getNextTerrain().get(indexOfLastTerrain).setNonCombatUnit((NonCombatUnit) unit);
-                }
-
-                unit.setXAndY(unit.getNextTerrain().get(indexOfLastTerrain).getX(),
-                        unit.getNextTerrain().get(indexOfLastTerrain).getY());
-
             }
-            deletingTerrainsFromListofUnitTerrains(indexOfLastTerrain, unit);
         }
 
-    }
-
-    public void deletingTerrainsFromListofUnitTerrains(int indexOfLastTerrain, Unit unit) {
+        ArrayList<Terrain> needToRemove = new ArrayList<>();
         for (int i = 0; i < indexOfLastTerrain; i++) {
-            unit.getNextTerrain().remove(unit.getNextTerrain().get(i));
+            needToRemove.add(unit.getNextTerrain().get(i));
         }
+        unit.getNextTerrain().removeAll(needToRemove);
+
+
     }
+
 
     public Terrain findingTheContainerTerrain(Unit unit) {
         Map map = this.getMap();
@@ -351,38 +373,39 @@ public class DatabaseController {
         return null;
     }
 
-    public void addingAllPath(int turn, int x_beginning, int y_beginning, int x_final, int y_final,
-            Map map, ArrayList<Terrain> path, ArrayList<ArrayList<Terrain>> allPaths) {
+    public void addingAllPath(int turn, int x_beginning, int y_beginning, int x_final, int y_final, Map map, ArrayList<Terrain> path, ArrayList<ArrayList<Terrain>> allPaths) {
         Terrain[][] copy_map = map.getTerrain();
-        if (turn == 10 || (x_beginning == x_final && y_beginning == y_final)) {
+        if ((x_beginning == x_final && y_beginning == y_final)) {
             allPaths.add(path);
+            return;
+        }
+        if ((turn >= 10 && turn <= 20) && allPaths.size() > 0) {
+            return;
+        }
+        if (turn == 20) {
+            return;
+        }
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                if (x_beginning + i < 0 || x_beginning + i >= map.getROW() || y_beginning + j < 0 || y_beginning + j >= map.getCOL()) {
 
-        } else {
-            for (int i = -1; i < 2; i++) {
-                for (int j = -1; j < 2; j++) {
-                    if (x_beginning + i < 0 || x_beginning + i >= map.getROW() || y_beginning + j < 0
-                            || y_beginning + j >= map.getCOL()) {
+                } else if (y_beginning % 2 == 0 && ((i == 0 && j == 0) || (i == 1 && j == -1) || (i == 1 && j == 1))) {
 
-                    } else if (y_beginning % 2 == 0
-                            && ((i == 0 && j == 0) || (i == -1 && j == 1) || (i == -1 && j == -1))) {
+                } else if (y_beginning % 2 == 1 && ((i == 0 && j == 0) || (i == -1 && j == 1) || (i == -1 && j == -1))) {
 
-                    } else if (y_beginning % 2 == 1
-                            && ((i == 0 && j == 0) || (i == 1 && j == 1) || (i == 1 && j == -1))) {
 
-                    } else {
-                        ArrayList<Terrain> path_copy = new ArrayList<>(path);
-                        path_copy.add(copy_map[x_beginning + i][y_beginning + j]);
-                        if (map.hasRiver(copy_map[x_beginning][y_beginning],
-                                copy_map[x_beginning + i][y_beginning + j]) != null) {
-                            continue;
-                        }
-                        addingAllPath(
-                                turn + 1, x_beginning + i, y_beginning + j, x_final, y_final, map, path_copy, allPaths);
+                } else {
+                    ArrayList<Terrain> path_copy = new ArrayList<>(path);
+                    path_copy.add(copy_map[x_beginning + i][y_beginning + j]);
+                    if (map.hasRiver(copy_map[x_beginning][y_beginning], copy_map[x_beginning + i][y_beginning + j]) != null) {
+                        continue;
                     }
-
+                    addingAllPath(turn + 1, x_beginning + i, y_beginning + j, x_final, y_final, map, path_copy, allPaths);
                 }
+
             }
         }
+
     }
 
     public ArrayList<Terrain> findingTheShortestPath(ArrayList<ArrayList<Terrain>> allPaths) {
@@ -393,6 +416,10 @@ public class DatabaseController {
                 movementCostOfTheShortestPath = calculatingTheMovementCost(path);
                 shortestPath = path;
             }
+        }
+        for (Terrain terrain : shortestPath) {
+            System.out.println("hello");
+            System.out.println(terrain.getX() + " " + terrain.getY());
         }
         return shortestPath;
     }
@@ -965,26 +992,19 @@ public class DatabaseController {
 
     public void setCivilizations(ArrayList<User> users) {
 
-        setCivilizationsName();
+        this.database.setCivilizationsName(new ArrayList<>(List.of("I", "A", "R", "An", "C", "M", "Anc", "I", "Me", "Pe")));
         ArrayList<Integer> indices = setIndices(users);
         int i = 0;
         for (User user : users) {
 
-            Civilization civilization = new Civilization(10000, 100,
-                    this.database.getCivilizationsName().get(indices.get(i)));
+            Civilization civilization = new Civilization(10000, 100, this.database.getCivilizationsName().get(indices.get(i)));
             user.setCivilization(civilization);
-            user.getCivilization().setBooleanSettlerBuy(true);
             createUnitForEachCivilization(user);
             setTerrainsOfEachCivilization(user);
             i++;
         }
     }
 
-    public void setCivilizationsName() {
-
-        this.database
-                .setCivilizationsName(new ArrayList<>(List.of("I", "A", "R", "An", "C", "M", "Anc", "I", "Me", "Pe")));
-    }
 
     public ArrayList<Integer> setIndices(ArrayList<User> users) {
         Random rand = new Random();
@@ -1002,8 +1022,8 @@ public class DatabaseController {
 
     }
 
-    public boolean isContainInteger(ArrayList<Integer> indeces, int random) {
-        for (Integer integer : indeces) {
+    public boolean isContainInteger(ArrayList<Integer> indices, int random) {
+        for (Integer integer : indices) {
             if (integer == random) {
 
                 return true;
@@ -1100,7 +1120,7 @@ public class DatabaseController {
         /*
          * citizens add food when work
          * tara complete city
-         * 
+         *
          */
 
         ArrayList<City> allCitiesHaveSettler = new ArrayList<City>();
@@ -1144,7 +1164,7 @@ public class DatabaseController {
 
     }
 
-    
+
 
     public void setHappinessUser(User user) {
 
@@ -1171,9 +1191,9 @@ public class DatabaseController {
 
             }
         }
-     
+
         user.getCivilization().setHappiness(user.getCivilization().getHappiness() + 4 * happinessLuxuryIncrease.size());
-      
+
         if(user.getCivilization().getHappiness() < 0){
               for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
                   if(allTerrain.getCombatUnit() != null){

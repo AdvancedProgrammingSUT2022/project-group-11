@@ -62,9 +62,9 @@ public class MapGeneratorTest {
     public void hasRiverSecondTest(){
         Map map = new Map();
         rivers = new ArrayList<River>();
-        river = new River(terrainOne, terrainTwo);
         rivers.add(river);
         map.setRiver(rivers);
+        when(river.getFirstTerrain()).thenReturn(terrainOne);
         River checkRiver = map.hasRiver(terrainOne);
         Assertions.assertNotNull(checkRiver);
     }
@@ -73,9 +73,10 @@ public class MapGeneratorTest {
     public void hasNotRiverSecondTest(){
         Map map = new Map();
         rivers = new ArrayList<River>();
-        river = new River(null, terrainOne);
         rivers.add(river);
         map.setRiver(rivers);
+        when(river.getFirstTerrain()).thenReturn(terrainOne);
+        when(river.getSecondTerrain()).thenReturn(null);
         River checkRiver = map.hasRiver(terrainTwo);
         Assertions.assertNull(checkRiver);
     }
@@ -189,11 +190,7 @@ public class MapGeneratorTest {
        Assertions.assertTrue(terrains[27][4].getTerrainTypes() == TerrainTypes.SNOW);
     }
 
-    @Test
-
-    public void randomTerrainAdd(){
-        
-    }
+    
 
 
   

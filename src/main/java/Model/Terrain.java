@@ -2,6 +2,7 @@ package Model;
 
 import java.util.ArrayList;
 
+import Model.City.City;
 import Model.Improvements.Improvements;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
@@ -10,7 +11,8 @@ import Model.Units.NonCombatUnit;
 import Model.Units.Unit;
 
 public class Terrain {
-
+    
+    private boolean isBeingWorkedOn;
     private int x;
     private int y;
     private String Type;
@@ -38,18 +40,16 @@ public class Terrain {
         this.TerrainResource = TerrainResource;
         this.reveals = reveals;
        // this.city = null;
+       this.isBeingWorkedOn = false;
     }
 
-
-    
-    public void setBooleanResource(boolean bool){
+    public void setBooleanResource(boolean bool) {
         this.unlockResource = bool;
     }
-    public boolean getBooleanResource(){
+
+    public boolean getBooleanResource() {
         return this.unlockResource;
     }
- 
-   
 
     public int getX() {
         return this.x;
@@ -83,7 +83,7 @@ public class Terrain {
         this.terrainTypes = terrainTypes;
     }
 
-    public  ArrayList<TerrainFeatureTypes> getTerrainFeatureTypes() {
+    public ArrayList<TerrainFeatureTypes> getTerrainFeatureTypes() {
         return this.terrainFeatureTypes;
     }
 
@@ -107,8 +107,8 @@ public class Terrain {
         this.nonCombatUnit = nonCombatUnit;
     }
 
-    public Improvements getTerrrainImprovement() {
-        return this.TerrrainImprovement;
+    public Resource getResource() {
+        return TerrainResource;
     }
 
     public void setTerrrainImprovement(Improvements TerrrainImprovement) {
@@ -131,29 +131,41 @@ public class Terrain {
         this.reveals.add(reveals);
     }
 
-    public void setRevealedTest(ArrayList<Revealed> reveals){
-       this.reveals = reveals;
+    public void setRevealedTest(ArrayList<Revealed> reveals) {
+        this.reveals = reveals;
     }
 
-    public City getCity()
-    {
+    public City getCity() {
         return city;
     }
 
-    public void setCity(City city)
-    {
+    public void setCity(City city) {
         this.city = city;
     }
-    public boolean containsUnit(Unit unit2)
-    {
-        if(unit2.equals((Unit) combatUnit))
-        {
-            return true;
-        }
-        else if(unit2.equals((Unit) nonCombatUnit))
-        {
-            return true;
-        }
-        return false;
+
+    public boolean containsUnit(Unit unit2) {
+        return unit2.equals(combatUnit) || unit2.equals(nonCombatUnit);
     }
+
+    public boolean isBeingWorkedOn() {
+        return isBeingWorkedOn;
+    }
+
+    public void setBeingWorkedOn(boolean beingWorkedOn) {
+        isBeingWorkedOn = beingWorkedOn;
+    }
+
+    public int getGold() {
+        if (!this.isBeingWorkedOn) {
+            return 0;
+        } else {
+
+        }
+        return 0;
+    }
+
+    public Improvements getTerrrainImprovement() {
+        return this.TerrrainImprovement;
+    }
+
 }

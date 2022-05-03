@@ -1,14 +1,21 @@
-package Model;
+package Model.City;
+
+import Model.Civilization;
+import Model.Terrain;
+import Model.Buildings.BuildingTypes;
+import Model.Units.CombatUnit;
+import Model.Units.NonCombatUnit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
-import Model.Buildings.BuildingTypes;
-
-public class City {
+public class City{
     private final Civilization founder;
     private Civilization owner;
     private boolean isPuppet;
     private final Terrain centralTerrain;
+    private ArrayList<Terrain> neighbors;
+    private int population;
     private int HP;
     private String type;
     private int combatStrength;
@@ -17,37 +24,51 @@ public class City {
     private boolean garrisoned;
     private boolean isCaptured;
     private ArrayList<Citizen> citizens;
-    private int gold;
+    private boolean isBuildingSomething;
     private int food;
+    private int science;
+    private int gold;
+    private int production;
+    private int turnsRemainingUntilPopulationIncrease;
+    private int foodStorage;
+    private boolean isUnderAttack;
     private ArrayList<BuildingTypes> buildings;
+    private CombatUnit combatUnit;
+    private NonCombatUnit nonCombatUnit;
 
-    public City(Civilization founder, Civilization owner, boolean isPuppet, Terrain centralTerrain, int HP, String type,
-            int combatStrength, boolean iConstructingUnit, int rangedCombatStrength, boolean garrisoned,
-            boolean isCaptured, ArrayList<Citizen> citizens,int food, int gold,ArrayList<BuildingTypes> buildings) {
+
+    public City(Civilization founder, Civilization owner, Terrain centralTerrain, int HP, String type, int combatStrength, int rangedCombatStrength, ArrayList<BuildingTypes> buildings ) {
         this.founder = founder;
         this.owner = owner;
-        this.isPuppet = isPuppet;
+        this.isPuppet = false;
         this.centralTerrain = centralTerrain;
         this.HP = HP;
         this.type = type;
         this.combatStrength = combatStrength;
-        this.iConstructingUnit = iConstructingUnit;
+        this.iConstructingUnit = false;
         this.rangedCombatStrength = rangedCombatStrength;
-        this.garrisoned = garrisoned;
-        this.isCaptured = isCaptured;
-        this.citizens = citizens;
-        this.food = food;
-        this.gold = gold;
+        this.garrisoned = false;
+        this.isCaptured = false;
+        this.citizens = new ArrayList<Citizen>();
+        this.citizens.add(new Citizen(this));
+        this.isBuildingSomething = false;
+        this.food = 0;
+        this.science = 0;
+        this.foodStorage = 0;
         this.buildings = buildings;
+
+
     }
 
 
-    public void setFood(int food){
-        this.food = food;
-      }
-      public int getFood(){
-          return this.food;
-      }
+    public Civilization getFounder() {
+        return this.founder;
+    }
+
+    public int getFood()
+    {
+        return food;
+    }
     public void setBuildings(ArrayList<BuildingTypes> buildings){
         this.buildings = buildings;
     }
@@ -56,14 +77,19 @@ public class City {
     public ArrayList<BuildingTypes> getBuildings(){
         return this.buildings;
     }
-    public void setGold(int gold){
-      this.gold = gold;
+    public void setFood(int food)
+    {
+        this.food = food;
     }
-    public int getGold(){
-        return this.gold;
+
+    public int getScience()
+    {
+        return science;
     }
-    public Civilization getFounder() {
-        return this.founder;
+
+    public void setScience(int science)
+    {
+        this.science = science;
     }
 
     public Civilization getOwner() {
@@ -89,6 +115,8 @@ public class City {
     public Terrain getCentralTerrain() {
         return this.centralTerrain;
     }
+
+
 
     public int getHP() {
         return this.HP;
@@ -206,4 +234,92 @@ public class City {
         return this;
     }
 
+
+    public CombatUnit getCombatUnit()
+    {
+        return combatUnit;
+    }
+
+    public void setCombatUnit(CombatUnit combatUnit)
+    {
+        this.combatUnit = combatUnit;
+    }
+
+    public NonCombatUnit getNonCombatUnit()
+    {
+        return nonCombatUnit;
+    }
+
+    public void setNonCombatUnit(NonCombatUnit nonCombatUnit)
+    {
+        this.nonCombatUnit = nonCombatUnit;
+    }
+
+    public int getPopulation()
+    {
+        return population;
+    }
+
+    public void setPopulation(int population)
+    {
+        this.population = population;
+    }
+
+    public int getGold()
+    {
+        return gold;
+    }
+
+    public void setGold(int gold)
+    {
+        this.gold = gold;
+    }
+
+    public int getProduction()
+    {
+        return production;
+    }
+
+    public void setProduction(int production)
+    {
+        this.production = production;
+    }
+
+    public int getTurnsRemainingUntilPopulationIncrease()
+    {
+        return turnsRemainingUntilPopulationIncrease;
+    }
+
+    public void setTurnsRemainingUntilPopulationIncrease(int turnsRemainingUntilPopulationIncrease)
+    {
+        this.turnsRemainingUntilPopulationIncrease = turnsRemainingUntilPopulationIncrease;
+    }
+
+    public ArrayList<Terrain> getNeighbors()
+    {
+        return neighbors;
+    }
+
+    public int getFoodStorage()
+    {
+        return foodStorage;
+    }
+
+    public void setFoodStorage(int foodStorage)
+    {
+        this.foodStorage = foodStorage;
+    }
+
+    public void addCitizen ( Citizen citizen)
+    {
+        ArrayList<Citizen> cityCitizens = this.getCitizens();
+        cityCitizens.add(citizen);
+        this.setCitizens(cityCitizens);
+
+    }
+
+    public void removeCitiZen ( int index)
+    {
+        this.citizens.remove(index);
+    }
 }

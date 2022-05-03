@@ -3,7 +3,6 @@ package Model;
 import java.util.ArrayList;
 
 
-
 public class GameMapGenerator {
 
     private int Iteration;
@@ -108,7 +107,7 @@ public class GameMapGenerator {
 
 
 
-    
+
 
     // ALGHORITMS
     private void CivilizationAlghoritm(int iTerrain, int i, int j, int l, Database database) {
@@ -527,7 +526,7 @@ public class GameMapGenerator {
 
 
 
-    
+
     // print map
     public void SwitchCaseFirstHalf(int i, int j, int l, Database database, User user, int count) {
         switch (j) {
@@ -584,7 +583,7 @@ public class GameMapGenerator {
     }
 
     public String[][] printMap(Database database, User user) {
-       
+
         for (int i = 0; i < ROW; i++) {
             for (int j = 0; j < Iteration; j++) {
                 Printmap[i][j] = "";
@@ -609,7 +608,7 @@ public class GameMapGenerator {
     }
 
     public String[][] PrintMapXandY(Database database, User user, int x, int y) {
-     
+
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < Iteration; j++) {
                 Printmap[i][j] = "";

@@ -2,7 +2,9 @@ package Model;
 
 import java.util.ArrayList;
 
+import Model.City.City;
 import Model.Technologies.Technology;
+import Model.Technologies.TechnologyTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
 import Model.Units.Unit;
@@ -19,6 +21,7 @@ public class Civilization {
     private int happiness;
     private ArrayList<Technology> technologies = new ArrayList<>();
     private String name;
+    private int science;
     private boolean canBuySettler;
 
     public Civilization(int gold, int happiness, String name) {
@@ -74,10 +77,6 @@ public class Civilization {
 
     public void setUnits(ArrayList<Unit> unit) {
         this.units = unit;
-    }
-
-    public void addUnit(Unit unit) {
-        this.units.add(unit);
     }
 
     public ArrayList<City> getCities() {
@@ -152,7 +151,7 @@ public class Civilization {
 
     public void setAvailablity() {
         for (Technology technology : this.technologies) {
-            if (technology.getIsAvailabe() == false) {
+            if (!technology.getIsAvailabe()) {
                 technology.setCostsForResearch(technology.getCostsForResearch() + 10);
                 if (technology.getCostsForResearch() >= technology.getTechnologyType().getCost()) {
                     technology.setIsAvailabe(true);
@@ -163,6 +162,58 @@ public class Civilization {
 
     public void increaseGold(int gold){
         this.gold += gold;
+    }
+
+
+
+    public void addUnit( Unit unit)
+    {
+        this.units.add(unit);
+    }
+
+
+
+
+
+    public void addCity ( City city)
+    {
+        this.cities.add(city);
+    }
+
+    public void removeUnit( Unit unit)
+    {
+        for (Unit testUnit : this.units)
+        {
+            if (testUnit.equals(unit))
+            {
+                this.units.remove(testUnit);
+                return;
+            }
+
+        }
+    }
+
+    public int getScience()
+    {
+        return science;
+    }
+
+    public void setScience(int science)
+    {
+        this.science = science;
+    }
+
+    public void removeCity(City city )
+    {
+        for ( City cityTest : this.cities)
+        {
+            if ( cityTest.equals(city))
+            {
+                this.cities.remove(city);
+                return;
+            }
+
+        }
     }
 
 }
