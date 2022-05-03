@@ -87,6 +87,7 @@ public class MapGeneratorTest {
     User user;
     @Mock
     Revealed reveal;
+    @Mock
     Revealed revealTwo;
     @Mock
     ArrayList<Revealed> reveals;
@@ -98,32 +99,67 @@ public class MapGeneratorTest {
     Resource resource;
     @Test
     public void setRevealedTest(){
-        terrainRevealed = new Terrain(3, 4, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
         reveals = new ArrayList<Revealed>();
         reveal.setUser(user);
         reveals.add(reveal);
         reveals.add(revealTwo);
         Map map = new Map();
-        terrainRevealed.setRevealedTest(reveals);
         map.setTerrainTest(terrainRevealed, 3, 4);
+        when(terrainRevealed.getReveals()).thenReturn(reveals);
         when(reveal.getUser()).thenReturn(user);
         map.setRevealed(user, 3, 4);
        Assertions.assertFalse(terrainRevealed.getReveals().contains(reveal));
+    }
+    @Mock
+    User userOne;
+    @Mock
+    User userTwo;
+    @Test
+    public void setRevealedTestHasDelete(){
+        reveals = new ArrayList<Revealed>();
+        reveal.setUser(user);
+        reveals.add(reveal);
+        reveals.add(revealTwo);
+        Map map = new Map();
+        map.setTerrainTest(terrainRevealed, 3, 4);
+        when(terrainRevealed.getReveals()).thenReturn(reveals);
+        when(reveal.getUser()).thenReturn(userOne);
+        map.setRevealed(user, 3, 4);
+       Assertions.assertTrue(terrainRevealed.getReveals().contains(reveal));
+    }
+
+   
+
+    @Test
+    public void setRevealedTestHasAddSize(){
+        terrainRevealed = new Terrain(3, 4, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+        reveals = new ArrayList<>();
+   
+        reveals.add(reveal);
+        reveals.add(revealTwo);
+         Map map = new Map();
+        terrainRevealed.setRevealedTest(reveals);
+        map.setTerrainTest(terrainRevealed, 3, 4);
+        when(reveal.getUser()).thenReturn(userOne);
+        when(revealTwo.getUser()).thenReturn(userTwo);
+        map.setRevealed(user, 3, 4);
+        Assertions.assertTrue(reveals.size() == 3);
     }
 
     @Test
     public void setRevealedTestHasAddUser(){
         terrainRevealed = new Terrain(3, 4, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
-        reveals = new ArrayList<Revealed>();
-        reveal.setUser(user);
+        reveals = new ArrayList<>();
+   
         reveals.add(reveal);
         reveals.add(revealTwo);
-        Map map = new Map();
+         Map map = new Map();
         terrainRevealed.setRevealedTest(reveals);
         map.setTerrainTest(terrainRevealed, 3, 4);
-        when(reveal.getUser()).thenReturn(user);
+        when(reveal.getUser()).thenReturn(userOne);
+        when(revealTwo.getUser()).thenReturn(userTwo);
         map.setRevealed(user, 3, 4);
-       Assertions.assertTrue(terrainRevealed.getReveals().get(1).getUser() == user);
+        Assertions.assertTrue(reveals.get(2).getUser() == user);
     }
 
 

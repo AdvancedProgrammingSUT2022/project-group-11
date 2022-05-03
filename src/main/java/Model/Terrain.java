@@ -24,7 +24,7 @@ public class Terrain {
     private Resource TerrainResource;
     private boolean unlockResource;
     private City city;
-    private ArrayList<Revealed> reveals;
+    private ArrayList<Revealed> reveals = new ArrayList<>();
 
     public Terrain(int x, int y, String Type, TerrainTypes terrainTypes,  ArrayList<TerrainFeatureTypes> terrainFeatureTypes,
             CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement,

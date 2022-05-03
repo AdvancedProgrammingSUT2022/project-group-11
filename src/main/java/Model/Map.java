@@ -6,6 +6,8 @@ import java.util.Random;
 import Model.Resources.ResourceTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
+import Model.Units.CombatUnit;
+import Model.Units.NonCombatUnit;
 
 public class Map {
     private int Iteration = 6;
@@ -119,19 +121,34 @@ public class Map {
 
         int index = -1;
         for(int count = 0 ; count < Terrains[i][j].getReveals().size();count++){
+            if(Terrains[i][j].getReveals().get(count).getUser() != null)
+            {
             if(Terrains[i][j].getReveals().get(count).getUser() == user){
                index = count;
                break;
             }
         }
+        }
         if(index != -1){
             Terrains[i][j].getReveals().remove(index);
         }
+        CombatUnit combatUnit = null;
+        NonCombatUnit nonCombatUnit = null;
+        Resource resource = null;
 
-        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), Terrains[i][j].getCombatUnit().clone(), Terrains[i][j].getNonCombatUnit().clone(), Terrains[i][j].getTerrrainImprovement(), Terrains[i][j].getTerrainResource().clone(),Terrains[i][j].getBooleanResource());
+        if (Terrains[i][j].getCombatUnit() != null) {
+            combatUnit = Terrains[i][j].getCombatUnit().clone();
+        }
+        if (Terrains[i][j].getNonCombatUnit() != null) {
+            nonCombatUnit = Terrains[i][j].getNonCombatUnit().clone();
+        }
+        if (Terrains[i][j].getTerrainResource() != null) {
+            resource = Terrains[i][j].getTerrainResource().clone();
+        }
+        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), combatUnit, nonCombatUnit, Terrains[i][j].getTerrrainImprovement(), resource,Terrains[i][j].getBooleanResource());
         Terrains[i][j].setReveals(reveal);
-
     }
+
 
 
 
