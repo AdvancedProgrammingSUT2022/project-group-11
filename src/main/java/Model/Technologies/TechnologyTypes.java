@@ -650,4 +650,17 @@ public enum TechnologyTypes {
     ArrayList<TechnologyTypes> technologyUnlocks;
     ArrayList<Object> unlocks;
 
+    public ArrayList<TechnologyTypes> getRequirements()
+    {
+        return requirement;
+    }
+    public ArrayList<TechnologyTypes> getTechnologyUnlocks()
+    {
+        return technologyUnlocks;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
 }

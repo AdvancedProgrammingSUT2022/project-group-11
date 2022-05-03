@@ -21,11 +21,11 @@ public class Terrain {
     private Improvements TerrrainImprovement;
     private Resource TerrainResource;
     private City city;
-    private ArrayList<Revealed> reveals;
+    private ArrayList<Revealed> reveals = new ArrayList<>() ;
 
     public Terrain(int x, int y, String Type, TerrainTypes terrainTypes,  ArrayList<TerrainFeatureTypes> terrainFeatureTypes,
             CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement,
-            Resource TerrainResource, ArrayList<Revealed> reveals) {
+            Resource TerrainResource) {
         this.x = x;
         this.y = y;
         this.Type = Type;
@@ -35,7 +35,6 @@ public class Terrain {
         this.nonCombatUnit = nonCombatUnit;
         this.TerrrainImprovement = TerrrainImprovement;
         this.TerrainResource = TerrainResource;
-        this.reveals = reveals;
         this.city = null;
     }
 
@@ -118,8 +117,12 @@ public class Terrain {
         return this.reveals;
     }
 
-    public void setReveals(ArrayList<Revealed> reveals) {
-        this.reveals = reveals;
+    public void setReveals(Revealed reveals) {
+        this.reveals.add(reveals);
+    }
+
+    public void setRevealedTest(ArrayList<Revealed> reveals){
+       this.reveals = reveals;
     }
 
     public City getCity()
@@ -133,14 +136,6 @@ public class Terrain {
     }
     public boolean containsUnit(Unit unit2)
     {
-        if(unit2.equals((Unit) combatUnit))
-        {
-            return true;
-        }
-        else if(unit2.equals((Unit) nonCombatUnit))
-        {
-            return true;
-        }
-        return false;
+        return unit2.equals(combatUnit) || unit2.equals(nonCombatUnit);
     }
 }
