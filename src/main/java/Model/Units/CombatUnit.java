@@ -14,6 +14,13 @@ public class CombatUnit extends Unit {
         this.CombatStrength = 10;
     }
 
+   public CombatUnit clone(){
+       return new CombatUnit(this.getX(), this.getY(), this.getNumber(), this.getMilitaryPower(), this.getLife(), this.getSpeed(), this.getIsAsleep(), this.getIsFinished(), this.getUnitType(), this.getIsSelected(), this.getIsGarrisoned(), this.getAlert(), this.getFortify(), this.fortifyUntilHeal);
+
+   }
+     
+  
+
     private boolean isGarrisoned;
     private boolean alert;
     private boolean fortify;
@@ -78,3 +85,5 @@ public class CombatUnit extends Unit {
         CombatStrength = combatStrength;
     }
 }
+
+

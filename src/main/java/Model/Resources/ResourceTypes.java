@@ -189,4 +189,7 @@ public enum ResourceTypes {
     public int getProduction(){
         return this.production;
     }
+    public Improvements getRequiredImprovements(){
+        return this.requiredImprovement;
+    }
 }

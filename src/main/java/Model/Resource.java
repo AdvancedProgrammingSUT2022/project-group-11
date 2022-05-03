@@ -8,6 +8,7 @@ public class Resource {
     private int gold;
     private int production;
     private ResourceTypes resourceType;
+    private String name;
 
     public Resource(ResourceTypes resourceType){
         this.food = resourceType.getFood();
@@ -19,8 +20,6 @@ public class Resource {
     public Resource clone(){
         return new Resource(this.getResourceType());
     }
-    private String name;
-
     public int getFood() {
         return this.food;
     }

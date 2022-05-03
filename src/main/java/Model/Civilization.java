@@ -13,6 +13,7 @@ public class Civilization {
 
     private ArrayList<Unit> units = new ArrayList<>();
     private ArrayList<City> cities = new ArrayList<>();
+    private ArrayList<Terrain> ownedTerrains = new ArrayList<>();
     private ArrayList<Terrain> terrains = new ArrayList<>();
     private ArrayList<Terrain> visibleTerrains = new ArrayList<>();
     private ArrayList<Terrain> revealedTerrains = new ArrayList<>();
@@ -21,6 +22,7 @@ public class Civilization {
     private ArrayList<Technology> technologies = new ArrayList<>();
     private String name;
     private int science;
+    private boolean canBuySettler;
 
     public Civilization(int gold, int happiness, String name) {
 
@@ -29,6 +31,18 @@ public class Civilization {
         this.name = name;
     }
 
+    public void setBooleanSettlerBuy(boolean bool){
+        this.canBuySettler = bool;
+    }
+    public boolean getBooleanSettlerBuy(){
+        return this.canBuySettler;
+    }
+    public void setOwnedTerrains( ArrayList<Terrain> ownedTerrains){
+        this.ownedTerrains = ownedTerrains;
+    }
+    public  ArrayList<Terrain> getOwnedTerrains(){
+        return this.ownedTerrains;
+    }
     public ArrayList<Terrain> getVisibleTerrains() {
         return this.visibleTerrains;
     }
@@ -145,6 +159,11 @@ public class Civilization {
             }
         }
     }
+
+    public void increaseGold(int gold){
+        this.gold += gold;
+    }
+
 
 
     public void addUnit( Unit unit)

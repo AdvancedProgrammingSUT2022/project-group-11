@@ -662,5 +662,4 @@ public enum TechnologyTypes {
     public int getCost() {
         return cost;
     }
-
 }

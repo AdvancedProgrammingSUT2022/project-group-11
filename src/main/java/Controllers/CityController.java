@@ -29,7 +29,7 @@ public class CityController {
 
                 return;
             }
-            City newCity = new City(civilization, civilization, tile, 0, "none", 0, 0);
+            City newCity = new City(civilization, civilization, tile, 0, "none", 0, 0,null);
             tile.setCity(newCity);
             civilization.addCity(newCity);
             civilization.removeUnit((Unit) unit);
