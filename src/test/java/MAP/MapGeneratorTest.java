@@ -179,7 +179,7 @@ public class MapGeneratorTest {
         }
         map.setTerrains(terrains);
         map.Initializemap();  ;
-       Assertions.assertTrue(terrains[3][4].getTerrainTypes() == TerrainTypes.PLAINS);
+        Assertions.assertTrue(terrains[3][4].getTerrainTypes() == TerrainTypes.PLAINS);
     }
 
     @Test 
@@ -224,6 +224,13 @@ public class MapGeneratorTest {
         map.Initializemap();  ;
        Assertions.assertTrue(terrains[27][4].getTerrainTypes() == TerrainTypes.SNOW);
        Assertions.assertTrue(terrains[27][4].getTerrainTypes() == TerrainTypes.SNOW);
+    }
+
+
+
+    @Test
+    public void addRandomTerrain(){
+        
     }
 
     
