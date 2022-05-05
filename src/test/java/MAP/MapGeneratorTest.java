@@ -1,7 +1,5 @@
 package MAP;
 
-
-
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -33,8 +31,8 @@ public class MapGeneratorTest {
     @Mock
     Terrain terrainTwo;
     @Mock
-     ArrayList<River> rivers;
-    
+    ArrayList<River> rivers;
+
     @Test
     public void hasRiverTest() {
         Map map = new Map();
@@ -60,7 +58,7 @@ public class MapGeneratorTest {
     }
 
     @Test
-    public void hasRiverSecondTest(){
+    public void hasRiverSecondTest() {
         Map map = new Map();
         rivers = new ArrayList<River>();
         rivers.add(river);
@@ -71,7 +69,7 @@ public class MapGeneratorTest {
     }
 
     @Test
-    public void hasNotRiverSecondTest(){
+    public void hasNotRiverSecondTest() {
         Map map = new Map();
         rivers = new ArrayList<River>();
         rivers.add(river);
@@ -98,8 +96,9 @@ public class MapGeneratorTest {
     NonCombatUnit noncombatunit;
     @Mock
     Resource resource;
+
     @Test
-    public void setRevealedTest(){
+    public void setRevealedTest() {
         reveals = new ArrayList<Revealed>();
         reveal.setUser(user);
         reveals.add(reveal);
@@ -109,14 +108,16 @@ public class MapGeneratorTest {
         when(terrainRevealed.getReveals()).thenReturn(reveals);
         when(reveal.getUser()).thenReturn(user);
         map.setRevealed(user, 3, 4);
-       Assertions.assertFalse(terrainRevealed.getReveals().contains(reveal));
+        Assertions.assertFalse(terrainRevealed.getReveals().contains(reveal));
     }
+
     @Mock
     User userOne;
     @Mock
     User userTwo;
+
     @Test
-    public void setRevealedTestHasDelete(){
+    public void setRevealedTestHasDelete() {
         reveals = new ArrayList<Revealed>();
         reveal.setUser(user);
         reveals.add(reveal);
@@ -126,19 +127,18 @@ public class MapGeneratorTest {
         when(terrainRevealed.getReveals()).thenReturn(reveals);
         when(reveal.getUser()).thenReturn(userOne);
         map.setRevealed(user, 3, 4);
-       Assertions.assertTrue(terrainRevealed.getReveals().contains(reveal));
+        Assertions.assertTrue(terrainRevealed.getReveals().contains(reveal));
     }
 
-   
-
     @Test
-    public void setRevealedTestHasAddSize(){
-        terrainRevealed = new Terrain(3, 4, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+    public void setRevealedTestHasAddSize() {
+        terrainRevealed = new Terrain(3, 4, null, null, null, combatunit, noncombatunit, null, resource,
+                new ArrayList<Revealed>());
         reveals = new ArrayList<>();
-   
+
         reveals.add(reveal);
         reveals.add(revealTwo);
-         Map map = new Map();
+        Map map = new Map();
         terrainRevealed.setRevealedTest(reveals);
         map.setTerrainTest(terrainRevealed, 3, 4);
         when(reveal.getUser()).thenReturn(userOne);
@@ -148,13 +148,14 @@ public class MapGeneratorTest {
     }
 
     @Test
-    public void setRevealedTestHasAddUser(){
-        terrainRevealed = new Terrain(3, 4, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+    public void setRevealedTestHasAddUser() {
+        terrainRevealed = new Terrain(3, 4, null, null, null, combatunit, noncombatunit, null, resource,
+                new ArrayList<Revealed>());
         reveals = new ArrayList<>();
-   
+
         reveals.add(reveal);
         reveals.add(revealTwo);
-         Map map = new Map();
+        Map map = new Map();
         terrainRevealed.setRevealedTest(reveals);
         map.setTerrainTest(terrainRevealed, 3, 4);
         when(reveal.getUser()).thenReturn(userOne);
@@ -164,135 +165,141 @@ public class MapGeneratorTest {
     }
 
     @Test
-    public void checkIteration(){
+    public void checkIteration() {
         Map map = new Map();
         Assertions.assertTrue(map.getIteration() == 6);
     }
 
     @Mock
     Terrain terrainInitialize;
-   
+
     Terrain terrains[][];
-   
-    @Test 
-    public void InitializeMapTestPlains(){
+
+    @Test
+    public void InitializeMapTestPlains() {
         Map map = new Map();
-         terrains = new Terrain[map.getROW()][map.getCOL()];
-        for(int i = 0;i< map.getROW();i++){
-            for(int j = 0; j < map.getCOL();j++){
-                terrains[i][j]  =  new Terrain(i,j, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, null, null, null, combatunit, noncombatunit, null, resource,
+                        new ArrayList<Revealed>());
             }
         }
         map.setTerrains(terrains);
-        map.Initializemap();  ;
+        map.Initializemap();
+        ;
         Assertions.assertTrue(terrains[3][4].getTerrainTypes() == TerrainTypes.PLAINS);
     }
 
-    @Test 
-    public void InitializeMapTestOceans(){
+    @Test
+    public void InitializeMapTestOceans() {
         Map map = new Map();
-         terrains = new Terrain[map.getROW()][map.getCOL()];
-        for(int i = 0;i< map.getROW();i++){
-            for(int j = 0; j < map.getCOL();j++){
-                terrains[i][j]  =  new Terrain(i,j, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, null, null, null, combatunit, noncombatunit, null, resource,
+                        new ArrayList<Revealed>());
             }
         }
         map.setTerrains(terrains);
-        map.Initializemap();  ;
-       Assertions.assertTrue(terrains[0][0].getTerrainTypes() == TerrainTypes.OCEAN);
+        map.Initializemap();
+        ;
+        Assertions.assertTrue(terrains[0][0].getTerrainTypes() == TerrainTypes.OCEAN);
     }
 
-
-    @Test 
-    public void InitializeMapTestGrassland(){
+    @Test
+    public void InitializeMapTestGrassland() {
         Map map = new Map();
-         terrains = new Terrain[map.getROW()][map.getCOL()];
-        for(int i = 0;i< map.getROW();i++){
-            for(int j = 0; j < map.getCOL();j++){
-                terrains[i][j]  =  new Terrain(i,j, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, null, null, null, combatunit, noncombatunit, null, resource,
+                        new ArrayList<Revealed>());
             }
         }
         map.setTerrains(terrains);
-        map.Initializemap();  ;
-       Assertions.assertTrue(terrains[12][7].getTerrainTypes() == TerrainTypes.GRASSLLAND);
+        map.Initializemap();
+        ;
+        Assertions.assertTrue(terrains[12][7].getTerrainTypes() == TerrainTypes.GRASSLLAND);
     }
 
-    @Test 
-    public void InitializeMapTestSnow(){
+    @Test
+    public void InitializeMapTestSnow() {
         Map map = new Map();
-         terrains = new Terrain[map.getROW()][map.getCOL()];
-        for(int i = 0;i< map.getROW();i++){
-            for(int j = 0; j < map.getCOL();j++){
-                terrains[i][j]  =  new Terrain(i,j, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, null, null, null, combatunit, noncombatunit, null, resource,
+                        new ArrayList<Revealed>());
             }
         }
         map.setTerrains(terrains);
-        map.Initializemap();  ;
-       Assertions.assertTrue(terrains[27][4].getTerrainTypes() == TerrainTypes.SNOW);
-     
+        map.Initializemap();
+        ;
+        Assertions.assertTrue(terrains[27][4].getTerrainTypes() == TerrainTypes.SNOW);
+
+    }
+
+    @Test
+    public void addRandomTerrain() {
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, null, null, null, combatunit, noncombatunit, null, resource,
+                        new ArrayList<Revealed>());
+            }
+        }
+        map.setTerrains(terrains);
+        map.randomTerrainAdd();
+
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+
+                if (terrains[i][j].getTerrainTypes() == TerrainTypes.DESERT) {
+                    Assertions.assertTrue(terrains[i][j].getTerrainTypes() == TerrainTypes.DESERT);
+                } else if (terrains[i][j].getTerrainTypes() == TerrainTypes.HILLS) {
+                    Assertions.assertTrue(terrains[i][j].getTerrainTypes() == TerrainTypes.HILLS);
+                } else if (terrains[i][j].getTerrainTypes() == TerrainTypes.MOUNTAIN) {
+                    Assertions.assertTrue(terrains[i][j].getTerrainTypes() == TerrainTypes.MOUNTAIN);
+                } else if (terrains[i][j].getTerrainTypes() == TerrainTypes.PLAINS) {
+                    Assertions.assertTrue(terrains[i][j].getTerrainTypes() == TerrainTypes.PLAINS);
+                }
+
+            }
+        }
+
     }
 
 
 
     @Test
-    public void addRandomTerrainDESERT(){
+    public void addRandomTerrainCorner() {
         Map map = new Map();
         terrains = new Terrain[map.getROW()][map.getCOL()];
-        for(int i = 0;i< map.getROW();i++){
-            for(int j = 0; j < map.getCOL();j++){
-                terrains[i][j]  =  new Terrain(i,j, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, null, null, null, combatunit, noncombatunit, null, resource,
+                        new ArrayList<Revealed>());
             }
         }
         map.setTerrains(terrains);
-       map.randomTerrainAdd();
+        map.randomTerrainAdd();
 
-       for(int i = 0;i< map.getROW();i++){
-        for(int j = 0; j < map.getCOL();j++){
-          
-
-            if(terrains[i][j].getTerrainTypes() ==TerrainTypes.DESERT ){
-                Assertions.assertTrue(terrains[i][j].getTerrainTypes() ==TerrainTypes.DESERT );
-            }else if( terrains[i][j].getTerrainTypes() ==TerrainTypes.HILLS ){
-                Assertions.assertTrue(terrains[i][j].getTerrainTypes() ==TerrainTypes.HILLS );
-            }else if(terrains[i][j].getTerrainTypes() ==TerrainTypes.MOUNTAIN){
-                Assertions.assertTrue(terrains[i][j].getTerrainTypes() ==TerrainTypes.MOUNTAIN);
-            }else if(terrains[i][j].getTerrainTypes() ==TerrainTypes.PLAINS){
-                Assertions.assertTrue(terrains[i][j].getTerrainTypes() ==TerrainTypes.PLAINS );
-            }
-        
-    }
-}
-
-
-
-
-      
-     
-
-    }
-
-/*
-    @Test
-    public void addRandomTerrainPLAINS(){
-        Map map = new Map();
-        terrains = new Terrain[map.getROW()][map.getCOL()];
-        for(int i = 0;i< map.getROW();i++){
-            for(int j = 0; j < map.getCOL();j++){
-                terrains[i][j]  =  new Terrain(i,j, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+        ArrayList<Terrain> TundraTerrain = new ArrayList<>();
+        for(int i = 0; i < map.getCOL();i++){
+            if(terrains[0][i].getTerrainTypes() == TerrainTypes.TUNDRA){
+                TundraTerrain.add(terrains[0][i]);
             }
         }
-        map.setTerrains(terrains);
-       map.randomTerrainAdd();
-       Assertions.assertTrue(terrains[5][7].getTerrainTypes() ==TerrainTypes.DESERT );
+       Assertions.assertTrue(TundraTerrain.size() > 0);
 
     }
-*/
+
+
+
+
     
-
-
-  
-
-
 
 
 
