@@ -162,6 +162,11 @@ public class MapGeneratorTest {
         Assertions.assertTrue(reveals.get(2).getUser() == user);
     }
 
+    @Test
+    public void checkIteration(){
+        Map map = new Map();
+        Assertions.assertTrue(map.getIteration() == 6);
+    }
 
     @Mock
     Terrain terrainInitialize;
