@@ -184,7 +184,7 @@ public class Map {
         }
     }
     
-    private void randomTerrainAdd(){
+    public void randomTerrainAdd(){
         Random random = new Random();
         for(int count = 0;count < 200;count++){
             int randNum = Math.abs(random.nextInt()) % 4;
@@ -215,7 +215,7 @@ public class Map {
         Terrains[Math.abs(random.nextInt() % ROW)][15].setTerrainTypes(TerrainTypes.TUNDRA);;
     }
 
-    private  boolean isNeighbor(int firstI, int firstJ, int secondI, int secondJ) {
+    public  boolean isNeighbor(int firstI, int firstJ, int secondI, int secondJ) {
         if (firstI == secondI && firstJ == secondJ) return false;
         if (Math.abs(firstI - secondI) >= 2 || Math.abs(firstJ - secondJ) >= 2) return false;
         if (firstJ == secondJ) {
@@ -237,7 +237,7 @@ public class Map {
         return false;
     }
 
-    private void setRiver(){
+    public void setRiver(){
         Random random = new Random();
          for(int i = 0 ; i < ROW;i++){
             for(int j = 0 ; j < COL;j++){
@@ -257,7 +257,7 @@ public class Map {
          }
     }
 
-    private void setFeature(){
+    public void setFeature(){
         Random random = new Random();
        
         for(int i = 0 ; i< ROW;i++){
@@ -270,7 +270,7 @@ public class Map {
 
     }
 
-    private ArrayList<Resource> findAllPossiblResource(Terrain terrain){
+    public ArrayList<Resource> findAllPossiblResource(Terrain terrain){
         ArrayList<Resource> possibleResource = new ArrayList<Resource>();
         possibleResource.clear();
         ResourceTypes[] AllpossibleResource = {ResourceTypes.BANANAS,
@@ -296,7 +296,7 @@ public class Map {
         return possibleResource;
     }
 
-    private void setResource(){
+    public void setResource(){
         Random random = new Random();
         for(int i = 0 ; i < ROW;i++){
             for(int j = 0; j < COL;j++){
@@ -307,7 +307,7 @@ public class Map {
         }
     }
 
-    private void nullImprovementAndCombat(){
+    public void nullImprovementAndCombat(){
         for(int i = 0 ; i < ROW;i++){
             for(int j = 0; j < COL;j++){
               Terrains[i][j].setTerrrainImprovement(null);

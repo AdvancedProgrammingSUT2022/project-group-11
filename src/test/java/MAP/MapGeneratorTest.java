@@ -5,6 +5,7 @@ package MAP;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -228,16 +229,64 @@ public class MapGeneratorTest {
         map.setTerrains(terrains);
         map.Initializemap();  ;
        Assertions.assertTrue(terrains[27][4].getTerrainTypes() == TerrainTypes.SNOW);
-       Assertions.assertTrue(terrains[27][4].getTerrainTypes() == TerrainTypes.SNOW);
+     
     }
 
 
 
     @Test
-    public void addRandomTerrain(){
+    public void addRandomTerrainDESERT(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for(int i = 0;i< map.getROW();i++){
+            for(int j = 0; j < map.getCOL();j++){
+                terrains[i][j]  =  new Terrain(i,j, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+            }
+        }
+        map.setTerrains(terrains);
+       map.randomTerrainAdd();
+
+       for(int i = 0;i< map.getROW();i++){
+        for(int j = 0; j < map.getCOL();j++){
+          
+
+            if(terrains[i][j].getTerrainTypes() ==TerrainTypes.DESERT ){
+                Assertions.assertTrue(terrains[i][j].getTerrainTypes() ==TerrainTypes.DESERT );
+            }else if( terrains[i][j].getTerrainTypes() ==TerrainTypes.HILLS ){
+                Assertions.assertTrue(terrains[i][j].getTerrainTypes() ==TerrainTypes.HILLS );
+            }else if(terrains[i][j].getTerrainTypes() ==TerrainTypes.MOUNTAIN){
+                Assertions.assertTrue(terrains[i][j].getTerrainTypes() ==TerrainTypes.MOUNTAIN);
+            }else if(terrains[i][j].getTerrainTypes() ==TerrainTypes.PLAINS){
+                Assertions.assertTrue(terrains[i][j].getTerrainTypes() ==TerrainTypes.PLAINS );
+            }
         
     }
+}
 
+
+
+
+      
+     
+
+    }
+
+/*
+    @Test
+    public void addRandomTerrainPLAINS(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for(int i = 0;i< map.getROW();i++){
+            for(int j = 0; j < map.getCOL();j++){
+                terrains[i][j]  =  new Terrain(i,j, null, null, null, combatunit, noncombatunit, null, resource,new ArrayList<Revealed>() );
+            }
+        }
+        map.setTerrains(terrains);
+       map.randomTerrainAdd();
+       Assertions.assertTrue(terrains[5][7].getTerrainTypes() ==TerrainTypes.DESERT );
+
+    }
+*/
     
 
 
