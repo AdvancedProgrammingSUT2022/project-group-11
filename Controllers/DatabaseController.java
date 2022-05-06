@@ -867,47 +867,8 @@ public class DatabaseController {
         }
     }
 
-<<<<<<< HEAD
-=======
-    public String choosingATechnologyToStudy(User user, TechnologyTypes technologyType) {
-        for (TechnologyTypes technologyType2 : technologyType.getRequirements()) {
-            if (!isContainTechnology(user, technologyType2)) {
-                return "you do not have required prerequisites";
-            } else if (isContainTechnology(user, technologyType2)
-                    && getTechnologyByTechnologyType(user, technologyType).getIsAvailable()) {
-                return "you do not have required prerequisites";
-            }
-        }
-        for (Technology technology : user.getCivilization().getTechnologies()) {
-            technology.setUnderResearch(false);
-        }
-        user.getCivilization().getTechnologies().add(new Technology(true, 0, technologyType, false));
-        return "Technology is under research";
-    }
+ 
 
-    public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
-        for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType().equals(technologyType)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Technology getTechnologyByTechnologyType(User user, TechnologyTypes technologyType) {
-        for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType().equals(technologyType)) {
-                return technology;
-            }
-        }
-        return null;
-    }
-
-    public String researchInfo(User user) {
-        return getUnderResearchTechnology(user).toString();
-    }
-
->>>>>>> 67ea3b208145a6d1f14eea55a459893efb6c957c
     public String unitsInfo(User user) {
         StringBuilder unitsInformation = new StringBuilder();
         for (Unit unit : user.getCivilization().getUnits()) {
@@ -1156,7 +1117,7 @@ public class DatabaseController {
         for (TechnologyTypes technologyType2 : technologyType.getRequirements()) {
             if (!isContainTechnology(user, technologyType2)) {
                 return "you do not have required prerequisites";
-            } else if (isContainTechnology(user, technologyType2) && !getTechnologyByTechnologyType(user, technologyType).getIsAvailable()) {
+            } else if (isContainTechnology(user, technologyType2) && !getTechnologyByTechnologyType(user, technologyType2).getIsAvailable()) {
                 return "you do not have required prerequisites";
             }
         }
