@@ -3,6 +3,7 @@ package MAP;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import Controllers.DatabaseController;
 import Model.Civilization;
 import Model.Database;
 import Model.Map;
@@ -24,6 +26,7 @@ import Model.Resources.ResourceTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
+import View.LoginMenu;
 
 @ExtendWith(MockitoExtension.class)
 public class MapGeneratorTest {
@@ -412,8 +415,40 @@ public class MapGeneratorTest {
         Assertions.assertTrue(terrains[3][4].getTerrainFeatureTypes().size() > 0);
     }
 
+   @Test
+
+   public void setResource(){
+    Map map = new Map();
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
+                    new ArrayList<Revealed>());
+        }
+    }
+
+    map.setTerrains(terrains);
+    map.setResource();
+    Assertions.assertNotNull(terrains[3][4].getTerrainResource());
+   }
 
 
+   @Test
+
+   public void setNulltoMapTest(){
+    Map map = new Map();
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
+                    new ArrayList<Revealed>());
+        }
+    }
+    map.setTerrains(terrains);
+    map.nullImprovementAndCombat();
+    Assertions.assertTrue(terrains[3][4].getTerrrainImprovement() == null);
+
+   }
 
 
 

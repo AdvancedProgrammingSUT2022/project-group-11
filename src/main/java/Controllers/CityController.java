@@ -106,7 +106,7 @@ public class CityController {
 
         return null;
     }
-
+/*
     public String createUnit(Matcher matcher, City city) {
         Civilization civilization = city.getOwner();
         String unitName = matcher.group("unitName");
@@ -508,7 +508,7 @@ public class CityController {
         }
         return "invalid unit name";
     }
-
+*/
     public void assignCitizen(City city, Citizen citizen, Terrain tile) {
         if (city.getCitizens().contains(citizen)) {
             if (city.getNeighbors().contains(tile) && citizen.getHasWork()) {
