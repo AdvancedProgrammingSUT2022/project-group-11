@@ -65,7 +65,7 @@ public enum Improvements {
             add(ResourceTypes.CATTLE);
             add(ResourceTypes.SHEEP);
         }
-    }, TechnologyTypes.ANIMAL_HUSBANDARY, new ArrayList<>() {
+    }, TechnologyTypes.ANIMAL_HUSBANDRY, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);

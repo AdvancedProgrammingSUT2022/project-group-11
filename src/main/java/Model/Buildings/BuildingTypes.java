@@ -19,13 +19,13 @@ public enum BuildingTypes {
 
     }, BURIAL_TOMB(120, 0, TechnologyTypes.PHILOSOPHY) {
 
-    }, CIRCUS(150, 3, TechnologyTypes.HORSESBACK_RIDING) {
+    }, CIRCUS(150, 3, TechnologyTypes.HORSEBACK_RIDING) {
 
     }, COLOSSEUM(150, 3, TechnologyTypes.CONSTRUCTION) {
 
     }, COURTHOUSE(200, 5, TechnologyTypes.MATHEMATICS) {
 
-    }, STABLE(100, 1, TechnologyTypes.HORSESBACK_RIDING) {
+    }, STABLE(100, 1, TechnologyTypes.HORSEBACK_RIDING) {
 
     }, TEMPLE(120, 2, TechnologyTypes.PHILOSOPHY) {
 
@@ -47,7 +47,7 @@ public enum BuildingTypes {
 
     }, BANK(220, 0, TechnologyTypes.BANKING) {
 
-    }, MILITARY_ACADEMY(350, 3, TechnologyTypes.MILITARYSCIENCE) {
+    }, MILITARY_ACADEMY(350, 3, TechnologyTypes.MILITARY_SCIENCE) {
 
     }, MUSEUM(350, 3, TechnologyTypes.ARCHAEOLOGY) {
 
@@ -57,7 +57,7 @@ public enum BuildingTypes {
 
     }, SATRAPS_COURT(220, 0, TechnologyTypes.BANKING) {
 
-    }, THEATER(300, 5, TechnologyTypes.PRINTINGPRESS) {
+    }, THEATER(300, 5, TechnologyTypes.PRINTING_PRESS) {
 
     }, WINDMILL(180, 2, TechnologyTypes.ECONOMICS) {
 

@@ -923,7 +923,7 @@ public class DatabaseController {
             if (!isContainTechnology(user, technologyType2)) {
                 return "you do not have required prerequisites";
             } else if (isContainTechnology(user, technologyType2)
-                    && getTechnologyByTechnologyType(user, technologyType).getIsAvailabe()) {
+                    && getTechnologyByTechnologyType(user, technologyType).getIsAvailable()) {
                 return "you do not have required prerequisites";
             }
         }

@@ -8,640 +8,620 @@ import Model.Resources.ResourceTypes;
 import Model.Units.UnitTypes;
 
 public enum TechnologyTypes {
-    AGRICULTURE(20, null, new ArrayList<TechnologyTypes>() {
+    AGRICULTURE(20, null, new ArrayList<>() {
         {
             add(TechnologyTypes.POTTERY);
-            add(TechnologyTypes.ANIMAL_HUSBANDARY);
+            add(TechnologyTypes.ANIMAL_HUSBANDRY);
             add(TechnologyTypes.ARCHERY);
             add(TechnologyTypes.MINING);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(Improvements.FARM);
         }
-    }), ANIMAL_HUSBANDARY(35, new ArrayList<TechnologyTypes>() {
+    }), ANIMAL_HUSBANDRY(35, new ArrayList<>() {
         {
             add(TechnologyTypes.AGRICULTURE);
 
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.TRAPPING);
             add(TechnologyTypes.THE_WHEEL);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(ResourceTypes.HORSES);
             add(Improvements.PASTURE);
         }
-    }), ARCHERY(35, new ArrayList<TechnologyTypes>() {
+    }), ARCHERY(35, new ArrayList<>() {
         {
             add(TechnologyTypes.AGRICULTURE);
 
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.MATHEMATICS);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.ARCHER);
         }
-    }), BRONZE_WORKING(55, new ArrayList<TechnologyTypes>() {
+    }), BRONZE_WORKING(55, new ArrayList<>() {
         {
             add(TechnologyTypes.MINING);
 
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.IRON_WORKING);
 
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.SPEARMAN);
             add(BuildingTypes.BARRACKS);
+            // TODO REMOVING JUNGLE
         }
-    }), CALENDAR(70, new ArrayList<TechnologyTypes>() {
+    }), CALENDAR(70, new ArrayList<>() {
         {
             add(TechnologyTypes.POTTERY);
 
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.THEOLOGY);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(Improvements.PLANTATION);
         }
-    }), MASONRY(55, new ArrayList<TechnologyTypes>() {
+    }), MASONRY(55, new ArrayList<>() {
         {
             add(TechnologyTypes.MINING);
 
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.CONSTRUCTION);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.WALLS);
             add(Improvements.QUARRY);
             // TODO remove marsh
         }
-    }), MINING(35, new ArrayList<TechnologyTypes>() {
+    }), MINING(35, new ArrayList<>() {
         {
             add(TechnologyTypes.AGRICULTURE);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.MASONRY);
             add(TechnologyTypes.BRONZE_WORKING);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(Improvements.MINE);
-            // todo remove jungles
+            // TODO remove FOREST
         }
-    }), POTTERY(35, new ArrayList<TechnologyTypes>() {
+    }), POTTERY(35, new ArrayList<>() {
         {
             add(TechnologyTypes.AGRICULTURE);
 
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.CALENDAR);
             add(TechnologyTypes.WRITING);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.GRANARY);
         }
-    }), THE_WHEEL(55, new ArrayList<TechnologyTypes>() {
+    }), THE_WHEEL(55, new ArrayList<>() {
         {
-            add(TechnologyTypes.ANIMAL_HUSBANDARY);
+            add(TechnologyTypes.ANIMAL_HUSBANDRY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
-            add(TechnologyTypes.HORSESBACK_RIDING);
+            add(TechnologyTypes.HORSEBACK_RIDING);
             add(TechnologyTypes.MATHEMATICS);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.CHARIOT_ARCHER);
             add(BuildingTypes.WATERMILL);
             // TODO build a road
         }
-    }), TRAPPING(55, new ArrayList<TechnologyTypes>() {
+    }), TRAPPING(55, new ArrayList<>() {
         {
-            add(TechnologyTypes.ANIMAL_HUSBANDARY);
+            add(TechnologyTypes.ANIMAL_HUSBANDRY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.CIVIL_SERVICE);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(Improvements.TRADINGPOST);
             add(Improvements.CAMP);
         }
-    }), WRITING(55, new ArrayList<TechnologyTypes>() {
+    }), WRITING(55, new ArrayList<>() {
         {
             add(TechnologyTypes.POTTERY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.PHILOSOPHY);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.LIBRARY);
         }
-    }), CONSTRUCTION(100, new ArrayList<TechnologyTypes>() {
+    }), CONSTRUCTION(100, new ArrayList<>() {
         {
             add(TechnologyTypes.MASONRY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.ENGINEERING);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.COLOSSEUM);
             // TODO bridges over rivers
         }
-    }), HORSESBACK_RIDING(100, new ArrayList<TechnologyTypes>() {
+    }), HORSEBACK_RIDING(100, new ArrayList<>() {
         {
             add(TechnologyTypes.THE_WHEEL);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.CHIVALRY);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
-            add(BuildingTypes.CIRCUS);
             add(BuildingTypes.STABLE);
+            add(BuildingTypes.CIRCUS);
         }
-    }), IRON_WORKING(150, new ArrayList<TechnologyTypes>() {
+    }), IRON_WORKING(150, new ArrayList<>() {
         {
             add(TechnologyTypes.BRONZE_WORKING);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.METAL_CASTING);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.SWORDSMAN);
             add(BuildingTypes.ARMORY);
         }
-    }), MATHEMATICS(100, new ArrayList<TechnologyTypes>() {
+    }), MATHEMATICS(100, new ArrayList<>() {
         {
             add(TechnologyTypes.THE_WHEEL);
             add(TechnologyTypes.ARCHERY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.CURRENCY);
             add(TechnologyTypes.ENGINEERING);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.CATAPULT);
             add(BuildingTypes.COURTHOUSE);
         }
-    }), PHILOSOPHY(100, new ArrayList<TechnologyTypes>() {
+    }), PHILOSOPHY(100, new ArrayList<>() {
         {
             add(TechnologyTypes.WRITING);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.THEOLOGY);
             add(TechnologyTypes.CIVIL_SERVICE);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.BURIAL_TOMB);
             add(BuildingTypes.TEMPLE);
         }
-    }), CHIVALRY(440, new ArrayList<TechnologyTypes>() {
+    }), CHIVALRY(440, new ArrayList<>() {
         {
             add(TechnologyTypes.CIVIL_SERVICE);
-            add(TechnologyTypes.HORSESBACK_RIDING);
+            add(TechnologyTypes.HORSEBACK_RIDING);
             add(TechnologyTypes.CURRENCY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.BANKING);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.KNIGHT);
             add(BuildingTypes.CASTLE);
         }
-    }), CIVIL_SERVICE(400, new ArrayList<TechnologyTypes>() {
+    }), CIVIL_SERVICE(400, new ArrayList<>() {
         {
             add(TechnologyTypes.PHILOSOPHY);
             add(TechnologyTypes.TRAPPING);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.CHIVALRY);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.PIKEMAN);
         }
-    }), CURRENCY(250, new ArrayList<TechnologyTypes>() {
+    }), CURRENCY(250, new ArrayList<>() {
         {
             add(TechnologyTypes.MATHEMATICS);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.CHIVALRY);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.MARKET);
         }
-    }), EDUCATION(440, new ArrayList<TechnologyTypes>() {
+    }), EDUCATION(440, new ArrayList<>() {
         {
             add(TechnologyTypes.THEOLOGY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.ACOUSTICS);
             add(TechnologyTypes.BANKING);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.UNIVERSITY);
         }
-    }), ENGINEERING(250, new ArrayList<TechnologyTypes>() {
+    }), ENGINEERING(250, new ArrayList<>() {
         {
             add(TechnologyTypes.MATHEMATICS);
             add(TechnologyTypes.CONSTRUCTION);
 
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.MACHINERY);
             add(TechnologyTypes.PHYSICS);
         }
-    }, new ArrayList<Object>() {
-        {
-
-        }
-    }), MACHINERY(440, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
+    }), MACHINERY(440, new ArrayList<>() {
         {
             add(TechnologyTypes.ENGINEERING);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
-            add(TechnologyTypes.PRINTINGPRESS);
+            add(TechnologyTypes.PRINTING_PRESS);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.CROSSBOWMAN);
             // TODO 1.2 faster road movement
         }
-    }), METAL_CASTING(240, new ArrayList<TechnologyTypes>() {
+    }), METAL_CASTING(240, new ArrayList<>() {
         {
             add(TechnologyTypes.IRON_WORKING);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.PHYSICS);
             add(TechnologyTypes.STEEL);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.FORGE);
             add(BuildingTypes.WORKSHOP);
         }
-    }), PHYSICS(440, new ArrayList<TechnologyTypes>() {
+    }), PHYSICS(440, new ArrayList<>() {
         {
             add(TechnologyTypes.ENGINEERING);
             add(TechnologyTypes.METAL_CASTING);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
-            add(TechnologyTypes.PRINTINGPRESS);
+            add(TechnologyTypes.PRINTING_PRESS);
             add(TechnologyTypes.GUNPOWDER);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.TREBUCHET);
         }
-    }), STEEL(440, new ArrayList<TechnologyTypes>() {
+    }), STEEL(440, new ArrayList<>() {
         {
             add(TechnologyTypes.METAL_CASTING);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.GUNPOWDER);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.LONGSWORDSMAN);
         }
-    }), THEOLOGY(250, new ArrayList<TechnologyTypes>() {
+    }), THEOLOGY(250, new ArrayList<>() {
         {
             add(TechnologyTypes.CALENDAR);
             add(TechnologyTypes.PHILOSOPHY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.EDUCATION);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.MONASTERY);
             add(BuildingTypes.GARDEN);
         }
-    }), ACOUSTICS(650, new ArrayList<TechnologyTypes>() {
+    }), ACOUSTICS(650, new ArrayList<>() {
         {
             add(TechnologyTypes.EDUCATION);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.SCIENTIFIC_THEORY);
         }
-    }, new ArrayList<Object>() {
-        {
-
-        }
-    }), ARCHAEOLOGY(1300, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
+    }), ARCHAEOLOGY(1300, new ArrayList<>() {
         {
             add(TechnologyTypes.ACOUSTICS);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.BIOLOGY);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.MUSEUM);
         }
-    }), BANKING(650, new ArrayList<TechnologyTypes>() {
+    }), BANKING(650, new ArrayList<>() {
         {
             add(TechnologyTypes.EDUCATION);
             add(TechnologyTypes.CHIVALRY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.ECONOMICS);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.SATRAPS_COURT);
             add(BuildingTypes.BANK);
 
         }
-    }), CHEMISTRY(900, new ArrayList<TechnologyTypes>() {
+    }), CHEMISTRY(900, new ArrayList<>() {
         {
             add(TechnologyTypes.GUNPOWDER);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
-            add(TechnologyTypes.MILITARYSCIENCE);
-            add(TechnologyTypes.FERTILIIZER);
+            add(TechnologyTypes.MILITARY_SCIENCE);
+            add(TechnologyTypes.FERTILIZER);
         }
-    }, new ArrayList<Object>() {
-        {
-            // todo
-        }
-    }), ECONOMICS(900, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
+    }), ECONOMICS(900, new ArrayList<>() {
         {
             add(TechnologyTypes.BANKING);
-            add(TechnologyTypes.PRINTINGPRESS);
+            add(TechnologyTypes.PRINTING_PRESS);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
-            add(TechnologyTypes.MILITARYSCIENCE);
+            add(TechnologyTypes.MILITARY_SCIENCE);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.WINDMILL);
         }
-    }), FERTILIIZER(1300, new ArrayList<TechnologyTypes>() {
+    }), FERTILIZER(1300, new ArrayList<>() {
         {
             add(TechnologyTypes.CHEMISTRY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.DYNAMITE);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
-            // todo
+            // todo Farms without Fresh Water yield increased by 1
         }
-    }), GUNPOWDER(680, new ArrayList<TechnologyTypes>() {
+    }), GUNPOWDER(680, new ArrayList<>() {
         {
             add(TechnologyTypes.PHYSICS);
             add(TechnologyTypes.STEEL);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.CHEMISTRY);
             add(TechnologyTypes.METALLURGY);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.MUSKETMAN);
         }
-    }), METALLURGY(900, new ArrayList<TechnologyTypes>() {
+    }), METALLURGY(900, new ArrayList<>() {
         {
             add(TechnologyTypes.GUNPOWDER);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.RIFLING);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.LANCER);
         }
-    }), MILITARYSCIENCE(1300, new ArrayList<TechnologyTypes>() {
+    }), MILITARY_SCIENCE(1300, new ArrayList<>() {
         {
             add(TechnologyTypes.ECONOMICS);
             add(TechnologyTypes.CHEMISTRY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.STEAM_POWER);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.CAVALRY);
             add(BuildingTypes.MILITARY_ACADEMY);
         }
-    }), PRINTINGPRESS(650, new ArrayList<TechnologyTypes>() {
+    }), PRINTING_PRESS(650, new ArrayList<>() {
         {
             add(TechnologyTypes.MACHINERY);
             add(TechnologyTypes.PHYSICS);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.ECONOMICS);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.THEATER);
         }
-    }), RIFLING(1425, new ArrayList<TechnologyTypes>() {
+    }), RIFLING(1425, new ArrayList<>() {
         {
             add(TechnologyTypes.METALLURGY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.DYNAMITE);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.RIFLEMAN);
         }
-    }), SCIENTIFIC_THEORY(1300, new ArrayList<TechnologyTypes>() {
+    }), SCIENTIFIC_THEORY(1300, new ArrayList<>() {
         {
             add(TechnologyTypes.ACOUSTICS);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.BIOLOGY);
             add(TechnologyTypes.STEAM_POWER);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.PUBLIC_SCHOOL);
             add(ResourceTypes.COAL);
         }
-    }), BIOLOGY(1680, new ArrayList<TechnologyTypes>() {
+    }), BIOLOGY(1680, new ArrayList<>() {
         {
             add(TechnologyTypes.ARCHAEOLOGY);
             add(TechnologyTypes.SCIENTIFIC_THEORY);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.ELECTRICITY);
         }
-    }, new ArrayList<Object>() {
-        {
-
-        }
-    }), COMBUSTION(2200, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
+    }), COMBUSTION(2200, new ArrayList<>() {
         {
             add(TechnologyTypes.REPLACEABLE_PARTS);
             add(TechnologyTypes.RAILROAD);
             add(TechnologyTypes.DYNAMITE);
         }
-    }, new ArrayList<TechnologyTypes>() {
-        {
-
-        }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.TANK);
             add(UnitTypes.PANZER);
         }
-    }), DYNAMITE(1900, new ArrayList<TechnologyTypes>() {
+    }), DYNAMITE(1900, new ArrayList<>() {
         {
-            add(TechnologyTypes.FERTILIIZER);
+            add(TechnologyTypes.FERTILIZER);
             add(TechnologyTypes.RIFLING);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.COMBUSTION);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.ARTILLERY);
         }
-    }), ELECTRICITY(1900, new ArrayList<TechnologyTypes>() {
+    }), ELECTRICITY(1900, new ArrayList<>() {
         {
             add(TechnologyTypes.BIOLOGY);
             add(TechnologyTypes.STEAM_POWER);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.TELEGRAPH);
             add(TechnologyTypes.RADIO);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.STOCK_EXCHANGE);
         }
-    }), RADIO(2200, new ArrayList<TechnologyTypes>() {
+    }), RADIO(2200, new ArrayList<>() {
         {
             add(TechnologyTypes.ELECTRICITY);
         }
-    }, new ArrayList<TechnologyTypes>() {
-        {
-
-        }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.BROADCAST_TOWER);
         }
-    }), RAILROAD(1900, new ArrayList<TechnologyTypes>() {
+    }), RAILROAD(1900, new ArrayList<>() {
         {
             add(TechnologyTypes.STEAM_POWER);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.COMBUSTION);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.ARSENAL);
         }
-    }), REPLACEABLE_PARTS(1900, new ArrayList<TechnologyTypes>() {
+    }), REPLACEABLE_PARTS(1900, new ArrayList<>() {
         {
             add(TechnologyTypes.STEAM_POWER);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.COMBUSTION);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(UnitTypes.ANTI_TANKGUN);
             add(UnitTypes.INFANTRY);
         }
-    }), STEAM_POWER(1680, new ArrayList<TechnologyTypes>() {
+    }), STEAM_POWER(1680, new ArrayList<>() {
         {
             add(TechnologyTypes.SCIENTIFIC_THEORY);
-            add(TechnologyTypes.MILITARYSCIENCE);
+            add(TechnologyTypes.MILITARY_SCIENCE);
         }
-    }, new ArrayList<TechnologyTypes>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.ELECTRICITY);
             add(TechnologyTypes.REPLACEABLE_PARTS);
         }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.FACTORY);
         }
-    }), TELEGRAPH(2200, new ArrayList<TechnologyTypes>() {
+    }), TELEGRAPH(2200, new ArrayList<>() {
         {
             add(TechnologyTypes.ELECTRICITY);
         }
-    }, new ArrayList<TechnologyTypes>() {
-        {
-
-        }
-    }, new ArrayList<Object>() {
+    }, new ArrayList<>() {
+    }, new ArrayList<>() {
         {
             add(BuildingTypes.MILITARY_BASE);
         }
     });
 
-    TechnologyTypes(int cost, ArrayList<TechnologyTypes> requirement, ArrayList<TechnologyTypes> technologyUnlcoks,
+    TechnologyTypes(int cost, ArrayList<TechnologyTypes> requirement, ArrayList<TechnologyTypes> technologyUnlocks,
             ArrayList<Object> unlocks) {
         this.cost = cost;
         this.requirement = requirement;
-        this.technologyUnlocks = technologyUnlcoks;
+        this.technologyUnlocks = technologyUnlocks;
         this.unlocks = unlocks;
     }
 

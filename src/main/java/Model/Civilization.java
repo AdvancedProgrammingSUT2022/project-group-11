@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 import Model.City.City;
 import Model.Technologies.Technology;
-import Model.Technologies.TechnologyTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
 import Model.Units.Unit;
@@ -151,10 +150,10 @@ public class Civilization {
 
     public void setAvailablity() {
         for (Technology technology : this.technologies) {
-            if (!technology.getIsAvailabe()) {
+            if (!technology.getIsAvailable()) {
                 technology.setCostsForResearch(technology.getCostsForResearch() + 10);
                 if (technology.getCostsForResearch() >= technology.getTechnologyType().getCost()) {
-                    technology.setIsAvailabe(true);
+                    technology.setIsAvailable(true);
                 }
             }
         }
