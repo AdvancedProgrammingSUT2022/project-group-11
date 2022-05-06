@@ -3,7 +3,6 @@ package MAP;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -330,6 +329,41 @@ public class MapGeneratorTest {
         Assertions.assertNotNull(result);
     }
 
+
+
+    @Test
+    public void PrintMapXandY(){
+        
+        resource = new Resource(ResourceTypes.BANANAS);
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+            }
+        }
+        Civilization civilization = new Civilization(0, 100, "A");
+        ArrayList<Terrain> myterrain = new ArrayList<>();
+        myterrain.add(terrains[3][4]);
+        myterrain.add(terrains[3][7]);
+        myterrain.add(terrains[6][4]);
+        myterrain.add(terrains[10][4]);
+        civilization.setTerrains(myterrain);
+        user = new User(null, null, null, civilization);
+        database = new Database();
+        database.addUser(user);
+        map.setTerrains(terrains);
+        String result[][] = map.PrintMapXandY(database, user,3,4);
+        
+        Assertions.assertNotNull(result);
+    }
+
+
+
+
+
+
     @Test
     public void isNeighbourTest(){
         Map map = new Map();
@@ -339,6 +373,43 @@ public class MapGeneratorTest {
     public void isNeighbourTest1(){
         Map map = new Map();
         Assertions.assertTrue(map.isNeighbor(0, 0, 0, 1));
+        Assertions.assertTrue(map.isNeighbor(1, 1, 0, 1));
+        Assertions.assertFalse(map.isNeighbor(0, 1, 2, 1));
+        Assertions.assertFalse(map.isNeighbor(1, 2, 1, 0));
+        Assertions.assertTrue(map.isNeighbor(3, 3, 2, 2));
+        Assertions.assertTrue(map.isNeighbor(3, 4, 4, 3));
+    }
+
+    @Test
+    public void riverInitializeTest(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+            }
+        }
+
+        map.setTerrains(terrains);
+        map.setRiver();
+        Assertions.assertTrue(map.getRiver().size() > 0);
+    }
+
+    @Test 
+    public void setFeatureTest(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+            }
+        }
+
+        map.setTerrains(terrains);
+        map.setFeature();
+        Assertions.assertTrue(terrains[3][4].getTerrainFeatureTypes().size() > 0);
     }
 
 
