@@ -12,7 +12,7 @@ public enum UnitTypes {
     WARRIOR(40, CombatTypes.MELEE, 6, 0, 0, 2, null, null,"W"),
     WORKER(70, CombatTypes.CIVILIAN, 0, 0, 0, 2, null, null,"W"),
     CATAPULT(100, CombatTypes.SIEGE, 4, 14, 2, 2, ResourceTypes.IRON, TechnologyTypes.MATHEMATICS,"C"),
-    HORSESMAN(80, CombatTypes.MOUNTED, 12, 0, 0, 4, ResourceTypes.HORSES, TechnologyTypes.HORSESBACK_RIDING,"H"),
+    HORSESMAN(80, CombatTypes.MOUNTED, 12, 0, 0, 4, ResourceTypes.HORSES, TechnologyTypes.HORSEBACK_RIDING,"H"),
     SWORDSMAN(80, CombatTypes.MELEE, 11, 0, 0, 2, ResourceTypes.IRON, TechnologyTypes.IRON_WORKING,"S"),
     CROSSBOWMAN(120, CombatTypes.ARCHERY, 6, 12, 2, 2, null, TechnologyTypes.MACHINERY,"C"),
     KNIGHT(150, CombatTypes.MOUNTED, 18, 0, 0, 3, ResourceTypes.HORSES, TechnologyTypes.CHIVALRY,"K"),
@@ -20,7 +20,7 @@ public enum UnitTypes {
     PIKEMAN(100, CombatTypes.MELEE, 10, 0, 0, 2, null, TechnologyTypes.CIVIL_SERVICE,"P"),
     TREBUCHET(170, CombatTypes.SIEGE, 6, 20, 2, 2, ResourceTypes.IRON, TechnologyTypes.PHYSICS,"T"),
     CANNON(250, CombatTypes.SIEGE, 10, 26, 2, 2, null, TechnologyTypes.CHEMISTRY,"C"),
-    CAVALRY(260, CombatTypes.MOUNTED, 25, 0, 0, 3, ResourceTypes.HORSES, TechnologyTypes.MILITARYSCIENCE,"C"),
+    CAVALRY(260, CombatTypes.MOUNTED, 25, 0, 0, 3, ResourceTypes.HORSES, TechnologyTypes.MILITARY_SCIENCE,"C"),
     LANCER(220, CombatTypes.MOUNTED, 22, 0, 0, 4, ResourceTypes.HORSES, TechnologyTypes.METALLURGY,"L"),
     MUSKETMAN(120, CombatTypes.GUNPOWDER, 16, 0, 0, 2, null, TechnologyTypes.GUNPOWDER,"M"),
     RIFLEMAN(200, CombatTypes.GUNPOWDER, 25, 0, 0, 2, null, TechnologyTypes.RIFLING,"R"),
@@ -30,14 +30,14 @@ public enum UnitTypes {
     PANZER(450, CombatTypes.ARMORED, 60, 0, 0, 5, null, TechnologyTypes.COMBUSTION,"P"),
     TANK(450, CombatTypes.ARMORED, 50, 0, 0, 4, null, TechnologyTypes.COMBUSTION,"T");
 
-    private final int cost;
-    private final CombatTypes combatTypes;
-    private final int combatStrengh;
-    private final int rangedCombatStrengh;
-    private final int Range;
-    private final int movement;
-    private final ResourceTypes resourceRequirements;
-    private final TechnologyTypes technologyRequirements;
+    private  int cost;
+    private  CombatTypes combatTypes;
+    private  int combatStrengh;
+    private  int rangedCombatStrengh;
+    private  int Range;
+    private  int movement;
+    private  ResourceTypes resourceRequirements;
+    private  TechnologyTypes technologyRequirements;
     private String showMap;
     UnitTypes(int cost, CombatTypes combatTypes, int combatStrengh, int rangedCombatStrengh, int range, int movement,
             ResourceTypes resourceRequirements, TechnologyTypes technologyRequirements,String showMap) {

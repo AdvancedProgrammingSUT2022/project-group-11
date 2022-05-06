@@ -8,12 +8,13 @@ public class Resource {
     private int gold;
     private int production;
     private ResourceTypes resourceType;
+    private String name;
 
     public Resource(ResourceTypes resourceType){
         this.food = resourceType.getFood();
         this.gold = resourceType.getGold();
         this.production = resourceType.getProduction();
-        this.resourceType = resourceType; 
+        this.resourceType = resourceType;
     }
 
     public Resource clone(){
@@ -41,6 +42,14 @@ public class Resource {
 
     public void setProduction(int production) {
         this.production = production;
+    }
+
+    public String getName() {
+        return this.name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public ResourceTypes getResourceType()

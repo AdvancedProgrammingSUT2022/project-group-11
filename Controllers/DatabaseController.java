@@ -1,9 +1,12 @@
 package Controllers;
 
+import Model.Buildings.BuildingTypes;
+import Model.City.City;
 import Model.*;
 import Model.Resources.ResourceTypes;
 import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
+import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Units.*;
 
 import java.util.ArrayList;
@@ -174,12 +177,10 @@ public class DatabaseController {
     }
 
     public String changingTheStateOfANonCombatUnit(NonCombatUnit nonCombatUnit, String action) {
-        if (action.equals("sleep")) {
-            nonCombatUnit.setIsAsleep(true);
-        } else if (action.equals("wake")) {
-            nonCombatUnit.setIsAsleep(false);
-        } else if (action.equals("delete")) {
-            nonCombatUnit = null;
+        switch (action) {
+            case "sleep" -> nonCombatUnit.setIsAsleep(true);
+            case "wake" -> nonCombatUnit.setIsAsleep(false);
+            case "delete" -> nonCombatUnit = null;
         }
         nonCombatUnit.setIsFinished(true);
         nonCombatUnit.setIsSelected(false);
@@ -199,7 +200,7 @@ public class DatabaseController {
 
     }
 
-    public boolean HasoneUnitBeenSelected() {
+    public boolean HasOneUnitBeenSelected() {
         boolean isSelected = false;
         int row = this.database.getMap().getROW();
         int column = this.database.getMap().getCOL();
@@ -269,45 +270,52 @@ public class DatabaseController {
         NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
 
         if (combatUnit != null) {
-            if (user.getCivilization().containsCombatUnit(x_final, y_final)) {
-                return "you have another combat unit in this tile";
-            }
-            if(combatUnit.getNextTerrain() != null)
-            {
-                combatUnit.getNextTerrain().clear();
-            }
-            ArrayList<Terrain> path = new ArrayList<>();
-            ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
-            addingAllPath(0, combatUnit.getX(), combatUnit.getY(), x_final, y_final, map, path, allPaths);
-            combatUnit.setNextTerrain(findingTheShortestPath(allPaths));
-            for (Terrain terrain : combatUnit.getNextTerrain()) {
-                System.out.println(terrain.getX() + " Mani " + terrain.getY());
-            }
-            combatUnit.setIsSelected(false);
-            combatUnit.setIsFinished(true);
+            System.out.println(combatUnitMovement(combatUnit, x_final, y_final, user, map));
+
         } else if (nonCombatUnit != null) {
-            if (user.getCivilization().containsNonCombatUnit(x_final, y_final)) {
-                return "you have another non combat unit in this tile";
-            }
-            if(nonCombatUnit.getNextTerrain() != null)
-            {
-                nonCombatUnit.getNextTerrain().clear();
-            }
-            ArrayList<Terrain> path = new ArrayList<>();
-            ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
-            addingAllPath(0, nonCombatUnit.getX(), nonCombatUnit.getY(), x_final, y_final, map, path, allPaths);
-            nonCombatUnit.setNextTerrain(findingTheShortestPath(allPaths));
-            nonCombatUnit.setIsSelected(false);
-            nonCombatUnit.setIsFinished(true);
+            System.out.println(nonCombatUnitMovement(nonCombatUnit, x_final, y_final, user, map));
         }
 
         return "action completed";
     }
 
-    public void movementOfAllUnits(User user)
-    {
-        for(Unit unit : user.getCivilization().getUnits())
-        {
+    public String combatUnitMovement(CombatUnit combatUnit, int x_final, int y_final, User user, Map map) {
+        if (user.getCivilization().containsCombatUnit(x_final, y_final)) {
+            return "you have another combat unit in this tile";
+        }
+        if (combatUnit.getNextTerrain() != null) {
+            combatUnit.getNextTerrain().clear();
+        }
+        ArrayList<Terrain> path = new ArrayList<>();
+        ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
+        addingAllPath(0, combatUnit.getX(), combatUnit.getY(), x_final, y_final, map, path, allPaths);
+        combatUnit.setNextTerrain(findingTheShortestPath(allPaths));
+        for (Terrain terrain : combatUnit.getNextTerrain()) {
+            System.out.println(terrain.getX() + " Mani " + terrain.getY());
+        }
+        combatUnit.setIsSelected(false);
+        combatUnit.setIsFinished(true);
+        return "action completed";
+    }
+
+    public String nonCombatUnitMovement(NonCombatUnit nonCombatUnit, int x_final, int y_final, User user, Map map) {
+        if (user.getCivilization().containsNonCombatUnit(x_final, y_final)) {
+            return "you have another non combat unit in this tile";
+        }
+        if (nonCombatUnit.getNextTerrain() != null) {
+            nonCombatUnit.getNextTerrain().clear();
+        }
+        ArrayList<Terrain> path = new ArrayList<>();
+        ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
+        addingAllPath(0, nonCombatUnit.getX(), nonCombatUnit.getY(), x_final, y_final, map, path, allPaths);
+        nonCombatUnit.setNextTerrain(findingTheShortestPath(allPaths));
+        nonCombatUnit.setIsSelected(false);
+        nonCombatUnit.setIsFinished(true);
+        return "action completed";
+    }
+
+    public void movementOfAllUnits(User user) {
+        for (Unit unit : user.getCivilization().getUnits()) {
             movementAsLongAsItHasMP(unit);
         }
     }
@@ -315,10 +323,9 @@ public class DatabaseController {
     public void movementAsLongAsItHasMP(Unit unit) {
         int indexOfLastTerrain;
         int movementCost = 0;
-            if(unit.getNextTerrain() == null)
-            {
-                return;
-            }
+        if (unit.getNextTerrain() == null) {
+            return;
+        }
 
         for (indexOfLastTerrain = 0; indexOfLastTerrain < unit.getNextTerrain().size(); indexOfLastTerrain++) {
             Terrain terrain = findingTheContainerTerrain(unit);
@@ -429,6 +436,7 @@ public class DatabaseController {
         String lackResources = "You lack the required resources to construct this unit";
         String unitAlreadyExists = "There is already a unit in this tile";
         String noCityHere = "There is no city in the tile you selected";
+        String minusHappiness = "you do not have positive happiness to buy settler";
         if (tile.getCity() == null) {
             return noCityHere;
         }
@@ -479,6 +487,9 @@ public class DatabaseController {
 
                 break;
             case "SETTLER":
+                if (!civilization.getBooleanSettlerBuy()) {
+                    return minusHappiness;
+                }
                 if (money < UnitTypes.SETTLER.getCost()) {
                     return notEnoughMoney;
                 } else if (tile.getNonCombatUnit() != null) {
@@ -856,11 +867,14 @@ public class DatabaseController {
         }
     }
 
+<<<<<<< HEAD
+=======
     public String choosingATechnologyToStudy(User user, TechnologyTypes technologyType) {
         for (TechnologyTypes technologyType2 : technologyType.getRequirements()) {
             if (!isContainTechnology(user, technologyType2)) {
                 return "you do not have required prerequisites";
-            } else if (isContainTechnology(user, technologyType2) && getTechnologyByTechnologyType(user, technologyType).getIsAvailabe()) {
+            } else if (isContainTechnology(user, technologyType2)
+                    && getTechnologyByTechnologyType(user, technologyType).getIsAvailable()) {
                 return "you do not have required prerequisites";
             }
         }
@@ -893,6 +907,7 @@ public class DatabaseController {
         return getUnderResearchTechnology(user).toString();
     }
 
+>>>>>>> 67ea3b208145a6d1f14eea55a459893efb6c957c
     public String unitsInfo(User user) {
         StringBuilder unitsInformation = new StringBuilder();
         for (Unit unit : user.getCivilization().getUnits()) {
@@ -972,7 +987,7 @@ public class DatabaseController {
     public void createUnitForEachCivilization(User user) {
         ArrayList<Integer> unitsCoordinates = findingEmptyTiles();
         NonCombatUnit newSettler = new NonCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
-        NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1), 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
+        NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)].setCombatUnit(newWarrior);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1) + 1].setNonCombatUnit(newSettler);
         user.getCivilization().getUnits().add(newSettler);
@@ -999,5 +1014,187 @@ public class DatabaseController {
 
         return this.getMap().getTerrain()[x][y].getCombatUnit() == null && this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() == null;
     }
+
+
+    public void addGoldToUser(User user) {
+        for (Terrain allTerrains : user.getCivilization().getOwnedTerrains()) {
+            int gold = allTerrains.getCity().getGold();
+            if (allTerrains.getTerrainTypes() != null) {
+                gold += allTerrains.getTerrainTypes().getGold();
+            }
+            if (allTerrains.getTerrainFeatureTypes() != null) {
+                for (TerrainFeatureTypes allTerrainFeature : allTerrains.getTerrainFeatureTypes()) {
+
+                    gold += allTerrainFeature.getGold();
+                }
+            }
+
+            if (allTerrains.getTerrainResource() != null && allTerrains.getBooleanResource()) {
+                gold += allTerrains.getTerrainResource().getGold();
+            }
+            if (allTerrains.getTerrrainImprovement() != null) {
+                gold += allTerrains.getTerrrainImprovement().getGold();
+            }
+
+            allTerrains.getCity().setGold(gold);
+        }
+        for (City city : user.getCivilization().getCities()) {
+            int gold = city.getGold();
+            user.getCivilization().increaseGold(gold);
+        }
+
+        int numberOfUnits = user.getCivilization().getUnits().size();
+        user.getCivilization().increaseGold(-numberOfUnits * database.getTurn());
+        for (City city : user.getCivilization().getCities()) {
+            for (BuildingTypes cityBuildings : city.getBuildings()) {
+                user.getCivilization().increaseGold(-cityBuildings.getMeintenance() * database.getTurn());
+            }
+        }
+
+        // gold == 0?
+
+    }
+
+
+    public void consumptFood(User user) {
+        for (City city : user.getCivilization().getCities()) {
+            int numberOfcitizen = city.getCitizens().size();
+            int firstFood = city.getFood();
+            city.setFood(firstFood - 2 * numberOfcitizen);
+        }
+        /*
+         * citizens add food when work
+         * tara complete city
+         *
+         */
+
+        ArrayList<City> allCitiesHaveSettler = new ArrayList<>();
+        for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
+            if (allTerrain.getNonCombatUnit().getUnitType() == UnitTypes.SETTLER) {
+                allCitiesHaveSettler.add(allTerrain.getCity());
+            }
+        }
+
+        int divide = 1;
+        if (user.getCivilization().getHappiness() < 0) {
+            divide = 3;
+        }
+
+        for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
+            if (!allCitiesHaveSettler.contains(allTerrain.getCity())) {
+                int food = 0;
+                if (allTerrain.getTerrainTypes() != null) {
+                    food += allTerrain.getTerrainTypes().getFood();
+                }
+                if (allTerrain.getTerrainFeatureTypes() != null) {
+                    for (TerrainFeatureTypes allTerrainFeature : allTerrain.getTerrainFeatureTypes()) {
+
+                        food += allTerrainFeature.getFood();
+                    }
+                }
+
+                if (allTerrain.getTerrainResource() != null && allTerrain.getBooleanResource()) {
+                    food += allTerrain.getTerrainResource().getFood();
+                }
+                if (allTerrain.getTerrrainImprovement() != null) {
+                    food += allTerrain.getTerrrainImprovement().getFood();
+                }
+
+                allTerrain.getCity().setFood(allTerrain.getCity().getFood() + food / divide);
+            }
+
+        }
+
+        // roshd shahr
+
+    }
+
+
+    public void setHappinessUser(User user) {
+
+        // without building
+        //  without technology
+
+        ResourceTypes[] luxuryResource = {ResourceTypes.COTTON, ResourceTypes.DYES, ResourceTypes.FURS, ResourceTypes.GEMS, ResourceTypes.GEMS, ResourceTypes.GOLD, ResourceTypes.INCENSE, ResourceTypes.IVORY, ResourceTypes.MARBLE, ResourceTypes.SILK, ResourceTypes.SILVER, ResourceTypes.SUGAR};
+        ArrayList<ResourceTypes> happinessLuxuryIncrease = new ArrayList<>();
+
+        for (Terrain allTerrains : user.getCivilization().getOwnedTerrains()) {
+            if (allTerrains.getTerrainResource() != null && allTerrains.getBooleanResource()) {
+                for (ResourceTypes resourceTypes : luxuryResource) {
+                    if (resourceTypes == allTerrains.getTerrainResource().getResourceType()) {
+                        if (!happinessLuxuryIncrease.contains(allTerrains.getTerrainResource().getResourceType())) {
+                            happinessLuxuryIncrease.add(resourceTypes);
+                        }
+                    }
+                }
+
+            }
+        }
+
+        user.getCivilization().setHappiness(user.getCivilization().getHappiness() + 4 * happinessLuxuryIncrease.size());
+
+        if (user.getCivilization().getHappiness() < 0) {
+            for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
+                if (allTerrain.getCombatUnit() != null) {
+                    allTerrain.getCombatUnit().setMilitaryPower(allTerrain.getCombatUnit().getMilitaryPower() - allTerrain.getCombatUnit().getMilitaryPower() / 4);
+                }
+            }
+            user.getCivilization().setBooleanSettlerBuy(false);
+        } else {
+            for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
+                if (allTerrain.getCombatUnit() != null) {
+                    //    militry power
+                }
+            }
+            user.getCivilization().setBooleanSettlerBuy(true);
+        }
+
+
+    }
+
+    public String choosingATechnologyToStudy(User user, TechnologyTypes technologyType) {
+        for (TechnologyTypes technologyType2 : technologyType.getRequirements()) {
+            if (!isContainTechnology(user, technologyType2)) {
+                return "you do not have required prerequisites";
+            } else if (isContainTechnology(user, technologyType2) && !getTechnologyByTechnologyType(user, technologyType).getIsAvailable()) {
+                return "you do not have required prerequisites";
+            }
+        }
+        for (Technology technology : user.getCivilization().getTechnologies()) {
+            technology.setUnderResearch(false);
+        }
+        if (isContainTechnology(user, technologyType)) {
+            getTechnologyByTechnologyType(user, technologyType).setUnderResearch(true);
+            return "Technology is under research again";
+        }
+        else{
+            user.getCivilization().getTechnologies().add(new Technology(true, 0, technologyType, false));
+        }
+
+        return "Technology is under research";
+    }
+
+    public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
+        for (Technology technology : user.getCivilization().getTechnologies()) {
+            if (technology.getTechnologyType().equals(technologyType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Technology getTechnologyByTechnologyType(User user, TechnologyTypes technologyType) {
+        for (Technology technology : user.getCivilization().getTechnologies()) {
+            if (technology.getTechnologyType().equals(technologyType)) {
+                return technology;
+            }
+        }
+        return null;
+    }
+
+    public String researchInfo(User user) {
+        return getUnderResearchTechnology(user).toString();
+    }
+
 
 }

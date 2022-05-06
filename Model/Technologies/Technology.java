@@ -5,28 +5,28 @@ public class Technology {
     private boolean underResearch;
     private int costsForResearch;
     private TechnologyTypes technologyType;
-    private boolean isAvailabe;
+    private boolean isAvailable;
 
 
-    public Technology(boolean underResearch, int costsForResearch, TechnologyTypes technologyType, boolean isAvailabe) {
+    public Technology(boolean underResearch, int costsForResearch, TechnologyTypes technologyType, boolean isAvailable) {
         this.underResearch = underResearch;
         this.costsForResearch = costsForResearch;
         this.technologyType = technologyType;
-        this.isAvailabe = isAvailabe;
+        this.isAvailable = isAvailable;
     }
 
  
 
-    public boolean isIsAvailabe() {
-        return this.isAvailabe;
+    public boolean isIsAvailable() {
+        return this.isAvailable;
     }
 
-    public boolean getIsAvailabe() {
-        return this.isAvailabe;
+    public boolean getIsAvailable() {
+        return this.isAvailable;
     }
 
-    public void setIsAvailabe(boolean isAvailabe) {
-        this.isAvailabe = isAvailabe;
+    public void setIsAvailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
     }
 
     public boolean isUnderResearch() {
@@ -62,7 +62,7 @@ public class Technology {
         return "{" +
             "costsForResearch='" + getCostsForResearch() + "'" +
             ", technologyType='" + getTechnologyType() + "'" +
-            ", isAvailabe='" + isIsAvailabe() + "'" +
+            ", isAvailable='" + isIsAvailable() + "'" +
             ", leads to following technologies='" + getTechnologyType().getTechnologyUnlocks() + "'" +
             "}";
     }

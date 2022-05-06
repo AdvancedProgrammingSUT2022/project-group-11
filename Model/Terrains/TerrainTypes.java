@@ -1,3 +1,4 @@
+
 package Model.Terrains;
 
 import java.util.ArrayList;
@@ -145,4 +146,10 @@ public enum TerrainTypes {
         return this.possibleFeatures;
     }
 
+    public int getGold(){
+        return this.gold;
+    }
+    public int getFood(){
+        return this.food;
+    }
 }

@@ -272,7 +272,7 @@ public class GameMapGenerator {
         int HowManySpaceLeft = 0;
         int HowManySpaceRight = 0;
         if (Terrains[iTerrain][l].getType().equals("revealed")) {
-            if (getRevealedFromArray(user, iTerrain, l).getTerrainResource() != null) {
+            if (getRevealedFromArray(user, iTerrain, l).getTerrainResource() != null && getRevealedFromArray(user, iTerrain, l).getBooleanResource() == true) {
                 Resource += getRevealedFromArray(user, iTerrain, l).getTerrainResource().getResourceType()
                         .getShowResourceMap();
             }
@@ -285,7 +285,7 @@ public class GameMapGenerator {
             addSpace(i, j, HowManySpaceRight);
             Printmap[i][j] += Color.RESET;
         } else if (Terrains[iTerrain][l].getType().equals("visible")) {
-            if (Terrains[iTerrain][l].getTerrainResource() != null) {
+            if (Terrains[iTerrain][l].getTerrainResource() != null  && Terrains[iTerrain][l].getBooleanResource() == true) {
                 Resource += Terrains[iTerrain][l].getTerrainResource().getResourceType().getShowResourceMap();
             }
             Printmap[i][j] += Terrains[iTerrain][l].getTerrainTypes().getColor();

@@ -1,6 +1,7 @@
 package Model;
 
 public class River {
+
     private Terrain first;
     private Terrain second;
     private Color color;
