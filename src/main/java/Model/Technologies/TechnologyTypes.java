@@ -8,7 +8,8 @@ import Model.Resources.ResourceTypes;
 import Model.Units.UnitTypes;
 
 public enum TechnologyTypes {
-    AGRICULTURE(20, null, new ArrayList<>() {
+    AGRICULTURE(20,  new ArrayList<>() {
+    }, new ArrayList<>() {
         {
             add(TechnologyTypes.POTTERY);
             add(TechnologyTypes.ANIMAL_HUSBANDRY);
