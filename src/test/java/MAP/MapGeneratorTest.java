@@ -23,6 +23,7 @@ import Model.Terrain;
 import Model.User;
 import Model.Improvements.Improvements;
 import Model.Resources.ResourceTypes;
+import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
@@ -444,9 +445,44 @@ public class MapGeneratorTest {
                     new ArrayList<Revealed>());
         }
     }
+
     map.setTerrains(terrains);
     map.nullImprovementAndCombat();
     Assertions.assertTrue(terrains[3][4].getTerrrainImprovement() == null);
+
+   }
+
+
+   @Test
+   public void revealedTileTest(){
+    resource = new Resource(ResourceTypes.BANANAS);
+
+    Map map = new Map();
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            terrains[i][j] = new Terrain(i, j, null, TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
+                    new ArrayList<Revealed>());
+                    terrains[i][j].setTerrainFeatureTypes(TerrainFeatureTypes.FOREST);
+        }
+    }
+   
+
+    Civilization civilization = new Civilization(0, 100, "A");
+    ArrayList<Terrain> myterrain = new ArrayList<>();
+    ArrayList<Terrain> myterrainrevealed = new ArrayList<>();
+    myterrain.add(terrains[3][7]);
+    myterrain.add(terrains[6][4]);
+    myterrain.add(terrains[10][4]);
+    myterrainrevealed.add(terrains[3][4]);
+    civilization.setTerrains(myterrain);
+    civilization.setRevealedTerrains(myterrainrevealed);
+    user = new User(null, null, null, civilization);
+    database = new Database();
+    database.addUser(user);
+    map.setTerrains(terrains);
+    String result[][] = map.printMap(database, user);
+    Assertions.assertNotNull(result);
 
    }
 
