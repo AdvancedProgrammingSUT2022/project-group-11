@@ -627,10 +627,114 @@ public class MapGeneratorTest {
     }
 
     @Test 
-    public void changePasswordTest(){
+    public void changePasswordTestnotHave(){
+        Matcher matcher;
+        Database database = new Database();
+        DatabaseController databaseController = new DatabaseController(database);
+        User checkUser = new User("ehsan0", "123aA", "essi1234", null);
+        database.addUser(checkUser);
+        String result = null;
+        String input = "profile change --password --current essi123 --new esii2333";
+
+        if ((matcher = getCommandMatcher(input, MenuEnums.CHANGE_PASSWORD.getRegex())).matches()) {
+             result = databaseController.changePassword(matcher, checkUser);
+
+        }
+        Assertions.assertTrue(result.equals("current password is invalid"));
+    }
+
+
+    @Test 
+    public void changePasswordTestSameAsOld(){
+        Matcher matcher;
+        Database database = new Database();
+        DatabaseController databaseController = new DatabaseController(database);
+        User checkUser = new User("ehsan0", "123aA", "essi1234", null);
+        database.addUser(checkUser);
+        String result = null;
+        String input = "profile change --password --current 123aA --new 123aA";
+
+        if ((matcher = getCommandMatcher(input, MenuEnums.CHANGE_PASSWORD.getRegex())).matches()) {
+             result = databaseController.changePassword(matcher, checkUser);
+
+        }
+        Assertions.assertTrue(result.equals("please enter a new password"));
+    }
+
+
+
+    @Test 
+    public void changePasswordTestnew(){
+        Matcher matcher;
+        Database database = new Database();
+        DatabaseController databaseController = new DatabaseController(database);
+        User checkUser = new User("ehsan0", "123aA", "essi1234", null);
+        database.addUser(checkUser);
+        String result = null;
+        String input = "profile change --password --current 123aA --new 123a";
+
+        if ((matcher = getCommandMatcher(input, MenuEnums.CHANGE_PASSWORD.getRegex())).matches()) {
+             result = databaseController.changePassword(matcher, checkUser);
+
+        }
+        Assertions.assertTrue(result.equals("password changed successfully!"));
+    }
+
+    @Test
+    public void selectAndDeselcetUnitTestWrongCordinate(){
+        Civilization civil = new Civilization(0, 3, "A");
+        ArrayList<Terrain> terr  = new ArrayList<>();
+
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+                        terr.add(terrains[i][j]);
+            }
+        }
+        civil.setTerrains(terr);
+        map.setTerrains(terrains);
+        User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        String result = databaseController.selectAndDeselectCombatUnit(user, 50, 3);
+        Assertions.assertTrue(result.equals("there is no tile with these coordinates"));
         
     }
 
+
+
+    @Test
+    public void selectAndDeselcetUnitTestWrongCordinate(){
+        Civilization civil = new Civilization(0, 3, "A");
+        ArrayList<Terrain> terr  = new ArrayList<>();
+
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+                        terr.add(terrains[i][j]);
+            }
+        }
+        civil.setTerrains(terr);
+        map.setTerrains(terrains);
+        User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        String result = databaseController.selectAndDeselectCombatUnit(user, 50, 3);
+        Assertions.assertTrue(result.equals("there is no tile with these coordinates"));
+        
+    }
 
 
 }
