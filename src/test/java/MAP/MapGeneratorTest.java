@@ -804,4 +804,131 @@ public class MapGeneratorTest {
     }
 
 
+
+
+
+
+    @Test
+    public void selectAndDeselectNonCombatUnitWrongCordinate(){
+        Civilization civil = new Civilization(0, 3, "A");
+        ArrayList<Terrain> terr  = new ArrayList<>();
+
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+                        terr.add(terrains[i][j]);
+            }
+        }
+        civil.setTerrains(terr);
+        map.setTerrains(terrains);
+        User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        String result = databaseController.selectAndDeselectNonCombatUnit(user, 50, 3);
+        Assertions.assertTrue(result.equals("there is no tile with these coordinates"));
+    }
+
+
+
+    @Test
+    public void selectAndDeselcetNonUnitTestSelectBefore(){
+        Civilization civil = new Civilization(0, 3, "A");
+        ArrayList<Terrain> terr  = new ArrayList<>();
+       
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, true,
+                UnitTypes.SETTLER, false);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, noncombatunit,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+                        terr.add(terrains[i][j]);
+            }
+        }
+        civil.setTerrains(terr);
+        map.setTerrains(terrains);
+        User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        String result = databaseController.selectAndDeselectNonCombatUnit(user, 16, 3);
+        Assertions.assertTrue(result.equals("you have selected this unit before"));
+        
+    }
+
+
+    @Test
+    public void selectAndDeselcetUnitTestNoncombatselected(){
+        Civilization civil = new Civilization(0, 3, "A");
+        ArrayList<Terrain> terr  = new ArrayList<>();
+       ArrayList<Unit> units = new ArrayList<>();
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, noncombatunit,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+                        terr.add(terrains[i][j]);
+                        units.add(noncombatunit);
+            }
+        }
+        civil.setTerrains(terr);
+        civil.setUnits(units);
+        map.setTerrains(terrains);
+        User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        String result = databaseController.selectAndDeselectNonCombatUnit(user, 16, 3);
+        Assertions.assertTrue(result.equals("Noncombat unit was selected"));
+        
+    }
+
+
+    @Test
+    public void selectAndDeselcetNonUnitTestdoNotHaveAccess(){
+        Civilization civil = new Civilization(0, 3, "A");
+        ArrayList<Terrain> terr  = new ArrayList<>();
+       ArrayList<Unit> units = new ArrayList<>();
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, noncombatunit,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+                        terr.add(terrains[i][j]);
+                       
+            }
+        }
+        civil.setTerrains(terr);
+        civil.setUnits(units);
+        map.setTerrains(terrains);
+        User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        String result = databaseController.selectAndDeselectCombatUnit(user, 16, 3);
+        Assertions.assertTrue(result.equals("you do not have access to this unit"));
+        
+    }
+
+
+
 }
