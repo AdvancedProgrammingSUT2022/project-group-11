@@ -1073,4 +1073,50 @@ public class MapGeneratorTest {
                 Assertions.assertTrue(result.equals("action completed"));
     }
 
+    @Test
+    public void changeStateOfAllUnit(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, true, false, false, false, false);
+                combatunit.setNextTerrain(new ArrayList<>());
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit,null ,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+            }
+        }
+        map.setTerrains(terrains);
+        Database database = new Database();
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.changingTheStateOfAUnit("sleep");
+
+    }
+
+
+
+    @Test
+    public void changeStateOfAllUnitNon(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                NonCombatUnit combatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, true);
+                combatunit.setIsSelected(true);
+                combatunit.setNextTerrain(new ArrayList<>());
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null,combatunit ,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+            }
+        }
+        map.setTerrains(terrains);
+        Database database = new Database();
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.changingTheStateOfAUnit("sleep");
+
+    }
 }
