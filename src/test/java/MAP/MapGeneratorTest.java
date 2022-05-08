@@ -1162,4 +1162,65 @@ public class MapGeneratorTest {
         databaseController.HasOneUnitBeenSelected();
     }
 
+    @Test
+    public void isAllTaskFinishedTestTrue(){
+        Map map = new Map();
+        ArrayList<Unit> units = new ArrayList<>();
+     
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                NonCombatUnit combatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, true);
+                units.add(combatunit);
+            }
+        }
+        Civilization civil = new Civilization(0, 0, "A");
+        User user = new User(null, null, null, civil);
+        civil.setUnits(units);
+        Database database = new Database();
+        database.addUser(user);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.isAllTasksFinished(user);
+    }
+    @Test
+    public void isAllTaskFinishedTestFalse(){
+        Map map = new Map();
+        ArrayList<Unit> units = new ArrayList<>();
+     
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                NonCombatUnit combatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, true,
+                UnitTypes.SETTLER, true);
+                units.add(combatunit);
+            }
+        }
+        Civilization civil = new Civilization(0, 0, "A");
+        User user = new User(null, null, null, civil);
+        civil.setUnits(units);
+        Database database = new Database();
+        database.addUser(user);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.isAllTasksFinished(user);
+    }
+
+    @Test
+    public void SetAllTaskFinishedTest(){
+        Map map = new Map();
+        ArrayList<Unit> units = new ArrayList<>();
+     
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                NonCombatUnit combatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, true,
+                UnitTypes.SETTLER, true);
+                units.add(combatunit);
+            }
+        }
+        Civilization civil = new Civilization(0, 0, "A");
+        User user = new User(null, null, null, civil);
+        civil.setUnits(units);
+        Database database = new Database();
+        database.addUser(user);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.setAllUnitsUnfinished(user);
+    }
 }
