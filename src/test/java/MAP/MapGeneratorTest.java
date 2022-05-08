@@ -30,6 +30,7 @@ import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
+import Model.Units.UnitTypes;
 
 @ExtendWith(MockitoExtension.class)
 public class MapGeneratorTest {
@@ -710,15 +711,17 @@ public class MapGeneratorTest {
 
 
     @Test
-    public void selectAndDeselcetUnitTestWrongCordinate(){
+    public void selectAndDeselcetUnitTestSelectBefore(){
         Civilization civil = new Civilization(0, 3, "A");
         ArrayList<Terrain> terr  = new ArrayList<>();
-
+       
         Map map = new Map();
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
-                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, true,
+                UnitTypes.SETTLER, false, false, false, false, false);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
                         Improvements.FARM, resource,
                         new ArrayList<Revealed>());
                         terr.add(terrains[i][j]);
@@ -731,8 +734,8 @@ public class MapGeneratorTest {
         database.addUser(user);
         database.setMap(map);
         DatabaseController databaseController = new DatabaseController(database);
-        String result = databaseController.selectAndDeselectCombatUnit(user, 50, 3);
-        Assertions.assertTrue(result.equals("there is no tile with these coordinates"));
+        String result = databaseController.selectAndDeselectCombatUnit(user, 16, 3);
+        Assertions.assertTrue(result.equals("you have selected this unit before"));
         
     }
 
