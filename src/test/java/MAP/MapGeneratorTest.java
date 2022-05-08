@@ -1034,4 +1034,43 @@ public class MapGeneratorTest {
                 Assertions.assertTrue(result.equals("this unit is not a ranged combat unit!"));
     }
 
+
+    @Test
+    public void changingStateofNoncombatUnitSleep(){
+        String result = null;
+        NonCombatUnit combatunit = new NonCombatUnit(0, 0, 0, 0, 0, 0, false, false,
+                  UnitTypes.SETTLER, false);
+                 combatunit.setNextTerrain(new ArrayList<>());
+                  Database database = new Database();
+                  DatabaseController databaseController = new DatabaseController(database);
+                  result = databaseController.changingTheStateOfANonCombatUnit(combatunit, "sleep");
+                  Assertions.assertTrue(result.equals("action completed"));
+    }
+
+    @Test
+
+    public void changingStateOfNoncombatUnitTestWake(){
+      String result = null;
+      NonCombatUnit combatunit = new NonCombatUnit(0, 0, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false);
+               combatunit.setNextTerrain(new ArrayList<>());
+                Database database = new Database();
+                DatabaseController databaseController = new DatabaseController(database);
+                result = databaseController.changingTheStateOfANonCombatUnit(combatunit, "wake");
+                Assertions.assertTrue(result.equals("action completed"));
+    }
+
+    @Test
+
+    public void changingStateOfNoncombatUnitTestDelete(){
+      String result = null;
+      NonCombatUnit combatunit = new NonCombatUnit(0, 0, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false);
+               combatunit.setNextTerrain(new ArrayList<>());
+                Database database = new Database();
+                DatabaseController databaseController = new DatabaseController(database);
+                result = databaseController.changingTheStateOfANonCombatUnit(combatunit, "delete");
+                Assertions.assertTrue(result.equals("action completed"));
+    }
+
 }
