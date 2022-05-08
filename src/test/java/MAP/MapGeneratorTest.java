@@ -4,6 +4,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import Controllers.DatabaseController;
+import Enums.MenuEnums;
 import Model.Civilization;
 import Model.Database;
 import Model.Map;
@@ -487,6 +490,35 @@ public class MapGeneratorTest {
    }
 
 
+   private Matcher getCommandMatcher(String input, String regex)
+  {
+      Pattern pattern = Pattern.compile(regex);
+      Matcher matcher = pattern.matcher(input);
+      return matcher;
+  }
+
+   @Test
+   public void creatUserTest(){
+       Database database = new Database();
+       User checkUser = new User("ehsan", "123aA","essi1234", null);
+       database.addUser(checkUser);
+       DatabaseController databaseController = new DatabaseController(database);
+       String input = "user create --username ehsan --nickname eeee --password 1234";
+       Matcher matcher;
+       String result = null;
+       if ( (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER.getRegex())).matches()
+       || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER2.getRegex())).matches()
+       || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER3.getRegex())).matches()
+       || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER4.getRegex())).matches()
+       || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER5.getRegex())).matches()
+       || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER6.getRegex())).matches() )
+       {
+        result =  databaseController.createUser(matcher);
+       }
+      
+       Assertions.assertTrue(result.equals("user with username ehsan already exists"));
+
+   }
 
 
 

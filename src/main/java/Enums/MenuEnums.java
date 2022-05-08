@@ -1,5 +1,8 @@
 package Enums;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public enum MenuEnums {
     ENTER("menu enter (?<menuName>Login|Main|PlayGame|Profile)"),
     SHOWCURRENT("menu show-current"),
@@ -26,4 +29,5 @@ public enum MenuEnums {
     public String getRegex() {
         return regex;
     }
+    
 }
