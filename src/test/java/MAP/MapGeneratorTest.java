@@ -595,6 +595,42 @@ public class MapGeneratorTest {
     }
 
 
-    
+    @Test
+    public void changeUsernameNickNameTest(){
+        Matcher matcher;
+        Database database = new Database();
+        DatabaseController databaseController = new DatabaseController(database);
+        User checkUser = new User("ehsan0", "123aA", "essi1234", null);
+        database.addUser(checkUser);
+        String input = "profile change --nickname essi1234";
+        String result = null;
+        if ((matcher = getCommandMatcher(input, MenuEnums.CHANGE_NICKNAME.getRegex())).matches()) {
+            result = databaseController.changeUserNickname(matcher, checkUser);
+        }
+        Assertions.assertTrue(result.equals("user with nickname essi1234 already exists"));
+    }
+
+
+    @Test
+    public void changeUsernameNickNameTestchange(){
+        Matcher matcher;
+        Database database = new Database();
+        DatabaseController databaseController = new DatabaseController(database);
+        User checkUser = new User("ehsan0", "123aA", "essi1234", null);
+        database.addUser(checkUser);
+        String input = "profile change --nickname essipalang";
+        String result = null;
+        if ((matcher = getCommandMatcher(input, MenuEnums.CHANGE_NICKNAME.getRegex())).matches()) {
+            result = databaseController.changeUserNickname(matcher, checkUser);
+        }
+        Assertions.assertTrue(result.equals("nickname changed successfully!"));
+    }
+
+    @Test 
+    public void changePasswordTest(){
+        
+    }
+
+
 
 }
