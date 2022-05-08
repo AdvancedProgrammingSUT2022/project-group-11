@@ -3,7 +3,7 @@ package Model.Technologies;
 import java.util.ArrayList;
 
 import Model.Buildings.BuildingTypes;
-import Model.Improvements.Improvements;
+import Model.Improvements.ImprovementTypes;
 import Model.Resources.ResourceTypes;
 import Model.Units.UnitTypes;
 
@@ -18,7 +18,7 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(Improvements.FARM);
+            add(ImprovementTypes.FARM);
         }
     }), ANIMAL_HUSBANDRY(35, new ArrayList<>() {
         {
@@ -33,7 +33,7 @@ public enum TechnologyTypes {
     }, new ArrayList<>() {
         {
             add(ResourceTypes.HORSES);
-            add(Improvements.PASTURE);
+            add(ImprovementTypes.PASTURE);
         }
     }), ARCHERY(35, new ArrayList<>() {
         {
@@ -75,7 +75,7 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(Improvements.PLANTATION);
+            add(ImprovementTypes.PLANTATION);
         }
     }), MASONRY(55, new ArrayList<>() {
         {
@@ -89,7 +89,7 @@ public enum TechnologyTypes {
     }, new ArrayList<>() {
         {
             add(BuildingTypes.WALLS);
-            add(Improvements.QUARRY);
+            add(ImprovementTypes.QUARRY);
             // TODO remove marsh
         }
     }), MINING(35, new ArrayList<>() {
@@ -103,7 +103,7 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(Improvements.MINE);
+            add(ImprovementTypes.MINE);
             // TODO remove FOREST
         }
     }), POTTERY(35, new ArrayList<>() {
@@ -145,8 +145,8 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(Improvements.TRADINGPOST);
-            add(Improvements.CAMP);
+            add(ImprovementTypes.TRADINGPOST);
+            add(ImprovementTypes.CAMP);
         }
     }), WRITING(55, new ArrayList<>() {
         {
