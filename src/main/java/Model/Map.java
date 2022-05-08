@@ -128,7 +128,7 @@ public class Map {
             Terrains[i][j].getReveals().remove(index);
         }
 
-        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), Terrains[i][j].getCombatUnit().clone(), Terrains[i][j].getNonCombatUnit().clone(), Terrains[i][j].getTerrrainImprovement(), Terrains[i][j].getTerrainResource().clone(),Terrains[i][j].getBooleanResource());
+        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), Terrains[i][j].getCombatUnit().clone(), Terrains[i][j].getNonCombatUnit().clone(), Terrains[i][j].getTerrainImprovement(), Terrains[i][j].getTerrainResource().clone(),Terrains[i][j].getBooleanResource());
         Terrains[i][j].setReveals(reveal);
 
     }
@@ -293,7 +293,7 @@ public class Map {
     private void nullImprovementAndCombat(){
         for(int i = 0 ; i < ROW;i++){
             for(int j = 0; j < COL;j++){
-              Terrains[i][j].setTerrrainImprovement(null);
+              Terrains[i][j].setTerrainImprovement(null);
               Terrains[i][j].setCombatUnit(null);
               Terrains[i][j].setNonCombatUnit(null);
             }
@@ -534,7 +534,7 @@ public class Map {
         for(int i = 0; i < ROW;i++){
             for(int j = 0; j < COL;j++){
                 if(Terrains[i][j].getType().equals("visible")){
-                    if(Terrains[i][j].getTerrrainImprovement() == Terrains[i][j].getTerrainResource().getResourceType().getRequiredImprovements()){
+                    if(Terrains[i][j].getTerrainImprovement().getImprovementType() == Terrains[i][j].getTerrainResource().getResourceType().getRequiredImprovements()){
                         Terrains[i][j].setBooleanResource(true);
                     }else{
                         Terrains[i][j].setBooleanResource(false);

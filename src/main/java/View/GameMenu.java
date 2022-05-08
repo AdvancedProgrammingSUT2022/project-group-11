@@ -2,6 +2,7 @@ package View;
 
 import Controllers.DatabaseController;
 import Enums.GameEnums;
+import Model.Improvements.ImprovementTypes;
 import Model.Technologies.TechnologyTypes;
 import Model.User;
 
@@ -100,15 +101,9 @@ public class GameMenu {
                                 System.out.println(this.databaseController.changingTheStateOfAUnit("delete"));
 
                             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
-                                buildUnit(matcher);
+                                buildUnit(matcher,user);
                             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
-                                if (matcher.group("subdivision").equals("JUNGLE")) {
-
-                                } else if (matcher.group("subdivision").equals("ROUTE")) {
-
-                                } else {
-                                    System.out.println("INVALID COMMAND");
-                                }
+                                deleteUnit(matcher, user);
 
                             } else {
                                 System.out.println("INVALID COMMAND");
@@ -141,31 +136,44 @@ public class GameMenu {
     }
 
     private void showInfo(Matcher matcher, User user) {
-        if (matcher.group("section").equals("RESEARCH")) {
-            System.out.println(databaseController.researchInfo(user));
-        } else if (matcher.group("section").equals("UNITS")) {
-            System.out.println(databaseController.unitsInfo(user));
+        switch (matcher.group("section")) {
+            case "RESEARCH":
+                System.out.println(databaseController.researchInfo(user));
+                break;
+            case "UNITS":
+                System.out.println(databaseController.unitsInfo(user));
 
-        } else if (matcher.group("section").equals("CITIIES")) {
+                break;
+            case "CITIES":
 
-        } else if (matcher.group("section").equals("DIPLOMACY")) {
+                break;
+            case "DIPLOMACY":
 
-        } else if (matcher.group("section").equals("VICTORY")) {
+                break;
+            case "VICTORY":
 
-        } else if (matcher.group("section").equals("DEMOGRAPHICS")) {
+                break;
+            case "DEMOGRAPHICS":
 
-        } else if (matcher.group("section").equals("NOTIFICATIONS")) {
+                break;
+            case "NOTIFICATIONS":
 
-        } else if (matcher.group("section").equals("MILITARY")) {
+                break;
+            case "MILITARY":
 
-        } else if (matcher.group("section").equals("ECONOMIC")) {
+                break;
+            case "ECONOMIC":
 
-        } else if (matcher.group("section").equals("DIPLOMATIC")) {
+                break;
+            case "DIPLOMATIC":
 
-        } else if (matcher.group("section").equals("DEALS")) {
+                break;
+            case "DEALS":
 
-        } else {
-            System.out.println("INVALID COMMAND");
+                break;
+            default:
+                System.out.println("INVALID COMMAND");
+                break;
         }
     }
 
@@ -186,30 +194,84 @@ public class GameMenu {
         }
     }
 
-    private void buildUnit(Matcher matcher) {
-        if (matcher.group("subdivision").equals("ROAD")) {
+    private void buildUnit(Matcher matcher, User user) {
+        String name = matcher.group("subdivision");
+        switch (name) {
+            case "ROAD":
+                System.out.println(this.databaseController.buildingAnImprovement(user,ImprovementTypes.ROAD));
 
-        } else if (matcher.group("subdivision").equals("RAILROAD")) {
+                break;
+            case "RAILROAD":
+            System.out.println(this.databaseController.buildingAnImprovement(user,ImprovementTypes.RAILROAD));
 
-        } else if (matcher.group("subdivision").equals("FARM")) {
+                break;
+            case "FARM":
+                System.out.println(this.databaseController.buildingAnImprovement(user, ImprovementTypes.FARM));
 
-        } else if (matcher.group("subdivision").equals("MINE")) {
+                break;
+            case "MINE":
+                System.out.println(this.databaseController.buildingAnImprovement(user, ImprovementTypes.MINE));
 
-        } else if (matcher.group("subdivision").equals("TRADINGPOST")) {
+                break;
+            case "TRADINGPOST":
+                System.out.println(this.databaseController.buildingAnImprovement(user, ImprovementTypes.TRADINGPOST));
 
-        } else if (matcher.group("subdivision").equals("LUMBERMILL")) {
+                break;
+            case "LUMBERMILL":
+                System.out.println(this.databaseController.buildingAnImprovement(user, ImprovementTypes.LUMBERMILL));
 
-        } else if (matcher.group("subdivision").equals("PASTURE")) {
+                break;
+            case "PASTURE":
+                System.out.println(this.databaseController.buildingAnImprovement(user, ImprovementTypes.PASTURE));
 
-        } else if (matcher.group("subdivision").equals("CAMP")) {
+                break;
+            case "CAMP":
+                System.out.println(this.databaseController.buildingAnImprovement(user, ImprovementTypes.CAMP));
 
-        } else if (matcher.group("subdivision").equals("PLANTATION")) {
+                break;
+            case "PLANTATION":
+                System.out.println(this.databaseController.buildingAnImprovement(user, ImprovementTypes.PLANTATION));
 
-        } else if (matcher.group("subdivision").equals("QUARRY")) {
+                break;
+            case "QUARRY":
+                System.out.println(this.databaseController.buildingAnImprovement(user, ImprovementTypes.QUARRY));
 
-        } else {
-            System.out.println("INVALID COMMAND");
+                break;
+            default:
+                System.out.println("INVALID COMMAND");
+
         }
+
+    }
+
+    private void deleteUnit(Matcher matcher, User user) {
+        String name = matcher.group("subdivision");
+        switch (name) {
+            case "FOREST":
+                System.out.println(this.databaseController.deleteFeatures("FOREST"));
+
+                break;
+            case "JUNGLE":
+                System.out.println(this.databaseController.deleteFeatures("JUNGLE"));
+
+                break;
+            case "MARSH":
+                System.out.println(this.databaseController.deleteFeatures("MARSH"));
+
+                break;
+            case "ROUTE":
+                System.out.println(this.databaseController.deleteFeatures("ROUTE"));
+
+                break;
+            default:
+                System.out.println("INVALID COMMAND");
+
+        }
+    }
+
+    public void repairImprovement()
+    {
+        this.databaseController.repairImprovement();
     }
 
     private void moveUnit(User user, Matcher matcher) {

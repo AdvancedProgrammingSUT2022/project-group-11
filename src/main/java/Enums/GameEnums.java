@@ -26,7 +26,7 @@ public enum GameEnums {
     CREATE_UNIT("^CONSTRUCT UNIT (?<unitName>[A-Za-z]+)"),
     MAP_SHOW_POSITION("^MAP\\sSHOW\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     MAP_SHOW_CITYNAME("^MAP\\sSHOW\\s(?<subdivision>\\S+)$"),
-    MAP_MOVE("^MAP\\sMOVE\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),    
+    MAP_MOVE("^MAP\\sMOVE\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     INFO_RESEARCH("INFO RESEARCH"),
     SELECT_TECHNOLOGY("^SELECT\\sTECHNOLOGY\\s(?<name>\\S+)$"),
     INTEGER("^-?\\d+$");
