@@ -105,6 +105,9 @@ public class GameMenu {
                             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
                                 deleteUnit(matcher, user);
 
+                            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.IMPROVEMENT_REPAIR)) != null) {
+                                repairImprovement();
+
                             } else {
                                 System.out.println("INVALID COMMAND");
                             }
@@ -271,7 +274,8 @@ public class GameMenu {
 
     public void repairImprovement()
     {
-        this.databaseController.repairImprovement();
+        System.out.println(this.databaseController.repairImprovement());
+
     }
 
     private void moveUnit(User user, Matcher matcher) {

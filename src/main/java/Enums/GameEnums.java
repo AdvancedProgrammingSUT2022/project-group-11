@@ -22,6 +22,7 @@ public enum GameEnums {
     UNIT_DELETE("^UNIT\\sDELETE$"),
     UNIT_BUILD("^UNIT\\sBUILD\\s(?<subdivision>\\S+)$"),
     UNIT_REMOVE("^UNIT\\sREMOVE\\s(?<subdivision>\\S+)$"),
+    IMPROVEMENT_REPAIR("^UNIT\\sREPAIR"),
     UNIT_REPAIR("^UNIT\\sREPAIR$"),
     CREATE_UNIT("^CONSTRUCT UNIT (?<unitName>[A-Za-z]+)"),
     MAP_SHOW_POSITION("^MAP\\sSHOW\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
