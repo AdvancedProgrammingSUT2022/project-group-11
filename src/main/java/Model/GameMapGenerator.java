@@ -2,7 +2,6 @@ package Model;
 
 import java.util.ArrayList;
 
-
 public class GameMapGenerator {
 
     private int Iteration;
@@ -305,8 +304,8 @@ public class GameMapGenerator {
         int HowManySpaceLeft = 0;
         int HowManySpaceRight = 0;
         if (Terrains[iTerrain][l].getType().equals("revealed")) {
-            if (getRevealedFromArray(user, iTerrain, l).getTerrrainImprovement() != null) {
-                Improvement += getRevealedFromArray(user, iTerrain, l).getTerrrainImprovement().getShowImprovement();
+            if (getRevealedFromArray(user, iTerrain, l).getTerrainImprovement() != null) {
+                Improvement += getRevealedFromArray(user, iTerrain, l).getTerrainImprovement().getImprovementType().getShowImprovement();
             }
             int HowManySpace = 5 - Improvement.length();
             HowManySpaceLeft = returnHowManySpaceInLeft(HowManySpace);
@@ -317,8 +316,8 @@ public class GameMapGenerator {
             addUnderline(i, j, HowManySpaceRight);
             Printmap[i][j] += Color.RESET;
         } else if (Terrains[iTerrain][l].getType().equals("visible")) {
-            if (Terrains[iTerrain][l].getTerrrainImprovement() != null) {
-                Improvement += Terrains[iTerrain][l].getTerrrainImprovement().getShowImprovement();
+            if (Terrains[iTerrain][l].getTerrainImprovement() != null) {
+                Improvement += Terrains[iTerrain][l].getTerrainImprovement().getImprovementType().getShowImprovement();
             }
             int HowManySpace = 5 - Improvement.length();
             HowManySpaceLeft = returnHowManySpaceInLeft(HowManySpace);

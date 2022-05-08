@@ -24,7 +24,8 @@ import Model.Revealed;
 import Model.River;
 import Model.Terrain;
 import Model.User;
-import Model.Improvements.Improvements;
+import Model.Improvements.Improvement;
+import Model.Improvements.ImprovementTypes;
 import Model.Resources.ResourceTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
@@ -313,12 +314,14 @@ public class MapGeneratorTest {
     public void PrintMap() {
 
         resource = new Resource(ResourceTypes.BANANAS);
+      
         Map map = new Map();
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, null, TerrainTypes.PLAINS, new ArrayList<>(), null, null,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
             }
         }
@@ -346,8 +349,9 @@ public class MapGeneratorTest {
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
             }
         }
@@ -390,8 +394,9 @@ public class MapGeneratorTest {
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
             }
         }
@@ -407,8 +412,9 @@ public class MapGeneratorTest {
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
             }
         }
@@ -425,8 +431,9 @@ public class MapGeneratorTest {
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
             }
         }
@@ -443,15 +450,16 @@ public class MapGeneratorTest {
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
             }
         }
 
         map.setTerrains(terrains);
         map.nullImprovementAndCombat();
-        Assertions.assertTrue(terrains[3][4].getTerrrainImprovement() == null);
+        Assertions.assertTrue(terrains[3][4].getTerrainImprovement() == null);
 
     }
 
@@ -463,8 +471,9 @@ public class MapGeneratorTest {
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, null, TerrainTypes.PLAINS, new ArrayList<>(), null, null,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
                 terrains[i][j].setTerrainFeatureTypes(TerrainFeatureTypes.FOREST);
             }
@@ -485,7 +494,6 @@ public class MapGeneratorTest {
         map.setTerrains(terrains);
         String result[][] = map.printMap(database, user);
         Assertions.assertNotNull(result);
-
     }
 
     private Matcher getCommandMatcher(String input, String regex) {
@@ -691,8 +699,9 @@ public class MapGeneratorTest {
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
                         terr.add(terrains[i][j]);
             }
@@ -722,8 +731,9 @@ public class MapGeneratorTest {
             for (int j = 0; j < map.getCOL(); j++) {
                 CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, true,
                 UnitTypes.SETTLER, false, false, false, false, false);
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
                         terr.add(terrains[i][j]);
             }
@@ -752,8 +762,9 @@ public class MapGeneratorTest {
             for (int j = 0; j < map.getCOL(); j++) {
                 CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false,
                 UnitTypes.SETTLER, false, false, false, false, false);
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
                         terr.add(terrains[i][j]);
                         units.add(combatunit);
@@ -783,8 +794,9 @@ public class MapGeneratorTest {
             for (int j = 0; j < map.getCOL(); j++) {
                 CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false,
                 UnitTypes.SETTLER, false, false, false, false, false);
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
                         terr.add(terrains[i][j]);
                        
@@ -817,8 +829,9 @@ public class MapGeneratorTest {
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
-                        Improvements.FARM, resource,
+                     improvement, resource,
                         new ArrayList<Revealed>());
                         terr.add(terrains[i][j]);
             }
@@ -847,8 +860,9 @@ public class MapGeneratorTest {
             for (int j = 0; j < map.getCOL(); j++) {
                 NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, true,
                 UnitTypes.SETTLER, false);
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, noncombatunit,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
                         terr.add(terrains[i][j]);
             }
@@ -877,8 +891,9 @@ public class MapGeneratorTest {
             for (int j = 0; j < map.getCOL(); j++) {
                 NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
                 UnitTypes.SETTLER, false);
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, noncombatunit,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
                         terr.add(terrains[i][j]);
                         units.add(noncombatunit);
@@ -909,8 +924,9 @@ public class MapGeneratorTest {
             for (int j = 0; j < map.getCOL(); j++) {
                 NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
                 UnitTypes.SETTLER, false);
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, noncombatunit,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
                         terr.add(terrains[i][j]);
                        
@@ -1082,8 +1098,9 @@ public class MapGeneratorTest {
                 CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false,
                 UnitTypes.SETTLER, true, false, false, false, false);
                 combatunit.setNextTerrain(new ArrayList<>());
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit,null ,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
             }
         }
@@ -1107,8 +1124,9 @@ public class MapGeneratorTest {
                 UnitTypes.SETTLER, true);
                 combatunit.setIsSelected(true);
                 combatunit.setNextTerrain(new ArrayList<>());
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null,combatunit ,
-                        Improvements.FARM, resource,
+                        improvement, resource,
                         new ArrayList<Revealed>());
             }
         }
@@ -1119,4 +1137,29 @@ public class MapGeneratorTest {
         databaseController.changingTheStateOfAUnit("sleep");
 
     }
+
+
+    @Test
+    public void hasOneUnitSelectedTest(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                NonCombatUnit combatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, true);
+                combatunit.setIsSelected(true);
+                combatunit.setNextTerrain(new ArrayList<>());
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null,combatunit ,
+                        improvement, resource,
+                        new ArrayList<Revealed>());
+            }
+        }
+        map.setTerrains(terrains);
+        Database database = new Database();
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.HasOneUnitBeenSelected();
+    }
+
 }

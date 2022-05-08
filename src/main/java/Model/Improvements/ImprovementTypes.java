@@ -1,14 +1,32 @@
 package Model.Improvements;
 
-import java.util.ArrayList;
-
 import Model.Resources.ResourceTypes;
 import Model.Technologies.TechnologyTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 
-public enum Improvements {
-    CAMP(0, 0, 0, new ArrayList<>() {
+import java.util.ArrayList;
+import java.util.List;
+
+public enum ImprovementTypes {
+    ROAD(3, 0, 0, 0, new ArrayList<>() {
+    }, TechnologyTypes.THE_WHEEL, new ArrayList<>() {
+        {
+            addAll(List.of(TerrainTypes.values()));
+            addAll(List.of(TerrainFeatureTypes.values()));
+            removeAll(List.of(TerrainTypes.MOUNTAIN, TerrainTypes.OCEAN, TerrainFeatureTypes.ICE));
+        }
+    }, "RO"),
+    RAILROAD(3, 0, 0, 0, new ArrayList<>() {
+    }, TechnologyTypes.RAILROAD, new ArrayList<>() {
+        {
+            addAll(List.of(TerrainTypes.values()));
+            addAll(List.of(TerrainFeatureTypes.values()));
+            removeAll(List.of(TerrainTypes.MOUNTAIN, TerrainTypes.OCEAN, TerrainFeatureTypes.ICE));
+        }
+
+    }, "RRO"),
+    CAMP(6, 0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.FURS);
             add(ResourceTypes.IVORY);
@@ -21,9 +39,9 @@ public enum Improvements {
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.HILLS);
         }
-    },"CAM"),
+    }, "CAM"),
 
-    FARM(1, 0, 0, new ArrayList<>() {
+    FARM(10, 1, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.WHEAT);
         }
@@ -33,13 +51,13 @@ public enum Improvements {
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
         }
-    },"FAR"),
-    LUMBERMILL(0, 1, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<>() {
+    }, "FAR"),
+    LUMBERMILL(6, 0, 1, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
         }
-    },"LUM"),
-    MINE(0, 1, 0, new ArrayList<>() {
+    }, "LUM"),
+    MINE(12, 0, 1, 0, new ArrayList<>() {
         {
             add(ResourceTypes.WHEAT);
             add(ResourceTypes.IRON);
@@ -58,14 +76,14 @@ public enum Improvements {
             add(TerrainTypes.SNOW);
             add(TerrainTypes.HILLS);
         }
-    },"MIN"),
-    PASTURE(0, 0, 0, new ArrayList<>() {
+    }, "MIN"),
+    PASTURE(7, 0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.HORSES);
             add(ResourceTypes.CATTLE);
             add(ResourceTypes.SHEEP);
         }
-    }, TechnologyTypes.ANIMAL_HUSBANDARY, new ArrayList<>() {
+    }, TechnologyTypes.ANIMAL_HUSBANDRY, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
@@ -73,8 +91,8 @@ public enum Improvements {
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.HILLS);
         }
-    },"PAS"),
-    PLANTATION(0, 0, 0, new ArrayList<>() {
+    }, "PAS"),
+    PLANTATION(5, 0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.BANANAS);
             add(ResourceTypes.DYES);
@@ -93,8 +111,8 @@ public enum Improvements {
             add(TerrainFeatureTypes.FLOODPLAINS);
             add(TerrainFeatureTypes.JUNGLE);
         }
-    },"PLA"),
-    QUARRY(0, 0, 0, new ArrayList<>() {
+    }, "PLA"),
+    QUARRY(7, 0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.MARBLE);
         }
@@ -106,16 +124,16 @@ public enum Improvements {
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.HILLS);
         }
-    },"QUA"),
-    TRADINGPOST(0, 0, 1, null, TechnologyTypes.TRAPPING, new ArrayList<>() {
+    }, "QUA"),
+    TRADINGPOST(8, 0, 0, 1, null, TechnologyTypes.TRAPPING, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
             add(TerrainTypes.TUNDRA);
         }
-    },"TRA"),
-    MANUFACTORY(0, 2, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<>() {
+    }, "TRA"),
+    MANUFACTORY(4, 0, 2, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
@@ -123,35 +141,70 @@ public enum Improvements {
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.SNOW);
         }
-    },"MAN");
+    }, "MAN");
 
-     int food;
-     int production;
-     int gold;
-     ArrayList<ResourceTypes> improvesResources;
-     TechnologyTypes requiredTechnology;
-     ArrayList<Object> canBeBuiltON;
-     String ShowImprovement;
+    int food;
+    int production;
+    int gold;
+    int turn;
+    ArrayList<ResourceTypes> resourcesAccessed;
+    TechnologyTypes requiredTechnology;
+    ArrayList<Object> canBeBuiltON;
+    String ShowImprovement;
 
 
-    Improvements(int food, int production, int gold, ArrayList<ResourceTypes> improvesResources,
-            TechnologyTypes requiredTechnology, ArrayList<Object> canBeBuiltOn,String ShowImprovement) {
+    ImprovementTypes(int turn, int food, int production, int gold, ArrayList<ResourceTypes> resourcesAccessed,
+                     TechnologyTypes requiredTechnology, ArrayList<Object> canBeBuiltOn, String ShowImprovement) {
         this.food = food;
         this.production = production;
         this.gold = gold;
-        this.improvesResources = improvesResources;
+        this.resourcesAccessed = resourcesAccessed;
         this.requiredTechnology = requiredTechnology;
         this.canBeBuiltON = canBeBuiltOn;
         this.ShowImprovement = ShowImprovement;
     }
-    public String getShowImprovement(){
+
+    public String getShowImprovement() {
         return this.ShowImprovement;
     }
-    public int getGold(){
+
+    public int getGold() {
         return this.gold;
     }
-    public int getFood(){
+
+    public int getFood() {
         return this.food;
     }
 
+    public ArrayList<Object> getCanBeBuiltON() {
+        return canBeBuiltON;
+    }
+
+    public void setCanBeBuiltON(ArrayList<Object> canBeBuiltON) {
+        this.canBeBuiltON = canBeBuiltON;
+    }
+
+    public ArrayList<ResourceTypes> getResourcesAccessed() {
+        return resourcesAccessed;
+    }
+
+    public void setResourcesAccessed(ArrayList<ResourceTypes> resourcesAccessed) {
+        this.resourcesAccessed = resourcesAccessed;
+    }
+
+    public TechnologyTypes getRequiredTechnology() {
+        return requiredTechnology;
+    }
+
+    public void setRequiredTechnology(TechnologyTypes requiredTechnology) {
+        this.requiredTechnology = requiredTechnology;
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
 }

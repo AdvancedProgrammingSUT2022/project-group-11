@@ -33,6 +33,8 @@ public class City{
     private int foodStorage;
     private boolean isUnderAttack;
     private ArrayList<BuildingTypes> buildings;
+
+
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
 

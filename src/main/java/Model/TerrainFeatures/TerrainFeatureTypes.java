@@ -51,6 +51,7 @@ public enum TerrainFeatureTypes {
     int gold;
     int combatModifier;
     int movementCost;
+
     ArrayList<ResourceTypes> possibleResourcesFound;
     String ShowFeatures;
     public String getShowFeatures(){

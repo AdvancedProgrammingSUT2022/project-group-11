@@ -2,7 +2,8 @@ package Model;
 
 import java.util.ArrayList;
 
-import Model.Improvements.Improvements;
+import Model.Improvements.Improvement;
+import Model.Improvements.ImprovementTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
@@ -15,22 +16,22 @@ public class Revealed{
     private ArrayList<TerrainFeatureTypes> terrainFeatureTypes;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
-    private Improvements TerrrainImprovement;
+    private Improvement TerrainImprovement;
     private Resource TerrainResource;
     private boolean unlockResource;
 
-    public Revealed(User user, TerrainTypes terrainTypes, ArrayList<TerrainFeatureTypes> terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement, Resource TerrainResource,boolean bool) {
+    public Revealed(User user, TerrainTypes terrainTypes, ArrayList<TerrainFeatureTypes> terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvement TerrainImprovement, Resource TerrainResource, boolean bool) {
         this.user = user;
         this.terrainTypes = terrainTypes;
         this.terrainFeatureTypes = terrainFeatureTypes;
         this.combatUnit = combatUnit;
         this.nonCombatUnit = nonCombatUnit;
-        this.TerrrainImprovement = TerrrainImprovement;
+        this.TerrainImprovement = TerrainImprovement;
         this.TerrainResource = TerrainResource;
         this.unlockResource = bool;
     }
 
-  
+
     public void setBooleanResource(boolean bool){
         this.unlockResource = bool;
     }
@@ -79,12 +80,12 @@ public class Revealed{
         this.nonCombatUnit = nonCombatUnit;
     }
 
-    public Improvements getTerrrainImprovement() {
-        return this.TerrrainImprovement;
+    public Improvement getTerrainImprovement() {
+        return this.TerrainImprovement;
     }
 
-    public void setTerrrainImprovement(Improvements TerrrainImprovement) {
-        this.TerrrainImprovement = TerrrainImprovement;
+    public void setTerrainImprovement(Improvement TerrainImprovement) {
+        this.TerrainImprovement = TerrainImprovement;
     }
 
     public Resource getTerrainResource() {

@@ -3,6 +3,7 @@ package Model;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Model.Improvements.Improvement;
 import Model.Resources.ResourceTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
@@ -121,20 +122,19 @@ public class Map {
 
         int index = -1;
         for(int count = 0 ; count < Terrains[i][j].getReveals().size();count++){
-            if(Terrains[i][j].getReveals().get(count).getUser() != null)
-            {
             if(Terrains[i][j].getReveals().get(count).getUser() == user){
                index = count;
                break;
             }
         }
-        }
         if(index != -1){
             Terrains[i][j].getReveals().remove(index);
         }
+
         CombatUnit combatUnit = null;
         NonCombatUnit nonCombatUnit = null;
         Resource resource = null;
+        Improvement improvement = null;
 
         if (Terrains[i][j].getCombatUnit() != null) {
             combatUnit = Terrains[i][j].getCombatUnit().clone();
@@ -145,10 +145,13 @@ public class Map {
         if (Terrains[i][j].getTerrainResource() != null) {
             resource = Terrains[i][j].getTerrainResource().clone();
         }
-        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), combatUnit, nonCombatUnit, Terrains[i][j].getTerrrainImprovement(), resource,Terrains[i][j].getBooleanResource());
+        if(Terrains[i][j].getTerrainImprovement() != null){
+           improvement = Terrains[i][j].getTerrainImprovement().clone();
+        }
+        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), combatUnit, nonCombatUnit, improvement, resource,Terrains[i][j].getBooleanResource());
         Terrains[i][j].setReveals(reveal);
-    }
 
+    }
 
 
 
@@ -270,7 +273,7 @@ public class Map {
 
     }
 
-    public ArrayList<Resource> findAllPossiblResource(Terrain terrain){
+    private ArrayList<Resource> findAllPossiblResource(Terrain terrain){
         ArrayList<Resource> possibleResource = new ArrayList<Resource>();
         possibleResource.clear();
         ResourceTypes[] AllpossibleResource = {ResourceTypes.BANANAS,
@@ -310,7 +313,7 @@ public class Map {
     public void nullImprovementAndCombat(){
         for(int i = 0 ; i < ROW;i++){
             for(int j = 0; j < COL;j++){
-              Terrains[i][j].setTerrrainImprovement(null);
+              Terrains[i][j].setTerrainImprovement(null);
               Terrains[i][j].setCombatUnit(null);
               Terrains[i][j].setNonCombatUnit(null);
             }
@@ -551,7 +554,7 @@ public class Map {
         for(int i = 0; i < ROW;i++){
             for(int j = 0; j < COL;j++){
                 if(Terrains[i][j].getType().equals("visible")){
-                    if(Terrains[i][j].getTerrrainImprovement() == Terrains[i][j].getTerrainResource().getResourceType().getRequiredImprovements()){
+                    if(Terrains[i][j].getTerrainImprovement().getImprovementType() == Terrains[i][j].getTerrainResource().getResourceType().getRequiredImprovements()){
                         Terrains[i][j].setBooleanResource(true);
                     }else{
                         Terrains[i][j].setBooleanResource(false);
