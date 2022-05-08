@@ -3,7 +3,7 @@ package MAP;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
-import java.util.Scanner;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,7 +30,6 @@ import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
-import View.LoginMenu;
 
 @ExtendWith(MockitoExtension.class)
 public class MapGeneratorTest {
@@ -282,8 +281,6 @@ public class MapGeneratorTest {
 
     }
 
-
-
     @Test
     public void addRandomTerrainCorner() {
         Map map = new Map();
@@ -298,25 +295,28 @@ public class MapGeneratorTest {
         map.randomTerrainAdd();
 
         ArrayList<Terrain> TundraTerrain = new ArrayList<>();
-        for(int i = 0; i < map.getCOL();i++){
-            if(terrains[0][i].getTerrainTypes() == TerrainTypes.TUNDRA){
+        for (int i = 0; i < map.getCOL(); i++) {
+            if (terrains[0][i].getTerrainTypes() == TerrainTypes.TUNDRA) {
                 TundraTerrain.add(terrains[0][i]);
             }
         }
-       Assertions.assertTrue(TundraTerrain.size() > 0);
+        Assertions.assertTrue(TundraTerrain.size() > 0);
 
     }
+
     @Mock
     Database database;
+
     @Test
-    public void PrintMap(){
-        
+    public void PrintMap() {
+
         resource = new Resource(ResourceTypes.BANANAS);
         Map map = new Map();
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
-                terrains[i][j] = new Terrain(i, j, null, TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
+                terrains[i][j] = new Terrain(i, j, null, TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                        Improvements.FARM, resource,
                         new ArrayList<Revealed>());
             }
         }
@@ -332,21 +332,20 @@ public class MapGeneratorTest {
         database.addUser(user);
         map.setTerrains(terrains);
         String result[][] = map.printMap(database, user);
-        
+
         Assertions.assertNotNull(result);
     }
 
-
-
     @Test
-    public void PrintMapXandY(){
-        
+    public void PrintMapXandY() {
+
         resource = new Resource(ResourceTypes.BANANAS);
         Map map = new Map();
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
-                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                        Improvements.FARM, resource,
                         new ArrayList<Revealed>());
             }
         }
@@ -361,23 +360,19 @@ public class MapGeneratorTest {
         database = new Database();
         database.addUser(user);
         map.setTerrains(terrains);
-        String result[][] = map.PrintMapXandY(database, user,3,4);
-        
+        String result[][] = map.PrintMapXandY(database, user, 3, 4);
+
         Assertions.assertNotNull(result);
     }
 
-
-
-
-
-
     @Test
-    public void isNeighbourTest(){
+    public void isNeighbourTest() {
         Map map = new Map();
         Assertions.assertFalse(map.isNeighbor(1, 0, 3, 0));
     }
+
     @Test
-    public void isNeighbourTest1(){
+    public void isNeighbourTest1() {
         Map map = new Map();
         Assertions.assertTrue(map.isNeighbor(0, 0, 0, 1));
         Assertions.assertTrue(map.isNeighbor(1, 1, 0, 1));
@@ -388,12 +383,13 @@ public class MapGeneratorTest {
     }
 
     @Test
-    public void riverInitializeTest(){
+    public void riverInitializeTest() {
         Map map = new Map();
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
-                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                        Improvements.FARM, resource,
                         new ArrayList<Revealed>());
             }
         }
@@ -403,13 +399,14 @@ public class MapGeneratorTest {
         Assertions.assertTrue(map.getRiver().size() > 0);
     }
 
-    @Test 
-    public void setFeatureTest(){
+    @Test
+    public void setFeatureTest() {
         Map map = new Map();
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
-                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                        Improvements.FARM, resource,
                         new ArrayList<Revealed>());
             }
         }
@@ -419,109 +416,185 @@ public class MapGeneratorTest {
         Assertions.assertTrue(terrains[3][4].getTerrainFeatureTypes().size() > 0);
     }
 
-   @Test
+    @Test
 
-   public void setResource(){
-    Map map = new Map();
-    terrains = new Terrain[map.getROW()][map.getCOL()];
-    for (int i = 0; i < map.getROW(); i++) {
-        for (int j = 0; j < map.getCOL(); j++) {
-            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
-                    new ArrayList<Revealed>());
+    public void setResource() {
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+            }
         }
+
+        map.setTerrains(terrains);
+        map.setResource();
+        Assertions.assertNotNull(terrains[3][4].getTerrainResource());
     }
 
-    map.setTerrains(terrains);
-    map.setResource();
-    Assertions.assertNotNull(terrains[3][4].getTerrainResource());
-   }
+    @Test
 
-
-   @Test
-
-   public void setNulltoMapTest(){
-    Map map = new Map();
-    terrains = new Terrain[map.getROW()][map.getCOL()];
-    for (int i = 0; i < map.getROW(); i++) {
-        for (int j = 0; j < map.getCOL(); j++) {
-            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
-                    new ArrayList<Revealed>());
+    public void setNulltoMapTest() {
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+            }
         }
+
+        map.setTerrains(terrains);
+        map.nullImprovementAndCombat();
+        Assertions.assertTrue(terrains[3][4].getTerrrainImprovement() == null);
+
     }
 
-    map.setTerrains(terrains);
-    map.nullImprovementAndCombat();
-    Assertions.assertTrue(terrains[3][4].getTerrrainImprovement() == null);
+    @Test
+    public void revealedTileTest() {
+        resource = new Resource(ResourceTypes.BANANAS);
 
-   }
-
-
-   @Test
-   public void revealedTileTest(){
-    resource = new Resource(ResourceTypes.BANANAS);
-
-    Map map = new Map();
-    terrains = new Terrain[map.getROW()][map.getCOL()];
-    for (int i = 0; i < map.getROW(); i++) {
-        for (int j = 0; j < map.getCOL(); j++) {
-            terrains[i][j] = new Terrain(i, j, null, TerrainTypes.PLAINS, new ArrayList<>(), null, null, Improvements.FARM, resource,
-                    new ArrayList<Revealed>());
-                    terrains[i][j].setTerrainFeatureTypes(TerrainFeatureTypes.FOREST);
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                terrains[i][j] = new Terrain(i, j, null, TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+                terrains[i][j].setTerrainFeatureTypes(TerrainFeatureTypes.FOREST);
+            }
         }
+
+        Civilization civilization = new Civilization(0, 100, "A");
+        ArrayList<Terrain> myterrain = new ArrayList<>();
+        ArrayList<Terrain> myterrainrevealed = new ArrayList<>();
+        myterrain.add(terrains[3][7]);
+        myterrain.add(terrains[6][4]);
+        myterrain.add(terrains[10][4]);
+        myterrainrevealed.add(terrains[3][4]);
+        civilization.setTerrains(myterrain);
+        civilization.setRevealedTerrains(myterrainrevealed);
+        user = new User(null, null, null, civilization);
+        database = new Database();
+        database.addUser(user);
+        map.setTerrains(terrains);
+        String result[][] = map.printMap(database, user);
+        Assertions.assertNotNull(result);
+
     }
-   
 
-    Civilization civilization = new Civilization(0, 100, "A");
-    ArrayList<Terrain> myterrain = new ArrayList<>();
-    ArrayList<Terrain> myterrainrevealed = new ArrayList<>();
-    myterrain.add(terrains[3][7]);
-    myterrain.add(terrains[6][4]);
-    myterrain.add(terrains[10][4]);
-    myterrainrevealed.add(terrains[3][4]);
-    civilization.setTerrains(myterrain);
-    civilization.setRevealedTerrains(myterrainrevealed);
-    user = new User(null, null, null, civilization);
-    database = new Database();
-    database.addUser(user);
-    map.setTerrains(terrains);
-    String result[][] = map.printMap(database, user);
-    Assertions.assertNotNull(result);
+    private Matcher getCommandMatcher(String input, String regex) {
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+        return matcher;
+    }
 
-   }
+    @Test
+    public void creatUserTestUsername() {
+        Database database = new Database();
+        User checkUser = new User("ehsan", "123aA", "essi1234", null);
+        database.addUser(checkUser);
+        DatabaseController databaseController = new DatabaseController(database);
+        String input = "user create --username ehsan --nickname eeee --password 1234";
+        Matcher matcher;
+        String result = null;
+        if ((matcher = getCommandMatcher(input, MenuEnums.CREATEUSER.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER2.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER3.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER4.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER5.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER6.getRegex())).matches()) {
+            result = databaseController.createUser(matcher);
+        }
+
+        Assertions.assertTrue(result.equals("user with username ehsan already exists"));
+
+    }
+
+    @Test
+    public void creatUserTestNickname() {
+        Database database = new Database();
+        User checkUser = new User("ehsan", "123aA", "essi1234", null);
+        database.addUser(checkUser);
+        DatabaseController databaseController = new DatabaseController(database);
+        String input = "user create --username parsa --nickname essi1234 --password 1234";
+        Matcher matcher;
+        String result = null;
+        if ((matcher = getCommandMatcher(input, MenuEnums.CREATEUSER.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER2.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER3.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER4.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER5.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER6.getRegex())).matches()) {
+            result = databaseController.createUser(matcher);
+        }
+
+        Assertions.assertTrue(result.equals("user with nickname essi1234 already exists"));
+
+    }
+
+    @Test
+    public void creatUserTestaddUser() {
+        Database database = new Database();
+        User checkUser = new User("ehsan", "123aA", "essi1234", null);
+        database.addUser(checkUser);
+        DatabaseController databaseController = new DatabaseController(database);
+        String input = "user create --username parsa --nickname essi123 --password 1234";
+        Matcher matcher;
+        String result = null;
+        if ((matcher = getCommandMatcher(input, MenuEnums.CREATEUSER.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER2.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER3.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER4.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER5.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER6.getRegex())).matches()) {
+            result = databaseController.createUser(matcher);
+        }
+
+        Assertions.assertTrue(result.equals("user created successfully!"));
+
+    }
+
+    @Test
+    public void loginUserTest() {
+        Matcher matcher;
+        Database database = new Database();
+        User checkUser = new User("ehsan0A", "123aA", "essi1234", null);
+        String input = "user login --username ehsan0A --password 123aA";
+        database.addUser(checkUser);
+        DatabaseController databaseController = new DatabaseController(database);
+        User user;
+        if ((matcher = getCommandMatcher(input, MenuEnums.USERLOGIN.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.USERLOGIN2.getRegex())).matches()) {
+
+                    user = databaseController.userLogin(matcher);
+                    Assertions.assertTrue(user != null);
+        }
+       
+    }
+
+    @Test
+    public void loginUserTestnull() {
+        Matcher matcher;
+        Database database = new Database();
+        User checkUser = new User("ehsan0", "123aA", "essi1234", null);
+        String input = "user login --username ehsan0A --password 123aA";
+        database.addUser(checkUser);
+        DatabaseController databaseController = new DatabaseController(database);
+        User user;
+        if ((matcher = getCommandMatcher(input, MenuEnums.USERLOGIN.getRegex())).matches()
+                || (matcher = getCommandMatcher(input, MenuEnums.USERLOGIN2.getRegex())).matches()) {
+
+                    user = databaseController.userLogin(matcher);
+                    Assertions.assertTrue(user == null);
+        }
+       
+    }
 
 
-   private Matcher getCommandMatcher(String input, String regex)
-  {
-      Pattern pattern = Pattern.compile(regex);
-      Matcher matcher = pattern.matcher(input);
-      return matcher;
-  }
-
-   @Test
-   public void creatUserTest(){
-       Database database = new Database();
-       User checkUser = new User("ehsan", "123aA","essi1234", null);
-       database.addUser(checkUser);
-       DatabaseController databaseController = new DatabaseController(database);
-       String input = "user create --username ehsan --nickname eeee --password 1234";
-       Matcher matcher;
-       String result = null;
-       if ( (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER.getRegex())).matches()
-       || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER2.getRegex())).matches()
-       || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER3.getRegex())).matches()
-       || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER4.getRegex())).matches()
-       || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER5.getRegex())).matches()
-       || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER6.getRegex())).matches() )
-       {
-        result =  databaseController.createUser(matcher);
-       }
-      
-       Assertions.assertTrue(result.equals("user with username ehsan already exists"));
-
-   }
-
-
-
-
+    
 
 }
