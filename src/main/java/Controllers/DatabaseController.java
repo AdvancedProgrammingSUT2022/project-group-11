@@ -173,9 +173,12 @@ public class DatabaseController {
                 }
                 break;
         }
-        combatUnit.getNextTerrain().clear();
-        combatUnit.setIsFinished(true);
-        combatUnit.setIsSelected(false);
+        if(!action.equals("delete")){
+            combatUnit.getNextTerrain().clear();
+            combatUnit.setIsFinished(true);
+            combatUnit.setIsSelected(false);
+        }
+     
         return "action completed";
     }
 
@@ -187,10 +190,13 @@ public class DatabaseController {
         } else if (action.equals("delete")) {
             nonCombatUnit = null;
         }
-        nonCombatUnit.setIsFinished(true);
-        nonCombatUnit.setIsSelected(false);
-        nonCombatUnit.getNextTerrain().clear();
+        if(!action.equals("delete")) {
+            nonCombatUnit.setIsFinished(true);
+            nonCombatUnit.setIsSelected(false);
+            nonCombatUnit.getNextTerrain().clear();
+        }
         return "action completed";
+
     }
 
     public String changingTheStateOfAUnit(String action) {

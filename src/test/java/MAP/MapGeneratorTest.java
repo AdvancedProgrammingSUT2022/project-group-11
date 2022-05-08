@@ -924,11 +924,114 @@ public class MapGeneratorTest {
         database.addUser(user);
         database.setMap(map);
         DatabaseController databaseController = new DatabaseController(database);
-        String result = databaseController.selectAndDeselectCombatUnit(user, 16, 3);
+        String result = databaseController.selectAndDeselectNonCombatUnit(user, 16, 3);
         Assertions.assertTrue(result.equals("you do not have access to this unit"));
         
     }
 
+    @Test
 
+    public void changingStateOfcombatUnitTestSleep(){
+      String result = null;
+      CombatUnit combatunit = new CombatUnit(0, 0, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false, false, false, false, false);
+               combatunit.setNextTerrain(new ArrayList<>());
+                Database database = new Database();
+                DatabaseController databaseController = new DatabaseController(database);
+                result = databaseController.changingTheStateOfACombatUnit(combatunit, "sleep");
+                Assertions.assertTrue(result.equals("action completed"));
+    }
+
+    @Test
+
+    public void changingStateOfcombatUnitTestAlert(){
+      String result = null;
+      CombatUnit combatunit = new CombatUnit(0, 0, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false, false, false, false, false);
+               combatunit.setNextTerrain(new ArrayList<>());
+                Database database = new Database();
+                DatabaseController databaseController = new DatabaseController(database);
+                result = databaseController.changingTheStateOfACombatUnit(combatunit, "alert");
+                Assertions.assertTrue(result.equals("action completed"));
+    }
+
+
+    @Test
+
+    public void changingStateOfcombatUnitTestFortify(){
+      String result = null;
+      CombatUnit combatunit = new CombatUnit(0, 0, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false, false, false, false, false);
+               combatunit.setNextTerrain(new ArrayList<>());
+                Database database = new Database();
+                DatabaseController databaseController = new DatabaseController(database);
+                result = databaseController.changingTheStateOfACombatUnit(combatunit, "fortify");
+                Assertions.assertTrue(result.equals("action completed"));
+    }
+
+    @Test
+
+    public void changingStateOfcombatUnitTestFortifyUntilHeal(){
+      String result = null;
+      CombatUnit combatunit = new CombatUnit(0, 0, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false, false, false, false, false);
+               combatunit.setNextTerrain(new ArrayList<>());
+                Database database = new Database();
+                DatabaseController databaseController = new DatabaseController(database);
+                result = databaseController.changingTheStateOfACombatUnit(combatunit, "fortify until heal");
+                Assertions.assertTrue(result.equals("action completed"));
+    }
+
+    @Test
+
+    public void changingStateOfcombatUnitTestGarrison(){
+      String result = null;
+      CombatUnit combatunit = new CombatUnit(0, 0, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false, false, false, false, false);
+               combatunit.setNextTerrain(new ArrayList<>());
+                Database database = new Database();
+                DatabaseController databaseController = new DatabaseController(database);
+                result = databaseController.changingTheStateOfACombatUnit(combatunit, "garrison");
+                Assertions.assertTrue(result.equals("action completed"));
+    }
+
+    @Test
+
+    public void changingStateOfcombatUnitTestWake(){
+      String result = null;
+      CombatUnit combatunit = new CombatUnit(0, 0, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false, false, false, false, false);
+               combatunit.setNextTerrain(new ArrayList<>());
+                Database database = new Database();
+                DatabaseController databaseController = new DatabaseController(database);
+                result = databaseController.changingTheStateOfACombatUnit(combatunit, "wake");
+                Assertions.assertTrue(result.equals("action completed"));
+    }
+
+    @Test
+
+    public void changingStateOfcombatUnitTestDelete(){
+      String result = null;
+      CombatUnit combatunit = new CombatUnit(0, 0, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false, false, false, false, false);
+               combatunit.setNextTerrain(new ArrayList<>());
+                Database database = new Database();
+                DatabaseController databaseController = new DatabaseController(database);
+                result = databaseController.changingTheStateOfACombatUnit(combatunit, "delete");
+                Assertions.assertTrue(result.equals("action completed"));
+    }
+
+    @Test
+
+    public void changingStateOfcombatUnitTestsetupRanged(){
+      String result = null;
+      CombatUnit combatunit = new CombatUnit(0, 0, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false, false, false, false, false);
+               combatunit.setNextTerrain(new ArrayList<>());
+                Database database = new Database();
+                DatabaseController databaseController = new DatabaseController(database);
+                result = databaseController.changingTheStateOfACombatUnit(combatunit, "setup ranged");
+                Assertions.assertTrue(result.equals("this unit is not a ranged combat unit!"));
+    }
 
 }
