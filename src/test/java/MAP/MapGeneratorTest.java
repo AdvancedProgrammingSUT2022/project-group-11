@@ -30,6 +30,7 @@ import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
+import Model.Units.Unit;
 import Model.Units.UnitTypes;
 
 @ExtendWith(MockitoExtension.class)
@@ -736,6 +737,69 @@ public class MapGeneratorTest {
         DatabaseController databaseController = new DatabaseController(database);
         String result = databaseController.selectAndDeselectCombatUnit(user, 16, 3);
         Assertions.assertTrue(result.equals("you have selected this unit before"));
+        
+    }
+
+
+    @Test
+    public void selectAndDeselcetUnitTestcombatselected(){
+        Civilization civil = new Civilization(0, 3, "A");
+        ArrayList<Terrain> terr  = new ArrayList<>();
+       ArrayList<Unit> units = new ArrayList<>();
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false, false, false, false, false);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+                        terr.add(terrains[i][j]);
+                        units.add(combatunit);
+            }
+        }
+        civil.setTerrains(terr);
+        civil.setUnits(units);
+        map.setTerrains(terrains);
+        User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        String result = databaseController.selectAndDeselectCombatUnit(user, 16, 3);
+        Assertions.assertTrue(result.equals("Combat unit was selected"));
+        
+    }
+
+    @Test
+    public void selectAndDeselcetUnitTestdoNotHaveAccess(){
+        Civilization civil = new Civilization(0, 3, "A");
+        ArrayList<Terrain> terr  = new ArrayList<>();
+       ArrayList<Unit> units = new ArrayList<>();
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, false, false, false, false, false);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                        Improvements.FARM, resource,
+                        new ArrayList<Revealed>());
+                        terr.add(terrains[i][j]);
+                       
+            }
+        }
+        civil.setTerrains(terr);
+        civil.setUnits(units);
+        map.setTerrains(terrains);
+        User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        String result = databaseController.selectAndDeselectCombatUnit(user, 16, 3);
+        Assertions.assertTrue(result.equals("you do not have access to this unit"));
         
     }
 
