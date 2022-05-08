@@ -1223,4 +1223,93 @@ public class MapGeneratorTest {
         DatabaseController databaseController = new DatabaseController(database);
         databaseController.setAllUnitsUnfinished(user);
     }
+
+    @Test
+    public void UnitMovementTestCordinate(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                NonCombatUnit combatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, true);
+                combatunit.setIsSelected(true);
+                combatunit.setNextTerrain(new ArrayList<>());
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null,combatunit ,
+                        improvement, resource,
+                        new ArrayList<Revealed>());
+            }
+        }
+        map.setTerrains(terrains);
+        Database database = new Database();
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.unitMovement(-3, 4, user);
+    }
+    @Test
+    public void UnitMovementComabtUnit(){
+        Civilization civil = new Civilization(0, 3, "A");
+        ArrayList<Terrain> terr  = new ArrayList<>();
+       ArrayList<Unit> units = new ArrayList<>();
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                        improvement, resource,
+                        new ArrayList<Revealed>());
+                        terr.add(terrains[i][j]);
+                        units.add(combatunit);
+            }
+        }
+        units.remove(units.indexOf( terrains[4][5].getCombatUnit()));
+        terrains[4][5].setCombatUnit(null);
+        terrains[4][5].setNonCombatUnit(null);
+        civil.setTerrains(terr);
+        civil.setUnits(units);
+        map.setTerrains(terrains);
+        User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.unitMovement(4, 5, user);
+    }
+
+
+    @Test
+    public void UnitMovementNonComabtUnit(){
+        Civilization civil = new Civilization(0, 3, "A");
+        ArrayList<Terrain> terr  = new ArrayList<>();
+       ArrayList<Unit> units = new ArrayList<>();
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, true);
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, noncombatunit,
+                        improvement, resource,
+                        new ArrayList<Revealed>());
+                        terr.add(terrains[i][j]);
+                        units.add(noncombatunit);
+            }
+        }
+        units.remove(units.indexOf(terrains[4][5].getNonCombatUnit()));
+        terrains[4][5].setCombatUnit(null);
+        terrains[4][5].setNonCombatUnit(null);
+        civil.setTerrains(terr);
+        civil.setUnits(units);
+        map.setTerrains(terrains);
+        User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.unitMovement(4, 5, user);
+    }
 }
