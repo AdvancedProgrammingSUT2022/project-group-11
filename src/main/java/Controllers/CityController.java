@@ -295,7 +295,7 @@ public class CityController {
 
                 break;
             case "KNIGHT":
-                if (money < UnitTypes.HORSESMAN.getCost()) {
+                if (money < UnitTypes.KNIGHT.getCost()) {
                     return notEnoughMoney;
                 } else if (!city.getCentralTerrain().getResource().getResourceType().equals(UnitTypes.KNIGHT.getResourceRequirements())) {
                     return lackResources;
