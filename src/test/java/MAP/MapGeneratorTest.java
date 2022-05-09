@@ -4158,4 +4158,70 @@ public class MapGeneratorTest {
         databaseController.isContainInteger(ints, 7);
 
     }
+    @Test
+    public void addGoldTestTest(){
+        ArrayList<Terrain> ownedTerrain = new ArrayList<>();
+        Civilization civil = new Civilization(100, 100, "A");
+        User user = new User(null, null, null, civil);
+               NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+               UnitTypes.SETTLER, true);
+               ArrayList<TerrainFeatureTypes> terrainFeature = new ArrayList<>();
+               terrainFeature.add(TerrainFeatureTypes.FOREST);
+                  CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+              UnitTypes.SETTLER, true, false, false, false, false);
+             Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+             resource = new Resource(ResourceTypes.COAL);
+            Terrain terrains = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, terrainFeature, combatunit, noncombatunit,
+                     improvement, resource,
+                     new ArrayList<Revealed>());
+                     terrains.setBooleanResource(true);
+                     ownedTerrain.add(terrains);
+                     civil.setOwnedTerrains(ownedTerrain);
+                     City city = new City(null, civil , terrains, 0,null,0, 0, new ArrayList<>());
+                     city.setGold(1000);
+                     civil.addCity(city);
+                     civil.addUnit(combatunit);
+                     terrains.setCity(city);
+                     Database database = new Database();
+                     database.addUser(user);
+                     DatabaseController databaseController = new DatabaseController(database);
+                    databaseController.addGoldToUser(user);
+
+
+    }
+    @Test
+
+    public void setHappinessTest(){
+        ArrayList<Terrain> ownedTerrain = new ArrayList<>();
+        Civilization civil = new Civilization(100, 100, "A");
+        User user = new User(null, null, null, civil);
+               NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+               UnitTypes.WARRIOR, true);
+               ArrayList<TerrainFeatureTypes> terrainFeature = new ArrayList<>();
+               terrainFeature.add(TerrainFeatureTypes.FOREST);
+                  CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+              UnitTypes.WARRIOR, true, false, false, false, false);
+             Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+             resource = new Resource(ResourceTypes.COTTON);
+            Terrain terrains = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, terrainFeature, combatunit, noncombatunit,
+                     improvement, resource,
+                     new ArrayList<Revealed>());
+                     terrains.setBooleanResource(true);
+                     ownedTerrain.add(terrains);
+                     civil.setOwnedTerrains(ownedTerrain);
+                     City city = new City(null, civil , terrains, 0,null,0, 0, new ArrayList<>());
+                     city.setGold(1000);
+                     civil.addCity(city);
+                     civil.addUnit(combatunit);
+                     terrains.setCity(city);
+                     Database database = new Database();
+                     database.addUser(user);
+                     DatabaseController databaseController = new DatabaseController(database);
+                    databaseController.setHappinessUser(user);
+                    databaseController.consumptFood(user);
+                    civil.setHappiness(-50);
+                    databaseController.setHappinessUser(user);
+
+
+    }
 }
