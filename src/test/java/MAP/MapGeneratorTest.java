@@ -26,6 +26,7 @@ import Model.Revealed;
 import Model.River;
 import Model.Terrain;
 import Model.User;
+import Model.City.Citizen;
 import Model.City.City;
 import Model.Improvements.Improvement;
 import Model.Improvements.ImprovementTypes;
@@ -3949,5 +3950,119 @@ public class MapGeneratorTest {
         
     }
 
+
+
+    @Test
+    public void cityGarrisonTest(){
+        Resource resource = new Resource(UnitTypes.LANCER.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+        Civilization civil = new Civilization(100, 3, "A");
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(10000);
+        city.setCombatUnit(null);
+        CityController cityController = new CityController();
+        cityController.garrison(city, combatunit);
+
+    }
+
+    @Test
+    public void cityFoundTest(){
+        Resource resource = new Resource(UnitTypes.LANCER.getResourceRequirements());
+        NonCombatUnit combatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+        Civilization civil = new Civilization(100, 3, "A");
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        city.setGold(10000);
+       // city.setCombatUnit(null);
+        CityController cityController = new CityController();
+      cityController.foundCity(civil, combatunit, central);
+
+    }
+
+
+    @Test
+    public void playATurnTestplus(){
+        Resource resourceone = new Resource(ResourceTypes.CATTLE);
+        Terrain terrainone = new Terrain(3, 4, null, TerrainTypes.DESERT, new ArrayList<>(), null, null, null, resourceone, null);
+        Resource resourcetwo = new Resource(ResourceTypes.BANANAS);
+        Terrain terraintwo = new Terrain(8, 9, null, TerrainTypes.DESERT, new ArrayList<>(), null, null, null, resourcetwo, null);
+        Resource resourcethree = new Resource(ResourceTypes.COAL);
+        Terrain terrainthree = new Terrain(5, 8, null, TerrainTypes.DESERT, new ArrayList<>(), null, null, null, resourcethree, null);
+        ArrayList<Terrain> neighboursTerrain = new ArrayList<>();
+        neighboursTerrain.add(terrainone);
+        neighboursTerrain.add(terraintwo);
+
+        neighboursTerrain.add(terrainthree);
+       
+        Civilization civil = new Civilization(100, 3, "A");
+       
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        Citizen citizen = new Citizen(city);
+        ArrayList<Citizen> citizens = new ArrayList<>();
+        city.setFoodStorage(1000);
+        citizens.add(citizen);
+        city.setCitizens(citizens);
+        city.setNeighbors(neighboursTerrain);
+
+        CityController cityController = new CityController();
+        cityController.playTurn(city);
+    }
+
+    @Test
+    public void playATurnTestminus(){
+        Resource resourceone = new Resource(ResourceTypes.CATTLE);
+        Terrain terrainone = new Terrain(3, 4, null, TerrainTypes.DESERT, new ArrayList<>(), null, null, null, resourceone, null);
+        Resource resourcetwo = new Resource(ResourceTypes.BANANAS);
+        Terrain terraintwo = new Terrain(8, 9, null, TerrainTypes.DESERT, new ArrayList<>(), null, null, null, resourcetwo, null);
+        Resource resourcethree = new Resource(ResourceTypes.COAL);
+        Terrain terrainthree = new Terrain(5, 8, null, TerrainTypes.DESERT, new ArrayList<>(), null, null, null, resourcethree, null);
+        ArrayList<Terrain> neighboursTerrain = new ArrayList<>();
+        neighboursTerrain.add(terrainone);
+        neighboursTerrain.add(terraintwo);
+
+        neighboursTerrain.add(terrainthree);
+       
+        Civilization civil = new Civilization(100, 3, "A");
+       
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        Citizen citizen = new Citizen(city);
+        ArrayList<Citizen> citizens = new ArrayList<>();
+        city.setFoodStorage(1000);
+        for(int i = 0; i < 50;i++){
+            citizens.add(citizen);
+        }
+       city.setPopulation(25);
+        city.setCitizens(citizens);
+        city.setNeighbors(neighboursTerrain);
+
+        CityController cityController = new CityController();
+        cityController.playTurn(city);
+    }
+
+    @Test
+    public void hashmapCityTest(){
+        Resource resource = new Resource(UnitTypes.LANCER.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+        Civilization civil = new Civilization(100, 3, "A");
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(10000);
+        city.setCombatUnit(null);
+        CityController cityController = new CityController();
+        cityController.cityOutput(city);
+    }
 
 }

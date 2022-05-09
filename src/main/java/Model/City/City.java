@@ -296,7 +296,10 @@ public class City{
     {
         this.turnsRemainingUntilPopulationIncrease = turnsRemainingUntilPopulationIncrease;
     }
-
+    public void setNeighbors(ArrayList<Terrain> neighbour)
+    {
+       this.neighbors = neighbour;
+    }
     public ArrayList<Terrain> getNeighbors()
     {
         return neighbors;
