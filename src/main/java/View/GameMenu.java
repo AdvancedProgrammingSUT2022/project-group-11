@@ -319,7 +319,7 @@ public class GameMenu {
 
     }
 
-    private void selectTechnology(Matcher matcher, User user) {
+    public void selectTechnology(Matcher matcher, User user) {
         String name = matcher.group("name");
         switch (name) {
             case "AGRICULTURE":
