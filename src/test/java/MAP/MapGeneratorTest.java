@@ -1899,4 +1899,338 @@ public class MapGeneratorTest {
             cityController.createUnit(matcher, city);
         }
     }
+
+
+    // worker
+
+    @Test
+    public void createUnitWORKERNotEnoughMoney(){
+        Civilization civil = new Civilization(0, 3, "A");
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        city.setGold(0);
+        String input = "CONSTRUCT UNIT WORKER";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+
+    @Test
+    public void createUserWORKERNotEnoughCombat(){
+        Resource resource = new Resource(ResourceTypes.HORSES);
+        NonCombatUnit combatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.SETTLER.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(3000);
+        city.setNonCombatUnit(combatunit);
+      
+        String input = "CONSTRUCT UNIT WORKER";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+
+    }
+
+
+    @Test
+    public void createUserWORKERNotEnoughnormal(){
+        Resource resource = new Resource(ResourceTypes.HORSES);
+        NonCombatUnit combatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.SETTLER.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(3000);
+        city.setNonCombatUnit(null);
+      
+        String input = "CONSTRUCT UNIT WORKER";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+
+    }
+
+
+    // CATAPAULT
+    @Test
+    public void createUnitCATAPULTNotEnoughMoney(){
+        Civilization civil = new Civilization(0, 3, "A");
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        city.setGold(0);
+        String input = "CONSTRUCT UNIT CATAPULT";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+
+    @Test
+    public void createuitCatapultrLackResource(){
+        Resource resource = new Resource(ResourceTypes.BANANAS);
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.CHARIOT_ARCHER.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(1000);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT CATAPULT";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+
+
+    @Test
+    public void createuitCatapultrtECH(){
+        Resource resource = new Resource(UnitTypes.CATAPULT.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+      //  Technology technology = new Technology(false, 0, UnitTypes.CATAPULT.getTechnologyRequirements(),false);
+     //   tech.add(technology);
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(1000);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT CATAPULT";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+
+    @Test
+    public void createuitCatapultcombat(){
+        Resource resource = new Resource(UnitTypes.CATAPULT.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.CATAPULT.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(10000);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT CATAPULT";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+        
+    }
+
+    @Test
+    public void createuitCatapultnormal(){
+        Resource resource = new Resource(UnitTypes.CATAPULT.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.CATAPULT.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(10000);
+        city.setCombatUnit(null);
+        String input = "CONSTRUCT UNIT CATAPULT";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+        
+    }
+
+
+
+
+    // Horsesman
+    @Test
+    public void createUnitHorsesmanNotEnoughMoney(){
+        Civilization civil = new Civilization(0, 3, "A");
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        city.setGold(0);
+        String input = "CONSTRUCT UNIT HORSESMAN";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+
+    @Test
+    public void createuitHORSESMANLackResource(){
+        Resource resource = new Resource(ResourceTypes.BANANAS);
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.CHARIOT_ARCHER.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(1000);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT HORSESMAN";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+
+    @Test
+    public void createuitHorsesmanrtECH(){
+        Resource resource = new Resource(UnitTypes.HORSESMAN.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+      //  Technology technology = new Technology(false, 0, UnitTypes.CATAPULT.getTechnologyRequirements(),false);
+     //   tech.add(technology);
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(1000);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT HORSESMAN";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+
+
+    @Test
+    public void createuitHORSESMANcombat(){
+        Resource resource = new Resource(UnitTypes.HORSESMAN.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.HORSESMAN.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(10000);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT HORSESMAN";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+        
+    }
+
+    @Test
+    public void createuitHORSESMANnormal(){
+        Resource resource = new Resource(UnitTypes.HORSESMAN.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.HORSESMAN.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(10000);
+        city.setCombatUnit(null);
+        String input = "CONSTRUCT UNIT HORSESMAN";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+        
+    }
+
 }
