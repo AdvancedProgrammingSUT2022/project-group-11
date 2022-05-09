@@ -4,6 +4,8 @@ import Model.City.Citizen;
 import Model.City.City;
 import Model.Civilization;
 import Model.Resources.ResourceTypes;
+import Model.Technologies.Technology;
+import Model.Technologies.TechnologyTypes;
 import Model.Terrain;
 import Model.Units.*;
 
@@ -106,6 +108,15 @@ public class CityController {
 
         return null;
     }
+    
+    public boolean containUnit(ArrayList<Technology> tech,TechnologyTypes technologyType){
+        for(int i = 0; i < tech.size();i++){
+            if(tech.get(i).getTechnologyType() == technologyType){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public String createUnit(Matcher matcher, City city) {
         Civilization civilization = city.getOwner();
@@ -120,12 +131,12 @@ public class CityController {
             case "ARCHER":
                 if (money < UnitTypes.ARCHER.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.ARCHER.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.ARCHER.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    RangedCombatUnit newArcher = new RangedCombatUnit(city.getCombatUnit().getX(), city.getCombatUnit().getY(), 0, 0, 0, 0, false, false, UnitTypes.ARCHER, false, false, false, false, false, false);
+                    RangedCombatUnit newArcher = new RangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.ARCHER, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.ARCHER.getCost());
                     civilization.addUnit(newArcher);
                     city.setCombatUnit(newArcher);
@@ -134,7 +145,7 @@ public class CityController {
             case "CHARIOT_ARCHER":
                 if (money < UnitTypes.CHARIOT_ARCHER.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.CHARIOT_ARCHER.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.CHARIOT_ARCHER.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (!city.getCentralTerrain().getResource().getResourceType().equals(ResourceTypes.HORSES)) {
                     return lackResources;

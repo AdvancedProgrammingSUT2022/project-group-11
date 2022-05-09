@@ -12,13 +12,14 @@ import Model.Units.Unit;
 
 public class Terrain {
 
-    private final ArrayList<TerrainFeatureTypes> terrainFeatureTypes;
-    private boolean isBeingWorkedOn;
+    
 
     private int x;
     private int y;
     private String Type;
     private TerrainTypes terrainTypes;
+    private  ArrayList<TerrainFeatureTypes> terrainFeatureTypes;
+    private boolean isBeingWorkedOn;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
     private Improvement TerrainImprovement;
