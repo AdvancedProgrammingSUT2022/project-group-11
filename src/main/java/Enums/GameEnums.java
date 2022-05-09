@@ -32,7 +32,7 @@ public enum GameEnums {
     SELECT_TECHNOLOGY("^SELECT\\sTECHNOLOGY\\s(?<name>\\S+)$"),
     INTEGER("^-?\\d+$");
 
-    private String regex;
+    public String regex;
 
     GameEnums(String regex) {
         this.regex = regex;

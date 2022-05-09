@@ -275,7 +275,7 @@ public class GameMenu {
     public void repairImprovement()
     {
         System.out.println(this.databaseController.repairImprovement());
-
+        
     }
 
     private void moveUnit(User user, Matcher matcher) {

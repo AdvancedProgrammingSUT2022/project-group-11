@@ -437,7 +437,7 @@ public class DatabaseController {
         }
         return movementCost;
     }
-
+/*
     public String createUnit(User user, Matcher matcher, Terrain tile) {
         Civilization civilization = user.getCivilization();
         String unitName = matcher.group("unitName");
@@ -847,7 +847,7 @@ public class DatabaseController {
         }
         return "invalid unit name";
     }
-
+*/
     public void changingUnitsParameters(User user) {
         for (Unit unit : user.getCivilization().getUnits()) {
             if (unit instanceof CombatUnit) {

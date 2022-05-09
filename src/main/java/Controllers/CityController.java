@@ -4,6 +4,8 @@ import Model.City.Citizen;
 import Model.City.City;
 import Model.Civilization;
 import Model.Resources.ResourceTypes;
+import Model.Technologies.Technology;
+import Model.Technologies.TechnologyTypes;
 import Model.Terrain;
 import Model.Units.*;
 
@@ -106,7 +108,15 @@ public class CityController {
 
         return null;
     }
-    /*
+    
+    public boolean containUnit(ArrayList<Technology> tech,TechnologyTypes technologyType){
+        for(int i = 0; i < tech.size();i++){
+            if(tech.get(i).getTechnologyType() == technologyType){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public String createUnit(Matcher matcher, City city) {
         Civilization civilization = city.getOwner();
@@ -121,7 +131,7 @@ public class CityController {
             case "ARCHER":
                 if (money < UnitTypes.ARCHER.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.ARCHER.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.ARCHER.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -509,7 +519,7 @@ public class CityController {
         }
         return "invalid unit name";
     }
-*/
+
     public void assignCitizen(City city, Citizen citizen, Terrain tile) {
         if (city.getCitizens().contains(citizen)) {
             if (city.getNeighbors().contains(tile) && citizen.getHasWork()) {

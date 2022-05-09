@@ -14,7 +14,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import Controllers.CityController;
 import Controllers.DatabaseController;
+import Enums.GameEnums;
 import Enums.MenuEnums;
 import Model.Civilization;
 import Model.Database;
@@ -24,9 +26,11 @@ import Model.Revealed;
 import Model.River;
 import Model.Terrain;
 import Model.User;
+import Model.City.City;
 import Model.Improvements.Improvement;
 import Model.Improvements.ImprovementTypes;
 import Model.Resources.ResourceTypes;
+import Model.Technologies.Technology;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
@@ -496,8 +500,8 @@ public class MapGeneratorTest {
         Assertions.assertNotNull(result);
     }
 
-    private Matcher getCommandMatcher(String input, String regex) {
-        Pattern pattern = Pattern.compile(regex);
+    private Matcher getCommandMatcher(String input, String string) {
+        Pattern pattern = Pattern.compile(string);
         Matcher matcher = pattern.matcher(input);
         return matcher;
     }
@@ -1378,4 +1382,98 @@ public class MapGeneratorTest {
         DatabaseController databaseController = new DatabaseController(database);
         databaseController.movementOfAllUnits(user);
     }
+
+
+    // create user
+
+    public  Matcher getMatcher(String input, GameEnums command) {
+        Matcher matcher = Pattern.compile(command.regex).matcher(input);
+
+        if (matcher.matches()) {
+            return matcher;
+        }
+        return null;
+    }
+
+    @Test
+
+    public void createUserArcherNotEnoughMoney(){
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Civilization civil = new Civilization(60, 3, "A");
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT ARCHER";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+
+
+    @Test
+
+    public void createUserArcherNotEnoughTechnology(){
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        city.setGold(100);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT ARCHER";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+
+    @Test
+
+    public void createUserArcherNotEnoughCombat(){
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.ARCHER.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        city.setGold(100);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT ARCHER";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+    /*
+    @Test
+
+    public void createUserArcherNormal(){
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.ARCHER.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        city.setGold(100);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT ARCHER";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+*/
 }
