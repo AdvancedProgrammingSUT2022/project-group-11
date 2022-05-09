@@ -2802,4 +2802,128 @@ public class MapGeneratorTest {
             cityController.createUnit(matcher, city);
         }
     }
+
+    // trebutchet
+    @Test
+    public void createUnitTREBUCHETSNotEnoughMoney(){
+        Civilization civil = new Civilization(0, 3, "A");
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        city.setGold(0);
+        String input = "CONSTRUCT UNIT TREBUCHET";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+
+    @Test
+    public void createuitTREBUCHETLackResource(){
+        Resource resource = new Resource(ResourceTypes.BANANAS);
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.CHARIOT_ARCHER.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(1000);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT TREBUCHET";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+    @Test
+    public void createuitTREBUCHETANrtECH(){
+        Resource resource = new Resource(UnitTypes.TREBUCHET.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+      //  Technology technology = new Technology(false, 0, UnitTypes.CATAPULT.getTechnologyRequirements(),false);
+     //   tech.add(technology);
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(1000);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT TREBUCHET";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+    @Test
+    public void createuitTREBUCHETcombat(){
+        Resource resource = new Resource(UnitTypes.TREBUCHET.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.TREBUCHET.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(10000);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT TREBUCHET";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+        
+    }
+    @Test
+    public void createuitTREBUCHETNnormal(){
+        Resource resource = new Resource(UnitTypes.TREBUCHET.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.TREBUCHET.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(10000);
+        city.setCombatUnit(null);
+        String input = "CONSTRUCT UNIT TREBUCHET";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+
+    
 }
