@@ -179,10 +179,13 @@ public class CityController {
                 } else if (city.getNonCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonCombatUnit newSettler = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
-                    civilization.setGold(money - UnitTypes.SETTLER.getCost());
-                    civilization.addUnit(newSettler);
-                    city.setNonCombatUnit(newSettler);
+                    if(civilization.getBooleanSettlerBuy() == true){
+                        NonCombatUnit newSettler = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
+                        civilization.setGold(money - UnitTypes.SETTLER.getCost());
+                        civilization.addUnit(newSettler);
+                        city.setNonCombatUnit(newSettler);
+                    }
+                   
                 }
 
                 break;
@@ -230,7 +233,7 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!city.getCentralTerrain().getResource().getResourceType().equals(UnitTypes.CATAPULT.getResourceRequirements())) {
                     return lackResources;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.CATAPULT.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.CATAPULT.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -247,7 +250,7 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!city.getCentralTerrain().getResource().getResourceType().equals(UnitTypes.HORSESMAN.getResourceRequirements())) {
                     return lackResources;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.HORSESMAN.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.HORSESMAN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -264,7 +267,7 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!city.getCentralTerrain().getResource().getResourceType().equals(UnitTypes.SWORDSMAN.getResourceRequirements())) {
                     return lackResources;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.SWORDSMAN.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.SWORDSMAN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -279,7 +282,7 @@ public class CityController {
             case "CROSSBOWMAN":
                 if (money < UnitTypes.CROSSBOWMAN.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.CROSSBOWMAN.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.CROSSBOWMAN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -292,11 +295,11 @@ public class CityController {
 
                 break;
             case "KNIGHT":
-                if (money < UnitTypes.HORSESMAN.getCost()) {
+                if (money < UnitTypes.KNIGHT.getCost()) {
                     return notEnoughMoney;
                 } else if (!city.getCentralTerrain().getResource().getResourceType().equals(UnitTypes.KNIGHT.getResourceRequirements())) {
                     return lackResources;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.HORSESMAN.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.KNIGHT.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -314,7 +317,7 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!city.getCentralTerrain().getResource().getResourceType().equals(UnitTypes.LONGSWORDSMAN.getResourceRequirements())) {
                     return lackResources;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.LONGSWORDSMAN.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.LONGSWORDSMAN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -329,7 +332,7 @@ public class CityController {
             case "PIKEMAN":
                 if (money < UnitTypes.PIKEMAN.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.PIKEMAN.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.PIKEMAN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -346,7 +349,7 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!city.getCentralTerrain().getResource().getResourceType().equals(UnitTypes.TREBUCHET.getResourceRequirements())) {
                     return lackResources;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.TREBUCHET.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.TREBUCHET.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -362,7 +365,7 @@ public class CityController {
             case "CANNON":
                 if (money < UnitTypes.CANNON.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.CANNON.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.CANNON.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -380,7 +383,7 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!city.getCentralTerrain().getResource().getResourceType().equals(UnitTypes.CAVALRY.getResourceRequirements())) {
                     return lackResources;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.CAVALRY.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.CAVALRY.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -398,7 +401,7 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!city.getCentralTerrain().getResource().getResourceType().equals(UnitTypes.LANCER.getResourceRequirements())) {
                     return lackResources;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.LANCER.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.LANCER.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -413,7 +416,7 @@ public class CityController {
             case "MUSKETMAN":
                 if (money < UnitTypes.MUSKETMAN.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.MUSKETMAN.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.MUSKETMAN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -428,7 +431,7 @@ public class CityController {
             case "RIFLEMAN":
                 if (money < UnitTypes.RIFLEMAN.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.RIFLEMAN.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.RIFLEMAN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -444,7 +447,7 @@ public class CityController {
             case "ANTI_TANKGUN":
                 if (money < UnitTypes.ANTI_TANKGUN.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.ANTI_TANKGUN.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.ANTI_TANKGUN.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -459,7 +462,7 @@ public class CityController {
             case "ARTILLERY":
                 if (money < UnitTypes.ARTILLERY.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.ARTILLERY.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.ARTILLERY.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -474,7 +477,7 @@ public class CityController {
             case "INFANTRY":
                 if (money < UnitTypes.INFANTRY.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.INFANTRY.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.INFANTRY.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -489,7 +492,7 @@ public class CityController {
             case "PANZER":
                 if (money < UnitTypes.PANZER.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.PANZER.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.PANZER.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
@@ -504,7 +507,7 @@ public class CityController {
             case "TANK":
                 if (money < UnitTypes.TANK.getCost()) {
                     return notEnoughMoney;
-                } else if (!civilization.getTechnologies().contains(UnitTypes.TANK.getTechnologyRequirements())) {
+                } else if (!containUnit(civilization.getTechnologies(),UnitTypes.TANK.getTechnologyRequirements())) {
                     return lackTechnology;
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
