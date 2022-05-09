@@ -39,6 +39,7 @@ import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
 import Model.Units.Unit;
 import Model.Units.UnitTypes;
+import View.GameMenu;
 
 @ExtendWith(MockitoExtension.class)
 public class MapGeneratorTest {
@@ -4191,7 +4192,7 @@ public class MapGeneratorTest {
     }
     @Test
 
-    public void setHappinessTest(){
+    public void setHappinessAndFoodTest(){
         ArrayList<Terrain> ownedTerrain = new ArrayList<>();
         Civilization civil = new Civilization(100, 100, "A");
         User user = new User(null, null, null, civil);
@@ -4223,5 +4224,65 @@ public class MapGeneratorTest {
                     databaseController.setHappinessUser(user);
 
 
+    }
+
+    @Test
+    public void TechnologyTest(){
+        ArrayList<TechnologyTypes> types = new ArrayList<>();
+        types.add(TechnologyTypes.ARCHERY);
+        types.add(TechnologyTypes.CHEMISTRY);
+        types.add(TechnologyTypes.AGRICULTURE);
+        Civilization civil = new Civilization(100, 100, "A");
+        User user = new User(null, null, null, civil);
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology tech0 = new Technology(false, 6, TechnologyTypes.ARCHERY, false);
+        Technology tech1 = new Technology(false, 6,  TechnologyTypes.GUNPOWDER, true);
+        tech.add(tech0);
+        tech.add(tech1);
+        civil.setTechnologies(tech);
+        Database database = new Database();
+                     database.addUser(user);
+                     DatabaseController databaseController = new DatabaseController(database);
+                     databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ARCHERY);
+                     databaseController.choosingATechnologyToStudy(user, TechnologyTypes.CHEMISTRY);
+    }
+
+    @Test
+    public void setResourceTest(){
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                        improvement, null,
+                        new ArrayList<Revealed>());
+                        
+            }
+        }
+        map.setTerrains(terrains);
+        User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<User> allUser = new ArrayList<>();
+        allUser.add(user);
+       GameMenu gamemenu = new GameMenu(databaseController, allUser);
+       Matcher matcher;
+       String input = "SET CHEAT RESOURCE BANANAS 4 3";
+       if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+        gamemenu.setCheatResource(matcher);
+    }
+     input = "SET CHEAT RESOURCE CATTLE 4 3";
+    if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+     gamemenu.setCheatResource(matcher);
+     }
+
+
+        
     }
 }

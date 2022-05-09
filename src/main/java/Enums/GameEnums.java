@@ -30,6 +30,23 @@ public enum GameEnums {
     MAP_MOVE("^MAP\\sMOVE\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     INFO_RESEARCH("INFO RESEARCH"),
     SELECT_TECHNOLOGY("^SELECT\\sTECHNOLOGY\\s(?<name>\\S+)$"),
+    INCREASE_TURN("^INCREASE\\s-TURN\\s(?<amount>\\S+)$"),
+    INCREASE_GOLD("^INCREASE\\s-GOLD\\s(?<amount>\\S+)$"),
+    INCREASE_FOOD("^INCREASE\\s-FOOD\\s(?<amount>\\S+)$"),
+    INCREASE_HAPPINESS("^INCREASE\\s-HAPPINESS\\s(?<amount>\\S+)$"),
+    INCREASE_SCIENCE("^INCREASE\\s-SCIENCE\\s(?<amount>\\S+)$"),
+    BUY_TECHNOLOGY("^BUY\\sTECHNOLOGY\\s(?<name>\\S+)$"),
+    COMBAT_UNIT_CHEAT_MOVE("^COMBAT\\sUNIT\\sCHEAT\\sMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    NON_COMBAT_UNIT_CHEAT_MOVE("^NON\\sCOMBAT\\sUNIT\\sCHEAT\\sMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    BUY_CHEAT_TILE("^BUY\\sCHEAT\\sTILE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    SET_CHEAT_UNIT("^SET\\sCHEAT\\sUNIT\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    SET_CHEAT_IMPROVEMENT("^SET\\sCHEAT\\sIMPROVEMENT\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    SET_CHEAT_RESOURCE("^SET\\sCHEAT\\sRESOURCE\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    SET_CHEAT_TERRAIN_FEATURE_TYPE("^SET\\sCHEAT\\sTERRAIN\\sFEATURE\\sTYPE\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    SET_CHEAT_TERRAIN_TYPE("^SET\\sCHEAT\\sTERRAIN\\sTYPE\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    DELETE_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    REPAIR_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREPAIR\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+
     INTEGER("^-?\\d+$");
 
     public String regex;
