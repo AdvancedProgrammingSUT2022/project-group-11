@@ -32,6 +32,7 @@ import Model.Improvements.Improvement;
 import Model.Improvements.ImprovementTypes;
 import Model.Resources.ResourceTypes;
 import Model.Technologies.Technology;
+import Model.Technologies.TechnologyTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
@@ -4051,8 +4052,8 @@ public class MapGeneratorTest {
     @Test
     public void hashmapCityTest(){
         Resource resource = new Resource(UnitTypes.LANCER.getResourceRequirements());
-        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
-        UnitTypes.SETTLER, true, false, false, false, false);
+       // CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+       // UnitTypes.SETTLER, true, false, false, false, false);
         Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
         Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
                 improvement, resource,
@@ -4065,4 +4066,96 @@ public class MapGeneratorTest {
         cityController.cityOutput(city);
     }
 
+    @Test
+    public void changingUnitsParametreTest(){
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true);
+        Civilization civil = new Civilization(100, 100, "A");
+        ArrayList<Unit> units = new ArrayList<>();
+        units.add(combatunit);
+        units.add(noncombatunit);
+        civil.setUnits(units);
+        User user = new User(null, null, null, civil);
+        Database database  = new Database();
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.changingUnitsParameters(user);
+        databaseController.unitsInfo(user);
+    }
+    @Test
+    public void technologyUnderSearchTest(){
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(true, 3, TechnologyTypes.AGRICULTURE, false);
+        tech.add(technology);
+        Civilization civil = new Civilization(100, 100, "A");
+        civil.setTechnologies(tech);
+        User user = new User(null, null, null, civil);
+        Database database  = new Database();
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.getUnderResearchTechnology(user);
+        tech.remove(technology);
+        databaseController.getUnderResearchTechnology(user);
+
+
+    }
+
+    @Test
+    public void getterrainDatabaseTest(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.SETTLER, true);
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, noncombatunit,
+                        improvement, resource,
+                        new ArrayList<Revealed>());
+                       
+            }
+        }
+       
+     
+       // User user = new User(null, null,null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.getTerrainByCoordinates(3, 4);
+    }
+
+    @Test
+    public void setTerrainByEachCivilizationTest(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+            //    NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
+             //   UnitTypes.SETTLER, true);
+                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                        improvement, resource,
+                        new ArrayList<Revealed>());
+                       
+            }
+        }
+       map.setTerrains(terrains);
+        ArrayList<User> users = new ArrayList<>();
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        Civilization civil = new Civilization(100, 100, "A");
+        User user = new User(null, null, null, civil);
+        DatabaseController databaseController = new DatabaseController(database);
+        users.add(user);
+        databaseController.setTerrainsOfEachCivilization(user);
+        databaseController.setCivilizations(users);
+        ArrayList<Integer> ints = new ArrayList<>();
+        ints.add(1);
+        ints.add(2);
+        databaseController.isContainInteger(ints, 2);
+        databaseController.isContainInteger(ints, 7);
+
+    }
 }
