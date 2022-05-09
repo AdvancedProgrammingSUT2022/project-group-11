@@ -4236,7 +4236,7 @@ public class MapGeneratorTest {
         User user = new User(null, null, null, civil);
         ArrayList<Technology> tech = new ArrayList<>();
         Technology tech0 = new Technology(false, 6, TechnologyTypes.ARCHERY, false);
-        Technology tech1 = new Technology(false, 6,  TechnologyTypes.GUNPOWDER, true);
+        Technology tech1 = new Technology(false, 6,  TechnologyTypes.AGRICULTURE, true);
         tech.add(tech0);
         tech.add(tech1);
         civil.setTechnologies(tech);
@@ -4245,44 +4245,185 @@ public class MapGeneratorTest {
                      DatabaseController databaseController = new DatabaseController(database);
                      databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ARCHERY);
                      databaseController.choosingATechnologyToStudy(user, TechnologyTypes.CHEMISTRY);
-    }
+                     
+
+
+    } 
+
 
     @Test
-    public void setResourceTest(){
+    public void TechnologyTest2(){
+        ArrayList<TechnologyTypes> types = new ArrayList<>();
+        types.add(TechnologyTypes.ARCHERY);
+        types.add(TechnologyTypes.CHEMISTRY);
+        types.add(TechnologyTypes.AGRICULTURE);
+        Civilization civil = new Civilization(100, 100, "A");
+        User user = new User(null, null, null, civil);
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology tech0 = new Technology(false, 6, TechnologyTypes.ARCHERY, true);
+        Technology tech1 = new Technology(false, 6,  TechnologyTypes.AGRICULTURE, false);
+        tech.add(tech0);
+        tech.add(tech1);
+        civil.setTechnologies(tech);
+        Database database = new Database();
+                     database.addUser(user);
+                     DatabaseController databaseController = new DatabaseController(database);
+                     databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ARCHERY);
+                     databaseController.choosingATechnologyToStudy(user, TechnologyTypes.CHEMISTRY);
+                     
+
+
+    } 
+
+    @Test
+    public void setResourceTest() {
         Civilization civil = new Civilization(0, 3, "A");
         Map map = new Map();
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
                 CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false,
-                UnitTypes.SETTLER, true, false, false, false, false);
-                Improvement improvement = new Improvement(i, j,ImprovementTypes.FARM);
+                        UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
                 terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
                         improvement, null,
                         new ArrayList<Revealed>());
-                        
             }
         }
         map.setTerrains(terrains);
-        User user = new User(null, null,null, civil);
+        User user = new User(null, null, null, civil);
         Database database = new Database();
         database.addUser(user);
         database.setMap(map);
         DatabaseController databaseController = new DatabaseController(database);
         ArrayList<User> allUser = new ArrayList<>();
         allUser.add(user);
-       GameMenu gamemenu = new GameMenu(databaseController, allUser);
-       Matcher matcher;
-       String input = "SET CHEAT RESOURCE BANANAS 4 3";
-       if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
-        gamemenu.setCheatResource(matcher);
+        GameMenu gamemenu = new GameMenu(databaseController, allUser);
+        Matcher matcher;
+        String input = "SET CHEAT RESOURCE BANANAS 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE CATTLE 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE COAL 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE DEER 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE COTTON 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE DYES 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE FURS 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE GEMS 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE GOLD 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE HORSES 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE INCENSE 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE IVORY 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE IRON 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE MARBLE 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE SHEEP 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE SILK 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE SILVER 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE SUGAR 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
+        input = "SET CHEAT RESOURCE WHEAT 4 3";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.setCheatResource(matcher);
+        }
     }
-     input = "SET CHEAT RESOURCE CATTLE 4 3";
-    if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
-     gamemenu.setCheatResource(matcher);
-     }
+    
+    @Test
+    public void NeighbourTerrainTest(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false,
+                        UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                        improvement, null,
+                        new ArrayList<Revealed>());
+            }
+        }
+        map.setTerrains(terrains);
+        Database database = new Database();
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.getNeighborTerrainsOfOneTerrain(terrains[3][4], map);
 
+    }
 
-        
+    @Test
+    public void NeighbourTestDistanceTest(){
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false,
+                        UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                        improvement, null,
+                        new ArrayList<Revealed>());
+            }
+        }
+        map.setTerrains(terrains);
+        Database database = new Database();
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<Terrain> neighbourTerrain = new ArrayList<>();
+        neighbourTerrain.add(terrains[3][4]);
+        neighbourTerrain.add(terrains[5][6]);
+        databaseController.NeighborsAtADistanceOfOneFromAnArraylistOfTerrains(neighbourTerrain, map);
+
+        databaseController.NeighborsAtADistanceOfTwoFromAnArraylistOfTerrains(neighbourTerrain, map);
+
     }
 }

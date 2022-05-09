@@ -724,6 +724,7 @@ public class DatabaseController {
                 return "you do not have required prerequisites";
             }
         }
+
         for (Technology technology : user.getCivilization().getTechnologies()) {
             technology.setUnderResearch(false);
         }
