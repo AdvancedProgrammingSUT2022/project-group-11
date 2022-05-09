@@ -179,10 +179,13 @@ public class CityController {
                 } else if (city.getNonCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    NonCombatUnit newSettler = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
-                    civilization.setGold(money - UnitTypes.SETTLER.getCost());
-                    civilization.addUnit(newSettler);
-                    city.setNonCombatUnit(newSettler);
+                    if(civilization.getBooleanSettlerBuy() == true){
+                        NonCombatUnit newSettler = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
+                        civilization.setGold(money - UnitTypes.SETTLER.getCost());
+                        civilization.addUnit(newSettler);
+                        city.setNonCombatUnit(newSettler);
+                    }
+                   
                 }
 
                 break;
