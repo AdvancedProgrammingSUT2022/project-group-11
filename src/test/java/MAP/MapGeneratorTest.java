@@ -3754,4 +3754,101 @@ public class MapGeneratorTest {
         }
         
     }
+
+    //PANZER
+    @Test
+    public void createUnitPANZERNotEnoughMoney(){
+        Civilization civil = new Civilization(0, 3, "A");
+        City city = new City(null, civil,null , 3, null,0, 0, null);
+        city.setGold(0);
+        String input = "CONSTRUCT UNIT PANZER";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+    @Test
+    public void createuitPANZERrtECH(){
+        Resource resource = new Resource(UnitTypes.LANCER.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+      //  Technology technology = new Technology(false, 0, UnitTypes.CATAPULT.getTechnologyRequirements(),false);
+     //   tech.add(technology);
+        civil.setTechnologies(tech);
+  
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(1000);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT PANZER";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+    }
+    @Test
+    public void createuitPANZERcombat(){
+        Resource resource = new Resource(UnitTypes.LANCER.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.PANZER.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(10000);
+        city.setCombatUnit(combatunit);
+        String input = "CONSTRUCT UNIT PANZER";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+        
+
+    }
+
+    @Test
+    public void createuitPANZERormal(){
+        Resource resource = new Resource(UnitTypes.LANCER.getResourceRequirements());
+        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
+      
+        Civilization civil = new Civilization(100, 3, "A");
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology technology = new Technology(false, 0, UnitTypes.PANZER.getTechnologyRequirements(),false);
+        tech.add(technology);
+        civil.setTechnologies(tech);
+        City city = new City(null, civil,central , 3, null,0, 0, null);
+        city.setGold(10000);
+        city.setCombatUnit(null);
+        String input = "CONSTRUCT UNIT PANZER";
+        Matcher matcher;
+        CityController cityController = new CityController();
+        if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
+            cityController.createUnit(matcher, city);
+        }
+        
+    }
 }
