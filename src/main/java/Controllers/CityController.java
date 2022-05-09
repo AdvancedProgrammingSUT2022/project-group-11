@@ -136,7 +136,7 @@ public class CityController {
                 } else if (city.getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    RangedCombatUnit newArcher = new RangedCombatUnit(city.getCombatUnit().getX(), city.getCombatUnit().getY(), 0, 0, 0, 0, false, false, UnitTypes.ARCHER, false, false, false, false, false, false);
+                    RangedCombatUnit newArcher = new RangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.ARCHER, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.ARCHER.getCost());
                     civilization.addUnit(newArcher);
                     city.setCombatUnit(newArcher);

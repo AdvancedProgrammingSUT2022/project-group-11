@@ -1453,21 +1453,27 @@ public class MapGeneratorTest {
             cityController.createUnit(matcher, city);
         }
     }
-    /*
+    
     @Test
 
     public void createUserArcherNormal(){
-        CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
-        UnitTypes.SETTLER, true, false, false, false, false);
+        NonCombatUnit combatunit = new NonCombatUnit(3, 3, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true);
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit,
+                improvement, resource,
+                new ArrayList<Revealed>());
+
         Civilization civil = new Civilization(100, 3, "A");
         ArrayList<Technology> tech = new ArrayList<>();
         Technology technology = new Technology(false, 0, UnitTypes.ARCHER.getTechnologyRequirements(),false);
         tech.add(technology);
         civil.setTechnologies(tech);
   
-        City city = new City(null, civil,null , 3, null,0, 0, null);
+        City city = new City(null, civil,central , 3, null,0, 0, null);
         city.setGold(100);
-        city.setCombatUnit(combatunit);
+     
+     
         String input = "CONSTRUCT UNIT ARCHER";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -1475,5 +1481,5 @@ public class MapGeneratorTest {
             cityController.createUnit(matcher, city);
         }
     }
-*/
+
 }
