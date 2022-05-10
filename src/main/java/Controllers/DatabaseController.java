@@ -724,7 +724,6 @@ public class DatabaseController {
                 return "you do not have required prerequisites";
             }
         }
-
         for (Technology technology : user.getCivilization().getTechnologies()) {
             technology.setUnderResearch(false);
         }
@@ -749,7 +748,7 @@ public class DatabaseController {
 
     public Technology getTechnologyByTechnologyType(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType() == (technologyType)) {
+            if (technology.getTechnologyType().equals(technologyType)) {
                 return technology;
             }
         }
@@ -757,7 +756,12 @@ public class DatabaseController {
     }
 
     public String researchInfo(User user) {
-        return getUnderResearchTechnology(user).toString();
+        if(getUnderResearchTechnology(user)!=null)
+        {
+            return getUnderResearchTechnology(user).toString();
+        }
+        return "there is no under research technology";
+
     }
 
     public ArrayList<Terrain> getNeighborTerrainsOfOneTerrain(Terrain terrain, Map map) {
@@ -839,7 +843,7 @@ public class DatabaseController {
         if (nonCombatUnit != null) {
             if (nonCombatUnit.getUnitType().equals(UnitTypes.SETTLER)) {
                 Terrain settlersTerrain = getTerrainByCoordinates(nonCombatUnit.getX(), nonCombatUnit.getY());
-                if (buildingAnImprovementInATerrain(user, improvementType, settlersTerrain).equals("improvement was be built successfully")) {
+                if (buildingAnImprovementInATerrain(user, improvementType, settlersTerrain).equals("improvement was built successfully")) {
                     nonCombatUnit.setIsSelected(false);
                     nonCombatUnit.setIsFinished(true);
                 }
@@ -871,7 +875,7 @@ public class DatabaseController {
             }
 
         }
-        return "improvement was be built successfully";
+        return "improvement will be built successfully";
     }
 
     public String deleteFeatures(String hasToBeDeleted) {
@@ -893,7 +897,7 @@ public class DatabaseController {
 
 
                 } else if (hasToBeDeleted.equals("JUNGLE") || hasToBeDeleted.equals("FOREST") || hasToBeDeleted.equals("MARSH")) {
-                    if (settlersTerrain.getTerrainFeatureTypes() == null ||settlersTerrain.getTerrainFeatureTypes().size() == 0 ) {
+                    if (settlersTerrain.getTerrainFeatureTypes().get(0) == null) {
                         return "you have no Jungle or Forest or Marsh in this tile";
                     } else if (!settlersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.FOREST) && !settlersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.JUNGLE) && !settlersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.MARSH)) {
                         return "you have no Jungle or Forest or Marsh in this tile";

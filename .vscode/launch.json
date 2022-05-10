@@ -6,19 +6,25 @@
     "configurations": [
         {
             "type": "java",
+            "name": "Launch MapGeneratorTest",
+            "request": "launch",
+            "mainClass": "MAP.MapGeneratorTest",
+            "projectName": "CIVILIZATION"
+        },
+        {
+            "type": "java",
             "name": "Attach",
             "request": "attach",
             "hostName": "localhost",
             "port": "<debug port of the debuggee>"
         },
-    {
-        "type": "java",
-        "name": "Launch with Arguments Prompt",
-        "request": "launch",
-        "mainClass": "",
-        "args": "${command:SpecifyProgramArgs}"
-    },
-        
+        {
+            "type": "java",
+            "name": "Launch with Arguments Prompt",
+            "request": "launch",
+            "mainClass": "",
+            "args": "${command:SpecifyProgramArgs}"
+        },
         {
             "name": "Launch Apex Debugger",
             "type": "apex",
@@ -28,7 +34,6 @@
             "entryPointFilter": "",
             "sfdxProject": "${workspaceRoot}"
         },
-
         {
             "type": "java",
             "name": "Launch Current File",

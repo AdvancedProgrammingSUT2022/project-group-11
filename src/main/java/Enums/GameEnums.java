@@ -37,7 +37,7 @@ public enum GameEnums {
     INCREASE_SCIENCE("^INCREASE\\s-SCIENCE\\s(?<amount>\\S+)$"),
     BUY_TECHNOLOGY("^BUY\\sTECHNOLOGY\\s(?<name>\\S+)$"),
     COMBAT_UNIT_CHEAT_MOVE("^COMBAT\\sUNIT\\sCHEAT\\sMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
-    NON_COMBAT_UNIT_CHEAT_MOVE("^NON\\sCOMBAT\\sUNIT\\sCHEAT\\sMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    NON_COMBAT_UNIT_CHEAT_MOVE("^NONCOMBAT\\sUNIT\\sCHEAT\\sMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     BUY_CHEAT_TILE("^BUY\\sCHEAT\\sTILE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     SET_CHEAT_UNIT("^SET\\sCHEAT\\sUNIT\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     SET_CHEAT_IMPROVEMENT("^SET\\sCHEAT\\sIMPROVEMENT\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
