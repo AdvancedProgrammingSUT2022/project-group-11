@@ -19,6 +19,7 @@ import Enums.GameEnums;
 import Enums.MenuEnums;
 import Model.Civilization;
 import Model.Database;
+import Model.GameMapGenerator;
 import Model.Map;
 import Model.Resource;
 import Model.Revealed;
@@ -5209,6 +5210,9 @@ public class MapGeneratorTest {
         Civilization civil = new Civilization(0, 3, "A");
         civil.setTechnologies(new ArrayList<>());
         Map map = new Map();
+        map.setCOL(16);
+        map.setROW(32);
+        int a = map.getCOL();
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
@@ -6569,6 +6573,106 @@ public class MapGeneratorTest {
         databaseController.increasingTurnInWorkersActions();
     }
 
+@Test
+public void cheatComabatUnitTest(){
+    Civilization civil = new Civilization(0, 3, "A");
+    Map map = new Map();
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit combatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            
+         
+          
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit, null, null, new ArrayList<Revealed>());
+            terrains[i][j].setTerrainFeatureTypes(TerrainFeatureTypes.FOREST);
+            terrains[i][j].setHasToBeDeleted(true);
+            terrains[i][j].setPassedTurns(10);
 
+        }
+    }
+   
+    map.setTerrains(terrains);
+    User user = new User(null, null, null, civil);
+    Database database = new Database();
+    database.addUser(user);
+    database.setMap(map);
+    DatabaseController databaseController = new DatabaseController(database);
+    databaseController.cheatMoveNonCombatUnit(3, 4);
+}
+
+@Test
+public void mapInitializeTest(){
+    Map map = new Map();
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit combatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            
+         
+          
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit, null, null, new ArrayList<Revealed>());
+            terrains[i][j].setTerrainFeatureTypes(TerrainFeatureTypes.FOREST);
+            terrains[i][j].setHasToBeDeleted(true);
+            terrains[i][j].setPassedTurns(10);
+
+        }
+    }
+   
+    map.setTerrains(terrains);
+    map.generateMap();
+}
+
+@Test
+public void RevealedMapTest(){
+    Map map = new Map();
+    Civilization civil = new Civilization(4, 8, "A");
+    User user = new User(null, null, null, civil);
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    ArrayList<Terrain> terrain = new ArrayList<>();
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+           terrain.add(terrains[i][j]);
+
+        }
+    }
+    map.setTerrains(terrains);
+    terrains[3][7].setType("fog of war");
+    ArrayList<Terrain> visibleTerrain = new ArrayList<>();
+    //ArrayList<Terrain> RevealedTerrain = new ArrayList<>();
+    visibleTerrain.add(terrains[3][7]);
+    civil.setRevealedTerrains(new ArrayList<>());
+    civil.setVisibleTerrains(visibleTerrain);
+    civil.setTerrains(terrain);
+    Database database = new Database();
+    database.addUser(user);
+    database.setMap(map);
+    map.printMap(database, user);
+    
+    ArrayList<River> rivers = new ArrayList<River>();
+    river = new River(terrains[3][4], terrains[3][5]);
+     River riverone = new River(terrains[2][4], terrains[2][5]);
+    rivers.add(river);
+    rivers.add(riverone);
+    map.setRiver(rivers);
+    map.printMap(database, user);
+   GameMapGenerator gameMapGenerator = new GameMapGenerator(terrains, map.getRiver(), map.getROW(), map.getCOL(), map.getIteration());
+   gameMapGenerator.hasRiver(terrainOne, terrainTwo);
+   gameMapGenerator.hasRiver(terrainOne);
+    
+   City city = new City(civil,null, null, 0,"" , 0, 0, null);
+   city.setOwner(civil);
+   city.getOwner();
+   city.getFounder();
+   civil.setScience(2);
+   civil.getScience();
+   city.setCitizens(new ArrayList<>());
+  
+}
  
 }
