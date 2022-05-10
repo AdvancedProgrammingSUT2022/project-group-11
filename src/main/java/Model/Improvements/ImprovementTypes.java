@@ -164,6 +164,9 @@ public enum ImprovementTypes {
         this.ShowImprovement = ShowImprovement;
     }
 
+    public int getProduction(){
+      return this.production;
+    }
     public String getShowImprovement() {
         return this.ShowImprovement;
     }
