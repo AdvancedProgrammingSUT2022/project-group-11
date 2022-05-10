@@ -1,3 +1,4 @@
+
 package Model.Terrains;
 
 import java.util.ArrayList;
@@ -139,8 +140,16 @@ public enum TerrainTypes {
     public int getMovementCost()
     {
         return this.movementCost;
+
+    }
+    public ArrayList<TerrainFeatureTypes> getPossibleFeatures(){
+        return this.possibleFeatures;
     }
 
-    
-
+    public int getGold(){
+        return this.gold;
+    }
+    public int getFood(){
+        return this.food;
+    }
 }

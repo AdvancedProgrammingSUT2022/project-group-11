@@ -1,13 +1,12 @@
 package Model.City;
 
-import Model.City.City;
 import Model.Terrain;
 
 public class Citizen {
     private City city;
     private boolean hasWork;
     private Terrain terrain;
-    private int production
+    private int production;
 
     public Citizen ( City city)
     {

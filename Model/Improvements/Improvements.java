@@ -8,38 +8,38 @@ import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 
 public enum Improvements {
-    CAMP(0, 0, 0, new ArrayList<ResourceTypes>() {
+    CAMP(0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.FURS);
             add(ResourceTypes.IVORY);
             add(ResourceTypes.DEER);
         }
-    }, TechnologyTypes.AGRICULTURE, new ArrayList<Object>() {
+    }, TechnologyTypes.AGRICULTURE, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.HILLS);
         }
-    }),
+    },"CAM"),
 
-    FARM(1, 0, 0, new ArrayList<ResourceTypes>() {
+    FARM(1, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.WHEAT);
         }
-    }, TechnologyTypes.AGRICULTURE, new ArrayList<Object>() {
+    }, TechnologyTypes.AGRICULTURE, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
         }
-    }),
-    LUMBERMILL(0, 1, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<Object>() {
+    },"FAR"),
+    LUMBERMILL(0, 1, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
         }
-    }),
-    MINE(0, 1, 0, new ArrayList<ResourceTypes>() {
+    },"LUM"),
+    MINE(0, 1, 0, new ArrayList<>() {
         {
             add(ResourceTypes.WHEAT);
             add(ResourceTypes.IRON);
@@ -48,7 +48,7 @@ public enum Improvements {
             add(ResourceTypes.GOLD);
             add(ResourceTypes.SILVER);
         }
-    }, TechnologyTypes.MINING, new ArrayList<Object>() {
+    }, TechnologyTypes.MINING, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
             add(TerrainTypes.PLAINS);
@@ -58,14 +58,14 @@ public enum Improvements {
             add(TerrainTypes.SNOW);
             add(TerrainTypes.HILLS);
         }
-    }),
-    PASTURE(0, 0, 0, new ArrayList<ResourceTypes>() {
+    },"MIN"),
+    PASTURE(0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.HORSES);
             add(ResourceTypes.CATTLE);
             add(ResourceTypes.SHEEP);
         }
-    }, TechnologyTypes.ANIMAL_HUSBANDARY, new ArrayList<Object>() {
+    }, TechnologyTypes.ANIMAL_HUSBANDRY, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
@@ -73,8 +73,8 @@ public enum Improvements {
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.HILLS);
         }
-    }),
-    PLANTATION(0, 0, 0, new ArrayList<ResourceTypes>() {
+    },"PAS"),
+    PLANTATION(0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.BANANAS);
             add(ResourceTypes.DYES);
@@ -83,7 +83,7 @@ public enum Improvements {
             add(ResourceTypes.COTTON);
             add(ResourceTypes.INCENSE);
         }
-    }, TechnologyTypes.CALENDAR, new ArrayList<Object>() {
+    }, TechnologyTypes.CALENDAR, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
@@ -93,12 +93,12 @@ public enum Improvements {
             add(TerrainFeatureTypes.FLOODPLAINS);
             add(TerrainFeatureTypes.JUNGLE);
         }
-    }),
-    QUARRY(0, 0, 0, new ArrayList<ResourceTypes>() {
+    },"PLA"),
+    QUARRY(0, 0, 0, new ArrayList<>() {
         {
             add(ResourceTypes.MARBLE);
         }
-    }, TechnologyTypes.MASONRY, new ArrayList<Object>() {
+    }, TechnologyTypes.MASONRY, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
@@ -106,16 +106,16 @@ public enum Improvements {
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.HILLS);
         }
-    }),
-    TRADINGPOST(0, 0, 1, null, TechnologyTypes.TRAPPING, new ArrayList<Object>() {
+    },"QUA"),
+    TRADINGPOST(0, 0, 1, null, TechnologyTypes.TRAPPING, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
             add(TerrainTypes.TUNDRA);
         }
-    }),
-    MANUFACTORY(0, 2, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<Object>() {
+    },"TRA"),
+    MANUFACTORY(0, 2, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
@@ -123,23 +123,35 @@ public enum Improvements {
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.SNOW);
         }
-    });
+    },"MAN");
 
-    private int food;
-    private int production;
-    private int gold;
-    private ArrayList<ResourceTypes> improvesResources;
-    private TechnologyTypes requiredTechnology;
-    private ArrayList<Object> canBeBuiltON;
+     int food;
+     int production;
+     int gold;
+     ArrayList<ResourceTypes> improvesResources;
+     TechnologyTypes requiredTechnology;
+     ArrayList<Object> canBeBuiltON;
+     String ShowImprovement;
+
 
     Improvements(int food, int production, int gold, ArrayList<ResourceTypes> improvesResources,
-            TechnologyTypes requiredTechnology, ArrayList<Object> canBeBuiltOn) {
+            TechnologyTypes requiredTechnology, ArrayList<Object> canBeBuiltOn,String ShowImprovement) {
         this.food = food;
         this.production = production;
         this.gold = gold;
         this.improvesResources = improvesResources;
         this.requiredTechnology = requiredTechnology;
         this.canBeBuiltON = canBeBuiltOn;
+        this.ShowImprovement = ShowImprovement;
+    }
+    public String getShowImprovement(){
+        return this.ShowImprovement;
+    }
+    public int getGold(){
+        return this.gold;
+    }
+    public int getFood(){
+        return this.food;
     }
 
 }

@@ -1,16 +1,25 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.Random;
+
+import Model.Resources.ResourceTypes;
+import Model.TerrainFeatures.TerrainFeatureTypes;
+import Model.Terrains.TerrainTypes;
 
 public class Map {
     private int Iteration = 6;
-    private int size = 5;
-    private int ROW = 20;
-    private int COL = 8;
+    private int ROW = 32;
+    private int COL = 16;
+   
+    
 
-    private Terrain[][] Tiles = new Terrain[ROW][COL];
+    private Terrain[][] Terrains = new Terrain[ROW][COL];
     private ArrayList<River> rivers = new ArrayList<River>();
     private String[][] Printmap = new String[ROW][Iteration];
+    
+
+
 
     public int getIteration() {
         return this.Iteration;
@@ -19,14 +28,22 @@ public class Map {
     public void setIteration(int Iteration) {
         this.Iteration = Iteration;
     }
-
-    public int getSize() {
-        return this.size;
+    public void setRiver(ArrayList<River> rivers){
+        this.rivers = rivers;
     }
 
-    public void setSize(int size) {
-        this.size = size;
+    public void setTerrainTest(Terrain terrain,int i,int j){
+        this.Terrains[i][j] = terrain;
+        
     }
+
+    
+
+    public void setTerrains(Terrain terrains[][]){
+      this.Terrains = terrains;
+    }
+
+    
 
     public int getROW() {
         return this.ROW;
@@ -44,155 +61,486 @@ public class Map {
         this.COL = COL;
     }
 
-    public Terrain[][] getTiles() {
-        return this.Tiles;
+    public Terrain[][] getTerrain() {
+        return this.Terrains;
     }
-
-    public void setTiles(Terrain[][] Tiles) {
-        this.Tiles = Tiles;
-    }
-
-    public ArrayList<River> getRivers() {
+    public ArrayList<River> getRiver(){
         return this.rivers;
     }
 
-    public void setRivers(ArrayList<River> rivers) {
-        this.rivers = rivers;
-    }
 
-    public String[][] getPrintmap() {
-        return this.Printmap;
-    }
 
-    public void setPrintmap(String[][] Printmap) {
-        this.Printmap = Printmap;
-    }
 
-    public River hasRiver(Terrain tileFirst, Terrain tileSecond) {
+
+    public River hasRiver(Terrain TerrainFirst, Terrain TerrainSecond) {
         for (River river : this.rivers) {
-            if (river.getFirstTile() == tileFirst && river.getSecondTile() == tileSecond) {
+            if (river.getFirstTerrain() == TerrainFirst && river.getSecondTerrain() == TerrainSecond) {
                 return river;
-            } else if (river.getSecondTile() == tileFirst && river.getFirstTile() == tileSecond) {
+            } else if (river.getSecondTerrain() == TerrainFirst && river.getFirstTerrain() == TerrainSecond) {
+                return river;
+            }
+        }
+        return null;
+    }
+    public River hasRiver(Terrain TerrainFirst) {
+        for (River river : this.rivers) {
+            if (river.getFirstTerrain() == TerrainFirst) {
+                return river;
+            } else if (river.getSecondTerrain() == TerrainFirst) {
                 return river;
             }
         }
         return null;
     }
 
-    public void addSpace(int row, int col, int count) {
-        for (int i = 0; i < count; i++) {
-            Printmap[row][col] += " ";
-        }
+
+    public String[][] printMap(Database database, User user) {
+        initializeMapUser(user);
+        GameMapGenerator newGameMapGenerator = new GameMapGenerator(Terrains, rivers,ROW,COL,Iteration);
+        Printmap = newGameMapGenerator.printMap(database, user);
+        return Printmap;
     }
 
-    public void firstRow(int i, int j, int l, boolean check) {
-        if (check == true) {
-            if (!Tiles[i][l].getType().equals("fog of war")) {
-                Printmap[i][j] += "/";
-                Printmap[i][j] += Tiles[i][l].getTerrainTypes().getColor();
-                for (int count = 0; count < size; count++) {
-                    Printmap[i][j] += " ";
-                }
-                Printmap[i][j] += Color.RESET;
+    public String[][] PrintMapXandY(Database database ,User user,int x,int y){
+        GameMapGenerator newGameMapGenerator = new GameMapGenerator(Terrains, rivers,ROW,COL,Iteration);
+        Printmap = newGameMapGenerator.PrintMapXandY(database, user, x, y);
+        return Printmap;
 
-            }
-            if (!Tiles[i - 1][l + 1].getType().equals("fog of war")) {
-                River river;
-                if ((river = hasRiver(Tiles[i][l], Tiles[i - 1][l + 1])) != null) {
-                    Printmap[i][j] += river.getColor();
-                    Printmap[i][j] += "\\";
-                    Printmap[i][j] += Color.RESET;
-                } else {
-                    Printmap[i][j] += "\\";
-                }
-
-                String AllUnit = "";
-                if (Tiles[i - 1][l + 1].getNonCombatUnit().getUnitType() != null) {
-                    AllUnit += Tiles[i - 1][l + 1].getNonCombatUnit().getUnitType().getShowMap();
-                }
-                AllUnit += " ";
-                if (Tiles[i - 1][l + 1].getCombatUnit().getUnitType() != null) {
-                    AllUnit += Tiles[i - 1][l + 1].getCombatUnit().getUnitType().getShowMap();
-                }
-
-                int HowManySpace = 9 - AllUnit.length();
-                Printmap[i][j] += Tiles[i - 1][l + 1].getTerrainTypes().getColor();
-                for (int count = 0; count < HowManySpace / 2; count++) {
-                    Printmap[i][j] += " ";
-                }
-                int index = AllUnit.indexOf(" ");
-                Printmap[i][j] += Color.BLUE;
-                Printmap[i][j] += AllUnit.substring(0, index);
-                Printmap[i][j] += " ";
-                Printmap[i][j] += Color.MAGENTA;
-                Printmap[i][j] += AllUnit.substring(index + 1);
-                for (int count = 0; count < HowManySpace / 2; count++) {
-                    Printmap[i][j] += " ";
-                }
-                Printmap[i][j] += Color.RESET;
-
-            }
-
-        } else {
-            if (!Tiles[i][l].getType().equals("fog of war")) {
-                Printmap[i][j] += "/";
-                Printmap[i][j] += Tiles[i][l].getTerrainTypes().getColor();
-                for (int count = 0; count < size; count++) {
-                    Printmap[i][j] += " ";
-                }
-                Printmap[i][j] += Color.RESET;
-                Printmap[i][j] += "\\";
-            }
-        }
     }
 
-    public void printMap() {
 
-        for (int i = 0; i < ROW; i++) {
 
-            for (int j = 0; j < Iteration / 2; j++) {
-                addSpace(i, j, Iteration / 2 - 1 - j);
 
-                for (int l = 0; l < COL; l += 2) {
 
-                    switch (j) {
-                        case 0:
-                            if (i > 0) {
-                                firstRow(i, j, l, true);
-                            } else {
-                                firstRow(i, j, l, false);
+
+
+    // set Revealed
+    public void setRevealed(User user,int i,int j){
+
+        int index = -1;
+        for(int count = 0 ; count < Terrains[i][j].getReveals().size();count++){
+            if(Terrains[i][j].getReveals().get(count).getUser() == user){
+               index = count;
+               break;
+            }
+        }
+        if(index != -1){
+            Terrains[i][j].getReveals().remove(index);
+        }
+
+        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), Terrains[i][j].getCombatUnit().clone(), Terrains[i][j].getNonCombatUnit().clone(), Terrains[i][j].getTerrrainImprovement(), Terrains[i][j].getTerrainResource().clone(),Terrains[i][j].getBooleanResource());
+        Terrains[i][j].setReveals(reveal);
+
+    }
+
+
+
+
+    // generate map
+    public void generateMap(){
+        Initializemap();
+        randomTerrainAdd();
+        setRiver();
+        setFeature();
+        setResource();
+        nullImprovementAndCombat();
+    }
+   
+    public void Initializemap(){
+        for(int i = 0; i < ROW;i++){
+            for(int j = 0; j < COL;j++){
+               // Resource resource = new Resource(ResourceTypes.COAL);
+                Terrains[i][j] = new Terrain(i, j, null, TerrainTypes.GRASSLLAND,  new ArrayList<TerrainFeatureTypes>(), null, null, null, null, null);
+                if(i <= 2 || i >= 29 || j <= 1 || j >= 14){
+                    Terrains[i][j].setTerrainTypes(TerrainTypes.OCEAN);
+                }else if(j >= 13){
+                    Terrains[i][j].setTerrainTypes(TerrainTypes.PLAINS);
+                }else if(i <= 4){
+                    Terrains[i][j].setTerrainTypes(TerrainTypes.PLAINS);
+                }else if(i <= 7 && j >= 11){
+                    Terrains[i][j].setTerrainTypes(TerrainTypes.PLAINS);
+                }else if(i >= 25 && j >= 3 && j <= 5){
+                    Terrains[i][j].setTerrainTypes(TerrainTypes.SNOW);
+                }
+            }
+            
+        }
+    }
+    
+    private void randomTerrainAdd(){
+        Random random = new Random();
+        for(int count = 0;count < 200;count++){
+            int randNum = Math.abs(random.nextInt()) % 4;
+            int i = Math.abs(random.nextInt()) % 25 + 3;
+            int j = Math.abs(random.nextInt()) % 11 + 2;
+            switch(randNum){
+                case 0:
+                Terrains[i][j].setTerrainTypes(TerrainTypes.DESERT);
+                break;
+                case 1:
+                Terrains[i][j].setTerrainTypes(TerrainTypes.HILLS);
+                break;
+                case 2:
+                Terrains[i][j].setTerrainTypes(TerrainTypes.MOUNTAIN);
+                break;
+                case 3:
+                Terrains[i][j].setTerrainTypes(TerrainTypes.PLAINS);
+                break;
+            }
+        }
+        Terrains[0][Math.abs(random.nextInt() % COL)].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[1][Math.abs(random.nextInt() % COL)].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[30][Math.abs(random.nextInt() % COL)].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[31][Math.abs(random.nextInt() % COL)].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[Math.abs(random.nextInt() % ROW)][0].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[Math.abs(random.nextInt() % ROW)][1].setTerrainTypes(TerrainTypes.TUNDRA);
+        Terrains[Math.abs(random.nextInt() % ROW)][14].setTerrainTypes(TerrainTypes.TUNDRA);;
+        Terrains[Math.abs(random.nextInt() % ROW)][15].setTerrainTypes(TerrainTypes.TUNDRA);;
+    }
+
+    private  boolean isNeighbor(int firstI, int firstJ, int secondI, int secondJ) {
+        if (firstI == secondI && firstJ == secondJ) return false;
+        if (Math.abs(firstI - secondI) >= 2 || Math.abs(firstJ - secondJ) >= 2) return false;
+        if (firstJ == secondJ) {
+            if (Math.abs(firstI - secondI) <= 1) return true;
+            else return false;
+        }
+        if (firstI == secondI) {
+            if (Math.abs(firstJ - secondJ) <= 1) return true;
+            else return false;
+        }
+        if (firstJ % 2 == 1) {
+            if (secondI == firstI - 1) return true;
+            else return false;
+        }
+        if (firstJ % 2 == 0) {
+            if (secondI == firstI + 1) return true;
+            else return false;
+        }
+        return false;
+    }
+
+    private void setRiver(){
+        Random random = new Random();
+         for(int i = 0 ; i < ROW;i++){
+            for(int j = 0 ; j < COL;j++){
+                for(int iCordinate = 0;iCordinate < ROW;iCordinate++){
+                      for(int jCordinate = 0; jCordinate < COL;jCordinate++){
+                            if(isNeighbor(i, j, iCordinate, jCordinate)){
+                                if(Terrains[i][j].getTerrainTypes() != TerrainTypes.DESERT && Terrains[iCordinate][jCordinate].getTerrainTypes() != TerrainTypes.DESERT){
+                                    if (random.nextInt() % 3 == 0 && Terrains[i][j].getTerrainTypes() != TerrainTypes.OCEAN && Terrains[iCordinate][jCordinate].getTerrainTypes() != TerrainTypes.OCEAN && hasRiver(Terrains[i][j],Terrains[iCordinate][jCordinate]) == null) {
+                                        River river = new River(Terrains[i][j],Terrains[iCordinate][jCordinate]);
+                                        rivers.add(river);
+                                    }
+                                }
                             }
-                            break;
-                        case 1:
-
-                            break;
-                        case 2:
-
-                            break;
-
-                    }
-
-                }
-
-            }
-            for (int j = Iteration / 2; j < Iteration; j++) {
-                addSpace(i, j, j - Iteration / 2);
-                switch (j) {
-
-                    case 3:
-
-                        break;
-                    case 4:
-
-                        break;
-                    case 5:
-
-                        break;
+                      }
                 }
             }
+         }
+    }
 
+    private void setFeature(){
+        Random random = new Random();
+       
+        for(int i = 0 ; i< ROW;i++){
+            for(int j = 0; j < COL;j++){
+                ArrayList <TerrainFeatureTypes> possibleTerrainFeature = Terrains[i][j].getTerrainTypes().getPossibleFeatures();
+                if(possibleTerrainFeature != null) 
+                Terrains[i][j].setTerrainFeatureTypes(possibleTerrainFeature.get(Math.abs(random.nextInt()) % possibleTerrainFeature.size()));
+            }
         }
 
     }
 
+    private ArrayList<Resource> findAllPossiblResource(Terrain terrain){
+        ArrayList<Resource> possibleResource = new ArrayList<Resource>();
+        possibleResource.clear();
+        ResourceTypes[] AllpossibleResource = {ResourceTypes.BANANAS,
+            ResourceTypes.CATTLE,ResourceTypes.DEER,ResourceTypes.SHEEP,ResourceTypes.WHEAT,ResourceTypes.COAL
+            ,ResourceTypes.HORSES,ResourceTypes.IRON,ResourceTypes.COTTON,ResourceTypes.DYES,ResourceTypes.FURS,
+            ResourceTypes.GEMS,ResourceTypes.GOLD,ResourceTypes.INCENSE,ResourceTypes.IVORY,ResourceTypes.MARBLE,
+            ResourceTypes.SILK,ResourceTypes.SILVER,ResourceTypes.SUGAR};
+      
+        for(int i = 0 ; i < AllpossibleResource.length;i++){
+          
+            if( AllpossibleResource[i].getObject() != null || AllpossibleResource[i].getObject().indexOf(terrain.getTerrainTypes()) != -1){
+                Resource resource = new Resource(AllpossibleResource[i]);
+                possibleResource.add(resource);
+            }
+            for(int j = 0; j < terrain.getTerrainFeatureTypes().size();j++){
+
+                if( AllpossibleResource[i].getObject() != null || AllpossibleResource[i].getObject().indexOf(terrain.getTerrainFeatureTypes().get(j)) != -1){
+                    Resource resource = new Resource(AllpossibleResource[i]);
+                    possibleResource.add(resource);
+                }
+            }
+        }
+        return possibleResource;
+    }
+
+    private void setResource(){
+        Random random = new Random();
+        for(int i = 0 ; i < ROW;i++){
+            for(int j = 0; j < COL;j++){
+                 ArrayList<Resource> possibleResource = findAllPossiblResource(Terrains[i][j]);
+                 if (possibleResource.size() > 0 && Math.abs(random.nextInt()) % 2 == 0)
+                    Terrains[i][j].setTerrainResource(possibleResource.get(Math.abs(random.nextInt()) % possibleResource.size()));
+            }
+        }
+    }
+
+    private void nullImprovementAndCombat(){
+        for(int i = 0 ; i < ROW;i++){
+            for(int j = 0; j < COL;j++){
+              Terrains[i][j].setTerrrainImprovement(null);
+              Terrains[i][j].setCombatUnit(null);
+              Terrains[i][j].setNonCombatUnit(null);
+            }
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+    // initialize Map Before Print For Speciall User
+    private boolean isBlock(int i, int j) {
+        if (i < 0 || i >= ROW) {
+            return false;
+        }
+        if (j < 0 || j >= COL) {
+            return false;
+        }
+        if (Terrains[i][j].getTerrainTypes() == TerrainTypes.MOUNTAIN) {
+            return false;
+        } else if (Terrains[i][j].getTerrainTypes() == TerrainTypes.HILLS) {
+            return false;
+        } else if (Terrains[i][j].getTerrainFeatureTypes().indexOf(TerrainFeatureTypes.JUNGLE) != -1) {
+            return false;
+        }
+        return true;
+    }
+
+    private void setVisibleEven(int i, int j) {
+        if (i > 0) {
+            Terrains[i - 1][j].setType("visible");
+        }
+        if (i > 0 && j > 0) {
+            Terrains[i - 1][j - 1].setType("visible");
+        }
+        if (j > 0) {
+            Terrains[i][j - 1].setType("visible");
+        }
+        if (i < ROW - 1) {
+            Terrains[i + 1][j].setType("visible");
+        }
+        if (j < COL - 1) {
+            Terrains[i][j + 1].setType("visible");
+        }
+        if (i > 0 && j < COL - 1) {
+            Terrains[i - 1][j + 1].setType("visible");
+        }
+    }
+
+    private void setVisibleOdd(int i, int j) {
+        if (i > 0) {
+            Terrains[i - 1][j].setType("visible");
+        }
+        if (j > 0) {
+            Terrains[i][j - 1].setType("visible");
+        }
+        if (i < ROW - 1 && j > 0) {
+            Terrains[i + 1][j - 1].setType("visible");
+        }
+        if (i < ROW - 1) {
+            Terrains[i + 1][j].setType("visible");
+        }
+        if (i < ROW - 1 && j < COL - 1) {
+            Terrains[i + 1][j + 1].setType("visible");
+        }
+        if (j < COL - 1) {
+            Terrains[i][j + 1].setType("visible");
+        }
+
+    }
+
+    private void makeVisibleNearEven(int i, int j) {
+        if (isBlock(i - 1, j)) {
+            if (j % 2 == 0) {
+                setVisibleEven(i - 1, j);
+            } else {
+                setVisibleOdd(i - 1, j);
+            }
+        }
+        if (isBlock(i - 1, j - 1)) {
+            if ((j - 1) % 2 == 0) {
+
+                setVisibleEven(i - 1, j - 1);
+            } else {
+                setVisibleOdd(i - 1, j - 1);
+            }
+        }
+        if (isBlock(i, j - 1)) {
+            if ((j - 1) % 2 == 0) {
+                setVisibleEven(i, j - 1);
+            } else {
+
+                setVisibleOdd(i, j - 1);
+            }
+
+        }
+        if (isBlock(i + 1, j)) {
+            if (j % 2 == 0) {
+                setVisibleEven(i + 1, j);
+            } else {
+                setVisibleOdd(i + 1, j);
+            }
+        }
+        if (isBlock(i, j + 1)) {
+            if ((j + 1) % 2 == 0) {
+
+                setVisibleEven(i, j + 1);
+            } else {
+                setVisibleOdd(i, j + 1);
+            }
+        }
+        if (isBlock(i - 1, j + 1)) {
+            if ((j + 1) % 2 == 0) {
+
+                setVisibleEven(i - 1, j + 1);
+            } else {
+                setVisibleOdd(i - 1, j + 1);
+            }
+        }
+
+    }
+
+    private void makeVisibleNearOdd(int i, int j) {
+        if (isBlock(i - 1, j)) {
+            if (j % 2 == 0) {
+                setVisibleEven(i - 1, j);
+            } else {
+                setVisibleOdd(i - 1, j);
+            }
+        }
+        if (isBlock(i + 1, j - 1)) {
+            if ((j - 1) % 2 == 0) {
+
+                setVisibleEven(i + 1, j - 1);
+            } else {
+                setVisibleOdd(i + 1, j - 1);
+            }
+        }
+        if (isBlock(i, j - 1)) {
+            if ((j - 1) % 2 == 0) {
+                setVisibleEven(i, j - 1);
+            } else {
+
+                setVisibleOdd(i, j - 1);
+            }
+
+        }
+
+        if (isBlock(i + 1, j)) {
+            if (j % 2 == 0) {
+                setVisibleEven(i + 1, j);
+            } else {
+                setVisibleOdd(i + 1, j);
+            }
+        }
+        if (isBlock(i, j + 1)) {
+            if ((j + 1) % 2 == 0) {
+
+                setVisibleEven(i, j + 1);
+            } else {
+                setVisibleOdd(i, j + 1);
+            }
+        }
+        if (isBlock(i + 1, j + 1)) {
+            if ((j + 1) % 2 == 0) {
+
+                setVisibleEven(i + 1, j + 1);
+            } else {
+                setVisibleOdd(i + 1, j + 1);
+            }
+        }
+
+    }
+
+    public void initializeMapUser(User user) {
+       
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COL; j++) {
+                Terrains[i][j].setType("fog of war");
+            }
+        }
+
+        ArrayList<Terrain> Tiles = user.getCivilization().getTerrains();
+        for (Terrain tile : Tiles) {
+            int i = tile.getX();
+            int j = tile.getY();
+            Terrains[i][j].setType("visible");
+            if (isBlock(i, j)) {
+                if (j % 2 == 0) {
+                    setVisibleEven(i, j);
+                    makeVisibleNearEven(i, j);
+                } else {
+                    setVisibleOdd(i, j);
+                    makeVisibleNearOdd(i, j);
+                }
+
+            }
+        }
+
+        ArrayList<Terrain> visibleTerrains = new ArrayList<>();
+        for (int i = 0; i < ROW; i++) {
+            for (int j = 0; j < COL; j++) {
+                if (Terrains[i][j].getType().equals("visible")) {
+                    visibleTerrains.add(Terrains[i][j]);
+                }
+            }
+        }
+
+        for (Terrain tile : user.getCivilization().getVisibleTerrains()) {
+            if (!tile.getType().equals("visible")) {
+                user.getCivilization().getRevealedTerrains().add(tile);
+            }
+        }
+        
+        for (Terrain tile : user.getCivilization().getRevealedTerrains()) {
+            if (tile.getType().equals("visible")) {
+                user.getCivilization().getRevealedTerrains().remove(tile);
+            }
+        }
+
+        user.getCivilization().setVisibleTerrains(visibleTerrains);
+
+        for(Terrain terrain : user.getCivilization().getRevealedTerrains())
+        {
+            terrain.setType("revealed");
+        }
+
+        for(Terrain terrain : user.getCivilization().getRevealedTerrains())
+        {
+            setRevealed(user, terrain.getX(), terrain.getY());
+        }
+        for(int i = 0; i < ROW;i++){
+            for(int j = 0; j < COL;j++){
+                if(Terrains[i][j].getType().equals("visible")){
+                    if(Terrains[i][j].getTerrrainImprovement() == Terrains[i][j].getTerrainResource().getResourceType().getRequiredImprovements()){
+                        Terrains[i][j].setBooleanResource(true);
+                    }else{
+                        Terrains[i][j].setBooleanResource(false);
+                    }
+                }
+            }
+        }
+    }
 }

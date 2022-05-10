@@ -2,6 +2,7 @@ package Model.City;
 
 import Model.Civilization;
 import Model.Terrain;
+import Model.Buildings.BuildingTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
 
@@ -31,13 +32,15 @@ public class City{
     private int turnsRemainingUntilPopulationIncrease;
     private int foodStorage;
     private boolean isUnderAttack;
+    private ArrayList<BuildingTypes> buildings;
+    private ArrayList<Terrain> mainTerrains;
 
 
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
 
 
-    public City(Civilization founder, Civilization owner, Terrain centralTerrain, int HP, String type, int combatStrength, int rangedCombatStrength ) {
+    public City(Civilization founder, Civilization owner, Terrain centralTerrain, int HP, String type, int combatStrength, int rangedCombatStrength, ArrayList<BuildingTypes> buildings ) {
         this.founder = founder;
         this.owner = owner;
         this.isPuppet = false;
@@ -55,7 +58,8 @@ public class City{
         this.food = 0;
         this.science = 0;
         this.foodStorage = 0;
-
+        this.buildings = buildings;
+        this.mainTerrains.add(centralTerrain);
 
     }
 
@@ -68,7 +72,14 @@ public class City{
     {
         return food;
     }
+    public void setBuildings(ArrayList<BuildingTypes> buildings){
+        this.buildings = buildings;
+    }
 
+
+    public ArrayList<BuildingTypes> getBuildings(){
+        return this.buildings;
+    }
     public void setFood(int food)
     {
         this.food = food;
@@ -313,5 +324,15 @@ public class City{
     public void removeCitiZen ( int index)
     {
         this.citizens.remove(index);
+    }
+
+    public void setMainTerrains(ArrayList<Terrain> mainTerrains)
+    {
+        this.mainTerrains = mainTerrains;
+    }
+
+    public ArrayList<Terrain> getMainTerrains()
+    {
+        return this.mainTerrains;
     }
 }

@@ -7,9 +7,19 @@ public class Resource {
     private int food;
     private int gold;
     private int production;
-    private String name;
     private ResourceTypes resourceType;
+    private String name;
 
+    public Resource(ResourceTypes resourceType){
+        this.food = resourceType.getFood();
+        this.gold = resourceType.getGold();
+        this.production = resourceType.getProduction();
+        this.resourceType = resourceType;
+    }
+
+    public Resource clone(){
+        return new Resource(this.getResourceType());
+    }
     public int getFood() {
         return this.food;
     }

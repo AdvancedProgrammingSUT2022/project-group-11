@@ -12,54 +12,54 @@ public enum ResourceTypes {
         {
             add(TerrainFeatureTypes.JUNGLE);
         }
-    }, Improvements.PASTURE, null),
+    }, Improvements.PASTURE, null,"BANANAS"),
 
-    CATTLE(1, 0, 0, new ArrayList<Object>() {
+    CATTLE(1, 0, 0, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
         }
-    }, Improvements.PASTURE, null),
+    }, Improvements.PASTURE, null,"CATTLE"),
 
-    DEER(1, 0, 0, new ArrayList<Object>() {
+    DEER(1, 0, 0, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.HILLS);
         }
-    }, Improvements.CAMP, null),
+    }, Improvements.CAMP, null,"DEER"),
 
-    SHEEP(1, 0, 0, new ArrayList<Object>() {
+    SHEEP(2, 0, 0, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
             add(TerrainTypes.HILLS);
         }
-    }, Improvements.PASTURE, null),
+    }, Improvements.PASTURE, null,"SHEEP"),
 
-    WHEAT(1, 0, 0, new ArrayList<Object>() {
+    WHEAT(1, 0, 0, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
         }
-    }, Improvements.FARM, null),
+    }, Improvements.FARM, null,"WHEAT"),
 
-    COAL(0, 1, 0, new ArrayList<Object>() {
+    COAL(0, 1, 0, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.HILLS);
         }
-    }, Improvements.MINE, TechnologyTypes.SCIENTIFIC_THEORY),
+    }, Improvements.MINE, TechnologyTypes.SCIENTIFIC_THEORY,"COAL"),
 
-    HORSES(0, 1, 0, new ArrayList<Object>() {
+    HORSES(0, 1, 0, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.TUNDRA);
         }
-    }, Improvements.PASTURE, TechnologyTypes.ANIMAL_HUSBANDARY),
+    }, Improvements.PASTURE, TechnologyTypes.ANIMAL_HUSBANDRY,"HORSES"),
 
-    IRON(0, 1, 0, new ArrayList<Object>() {
+    IRON(0, 1, 0, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
@@ -68,108 +68,128 @@ public enum ResourceTypes {
             add(TerrainTypes.SNOW);
             add(TerrainTypes.HILLS);
         }
-    }, Improvements.MINE, TechnologyTypes.IRON_WORKING),
+    }, Improvements.MINE, TechnologyTypes.IRON_WORKING,"IRON"),
 
-    COTTON(0, 0, 2, new ArrayList<Object>() {
+    COTTON(0, 0, 2, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
         }
-    }, Improvements.PLANTATION, null),
+    }, Improvements.PLANTATION, null,"COTTON"),
 
-    DYES(0, 0, 2, new ArrayList<Object>() {
+    DYES(0, 0, 2, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.JUNGLE);
             add(TerrainFeatureTypes.FOREST);
         }
-    }, Improvements.PLANTATION, null),
+    }, Improvements.PLANTATION, null,"DYES"),
 
-    FURS(0, 0, 2, new ArrayList<Object>() {
+    FURS(0, 0, 2, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
             add(TerrainTypes.TUNDRA);
         }
-    }, Improvements.CAMP, null),
+    }, Improvements.CAMP, null,"FURS"),
 
-    GEMS(0, 0, 3, new ArrayList<Object>() {
+    GEMS(0, 0, 3, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.JUNGLE);
+            add(TerrainTypes.TUNDRA);
+            add(TerrainTypes.GRASSLLAND);
+            add(TerrainTypes.PLAINS);
+            add(TerrainTypes.DESERT);
+            add(TerrainTypes.HILLS);
+        }
+    }, Improvements.MINE, null,"GEMS"),
+
+    GOLD(0, 0, 2, new ArrayList<>() {
+        {
+            add(TerrainTypes.GRASSLLAND);
+            add(TerrainTypes.PLAINS);
+            add(TerrainTypes.DESERT);
+            add(TerrainTypes.HILLS);
+        }
+    }, Improvements.MINE, null,"GOLD"),
+
+    INCENSE(0, 0, 2, new ArrayList<>() {
+        {
+            add(TerrainTypes.PLAINS);
+            add(TerrainTypes.DESERT);
+        }
+    }, Improvements.PLANTATION, null,"INCENSE"),
+
+    IVORY(0, 0, 2, new ArrayList<>() {
+        {
+            add(TerrainTypes.PLAINS);
+        }
+    }, Improvements.CAMP, null,"IVORY"),
+
+    MARBLE(0, 0, 2, new ArrayList<>() {
+        {
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.HILLS);
         }
-    }, Improvements.MINE, null),
+    }, Improvements.QUARRY, null,"MARBLE"),
 
-    GOLD(0, 0, 2, new ArrayList<Object>() {
-        {
-            add(TerrainTypes.GRASSLLAND);
-            add(TerrainTypes.PLAINS);
-            add(TerrainTypes.DESERT);
-            add(TerrainTypes.HILLS);
-        }
-    }, Improvements.MINE, null),
-
-    INCENSE(0, 0, 2, new ArrayList<Object>() {
-        {
-            add(TerrainTypes.PLAINS);
-            add(TerrainTypes.DESERT);
-        }
-    }, Improvements.PLANTATION, null),
-
-    IVORY(0, 0, 2, new ArrayList<Object>() {
-        {
-            add(TerrainTypes.PLAINS);
-        }
-    }, Improvements.CAMP, null),
-
-    MARBLE(0, 0, 2, new ArrayList<Object>() {
-        {
-            add(TerrainTypes.GRASSLLAND);
-            add(TerrainTypes.PLAINS);
-            add(TerrainTypes.DESERT);
-            add(TerrainTypes.TUNDRA);
-            add(TerrainTypes.HILLS);
-        }
-    }, Improvements.QUARRY, null),
-
-    SILK(0, 0, 2, new ArrayList<Object>() {
+    SILK(0, 0, 2, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
         }
-    }, Improvements.PLANTATION, null),
+    }, Improvements.PLANTATION, null,"SILK"),
 
-    SILVER(0, 0, 2, new ArrayList<Object>() {
+    SILVER(0, 0, 2, new ArrayList<>() {
         {
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.DESERT);
             add(TerrainTypes.HILLS);
         }
-    }, Improvements.MINE, null),
+    }, Improvements.MINE, null,"SILVER"),
 
-    SUGAR(0, 0, 2, new ArrayList<Object>() {
+    SUGAR(0, 0, 2, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FLOODPLAINS);
             add(TerrainFeatureTypes.MARSH);
         }
-    }, Improvements.PLANTATION, null);
+    }, Improvements.PLANTATION, null,"SUGAR");
 
-    private int food;
-    private int production;
-    private int gold;
-    private ArrayList<Object> canBeFoundOn;
-    private Improvements requiredImprovement;
-    private TechnologyTypes requiredTechnology;
+     int food;
+     int production;
+     int gold;
+     ArrayList<Object> canBeFoundOn;
+     Improvements requiredImprovement;
+     TechnologyTypes requiredTechnology;
+     String ShowResourceMap;
 
     ResourceTypes(int food, int production, int gold, ArrayList<Object> canBeFoundOn, Improvements requiredImprovement,
-            TechnologyTypes requiredTechnology) {
+            TechnologyTypes requiredTechnology,String ShowResourceMap) {
         this.food = food;
         this.production = production;
         this.gold = gold;
         this.canBeFoundOn = canBeFoundOn;
         this.requiredImprovement = requiredImprovement;
         this.requiredTechnology = requiredTechnology;
+        this.ShowResourceMap = ShowResourceMap;
+    }
+    public String getShowResourceMap(){
+        return this.ShowResourceMap;
+    }
+    public  ArrayList<Object> getObject(){
+        return this.canBeFoundOn;
+    }
+    public int getFood(){
+        return this.food;
+    }
+    public int getGold(){
+        return this.gold;
+    }
+    public int getProduction(){
+        return this.production;
+    }
+    public Improvements getRequiredImprovements(){
+        return this.requiredImprovement;
     }
 }

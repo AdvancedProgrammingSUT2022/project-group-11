@@ -1,25 +1,43 @@
 package Model.Units;
 
-import Model.Terrain;
-
 import java.util.ArrayList;
+
+import Model.Terrain;
 
 public class Unit {
     private int x,y;
     private int number;
     private int militaryPower; 
     private int life; 
+
     private int speed; 
     private boolean isAsleep;
     private boolean isFinished;
-    private ArrayList<Terrain> nextTiles;
+    private ArrayList<Terrain> nextTerrain;
+    private UnitTypes unitType;
+    private boolean isSelected;
 
-    public ArrayList<Terrain> getNextTiles() {
-        return this.nextTiles;
+
+    public Unit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected) {
+        this.x = x;
+        this.y = y;
+        this.number = number;
+        this.militaryPower = militaryPower;
+        this.life = life;
+        this.speed = speed;
+        this.isAsleep = isAsleep;
+        this.isFinished = isFinished;
+        this.unitType = unitType;
+        this.isSelected = isSelected;
     }
 
-    public void setNextTiles(ArrayList<Terrain> nextTiles) {
-        this.nextTiles = nextTiles;
+
+    public ArrayList<Terrain> getNextTerrain() {
+        return this.nextTerrain;
+    }
+
+    public void setNextTerrain(ArrayList<Terrain> nextTiles) {
+        this.nextTerrain = nextTiles;
     }
 
 
@@ -47,6 +65,10 @@ public class Unit {
 
     }
     public void fortify(){
+
+    }
+    public void sleep()
+    {
 
     }
     public void fortifyUntilHeal(){
@@ -78,27 +100,6 @@ public class Unit {
         
     }
 
-    private UnitTypes unitType;
-    private boolean isSelected;
-
-
-
-
-    public Unit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected) {
-        this.x = x;
-        this.y = y;
-        this.number = number;
-        this.militaryPower = militaryPower;
-        this.life = life;
-        this.speed = speed;
-        this.isAsleep = isAsleep;
-        this.isFinished = isFinished;
-        this.unitType = unitType;
-        this.isSelected = isSelected;
-    }
-
-
-         
 
     public boolean isIsSelected() {
         return this.isSelected;
@@ -159,6 +160,7 @@ public class Unit {
         this.y = y;
     }
 
+
     public int getLife() {
         return this.life;
     }
@@ -189,6 +191,20 @@ public class Unit {
 
    
 
+    @Override
+    public String toString() {
+        return "{" +
+            " x='" + getX() + "'" +
+            ", y='" + getY() + "'" +
+            ", number='" + getNumber() + "'" +
+            ", militaryPower='" + getMilitaryPower() + "'" +
+            ", life='" + getLife() + "'" +
+            ", speed='" + getSpeed() + "'" +
+            ", isAsleep='" + isIsAsleep() + "'" +
+            ", unitType='" + getUnitType() + "'" +
+            "}";
+    }
 
+    
 
 }
