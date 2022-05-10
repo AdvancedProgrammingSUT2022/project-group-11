@@ -302,7 +302,7 @@ public class Main {
         if ((matcher = GameEnums.getMatcher(input, GameEnums.COMBAT_UNIT_CHEAT_MOVE)) != null) {
             gamemenu.oneUnitHasBeenSelected(input, matcher, user);
         }
-        input = "NONCOMBAT UNIT CHEAT MOVE 5 6";
+        input = "NONCOMBAT UNIT CHEAT MOVE 5 3";
         if ((matcher = GameEnums.getMatcher(input, GameEnums.NON_COMBAT_UNIT_CHEAT_MOVE)) != null) {
             gamemenu.oneUnitHasBeenSelected(input, matcher, user);
         }
@@ -346,11 +346,20 @@ public class Main {
         if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
             gamemenu.oneUnitHasBeenSelected(input, matcher, user);
         }
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.IMPROVEMENT_REPAIR)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+
+        }
 
         input = "UNIT REMOVE";
         if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
             gamemenu.oneUnitHasBeenSelected(input, matcher, user);
         }
+
+        input = "INVALID";
+
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+
 
 
     }
@@ -390,6 +399,130 @@ public class Main {
         if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
             gamemenu.selectUnit(user, matcher);
         }
+
+
+    }
+
+
+    @Test
+    public void runCommands() {
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
+        }
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<User> allUser = new ArrayList<>();
+        allUser.add(user);
+        GameMenu gamemenu = new GameMenu(databaseController, allUser);
+        Matcher matcher;
+        String input = "INFO UNITS";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "INFO RESEARCH";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "INFO invalid";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "SELECT TECHNOLOGY AGRICULTURE";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_TECHNOLOGY)) != null) {
+
+            gamemenu.runCommands(user,input);
+        }
+        input = "INCREASE -TURN 10";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_TURN)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "INCREASE -GOLD 10";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_GOLD)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "INCREASE -HAPPINESS 10";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_HAPPINESS)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "INCREASE -SCIENCE 10";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_SCIENCE)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "BUY TECHNOLOGY AGRICULTURE";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "BUY CHEAT TILE 5 5";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_CHEAT_TILE)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "SET CHEAT UNIT WARRIOR";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_UNIT)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "SET CHEAT IMPROVEMENT ROAD 5 4";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_IMPROVEMENT)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "SET CHEAT RESOURCE BANANAS";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "SET CHEAT TERRAIN TYPE DESERT";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_TERRAIN_TYPE)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "SET CHEAT TERRAIN FEATURE TYPE ICE";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_TERRAIN_FEATURE_TYPE)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "UNIT CHEAT REMOVE 5 8";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.DELETE_CHEAT_IMPROVEMENT)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+
+        input = "UNIT CHEAT REPAIR 5 6";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.REPAIR_CHEAT_IMPROVEMENT)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "SELECT UNIT COMBAT 5 6";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "SELECT CITY ABA";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_NAME)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "SELECT CITY 4 5";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "UNIT BUILD ROAD";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "UNIT REMOVE FOREST";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
+            gamemenu.runCommands(user,input);
+        }
+        input = "SHOW MAP";
+        gamemenu.runCommands(user,input);
+
+        input = "INVALID";
+
+        gamemenu.runCommands(user,input);
 
 
     }

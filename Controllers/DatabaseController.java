@@ -756,7 +756,12 @@ public class DatabaseController {
     }
 
     public String researchInfo(User user) {
-        return getUnderResearchTechnology(user).toString();
+        if(getUnderResearchTechnology(user)!=null)
+        {
+            return getUnderResearchTechnology(user).toString();
+        }
+        return "there is no under research technology";
+
     }
 
     public ArrayList<Terrain> getNeighborTerrainsOfOneTerrain(Terrain terrain, Map map) {
