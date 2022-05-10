@@ -6323,8 +6323,252 @@ public class MapGeneratorTest {
 
     @Test
     public void IncreasingTurnInWorkersActionTest(){
-        
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
+        }
+        terrains[3][6].setTerrainImprovement(null);
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.increasingTurnInWorkersActions();
     }
+
+    @Test
+    public void IncreasingTurnInWorkersActionTest1(){
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+               improvement.setBeingRepaired(true);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
+        }
+       
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.increasingTurnInWorkersActions();
+    }
+
+    @Test
+    public void IncreasingTurnInWorkersActionTest2(){
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+               improvement.setBeingRepaired(true);
+               improvement.setPassedTurns(-5);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
+        }
+       
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.increasingTurnInWorkersActions();
+    }
+
+
+
+    @Test
+    public void IncreasingTurnInWorkersActionTest3(){
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+               improvement.setBeingRepaired(false);
+               improvement.setHasToBeDeleted(true);
+               improvement.setPassedTurns(-5);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
+        }
+       
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.increasingTurnInWorkersActions();
+    }
+
+
+    @Test
+    public void IncreasingTurnInWorkersActionTest4(){
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+               improvement.setBeingRepaired(false);
+               improvement.setHasToBeDeleted(true);
+               improvement.setPassedTurns(10000);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
+        }
+       
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.increasingTurnInWorkersActions();
+    }
+
+
+    @Test
+    public void IncreasingTurnInWorkersActionTest5(){
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+               improvement.setBeingRepaired(false);
+               improvement.setHasToBeDeleted(false);
+               improvement.setPillaged(true);
+               improvement.setAvailable(true);
+               improvement.setPassedTurns(10000);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
+        }
+       
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.increasingTurnInWorkersActions();
+    }
+
+    @Test
+    public void IncreasingTurnInWorkersActionTest6(){
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+               improvement.setBeingRepaired(false);
+               improvement.setHasToBeDeleted(false);
+               improvement.setPillaged(false);
+               improvement.setAvailable(false);
+               improvement.setPassedTurns(-5);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
+        }
+       
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.increasingTurnInWorkersActions();
+    }
+
+
+    @Test
+    public void IncreasingTurnInWorkersActionTest7(){
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                
+             
+              
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, null, null, new ArrayList<Revealed>());
+                terrains[i][j].setTerrainFeatureTypes(TerrainFeatureTypes.FOREST);
+                terrains[i][j].setHasToBeDeleted(true);
+                terrains[i][j].setPassedTurns(5);
+
+            }
+        }
+       
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.increasingTurnInWorkersActions();
+    }
+
+
+    @Test
+    public void IncreasingTurnInWorkersActionTest8(){
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                
+             
+              
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, null, null, new ArrayList<Revealed>());
+                terrains[i][j].setTerrainFeatureTypes(TerrainFeatureTypes.FOREST);
+                terrains[i][j].setHasToBeDeleted(true);
+                terrains[i][j].setPassedTurns(10);
+
+            }
+        }
+       
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        databaseController.increasingTurnInWorkersActions();
+    }
+
 
  
 }
