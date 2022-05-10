@@ -893,7 +893,7 @@ public class DatabaseController {
 
 
                 } else if (hasToBeDeleted.equals("JUNGLE") || hasToBeDeleted.equals("FOREST") || hasToBeDeleted.equals("MARSH")) {
-                    if (settlersTerrain.getTerrainFeatureTypes().get(0) == null) {
+                    if (settlersTerrain.getTerrainFeatureTypes() == null ||settlersTerrain.getTerrainFeatureTypes().size() == 0 ) {
                         return "you have no Jungle or Forest or Marsh in this tile";
                     } else if (!settlersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.FOREST) && !settlersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.JUNGLE) && !settlersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.MARSH)) {
                         return "you have no Jungle or Forest or Marsh in this tile";
