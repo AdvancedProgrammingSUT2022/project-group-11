@@ -740,7 +740,7 @@ public class DatabaseController {
 
     public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType().equals(technologyType)) {
+            if (technology.getTechnologyType() == (technologyType)) {
                 return true;
             }
         }
@@ -749,7 +749,7 @@ public class DatabaseController {
 
     public Technology getTechnologyByTechnologyType(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType().equals(technologyType)) {
+            if (technology.getTechnologyType() == (technologyType)) {
                 return technology;
             }
         }
@@ -839,7 +839,7 @@ public class DatabaseController {
         if (nonCombatUnit != null) {
             if (nonCombatUnit.getUnitType().equals(UnitTypes.SETTLER)) {
                 Terrain settlersTerrain = getTerrainByCoordinates(nonCombatUnit.getX(), nonCombatUnit.getY());
-                if (buildingAnImprovementInATerrain(user, improvementType, settlersTerrain).equals("improvement was built successfully")) {
+                if (buildingAnImprovementInATerrain(user, improvementType, settlersTerrain).equals("improvement was be built successfully")) {
                     nonCombatUnit.setIsSelected(false);
                     nonCombatUnit.setIsFinished(true);
                 }
@@ -871,7 +871,7 @@ public class DatabaseController {
             }
 
         }
-        return "improvement will be built successfully";
+        return "improvement was be built successfully";
     }
 
     public String deleteFeatures(String hasToBeDeleted) {

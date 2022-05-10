@@ -4686,18 +4686,21 @@ public class MapGeneratorTest {
     @Test
     public void buildingImprovementTest5(){
         Civilization civil = new Civilization(0, 3, "A");
+        civil.setTechnologies(new ArrayList<>());
         Map map = new Map();
         terrains = new Terrain[map.getROW()][map.getCOL()];
         for (int i = 0; i < map.getROW(); i++) {
             for (int j = 0; j < map.getCOL(); j++) {
+               
                 NonCombatUnit combatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
-                        UnitTypes.ARCHER, true);
-                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
-                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
-                        null, null,
-                        new ArrayList<Revealed>());
+                UnitTypes.ARCHER, true);
+        Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+        terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                null, null,
+                new ArrayList<Revealed>());
             }
         }
+        map.setTerrains(terrains);
         NonCombatUnit combatunit = new NonCombatUnit(3, 7, 0, 0, 0, 0, false, false,
         UnitTypes.SETTLER, true);
         terrains[3][7].setNonCombatUnit(combatunit);
@@ -4707,18 +4710,60 @@ public class MapGeneratorTest {
         map.setTerrains(terrains);
         User user = new User(null, null, null, civil);
         ArrayList<Technology> tech = new ArrayList<>();
-        Technology techhh = new Technology(false, 3,ImprovementTypes.CAMP.getRequiredTechnology() , true);
+        Technology techhh = new Technology(false, 3,ImprovementTypes.LUMBERMILL.getRequiredTechnology() , true);
         tech.add(techhh);
         civil.setTechnologies(tech);
         Database database = new Database();
         database.addUser(user);
         database.setMap(map);
         DatabaseController databaseController = new DatabaseController(database);
-        databaseController.buildingAnImprovement(user, ImprovementTypes.CAMP);
-        
+       databaseController.buildingAnImprovement(user, ImprovementTypes.LUMBERMILL);
+       // Assertions.assertTrue(databaseController.buildingAnImprovement(user, ImprovementTypes.LUMBERMILL).equals("you lack prerequisite technologies"));
     }
 
    
+
+    @Test
+    public void buildingImprovementTest6(){
+        Civilization civil = new Civilization(0, 3, "A");
+        civil.setTechnologies(new ArrayList<>());
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+               
+                NonCombatUnit combatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.ARCHER, true);
+        Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+        terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                null, null,
+                new ArrayList<Revealed>());
+            }
+        }
+       // ArrayList<TerrainFeatureTypes> features = new ArrayList<>();
+       // features.add(TerrainFeatureTypes.FOREST);
+        map.setTerrains(terrains);
+        NonCombatUnit combatunit = new NonCombatUnit(3, 7, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true);
+        terrains[3][7].setNonCombatUnit(combatunit);
+        terrains[3][7].setTerrainFeatureTypes(TerrainFeatureTypes.FOREST);
+        ArrayList<Terrain> ownedTerrain = new ArrayList<>();
+        ownedTerrain.add(terrains[3][7]);
+        civil.setOwnedTerrains(ownedTerrain);
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        ArrayList<Technology> tech = new ArrayList<>();
+        Technology techhh = new Technology(false, 3,ImprovementTypes.MINE.getRequiredTechnology() , true);
+        tech.add(techhh);
+        civil.setTechnologies(tech);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+       databaseController.buildingAnImprovement(user, ImprovementTypes.MINE);
+       // Assertions.assertTrue(databaseController.buildingAnImprovement(user, ImprovementTypes.LUMBERMILL).equals("you lack prerequisite technologies"));
+    }
+
 
 
 
@@ -5135,6 +5180,25 @@ public class MapGeneratorTest {
 
 
 
+    }
+
+    @Test
+    public void deleteFeaturesTest(){
+        Civilization civil = new Civilization(0, 3, "A");
+        civil.setTechnologies(new ArrayList<>());
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+               
+                NonCombatUnit combatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false,
+                UnitTypes.ARCHER, true);
+        Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+        terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, null,
+                null, null,
+                new ArrayList<Revealed>());
+            }
+        }
     }
  
 }

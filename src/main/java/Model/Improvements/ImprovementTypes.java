@@ -143,14 +143,14 @@ public enum ImprovementTypes {
         }
     }, "MAN");
 
-    int food;
-    int production;
-    int gold;
-    int turn;
-    ArrayList<ResourceTypes> resourcesAccessed;
-    TechnologyTypes requiredTechnology;
-    ArrayList<Object> canBeBuiltON;
-    String ShowImprovement;
+    private int food;
+   private int production;
+   private int gold;
+   private int turn;
+   private ArrayList<ResourceTypes> resourcesAccessed;
+   public TechnologyTypes requiredTechnology;
+   private ArrayList<Object> canBeBuiltON;
+   private String ShowImprovement;
 
 
     ImprovementTypes(int turn, int food, int production, int gold, ArrayList<ResourceTypes> resourcesAccessed,
@@ -177,7 +177,7 @@ public enum ImprovementTypes {
     }
 
     public ArrayList<Object> getCanBeBuiltON() {
-        return canBeBuiltON;
+        return this.canBeBuiltON;
     }
 
     public void setCanBeBuiltON(ArrayList<Object> canBeBuiltON) {
@@ -185,7 +185,7 @@ public enum ImprovementTypes {
     }
 
     public ArrayList<ResourceTypes> getResourcesAccessed() {
-        return resourcesAccessed;
+        return this.resourcesAccessed;
     }
 
     public void setResourcesAccessed(ArrayList<ResourceTypes> resourcesAccessed) {
@@ -193,7 +193,7 @@ public enum ImprovementTypes {
     }
 
     public TechnologyTypes getRequiredTechnology() {
-        return requiredTechnology;
+        return this.requiredTechnology;
     }
 
     public void setRequiredTechnology(TechnologyTypes requiredTechnology) {
@@ -201,7 +201,7 @@ public enum ImprovementTypes {
     }
 
     public int getTurn() {
-        return turn;
+        return this.turn;
     }
 
     public void setTurn(int turn) {
