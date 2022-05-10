@@ -2,6 +2,9 @@ package Model;
 
 import java.util.ArrayList;
 
+import Model.TerrainFeatures.TerrainFeatureTypes;
+import Model.Terrains.TerrainTypes;
+
 public class GameMapGenerator {
 
     private int Iteration;

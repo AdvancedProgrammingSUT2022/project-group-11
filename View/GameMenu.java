@@ -28,27 +28,7 @@ public class GameMenu {
         this.databaseController.setCivilizations(users);
 
         while (true) {
-            for (User user : users) {
-                System.out.println(user.getUsername() + "'s turn");
-                this.databaseController.setAllUnitsUnfinished(user);
-                while (!this.databaseController.isAllTasksFinished(user)) {
-                    Matcher matcher;
-                    String input = scanner.nextLine();
-                    // input.replaceFirst("^\\s*", "");
-                    // input = input.trim().replaceAll("\\s+", " ");
-                    runCommands(user,input);
-                     if((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
-                        selectUnit(user, matcher);
-                        while (this.databaseController.HasOneUnitBeenSelected()) {
-                            input = scanner.nextLine();
-                            oneUnitHasBeenSelected(input, matcher, user);
-
-                        }
-                    }
-                }
-                this.databaseController.movementOfAllUnits(user);
-                this.databaseController.setTerrainsOfEachCivilization(user);
-            }
+            runCommands(users, scanner);
         }
     }
 
@@ -894,59 +874,81 @@ public class GameMenu {
         this.databaseController.cheatMoveNonCombatUnit(x, y);
     }
 
-    public void runCommands(User user, String input) {
-        Matcher matcher;
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
+    public void runCommands(ArrayList<User> users, Scanner scanner) {
+        for (User user : users) {
+            System.out.println(user.getUsername() + "'s turn");
+            this.databaseController.setAllUnitsUnfinished(user);
+            while (!this.databaseController.isAllTasksFinished(user)) {
 
-            showInfo(matcher, user);
+                Matcher matcher;
+                String input = scanner.nextLine();
+                // input.replaceFirst("^\\s*", "");
+                // input = input.trim().replaceAll("\\s+", " ");
+                if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
 
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_TECHNOLOGY)) != null) {
-            selectTechnology(matcher, user);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_TURN)) != null) {
-            increaseTurnCheat(matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_GOLD)) != null) {
-            increaseGoldCheat(user, matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_HAPPINESS)) != null) {
-            increaseHappinessCheat(user, matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_SCIENCE)) != null) {
-            increaseScienceCheat(user, matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            buyTechnologyCheat(matcher, user);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_CHEAT_TILE)) != null) {
-            buyCheatTile(user, matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_UNIT)) != null) {
-            setCheatUnit(user, matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_IMPROVEMENT)) != null) {
-            setCheatImprovement(matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
-            setCheatResource(matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_TERRAIN_FEATURE_TYPE)) != null) {
-            setCheatTerrainFeature(matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_TERRAIN_TYPE)) != null) {
-            setCheatTerrainType(matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.DELETE_CHEAT_IMPROVEMENT)) != null) {
-            deleteImprovementCheat(matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.REPAIR_CHEAT_IMPROVEMENT)) != null) {
-            repairImprovementCheat(matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_NAME)) != null) {
-            // todo
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null) {
-            // todo
+                    showInfo(matcher, user);
 
-        }else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
-            buildUnit(matcher, user);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
-            deleteUnit(matcher, user);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_TECHNOLOGY)) != null) {
+                    selectTechnology(matcher, user);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_TURN)) != null) {
+                    increaseTurnCheat(matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_GOLD)) != null) {
+                    increaseGoldCheat(user, matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_HAPPINESS)) != null) {
+                    increaseHappinessCheat(user, matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_SCIENCE)) != null) {
+                    increaseScienceCheat(user, matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
+                    buyTechnologyCheat(matcher, user);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_CHEAT_TILE)) != null) {
+                    buyCheatTile(user, matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_UNIT)) != null) {
+                    setCheatUnit(user, matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_IMPROVEMENT)) != null) {
+                    setCheatImprovement(matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
+                    setCheatResource(matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_TERRAIN_FEATURE_TYPE)) != null) {
+                    setCheatTerrainFeature(matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_TERRAIN_TYPE)) != null) {
+                    setCheatTerrainType(matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.DELETE_CHEAT_IMPROVEMENT)) != null) {
+                    deleteImprovementCheat(matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.REPAIR_CHEAT_IMPROVEMENT)) != null) {
+                    repairImprovementCheat(matcher);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
+                    selectUnit(user, matcher);
+                    while (this.databaseController.HasOneUnitBeenSelected()) {
+                        input = scanner.nextLine();
+                        oneUnitHasBeenSelected(input, matcher, user);
 
-        }  else if (input.equals("SHOW MAP")) {
-            String[][] result = this.databaseController.getMap().printMap(this.databaseController.getDatabase(), user);
-            for (int i = 0; i < this.databaseController.getMap().getROW(); i++) {
-                for (int j = 0; j < this.databaseController.getMap().getIteration(); j++) {
-                    System.out.println(result[i][j]);
+                    }
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_NAME)) != null) {
+                    // todo
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null) {
+                    // todo
+
+                }else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+                    buildUnit(matcher, user);
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
+                    deleteUnit(matcher, user);
+
+                } else if ((matcher = GameEnums.getMatcher(input, GameEnums.IMPROVEMENT_REPAIR)) != null) {
+                    repairImprovement();
+
+                } else if (input.equals("SHOW MAP")) {
+                    String[][] result = this.databaseController.getMap().printMap(this.databaseController.getDatabase(), user);
+                    for (int i = 0; i < this.databaseController.getMap().getROW(); i++) {
+                        for (int j = 0; j < this.databaseController.getMap().getIteration(); j++) {
+                            System.out.println(result[i][j]);
+                        }
+                    }
+                } else {
+                    System.out.println("INVALID COMMAND");
                 }
             }
-        } else {
-            System.out.println("INVALID COMMAND");
+            this.databaseController.movementOfAllUnits(user);
+            this.databaseController.setTerrainsOfEachCivilization(user);
         }
 
     }
@@ -957,7 +959,7 @@ public class GameMenu {
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
             this.databaseController.changingTheStateOfAUnit("sleep");
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.COMBAT_UNIT_CHEAT_MOVE)) != null) {
-            cheatMoveCombatUnit(matcher);
+            cheatMoveNonCombatUnit(matcher);
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.NON_COMBAT_UNIT_CHEAT_MOVE)) != null) {
             cheatMoveNonCombatUnit(matcher);
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
@@ -1011,9 +1013,6 @@ public class GameMenu {
 
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
             System.out.println(this.databaseController.changingTheStateOfAUnit("delete"));
-
-        }else if ((matcher = GameEnums.getMatcher(input, GameEnums.IMPROVEMENT_REPAIR)) != null) {
-            repairImprovement();
 
         } else {
             System.out.println("INVALID COMMAND");

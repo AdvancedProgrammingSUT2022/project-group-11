@@ -1,8 +1,19 @@
 package Controllers;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.regex.Matcher;
+
+
+import Model.Civilization;
+import Model.Database;
+import Model.Map;
+import Model.Resource;
+import Model.Terrain;
+import Model.User;
 import Model.Buildings.BuildingTypes;
 import Model.City.City;
-import Model.*;
 import Model.Improvements.Improvement;
 import Model.Improvements.ImprovementTypes;
 import Model.Resources.ResourceTypes;
@@ -10,12 +21,12 @@ import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
-import Model.Units.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.regex.Matcher;
+import Model.Units.CombatUnit;
+import Model.Units.NonCombatUnit;
+import Model.Units.NonRangedCombatUnit;
+import Model.Units.RangedCombatUnit;
+import Model.Units.Unit;
+import Model.Units.UnitTypes;
 
 public class DatabaseController {
     private Database database;
@@ -183,12 +194,10 @@ public class DatabaseController {
     }
 
     public String changingTheStateOfANonCombatUnit(NonCombatUnit nonCombatUnit, String action) {
-        if (action.equals("sleep")) {
-            nonCombatUnit.setIsAsleep(true);
-        } else if (action.equals("wake")) {
-            nonCombatUnit.setIsAsleep(false);
-        } else if (action.equals("delete")) {
-            nonCombatUnit = null;
+        switch (action) {
+            case "sleep" -> nonCombatUnit.setIsAsleep(true);
+            case "wake" -> nonCombatUnit.setIsAsleep(false);
+            case "delete" -> nonCombatUnit = null;
         }
         if (!action.equals("delete")) {
             nonCombatUnit.setIsFinished(true);
@@ -232,7 +241,8 @@ public class DatabaseController {
         int column = this.database.getMap().getCOL();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                if (this.database.getMap().getTerrain()[i][j].getCombatUnit() != null && this.database.getMap().getTerrain()[i][j].getCombatUnit().isIsSelected()) {
+                if (this.database.getMap().getTerrain()[i][j].getCombatUnit() != null
+                        && this.database.getMap().getTerrain()[i][j].getCombatUnit().isIsSelected()) {
                     return this.database.getMap().getTerrain()[i][j].getCombatUnit();
                 }
             }
@@ -245,7 +255,8 @@ public class DatabaseController {
         int column = this.database.getMap().getCOL();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                if (this.database.getMap().getTerrain()[i][j].getNonCombatUnit() != null && this.database.getMap().getTerrain()[i][j].getNonCombatUnit().isIsSelected()) {
+                if (this.database.getMap().getTerrain()[i][j].getNonCombatUnit() != null
+                        && this.database.getMap().getTerrain()[i][j].getNonCombatUnit().isIsSelected()) {
                     return this.database.getMap().getTerrain()[i][j].getNonCombatUnit();
                 }
             }
@@ -354,6 +365,7 @@ public class DatabaseController {
             if (movementCost > unit.getUnitType().getMovement()) {
                 break;
             }
+
         }
 
         ArrayList<Terrain> needToRemove = new ArrayList<>();
@@ -439,8 +451,8 @@ public class DatabaseController {
         return movementCost;
     }
 
-     
-    
+
+
     public void changingUnitsParameters(User user) {
         for (Unit unit : user.getCivilization().getUnits()) {
             if (unit instanceof CombatUnit) {
@@ -515,6 +527,7 @@ public class DatabaseController {
 
             Civilization civilization = new Civilization(10000, 100, this.database.getCivilizationsName().get(indices.get(i)));
             user.setCivilization(civilization);
+            user.getCivilization().setBooleanSettlerBuy(true);
             createUnitForEachCivilization(user);
             setTerrainsOfEachCivilization(user);
             i++;
@@ -576,8 +589,11 @@ public class DatabaseController {
 
     public boolean isTerrainEmpty(int x, int y) {
 
-        return this.getMap().getTerrain()[x][y].getCombatUnit() == null && this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() == null;
+        return this.getMap().getTerrain()[x][y].getCombatUnit() == null
+                && this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() == null;
     }
+
+
 
 
     public void addGoldToUser(User user) {
@@ -673,6 +689,7 @@ public class DatabaseController {
 
     }
 
+    
 
     public void setHappinessUser(User user) {
 
@@ -756,12 +773,7 @@ public class DatabaseController {
     }
 
     public String researchInfo(User user) {
-        if(getUnderResearchTechnology(user)!=null)
-        {
-            return getUnderResearchTechnology(user).toString();
-        }
-        return "there is no under research technology";
-
+        return getUnderResearchTechnology(user).toString();
     }
 
     public ArrayList<Terrain> getNeighborTerrainsOfOneTerrain(Terrain terrain, Map map) {
@@ -1343,6 +1355,18 @@ public class DatabaseController {
             return "Improvement was removed illegally!";
         }
         return "There is no improvement to delete!";
+    }
+
+    public void setTechnologyTypes( Civilization civilization)
+    {
+        ArrayList<Technology> technologies = civilization.getTechnologies();
+        ArrayList<TechnologyTypes> technologyTypes = civilization.getTechnologyTypes();
+        for ( Technology technology : technologies )
+        {
+            technologyTypes.add(technology.getTechnologyType());
+
+        }
+        civilization.setTechnologyTypes(technologyTypes);
     }
 
 
