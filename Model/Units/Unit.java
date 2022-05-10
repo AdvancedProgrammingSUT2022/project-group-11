@@ -13,7 +13,7 @@ public class Unit {
     private int speed; 
     private boolean isAsleep;
     private boolean isFinished;
-    private ArrayList<Terrain> nextTerrain;
+    private ArrayList<Terrain> nextTerrain = new ArrayList<>();
     private UnitTypes unitType;
     private boolean isSelected;
 

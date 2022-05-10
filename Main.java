@@ -18,7 +18,7 @@ public class Main {
 
 /*
 @Test
-    public void buyTechnologyCheat() {
+    public void increaseTurnCheat() {
         Civilization civil = new Civilization(0, 3, "A");
         Map map = new Map();
         terrains = new Terrain[map.getROW()][map.getCOL()];
@@ -42,190 +42,353 @@ public class Main {
         Matcher matcher;
 
 
-        String input = "BUY TECHNOLOGY AGRICULTURE";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY ANIMAL_HUSBANDRY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY ARCHERY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY BRONZE_WORKING";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY CALENDAR";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY MASONRY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY MINING";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY POTTERY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY THE_WHEEL";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY TRAPPING";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY WRITING";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY CONSTRUCTION";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY HORSEBACK_RIDING";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY IRON_WORKING";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY MATHEMATICS";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY PHILOSOPHY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY CHIVALRY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY CIVIL_SERVICE";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
-        }
-        input = "BUY TECHNOLOGY CURRENCY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        String input = "INCREASE -TURN 10";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_TURN)) != null) {
+            gamemenu.increaseTurnCheat(matcher);
         }
 
-        input = "BUY TECHNOLOGY EDUCATION";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+
+    }
+
+    @Test
+    public void increaseGoldCheat() {
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
         }
-        input = "BUY TECHNOLOGY ENGINEERING";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<User> allUser = new ArrayList<>();
+        allUser.add(user);
+        GameMenu gamemenu = new GameMenu(databaseController, allUser);
+        Matcher matcher;
+
+
+        String input = "INCREASE -GOLD 10";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_GOLD)) != null) {
+            gamemenu.increaseGoldCheat(user, matcher);
         }
-        input = "BUY TECHNOLOGY MACHINERY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+
+
+    }
+
+    @Test
+    public void increaseHappinessCheat() {
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
         }
-        input = "BUY TECHNOLOGY METAL_CASTING";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<User> allUser = new ArrayList<>();
+        allUser.add(user);
+        GameMenu gamemenu = new GameMenu(databaseController, allUser);
+        Matcher matcher;
+
+
+        String input = "INCREASE -HAPPINESS 10";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_HAPPINESS)) != null) {
+            gamemenu.increaseHappinessCheat(user, matcher);
         }
-        input = "BUY TECHNOLOGY PHYSICS";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+
+
+    }
+
+    @Test
+    public void increaseScienceCheat() {
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
         }
-        input = "BUY TECHNOLOGY STEEL";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<User> allUser = new ArrayList<>();
+        allUser.add(user);
+        GameMenu gamemenu = new GameMenu(databaseController, allUser);
+        Matcher matcher;
+
+
+        String input = "INCREASE -SCIENCE 10";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_SCIENCE)) != null) {
+            gamemenu.increaseScienceCheat(user, matcher);
         }
-        input = "BUY TECHNOLOGY THEOLOGY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+
+
+    }
+
+    @Test
+    public void buildUnit() {
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
         }
-        input = "BUY TECHNOLOGY ACOUSTICS";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<User> allUser = new ArrayList<>();
+        allUser.add(user);
+        GameMenu gamemenu = new GameMenu(databaseController, allUser);
+        Matcher matcher;
+        String input = "UNIT BUILD ROAD";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.buildUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY ARCHAEOLOGY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT BUILD RAILROAD";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.buildUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY BANKING";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT BUILD FARM";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.buildUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY CHEMISTRY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT BUILD MINE";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.buildUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY ECONOMICS";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT BUILD TRADINGPOST";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.buildUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY FERTILIZER";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT BUILD LUMBERMILL";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.buildUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY GUNPOWDER";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT BUILD PASTURE";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.buildUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY METALLURGY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT BUILD CAMP";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.buildUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY MILITARY_SCIENCE";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT BUILD PLANTATION";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.buildUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY PRINTING_PRESS";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT BUILD QUARRY";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.buildUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY SCIENTIFIC_THEORY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT BUILD INVALID";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+            gamemenu.buildUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY BIOLOGY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+
+
+    }
+
+    @Test
+    public void deletedUnit() {
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
         }
-        input = "BUY TECHNOLOGY COMBUSTION";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<User> allUser = new ArrayList<>();
+        allUser.add(user);
+        GameMenu gamemenu = new GameMenu(databaseController, allUser);
+        Matcher matcher;
+        String input = "UNIT REMOVE FOREST";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
+            gamemenu.deleteUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY DYNAMITE";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT REMOVE JUNGLE";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
+            gamemenu.deleteUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY ELECTRICITY";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT REMOVE MARSH";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
+            gamemenu.deleteUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY RADIO";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT REMOVE ROUTE";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
+            gamemenu.deleteUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY RAILROAD";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT REMOVE INVALID";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
+            gamemenu.deleteUnit(matcher, user);
         }
-        input = "BUY TECHNOLOGY REPLACEABLE_PARTS";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+
+
+    }
+
+    @Test
+    public void oneUnitHasBeenSelected() {
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
         }
-        input = "BUY TECHNOLOGY STEAM_POWER";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<User> allUser = new ArrayList<>();
+        allUser.add(user);
+        GameMenu gamemenu = new GameMenu(databaseController, allUser);
+        Matcher matcher;
+        String input = "UNIT MOVETO 5 5";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_MOVETO)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
         }
-        input = "BUY TECHNOLOGY TELEGRAPH";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TECHNOLOGY)) != null) {
-            gamemenu.buyTechnologyCheat(matcher, user);
+        input = "UNIT SLEEP";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "COMBAT UNIT CHEAT MOVE 5 6";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.COMBAT_UNIT_CHEAT_MOVE)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "NONCOMBAT UNIT CHEAT MOVE 5 6";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.NON_COMBAT_UNIT_CHEAT_MOVE)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "UNIT ALERT";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "UNIT FORTIFY";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "UNIT FORTIFY HEAL";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY_HEAL)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "UNIT GARRISON";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_GARRISON)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "UNIT SETUP RANGED";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SETUP_RANGED)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "UNIT ATTACK 5 6";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ATTACK)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "UNIT FOUND CITY";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FOUND_CITY)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "UNIT CANCEL MISSION";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_CANCEL_MISSION)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "UNIT WAKE";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_WAKE)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+        input = "UNIT DELETE";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+
+        input = "UNIT REMOVE";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
+            gamemenu.oneUnitHasBeenSelected(input, matcher, user);
+        }
+
+
+    }
+
+    @Test
+    public void selectUnit() {
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
+        }
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<User> allUser = new ArrayList<>();
+        allUser.add(user);
+        GameMenu gamemenu = new GameMenu(databaseController, allUser);
+        Matcher matcher;
+        String input = "SELECT UNIT COMBAT 5 4";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
+            gamemenu.selectUnit(user, matcher);
+        }
+        input = "SELECT UNIT NONCOMBAT 5 4";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
+            gamemenu.selectUnit(user, matcher);
+        }
+        input = "SELECT UNIT INVALID 5 4";
+        if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
+            gamemenu.selectUnit(user, matcher);
         }
 
 
