@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import Model.City.City;
 import Model.Technologies.Technology;
+import Model.Technologies.TechnologyTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
 import Model.Units.Unit;
@@ -19,6 +20,7 @@ public class Civilization {
     private int gold;
     private int happiness;
     private ArrayList<Technology> technologies = new ArrayList<>();
+    private ArrayList<TechnologyTypes> technologyTypes = new ArrayList<>();
     private String name;
     private int science;
     private boolean canBuySettler;
@@ -214,5 +216,17 @@ public class Civilization {
 
         }
     }
+
+    public ArrayList<TechnologyTypes> getTechnologyTypes()
+    {
+        return technologyTypes;
+    }
+
+    public void setTechnologyTypes(ArrayList<TechnologyTypes> technologyTypes)
+    {
+        this.technologyTypes = technologyTypes;
+    }
+
+
 
 }

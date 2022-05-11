@@ -19,6 +19,10 @@ public class Improvement {
         this.improvementType = improvementType;
     }
 
+    public Improvement clone(){
+        return new Improvement(this.getX(), this.getY(), this.getImprovementType());
+    }
+
     public boolean isPillaged() {
         return isPillaged;
     }

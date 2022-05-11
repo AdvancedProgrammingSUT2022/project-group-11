@@ -3,9 +3,12 @@ package Model;
 import java.util.ArrayList;
 import java.util.Random;
 
+import Model.Improvements.Improvement;
 import Model.Resources.ResourceTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
+import Model.Units.CombatUnit;
+import Model.Units.NonCombatUnit;
 
 public class Map {
     private int Iteration = 6;
@@ -128,7 +131,24 @@ public class Map {
             Terrains[i][j].getReveals().remove(index);
         }
 
-        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), Terrains[i][j].getCombatUnit().clone(), Terrains[i][j].getNonCombatUnit().clone(), Terrains[i][j].getTerrainImprovement(), Terrains[i][j].getTerrainResource().clone(),Terrains[i][j].getBooleanResource());
+        CombatUnit combatUnit = null;
+        NonCombatUnit nonCombatUnit = null;
+        Resource resource = null;
+        Improvement improvement = null;
+
+        if (Terrains[i][j].getCombatUnit() != null) {
+            combatUnit = Terrains[i][j].getCombatUnit().clone();
+        }
+        if (Terrains[i][j].getNonCombatUnit() != null) {
+            nonCombatUnit = Terrains[i][j].getNonCombatUnit().clone();
+        }
+        if (Terrains[i][j].getTerrainResource() != null) {
+            resource = Terrains[i][j].getTerrainResource().clone();
+        }
+        if(Terrains[i][j].getTerrainImprovement() != null){
+           improvement = Terrains[i][j].getTerrainImprovement().clone();
+        }
+        Revealed reveal = new Revealed(user, Terrains[i][j].getTerrainTypes(), Terrains[i][j].getTerrainFeatureTypes(), combatUnit, nonCombatUnit, improvement, resource,Terrains[i][j].getBooleanResource());
         Terrains[i][j].setReveals(reveal);
 
     }
@@ -167,7 +187,7 @@ public class Map {
         }
     }
     
-    private void randomTerrainAdd(){
+    public void randomTerrainAdd(){
         Random random = new Random();
         for(int count = 0;count < 200;count++){
             int randNum = Math.abs(random.nextInt()) % 4;
@@ -198,7 +218,7 @@ public class Map {
         Terrains[Math.abs(random.nextInt() % ROW)][15].setTerrainTypes(TerrainTypes.TUNDRA);;
     }
 
-    private  boolean isNeighbor(int firstI, int firstJ, int secondI, int secondJ) {
+    public  boolean isNeighbor(int firstI, int firstJ, int secondI, int secondJ) {
         if (firstI == secondI && firstJ == secondJ) return false;
         if (Math.abs(firstI - secondI) >= 2 || Math.abs(firstJ - secondJ) >= 2) return false;
         if (firstJ == secondJ) {
@@ -220,7 +240,7 @@ public class Map {
         return false;
     }
 
-    private void setRiver(){
+    public void setRiver(){
         Random random = new Random();
          for(int i = 0 ; i < ROW;i++){
             for(int j = 0 ; j < COL;j++){
@@ -240,7 +260,7 @@ public class Map {
          }
     }
 
-    private void setFeature(){
+    public void setFeature(){
         Random random = new Random();
        
         for(int i = 0 ; i< ROW;i++){
@@ -279,7 +299,7 @@ public class Map {
         return possibleResource;
     }
 
-    private void setResource(){
+    public void setResource(){
         Random random = new Random();
         for(int i = 0 ; i < ROW;i++){
             for(int j = 0; j < COL;j++){
@@ -290,7 +310,7 @@ public class Map {
         }
     }
 
-    private void nullImprovementAndCombat(){
+    public void nullImprovementAndCombat(){
         for(int i = 0 ; i < ROW;i++){
             for(int j = 0; j < COL;j++){
               Terrains[i][j].setTerrainImprovement(null);
