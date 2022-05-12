@@ -2,25 +2,22 @@ package Model;
 
 import java.util.ArrayList;
 
-import Model.TerrainFeatures.TerrainFeatureTypes;
-import Model.Terrains.TerrainTypes;
-
 public class GameMapGenerator {
 
-    private int Iteration;
-    private int ROW;
-    private int COL;
-    private Terrain[][] Terrains;
+    private final int Iteration;
+    private final int ROW;
+    private final int COL;
+    private final Terrain[][] Terrains;
     private ArrayList<River> rivers = new ArrayList<River>();
-    private String[][] Printmap;
+    private final String[][] Printmap;
 
-    public GameMapGenerator(Terrain Terrains[][], ArrayList<River> rivers,int ROW,int COL,int Iteration) {
+    public GameMapGenerator(Terrain[][] Terrains, ArrayList<River> rivers, int ROW, int COL, int Iteration) {
         this.Terrains = Terrains;
         this.rivers = rivers;
         this.ROW = ROW;
         this.COL = COL;
         this.Iteration = Iteration;
-        this.Printmap =  new String[ROW][Iteration];
+        this.Printmap = new String[ROW][Iteration];
     }
 
     public River hasRiver(Terrain TerrainFirst, Terrain TerrainSecond) {
@@ -105,10 +102,6 @@ public class GameMapGenerator {
             Printmap[i][j] += "/";
         }
     }
-
-
-
-
 
 
     // ALGHORITMS
@@ -285,7 +278,7 @@ public class GameMapGenerator {
             addSpace(i, j, HowManySpaceRight);
             Printmap[i][j] += Color.RESET;
         } else if (Terrains[iTerrain][l].getType().equals("visible")) {
-            if (Terrains[iTerrain][l].getTerrainResource() != null  && Terrains[iTerrain][l].getBooleanResource() == true) {
+            if (Terrains[iTerrain][l].getTerrainResource() != null && Terrains[iTerrain][l].getBooleanResource() == true) {
                 Resource += Terrains[iTerrain][l].getTerrainResource().getResourceType().getShowResourceMap();
             }
             Printmap[i][j] += Terrains[iTerrain][l].getTerrainTypes().getColor();
@@ -335,10 +328,6 @@ public class GameMapGenerator {
         }
 
     }
-
-
-
-
 
 
     // call the alghoritm finction
@@ -444,10 +433,6 @@ public class GameMapGenerator {
     }
 
 
-
-
-
-
     // Rows Of Map
     private void firstRow(int i, int j, int l, boolean check, Database database, User user) {
         if (check == true) {
@@ -525,33 +510,17 @@ public class GameMapGenerator {
     }
 
 
-
-
-
-
     // print map
     public void SwitchCaseFirstHalf(int i, int j, int l, Database database, User user, int count) {
         switch (j) {
             case 0:
-                if (i - count > 0) {
-                    firstRow(i, j, l, true, database, user);
-                } else {
-                    firstRow(i, j, l, false, database, user);
-                }
+                firstRow(i, j, l, i - count > 0, database, user);
                 break;
             case 1:
-                if (i - count > 0) {
-                    secondRow(i, j, l, true, database, user);
-                } else {
-                    secondRow(i, j, l, false, database, user);
-                }
+                secondRow(i, j, l, i - count > 0, database, user);
                 break;
             case 2:
-                if (i - count > 0) {
-                    thirdRow(i, j, l, true, user);
-                } else {
-                    thirdRow(i, j, l, false, user);
-                }
+                thirdRow(i, j, l, i - count > 0, user);
                 break;
 
         }
@@ -561,25 +530,13 @@ public class GameMapGenerator {
         switch (j) {
 
             case 3:
-                if (i != count) {
-                    fourthRow(i, j, l, true, database, user);
-                } else {
-                    fourthRow(i, j, l, false, database, user);
-                }
+                fourthRow(i, j, l, i != count, database, user);
                 break;
             case 4:
-                if (i != count) {
-                    fifthRow(i, j, l, true, database, user);
-                } else {
-                    fifthRow(i, j, l, false, database, user);
-                }
+                fifthRow(i, j, l, i != count, database, user);
                 break;
             case 5:
-                if (i != count) {
-                    sixthRow(i, j, l, true, user);
-                } else {
-                    sixthRow(i, j, l, false, user);
-                }
+                sixthRow(i, j, l, i != count, user);
                 break;
         }
     }

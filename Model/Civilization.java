@@ -1,13 +1,13 @@
 package Model;
 
-import java.util.ArrayList;
-
 import Model.City.City;
 import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
 import Model.Units.Unit;
+
+import java.util.ArrayList;
 
 public class Civilization {
 
@@ -32,18 +32,22 @@ public class Civilization {
         this.name = name;
     }
 
-    public void setBooleanSettlerBuy(boolean bool){
-        this.canBuySettler = bool;
-    }
-    public boolean getBooleanSettlerBuy(){
+    public boolean getBooleanSettlerBuy() {
         return this.canBuySettler;
     }
-    public void setOwnedTerrains( ArrayList<Terrain> ownedTerrains){
-        this.ownedTerrains = ownedTerrains;
+
+    public void setBooleanSettlerBuy(boolean bool) {
+        this.canBuySettler = bool;
     }
-    public  ArrayList<Terrain> getOwnedTerrains(){
+
+    public ArrayList<Terrain> getOwnedTerrains() {
         return this.ownedTerrains;
     }
+
+    public void setOwnedTerrains(ArrayList<Terrain> ownedTerrains) {
+        this.ownedTerrains = ownedTerrains;
+    }
+
     public ArrayList<Terrain> getVisibleTerrains() {
         return this.visibleTerrains;
     }
@@ -60,16 +64,20 @@ public class Civilization {
         this.revealedTerrains = revealedTerrains;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getName() {
         return this.name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public ArrayList<Terrain> getTerrains() {
         return this.terrains;
+    }
+
+    public void setTerrains(ArrayList<Terrain> terrains) {
+        this.terrains = terrains;
     }
 
     public ArrayList<Unit> getUnits() {
@@ -86,10 +94,6 @@ public class Civilization {
 
     public void setCities(ArrayList<City> cities) {
         this.cities = cities;
-    }
-
-    public void setTerrains(ArrayList<Terrain> terrains) {
-        this.terrains = terrains;
     }
 
     public int getGold() {
@@ -161,32 +165,23 @@ public class Civilization {
         }
     }
 
-    public void increaseGold(int gold){
+    public void increaseGold(int gold) {
         this.gold += gold;
     }
 
 
-
-    public void addUnit( Unit unit)
-    {
+    public void addUnit(Unit unit) {
         this.units.add(unit);
     }
 
 
-
-
-
-    public void addCity ( City city)
-    {
+    public void addCity(City city) {
         this.cities.add(city);
     }
 
-    public void removeUnit( Unit unit)
-    {
-        for (Unit testUnit : this.units)
-        {
-            if (testUnit.equals(unit))
-            {
+    public void removeUnit(Unit unit) {
+        for (Unit testUnit : this.units) {
+            if (testUnit.equals(unit)) {
                 this.units.remove(testUnit);
                 return;
             }
@@ -194,22 +189,17 @@ public class Civilization {
         }
     }
 
-    public int getScience()
-    {
+    public int getScience() {
         return science;
     }
 
-    public void setScience(int science)
-    {
+    public void setScience(int science) {
         this.science = science;
     }
 
-    public void removeCity(City city )
-    {
-        for ( City cityTest : this.cities)
-        {
-            if ( cityTest.equals(city))
-            {
+    public void removeCity(City city) {
+        for (City cityTest : this.cities) {
+            if (cityTest.equals(city)) {
                 this.cities.remove(city);
                 return;
             }
@@ -217,16 +207,13 @@ public class Civilization {
         }
     }
 
-    public ArrayList<TechnologyTypes> getTechnologyTypes()
-    {
+    public ArrayList<TechnologyTypes> getTechnologyTypes() {
         return technologyTypes;
     }
 
-    public void setTechnologyTypes(ArrayList<TechnologyTypes> technologyTypes)
-    {
+    public void setTechnologyTypes(ArrayList<TechnologyTypes> technologyTypes) {
         this.technologyTypes = technologyTypes;
     }
-
 
 
 }

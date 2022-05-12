@@ -452,7 +452,12 @@ public class DatabaseController {
     public int calculatingTheMovementCost(ArrayList<Terrain> path) {
         int movementCost = 0;
         for (Terrain terrain : path) {
-            movementCost += terrain.getTerrainTypes().getMovementCost();
+            if (terrain.getTerrainImprovement() != null && (terrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) || terrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD))) {
+                movementCost += 0.5 * (terrain.getTerrainTypes().getMovementCost() + terrain.getTerrainFeatureTypes().get(0).getMovementCost());
+            } else {
+                movementCost += terrain.getTerrainTypes().getMovementCost() + terrain.getTerrainFeatureTypes().get(0).getMovementCost();
+            }
+
         }
         return movementCost;
     }

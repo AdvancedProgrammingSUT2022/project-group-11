@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.ArrayList;
-
 import Model.City.City;
 import Model.Improvements.Improvement;
 import Model.TerrainFeatures.TerrainFeatureTypes;
@@ -10,15 +8,16 @@ import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
 import Model.Units.Unit;
 
+import java.util.ArrayList;
+
 public class Terrain {
 
-    
 
     private int x;
     private int y;
     private String Type;
     private TerrainTypes terrainTypes;
-    private  ArrayList<TerrainFeatureTypes> terrainFeatureTypes;
+    private final ArrayList<TerrainFeatureTypes> terrainFeatureTypes;
     private boolean isBeingWorkedOn;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
@@ -32,10 +31,7 @@ public class Terrain {
 
     private int passedTurns = 0;
 
-    public Terrain(int x, int y, String Type, TerrainTypes terrainTypes,
-            ArrayList<TerrainFeatureTypes> terrainFeatureTypes,
-            CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvement TerrainImprovement,
-            Resource TerrainResource, ArrayList<Revealed> reveals) {
+    public Terrain(int x, int y, String Type, TerrainTypes terrainTypes, ArrayList<TerrainFeatureTypes> terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvement TerrainImprovement, Resource TerrainResource, ArrayList<Revealed> reveals) {
 
         this.x = x;
         this.y = y;
@@ -69,12 +65,12 @@ public class Terrain {
         this.hasToBeDeleted = hasToBeDeleted;
     }
 
-    public void setBooleanResource(boolean bool) {
-        this.unlockResource = bool;
-    }
-
     public boolean getBooleanResource() {
         return this.unlockResource;
+    }
+
+    public void setBooleanResource(boolean bool) {
+        this.unlockResource = bool;
     }
 
     public int getX() {
@@ -137,10 +133,6 @@ public class Terrain {
         return TerrainResource;
     }
 
-    public void setTerrainImprovement(Improvement TerrainImprovement) {
-        this.TerrainImprovement = TerrainImprovement;
-    }
-
     public Resource getTerrainResource() {
         return this.TerrainResource;
     }
@@ -192,6 +184,10 @@ public class Terrain {
 
     public Improvement getTerrainImprovement() {
         return this.TerrainImprovement;
+    }
+
+    public void setTerrainImprovement(Improvement TerrainImprovement) {
+        this.TerrainImprovement = TerrainImprovement;
     }
 
 }

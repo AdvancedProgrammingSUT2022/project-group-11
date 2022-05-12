@@ -9,12 +9,12 @@ import Model.Units.Unit;
 
 import java.util.ArrayList;
 
-public class City{
-    private ArrayList<Unit> constructionWaitList = new ArrayList<>();
+public class City {
     private final Civilization founder;
+    private final Terrain centralTerrain;
+    private ArrayList<Unit> constructionWaitList = new ArrayList<>();
     private Civilization owner;
     private boolean isPuppet;
-    private final Terrain centralTerrain;
     private ArrayList<Terrain> neighbors;
     private int population;
     private int HP;
@@ -25,7 +25,7 @@ public class City{
     private boolean garrisoned;
     private boolean isCaptured;
     private ArrayList<Citizen> citizens;
-    private boolean isBuildingSomething;
+    private final boolean isBuildingSomething;
     private int food;
     private int science;
     private int gold;
@@ -41,7 +41,7 @@ public class City{
     private NonCombatUnit nonCombatUnit;
 
 
-    public City(Civilization founder, Civilization owner, Terrain centralTerrain, int HP, String type, int combatStrength, int rangedCombatStrength, ArrayList<BuildingTypes> buildings ) {
+    public City(Civilization founder, Civilization owner, Terrain centralTerrain, int HP, String type, int combatStrength, int rangedCombatStrength, ArrayList<BuildingTypes> buildings) {
         this.founder = founder;
         this.owner = owner;
         this.isPuppet = false;
@@ -69,30 +69,27 @@ public class City{
         return this.founder;
     }
 
-    public int getFood()
-    {
+    public int getFood() {
         return food;
     }
-    public void setBuildings(ArrayList<BuildingTypes> buildings){
-        this.buildings = buildings;
-    }
 
-
-    public ArrayList<BuildingTypes> getBuildings(){
-        return this.buildings;
-    }
-    public void setFood(int food)
-    {
+    public void setFood(int food) {
         this.food = food;
     }
 
-    public int getScience()
-    {
+    public ArrayList<BuildingTypes> getBuildings() {
+        return this.buildings;
+    }
+
+    public void setBuildings(ArrayList<BuildingTypes> buildings) {
+        this.buildings = buildings;
+    }
+
+    public int getScience() {
         return science;
     }
 
-    public void setScience(int science)
-    {
+    public void setScience(int science) {
         this.science = science;
     }
 
@@ -119,7 +116,6 @@ public class City{
     public Terrain getCentralTerrain() {
         return this.centralTerrain;
     }
-
 
 
     public int getHP() {
@@ -239,107 +235,88 @@ public class City{
     }
 
 
-    public CombatUnit getCombatUnit()
-    {
+    public CombatUnit getCombatUnit() {
         return combatUnit;
     }
 
-    public void setCombatUnit(CombatUnit combatUnit)
-    {
+    public void setCombatUnit(CombatUnit combatUnit) {
         this.combatUnit = combatUnit;
     }
 
-    public NonCombatUnit getNonCombatUnit()
-    {
+    public NonCombatUnit getNonCombatUnit() {
         return nonCombatUnit;
     }
 
-    public void setNonCombatUnit(NonCombatUnit nonCombatUnit)
-    {
+    public void setNonCombatUnit(NonCombatUnit nonCombatUnit) {
         this.nonCombatUnit = nonCombatUnit;
     }
 
-    public int getPopulation()
-    {
+    public int getPopulation() {
         return population;
     }
 
-    public void setPopulation(int population)
-    {
+    public void setPopulation(int population) {
         this.population = population;
     }
 
-    public int getGold()
-    {
+    public int getGold() {
         return gold;
     }
 
-    public void setGold(int gold)
-    {
+    public void setGold(int gold) {
         this.gold = gold;
     }
 
-    public int getProduction()
-    {
+    public int getProduction() {
         return production;
     }
 
-    public void setProduction(int production)
-    {
+    public void setProduction(int production) {
         this.production = production;
     }
 
-    public int getTurnsRemainingUntilPopulationIncrease()
-    {
+    public int getTurnsRemainingUntilPopulationIncrease() {
         return turnsRemainingUntilPopulationIncrease;
     }
 
-    public void setTurnsRemainingUntilPopulationIncrease(int turnsRemainingUntilPopulationIncrease)
-    {
+    public void setTurnsRemainingUntilPopulationIncrease(int turnsRemainingUntilPopulationIncrease) {
         this.turnsRemainingUntilPopulationIncrease = turnsRemainingUntilPopulationIncrease;
     }
-    public void setNeighbors(ArrayList<Terrain> neighbour)
-    {
-       this.neighbors = neighbour;
-    }
-    public ArrayList<Terrain> getNeighbors()
-    {
+
+    public ArrayList<Terrain> getNeighbors() {
         return neighbors;
     }
 
-    public int getFoodStorage()
-    {
+    public void setNeighbors(ArrayList<Terrain> neighbour) {
+        this.neighbors = neighbour;
+    }
+
+    public int getFoodStorage() {
         return foodStorage;
     }
 
-    public void setFoodStorage(int foodStorage)
-    {
+    public void setFoodStorage(int foodStorage) {
         this.foodStorage = foodStorage;
     }
 
-    public void addCitizen ( Citizen citizen)
-    {
+    public void addCitizen(Citizen citizen) {
         ArrayList<Citizen> cityCitizens = this.getCitizens();
         cityCitizens.add(citizen);
         this.setCitizens(cityCitizens);
 
     }
 
-    public void removeCitiZen ( int index)
-    {
+    public void removeCitiZen(int index) {
         this.citizens.remove(index);
     }
 
-    public void setMainTerrains(ArrayList<Terrain> mainTerrains)
-    {
-        this.mainTerrains = mainTerrains;
-    }
-
-    public ArrayList<Terrain> getMainTerrains()
-    {
+    public ArrayList<Terrain> getMainTerrains() {
         return this.mainTerrains;
     }
 
+    public void setMainTerrains(ArrayList<Terrain> mainTerrains) {
+        this.mainTerrains = mainTerrains;
+    }
 
     public ArrayList<Unit> getConstructionWaitList() {
         return constructionWaitList;
