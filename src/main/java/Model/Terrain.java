@@ -44,9 +44,7 @@ public class Terrain {
         this.terrainFeatureTypes = terrainFeatureTypes;
         this.combatUnit = combatUnit;
         this.nonCombatUnit = nonCombatUnit;
-
         this.isBeingWorkedOn = false;
-
         this.TerrainImprovement = TerrainImprovement;
         this.TerrainResource = TerrainResource;
         this.reveals = reveals;

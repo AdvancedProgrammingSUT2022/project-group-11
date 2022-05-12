@@ -6716,7 +6716,116 @@ public void RevealedMapTest(){
 
   @Test
   public void assignCitizenTest(){
-      
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain terrains = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+    Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(null,civilTwo, terrains, 0,"" , 0, 0, null);
+      Citizen citizen = new Citizen(city);
+      city.addCitizen(citizen);
+      ArrayList<Terrain> neighbours = new ArrayList<>();
+      neighbours.add(terrains);
+      city.setNeighbors(neighbours);
+      citizen.setHasWork(true);
+      CityController cityController = new CityController();
+      cityController.assignCitizen(city, citizen, terrains);
   }
 
+  @Test
+  public void garrisonCityTest(){
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain terrains = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+    Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(null,civilTwo, terrains, 0,"" , 0, 0, null);
+    city.setCombatUnit(combatunit);
+    CityController cityController = new CityController();
+     cityController.garrisonACity(city);
+  }
+  @Test
+  public void buyTileTest(){
+    Map map = new Map();
+    Civilization civil = new Civilization(4, 8, "A");
+    User user = new User(null, null, null, civil);
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    ArrayList<Terrain> terrain = new ArrayList<>();
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+           terrain.add(terrains[i][j]);
+
+        }
+    }
+
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain ter = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+  //  Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(null,civil, ter, 0,"" , 0, 0, null);
+    ArrayList<Terrain> mainTerrain = new ArrayList<>();
+    mainTerrain.add(terrains[4][6]);
+    mainTerrain.add(terrains[4][9]);
+    city.setMainTerrains(mainTerrain);
+    map.setTerrains(terrains);
+    CityController cityController = new CityController();
+    cityController.setMap(map);
+    city.setGold(-5);
+   
+    cityController.buyTile(terrains[4][7], city);
+
+  }
+
+  @Test
+  public void buyTileTest1(){
+    Map map = new Map();
+    Civilization civil = new Civilization(4, 8, "A");
+    User user = new User(null, null, null, civil);
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    ArrayList<Terrain> terrain = new ArrayList<>();
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+           terrain.add(terrains[i][j]);
+
+        }
+    }
+
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain ter = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+  //  Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(null,civil, ter, 0,"" , 0, 0, null);
+    ArrayList<Terrain> mainTerrain = new ArrayList<>();
+    mainTerrain.add(terrains[4][6]);
+    mainTerrain.add(terrains[4][9]);
+    city.setMainTerrains(mainTerrain);
+    map.setTerrains(terrains);
+    CityController cityController = new CityController();
+    cityController.setMap(map);
+    city.setGold(10000);
+
+    cityController.buyTile(terrains[4][7], city);
+
+  }
+
+  @Test
+  public void purchaseTest(){
+      
+  }
 }
