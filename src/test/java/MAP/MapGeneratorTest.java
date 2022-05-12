@@ -6675,8 +6675,8 @@ public void RevealedMapTest(){
   
 }
  
-@Test
-public void removeCityTest(){
+  @Test
+  public void removeCityTest(){
     Civilization civilOne = new Civilization(100, 400, "A");
     Civilization civilTwo = new Civilization(100, 400, "A");
     City city = new City(civilOne,null, null, 0,"" , 0, 0, null);
@@ -6684,4 +6684,39 @@ public void removeCityTest(){
     CityController cityController = new CityController();
     cityController.destroyCity(civilOne, civilTwo, city);
 }
+
+  @Test
+  public void attachCityTest(){
+   
+    Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(civilTwo,null, null, 0,"" , 0, 0, null);
+    civilTwo.addCity(city);
+    CityController cityController = new CityController();
+    cityController.attachCity(civilTwo, city);
+  }
+
+  @Test 
+  public void cityMenuTest(){
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain terrains = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+    Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(null,civilTwo, terrains, 0,"" , 0, 0, null);
+    civilTwo.addCity(city);
+    User user = new User(null, null, null, civilTwo);
+    Database database = new Database();
+    database.addUser(user);
+    DatabaseController databaseController = new DatabaseController(database);
+    CityController cityController = new CityController();
+    cityController.setDatabaseController(databaseController);
+    cityController.cityMenu(city);
+  }
+
+  @Test
+  public void assignCitizenTest(){
+      
+  }
+
 }

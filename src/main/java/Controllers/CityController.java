@@ -19,6 +19,13 @@ public class CityController {
 
     private DatabaseController databaseController;
     private Map map;
+
+    public void setDatabaseController(DatabaseController databaseController){
+        this.databaseController = databaseController;
+    }
+    public void setMap(Map map){
+        this.map = map;
+    }
     public void garrison(City city, CombatUnit combatUnit) {
         if (city.getCombatUnit() == null) {
             city.setCombatUnit(combatUnit);
