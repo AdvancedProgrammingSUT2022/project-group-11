@@ -6938,4 +6938,90 @@ public void RevealedMapTest(){
      DatabaseController databaseController = new DatabaseController(database);
      databaseController.pillageImprovement(combatunit, ter);
   }
+
+  @Test
+  public void TerrainAtInputDistance(){
+    Map map = new Map();
+    Civilization civil = new Civilization(4, 8, "A");
+    User user = new User(null, null, null, civil);
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    map.setTerrains(terrains);
+    ArrayList<Terrain> nearTerrain = new ArrayList<>();
+    nearTerrain.add(terrains[3][8]);
+    Database database = new Database();
+    database.setMap(map);
+     DatabaseController databaseController = new DatabaseController(database);
+     databaseController.terrainsAtInputDistance(nearTerrain, 1, map);
+
+  }
+
+  @Test
+  public void TerrainAtInputDistance2(){
+    Map map = new Map();
+    Civilization civil = new Civilization(4, 8, "A");
+    User user = new User(null, null, null, civil);
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    map.setTerrains(terrains);
+    ArrayList<Terrain> nearTerrain = new ArrayList<>();
+    nearTerrain.add(terrains[3][8]);
+    Database database = new Database();
+    database.setMap(map);
+     DatabaseController databaseController = new DatabaseController(database);
+     databaseController.terrainsAtInputDistance(nearTerrain, 2, map);
+
+  }
+  @Test
+  public void wakeUpFromAlert(){
+    Map map = new Map();
+    Civilization civil = new Civilization(4, 8, "A");
+    
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    ArrayList<Terrain> myTerrain = new ArrayList<>();
+    ArrayList<Unit> myUnit = new ArrayList<>();
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          myUnit.add(combatunit);
+
+        }
+    }
+   myTerrain.add(terrains[3][4]);
+   myTerrain.add(terrains[3][5]);
+   civil.setTerrains(myTerrain);
+   civil.setUnits(myUnit);
+    map.setTerrains(terrains);
+    User user = new User(null, null, null, civil);
+    Database database = new Database();
+    database.addUser(user);
+    database.setMap(map);
+     DatabaseController databaseController = new DatabaseController(database);
+     CombatUnit combatunit1 =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+     databaseController.wakeUpFromAlert(combatunit1);
+  }
 }

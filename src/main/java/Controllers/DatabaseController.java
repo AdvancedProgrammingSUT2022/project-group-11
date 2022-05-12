@@ -1399,7 +1399,7 @@ public class DatabaseController {
 
         for(Terrain terrain : terrainsAtADistanceFour)
         {
-            if(terrain.getCombatUnit() != null && !getContainerCivilization(combatUnit).equals(getContainerCivilization(terrain.getCombatUnit())) ){
+            if(terrain.getCombatUnit() != null && (getContainerCivilization(combatUnit) !=(getContainerCivilization(terrain.getCombatUnit()))) ){
                 combatUnit.setAlert(false);
                 return;
             }
@@ -1411,7 +1411,7 @@ public class DatabaseController {
     {
         for(User user : this.database.getUsers())
         {
-            if(user.getCivilization().getUnits().contains(unit))
+            if(user.getCivilization().getUnits().indexOf(unit) != -1)
             {
                 return user.getCivilization();
             }
