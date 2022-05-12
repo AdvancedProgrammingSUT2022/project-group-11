@@ -6826,6 +6826,15 @@ public void RevealedMapTest(){
 
   @Test
   public void purchaseTest(){
-      
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain ter = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+   Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(null,civilTwo, ter, 0,"" , 0, 0, null);
+    CityController cityController = new CityController();
+    cityController.purchase("MINT", city);
+
   }
 }
