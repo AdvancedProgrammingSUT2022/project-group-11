@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import Model.Terrain;
 
 public class Unit {
+
+    private int passedTurns = 0;
     private int x,y;
     private int number;
     private int militaryPower; 
@@ -201,10 +203,15 @@ public class Unit {
             ", life='" + getLife() + "'" +
             ", speed='" + getSpeed() + "'" +
             ", isAsleep='" + isIsAsleep() + "'" +
-            ", unitType='" + getUnitType() + "'" +
+            ", unitType='" + getUnitType().name() + "'" +
             "}";
     }
 
-    
+    public int getPassedTurns() {
+        return passedTurns;
+    }
 
+    public void setPassedTurns(int passedTurns) {
+        this.passedTurns = passedTurns;
+    }
 }

@@ -1,15 +1,16 @@
 package Model.City;
 
+import Model.Buildings.BuildingTypes;
 import Model.Civilization;
 import Model.Terrain;
-import Model.Buildings.BuildingTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
+import Model.Units.Unit;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class City{
+    private ArrayList<Unit> constructionWaitList = new ArrayList<>();
     private final Civilization founder;
     private Civilization owner;
     private boolean isPuppet;
@@ -337,5 +338,14 @@ public class City{
     public ArrayList<Terrain> getMainTerrains()
     {
         return this.mainTerrains;
+    }
+
+
+    public ArrayList<Unit> getConstructionWaitList() {
+        return constructionWaitList;
+    }
+
+    public void setConstructionWaitList(ArrayList<Unit> constructionWaitList) {
+        this.constructionWaitList = constructionWaitList;
     }
 }

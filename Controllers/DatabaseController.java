@@ -1,19 +1,8 @@
 package Controllers;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.regex.Matcher;
-
-
-import Model.Civilization;
-import Model.Database;
-import Model.Map;
-import Model.Resource;
-import Model.Terrain;
-import Model.User;
 import Model.Buildings.BuildingTypes;
 import Model.City.City;
+import Model.*;
 import Model.Improvements.Improvement;
 import Model.Improvements.ImprovementTypes;
 import Model.Resources.ResourceTypes;
@@ -21,15 +10,23 @@ import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
-import Model.Units.CombatUnit;
-import Model.Units.NonCombatUnit;
-import Model.Units.NonRangedCombatUnit;
-import Model.Units.RangedCombatUnit;
-import Model.Units.Unit;
-import Model.Units.UnitTypes;
+import Model.Units.*;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+import java.util.regex.Matcher;
 
 public class DatabaseController {
     private Database database;
+    HashMap<User, String> notificationHistory = new HashMap<>() {
+        {
+            for (User user : database.getUsers()) {
+                put(user, "");
+            }
+        }
+    };
 
     public DatabaseController(Database database) {
         this.database = database;
@@ -147,6 +144,7 @@ public class DatabaseController {
         if (user.getCivilization().containsUnit(this.database.getMap().getTerrain()[x][y].getNonCombatUnit())) {
             boolean initialIsSelectedValue = this.database.getMap().getTerrain()[x][y].getNonCombatUnit().getIsSelected();
             this.database.getMap().getTerrain()[x][y].getNonCombatUnit().setIsSelected(!initialIsSelectedValue);
+
             return "Noncombat unit was selected";
         }
         return "you do not have access to this unit";
@@ -156,7 +154,6 @@ public class DatabaseController {
         switch (action) {
             case "sleep":
                 combatUnit.setIsAsleep(true);
-                combatUnit.setIsSelected(false);
                 break;
             case "alert":
                 combatUnit.setAlert(true);
@@ -177,8 +174,8 @@ public class DatabaseController {
                 combatUnit = null;
                 break;
             case "setup ranged":
-                if (combatUnit instanceof RangedCombatUnit rangedCombatUnit) {
-                    rangedCombatUnit.setIsSetUpForRangedAttack(true);
+                if (combatUnit instanceof RangedCombatUnit) {
+                    ((RangedCombatUnit) combatUnit).setIsSetUpForRangedAttack(true);
                 } else {
                     return "this unit is not a ranged combat unit!";
                 }
@@ -192,6 +189,7 @@ public class DatabaseController {
 
         return "action completed";
     }
+
 
     public String changingTheStateOfANonCombatUnit(NonCombatUnit nonCombatUnit, String action) {
         switch (action) {
@@ -208,6 +206,19 @@ public class DatabaseController {
 
     }
 
+    public void setAllParametersFalse(Unit unit) {
+        unit.setIsAsleep(false);
+        if (unit instanceof CombatUnit) {
+            ((CombatUnit) unit).setAlert(false);
+            ((CombatUnit) unit).setFortify(false);
+            ((CombatUnit) unit).setFortifyUntilHeal(false);
+            ((CombatUnit) unit).setIsGarrisoned(false);
+
+        }
+        if (unit instanceof RangedCombatUnit) {
+            ((RangedCombatUnit) unit).setIsSetUpForRangedAttack(false);
+        }
+    }
 
     public String changingTheStateOfAUnit(String action) {
         CombatUnit combatUnit = getSelectedCombatUnit();
@@ -241,8 +252,7 @@ public class DatabaseController {
         int column = this.database.getMap().getCOL();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                if (this.database.getMap().getTerrain()[i][j].getCombatUnit() != null
-                        && this.database.getMap().getTerrain()[i][j].getCombatUnit().isIsSelected()) {
+                if (this.database.getMap().getTerrain()[i][j].getCombatUnit() != null && this.database.getMap().getTerrain()[i][j].getCombatUnit().isIsSelected()) {
                     return this.database.getMap().getTerrain()[i][j].getCombatUnit();
                 }
             }
@@ -255,8 +265,7 @@ public class DatabaseController {
         int column = this.database.getMap().getCOL();
         for (int i = 0; i < row; i++) {
             for (int j = 0; j < column; j++) {
-                if (this.database.getMap().getTerrain()[i][j].getNonCombatUnit() != null
-                        && this.database.getMap().getTerrain()[i][j].getNonCombatUnit().isIsSelected()) {
+                if (this.database.getMap().getTerrain()[i][j].getNonCombatUnit() != null && this.database.getMap().getTerrain()[i][j].getNonCombatUnit().isIsSelected()) {
                     return this.database.getMap().getTerrain()[i][j].getNonCombatUnit();
                 }
             }
@@ -374,9 +383,7 @@ public class DatabaseController {
         }
         unit.getNextTerrain().removeAll(needToRemove);
 
-
     }
-
 
     public Terrain findingTheContainerTerrain(Unit unit) {
         Map map = this.getMap();
@@ -411,7 +418,6 @@ public class DatabaseController {
                 } else if (y_beginning % 2 == 0 && ((i == 0 && j == 0) || (i == 1 && j == -1) || (i == 1 && j == 1))) {
 
                 } else if (y_beginning % 2 == 1 && ((i == 0 && j == 0) || (i == -1 && j == 1) || (i == -1 && j == -1))) {
-
 
                 } else {
                     ArrayList<Terrain> path_copy = new ArrayList<>(path);
@@ -451,8 +457,6 @@ public class DatabaseController {
         return movementCost;
     }
 
-
-
     public void changingUnitsParameters(User user) {
         for (Unit unit : user.getCivilization().getUnits()) {
             if (unit instanceof CombatUnit) {
@@ -467,6 +471,7 @@ public class DatabaseController {
         if (combatUnit.getIsAsleep()) {
 
         } else if (combatUnit.getAlert()) {
+            wakeUpFromAlert(combatUnit);
 
         } else if (combatUnit.getIsGarrisoned()) {
 
@@ -481,15 +486,6 @@ public class DatabaseController {
         if (nonCombatUnit.getIsAsleep()) {
 
         }
-    }
-
-
-    public String unitsInfo(User user) {
-        StringBuilder unitsInformation = new StringBuilder();
-        for (Unit unit : user.getCivilization().getUnits()) {
-            unitsInformation.append(unit.toString());
-        }
-        return unitsInformation.toString();
     }
 
     public Technology getUnderResearchTechnology(User user) {
@@ -533,7 +529,6 @@ public class DatabaseController {
             i++;
         }
     }
-
 
     public ArrayList<Integer> setIndices(ArrayList<User> users) {
         Random rand = new Random();
@@ -589,12 +584,8 @@ public class DatabaseController {
 
     public boolean isTerrainEmpty(int x, int y) {
 
-        return this.getMap().getTerrain()[x][y].getCombatUnit() == null
-                && this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() == null;
+        return this.getMap().getTerrain()[x][y].getCombatUnit() == null && this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() == null;
     }
-
-
-
 
     public void addGoldToUser(User user) {
         for (Terrain allTerrains : user.getCivilization().getOwnedTerrains()) {
@@ -634,7 +625,6 @@ public class DatabaseController {
         // gold == 0?
 
     }
-
 
     public void consumptFood(User user) {
         for (City city : user.getCivilization().getCities()) {
@@ -689,12 +679,10 @@ public class DatabaseController {
 
     }
 
-    
-
     public void setHappinessUser(User user) {
 
         // without building
-        //  without technology
+        // without technology
 
         ResourceTypes[] luxuryResource = {ResourceTypes.COTTON, ResourceTypes.DYES, ResourceTypes.FURS, ResourceTypes.GEMS, ResourceTypes.GEMS, ResourceTypes.GOLD, ResourceTypes.INCENSE, ResourceTypes.IVORY, ResourceTypes.MARBLE, ResourceTypes.SILK, ResourceTypes.SILVER, ResourceTypes.SUGAR};
         ArrayList<ResourceTypes> happinessLuxuryIncrease = new ArrayList<>();
@@ -724,20 +712,21 @@ public class DatabaseController {
         } else {
             for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
                 if (allTerrain.getCombatUnit() != null) {
-                    //    militry power
+                    // militry power
                 }
             }
             user.getCivilization().setBooleanSettlerBuy(true);
         }
-
 
     }
 
     public String choosingATechnologyToStudy(User user, TechnologyTypes technologyType) {
         for (TechnologyTypes technologyType2 : technologyType.getRequirements()) {
             if (!isContainTechnology(user, technologyType2)) {
+                notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " you do not have required prerequisites" + "\n");
                 return "you do not have required prerequisites";
             } else if (isContainTechnology(user, technologyType2) && !getTechnologyByTechnologyType(user, technologyType2).getIsAvailable()) {
+                notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " you do not have required prerequisites" + "\n");
                 return "you do not have required prerequisites";
             }
         }
@@ -746,11 +735,12 @@ public class DatabaseController {
         }
         if (isContainTechnology(user, technologyType)) {
             getTechnologyByTechnologyType(user, technologyType).setUnderResearch(true);
+            notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " Technology is under research again" + "\n");
             return "Technology is under research again";
         } else {
             user.getCivilization().getTechnologies().add(new Technology(true, 0, technologyType, false));
         }
-
+        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " Technology is under research" + "\n");
         return "Technology is under research";
     }
 
@@ -789,11 +779,9 @@ public class DatabaseController {
 
                 } else if (y_beginning % 2 == 1 && ((i == 0 && j == 0) || (i == -1 && j == 1) || (i == -1 && j == -1))) {
 
-
                 } else {
                     neighbors.add(copy_map[x_beginning + i][y_beginning + j]);
                 }
-
 
             }
 
@@ -887,6 +875,7 @@ public class DatabaseController {
             }
 
         }
+        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " improvement will be built successfully" + "\n");
         return "improvement will be built successfully";
     }
 
@@ -907,7 +896,6 @@ public class DatabaseController {
                         return "route will be deleted";
                     }
 
-
                 } else if (hasToBeDeleted.equals("JUNGLE") || hasToBeDeleted.equals("FOREST") || hasToBeDeleted.equals("MARSH")) {
                     if (settlersTerrain.getTerrainFeatureTypes().get(0) == null) {
                         return "you have no Jungle or Forest or Marsh in this tile";
@@ -917,6 +905,7 @@ public class DatabaseController {
                         settlersTerrain.setHasToBeDeleted(true);
                         nonCombatUnit.setIsSelected(false);
                         nonCombatUnit.setIsFinished(true);
+
                         return "feature will be deleted";
 
                     }
@@ -980,17 +969,14 @@ public class DatabaseController {
 
                     } else if (terrain.getTerrainImprovement().isHasToBeDeleted()) {
 
-
                         if (terrain.getTerrainImprovement().getPassedTurns() < terrain.getTerrainImprovement().getImprovementType().getTurn()) {
                             int passedTurns = terrain.getTerrainImprovement().getPassedTurns() + 1;
                             terrain.getTerrainImprovement().setPassedTurns(passedTurns);
                         } else {
                             terrain.setTerrainImprovement(null);
 
-
                         }
                     } else if (!terrain.getTerrainImprovement().isAvailable() && !terrain.getTerrainImprovement().isPillaged()) {
-
 
                         if (terrain.getTerrainImprovement().getPassedTurns() < terrain.getTerrainImprovement().getImprovementType().getTurn()) {
                             int passedTurns = terrain.getTerrainImprovement().getPassedTurns() + 1;
@@ -1015,24 +1001,47 @@ public class DatabaseController {
         }
     }
 
+    public void increaseTurnInConstructingUnit(ArrayList<User> users) {
+        for (User user : users) {
+            for (City city : user.getCivilization().getCities()) {
+                ArrayList<Unit> needToRemove = new ArrayList<>();
+                for (Unit unit : city.getConstructionWaitList()) {
+                    if (unit.getPassedTurns() < unit.getUnitType().getTurn()) {
+                        unit.setPassedTurns(unit.getPassedTurns() + 1);
+                    } else {
+                        unit.setPassedTurns(0);
+                        user.getCivilization().getUnits().add(unit);
+                        // TODO : set Unit in Tile and City
+                        needToRemove.add(unit);
+
+                    }
+                }
+                city.getConstructionWaitList().removeAll(needToRemove);
+            }
+        }
+    }
+
     public String increaseTurnCheat(int amount) {
         this.database.setTurn(database.getTurn() + amount);
+
         return "number of turns increased";
     }
 
     public String increaseGoldCheat(User user, int amount) {
         user.getCivilization().setGold(user.getCivilization().getGold() + amount);
+        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " user's gold increased" + "\n");
         return "user's gold increased";
     }
 
-
     public String increaseHappinessCheat(User user, int amount) {
         user.getCivilization().setHappiness(user.getCivilization().getHappiness() + amount);
+        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " user's happiness increased" + "\n");
         return "user's happiness increased";
     }
 
     public String increaseScienceCheat(User user, int amount) {
         user.getCivilization().setScience(user.getCivilization().getScience() + amount);
+        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " user's sceince increased" + "\n");
         return "user's science increased";
     }
 
@@ -1042,10 +1051,9 @@ public class DatabaseController {
         } else {
             user.getCivilization().getTechnologies().add(new Technology(false, 0, technologyType, true));
         }
-
+        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " Technology was added illegally!" + "\n");
         return "Technology was added illegally!";
     }
-
 
     public String cheatMoveCombatUnit(int x, int y) {
         CombatUnit combatUnit = getSelectedCombatUnit();
@@ -1057,7 +1065,6 @@ public class DatabaseController {
         terrain.setCombatUnit(null);
         this.getMap().getTerrain()[x][y].setCombatUnit(combatUnit);
 
-
         combatUnit.setXAndY(x, y);
 
         if (combatUnit.getNextTerrain() != null) {
@@ -1068,7 +1075,6 @@ public class DatabaseController {
         combatUnit.setIsFinished(true);
 
         return "Combat unit moved illegally!";
-
 
     }
 
@@ -1082,7 +1088,6 @@ public class DatabaseController {
         terrain.setCombatUnit(null);
         this.getMap().getTerrain()[x][y].setNonCombatUnit(nonCombatUnit);
 
-
         nonCombatUnit.setXAndY(x, y);
 
         if (nonCombatUnit.getNextTerrain() != null) {
@@ -1094,7 +1099,6 @@ public class DatabaseController {
 
         return "Combat unit moved illegally!";
 
-
     }
 
     public String buyCheatTile(User user, int x, int y) {
@@ -1102,6 +1106,7 @@ public class DatabaseController {
             return "you already own this tile";
         }
         user.getCivilization().getOwnedTerrains().add(this.getMap().getTerrain()[x][y]);
+        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " you bought tile illegally!" + "\n");
         return "you bought tile illegally!";
 
     }
@@ -1117,7 +1122,6 @@ public class DatabaseController {
                 RangedCombatUnit newArcher = new RangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.ARCHER, false, false, false, false, false, false);
                 civilization.addUnit(newArcher);
                 terrain.setCombatUnit(newArcher);
-
 
                 break;
             case "CHARIOT_ARCHER":
@@ -1140,14 +1144,12 @@ public class DatabaseController {
                 civilization.addUnit(newSettler);
                 terrain.setNonCombatUnit(newSettler);
 
-
                 break;
             case "SPEARMAN":
 
                 NonRangedCombatUnit newSpearman = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.SPEARMAN, false, false, false, false, false);
                 civilization.addUnit(newSpearman);
                 terrain.setCombatUnit(newSpearman);
-
 
                 break;
             case "WARRIOR":
@@ -1156,15 +1158,12 @@ public class DatabaseController {
                 civilization.addUnit(newWarrior);
                 terrain.setCombatUnit(newWarrior);
 
-
                 break;
             case "WORKER":
-
 
                 NonCombatUnit newWorker = new NonCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.WORKER, false);
                 civilization.addUnit(newWorker);
                 terrain.setNonCombatUnit(newWorker);
-
 
                 break;
             case "CATAPULT":
@@ -1173,14 +1172,12 @@ public class DatabaseController {
                 civilization.addUnit(newCatapult);
                 terrain.setCombatUnit(newCatapult);
 
-
                 break;
             case "HORSESMAN":
 
                 NonRangedCombatUnit newHorsesman = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.HORSESMAN, false, false, false, false, false);
                 civilization.addUnit(newHorsesman);
                 terrain.setCombatUnit(newHorsesman);
-
 
                 break;
             case "SWORDSMAN":
@@ -1190,7 +1187,6 @@ public class DatabaseController {
                 civilization.addUnit(newSwordsman);
                 terrain.setCombatUnit(newSwordsman);
 
-
                 break;
             case "CROSSBOWMAN":
 
@@ -1198,14 +1194,12 @@ public class DatabaseController {
                 civilization.addUnit(newCrossbowman);
                 terrain.setCombatUnit(newCrossbowman);
 
-
                 break;
             case "KNIGHT":
 
                 NonRangedCombatUnit newKnight = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.KNIGHT, false, false, false, false, false);
                 civilization.addUnit(newKnight);
                 terrain.setCombatUnit(newKnight);
-
 
                 break;
             case "LONGSWORDSMAN":
@@ -1215,14 +1209,12 @@ public class DatabaseController {
                 civilization.addUnit(newLong);
                 terrain.setCombatUnit(newLong);
 
-
                 break;
             case "PIKEMAN":
 
                 NonRangedCombatUnit newPikeman = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.PIKEMAN, false, false, false, false, false);
                 civilization.addUnit(newPikeman);
                 terrain.setCombatUnit(newPikeman);
-
 
                 break;
             case "TREBUCHET":
@@ -1231,14 +1223,12 @@ public class DatabaseController {
                 civilization.addUnit(newTrebuchet);
                 terrain.setCombatUnit(newTrebuchet);
 
-
                 break;
             case "CANNON":
 
                 RangedCombatUnit newCannon = new RangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.CANNON, false, false, false, false, false, false);
                 civilization.addUnit(newCannon);
                 terrain.setCombatUnit(newCannon);
-
 
                 break;
             case "CAVALRY":
@@ -1254,7 +1244,6 @@ public class DatabaseController {
                 civilization.addUnit(newLancer);
                 terrain.setCombatUnit(newLancer);
 
-
                 break;
             case "MUSKETMAN":
 
@@ -1269,14 +1258,12 @@ public class DatabaseController {
                 civilization.addUnit(newRifleman);
                 terrain.setCombatUnit(newRifleman);
 
-
                 break;
             case "ANTI_TANKGUN":
 
                 NonRangedCombatUnit newAntiTank = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.ANTI_TANKGUN, false, false, false, false, false);
                 civilization.addUnit(newAntiTank);
                 terrain.setCombatUnit(newAntiTank);
-
 
                 break;
             case "ARTILLERY":
@@ -1285,13 +1272,11 @@ public class DatabaseController {
                 civilization.addUnit(newArtillery);
                 terrain.setCombatUnit(newArtillery);
 
-
             case "INFANTRY":
 
                 NonRangedCombatUnit newInfantry = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.INFANTRY, false, false, false, false, false);
                 civilization.addUnit(newInfantry);
                 terrain.setCombatUnit(newInfantry);
-
 
                 break;
             case "PANZER":
@@ -1306,7 +1291,6 @@ public class DatabaseController {
                 NonRangedCombatUnit newTank = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.TANK, false, false, false, false, false);
                 civilization.addUnit(newTank);
                 terrain.setCombatUnit(newTank);
-
 
                 break;
             default:
@@ -1357,17 +1341,145 @@ public class DatabaseController {
         return "There is no improvement to delete!";
     }
 
-    public void setTechnologyTypes( Civilization civilization)
-    {
+    public void setTechnologyTypes(Civilization civilization) {
         ArrayList<Technology> technologies = civilization.getTechnologies();
         ArrayList<TechnologyTypes> technologyTypes = civilization.getTechnologyTypes();
-        for ( Technology technology : technologies )
-        {
+        for (Technology technology : technologies) {
             technologyTypes.add(technology.getTechnologyType());
 
         }
         civilization.setTechnologyTypes(technologyTypes);
     }
 
+    public String pillageImprovement(CombatUnit combatUnit, Terrain terrain) {
+        if (terrain.getTerrainImprovement() == null) {
+            return "There is no improvement in this tile";
+        } else {
+            terrain.getTerrainImprovement().setPillaged(true);
+            combatUnit.getNextTerrain().clear();
+            combatUnit.setIsFinished(true);
+            combatUnit.setIsSelected(false);
+            return "Improvement was pillaged";
 
+        }
+    }
+
+    public ArrayList<Terrain> terrainsAtInputDistance(ArrayList<Terrain> terrains, int index, Map map) {
+        if (index == 1) {
+            return NeighborsAtADistanceOfOneFromAnArraylistOfTerrains(terrains, map);
+
+        } else {
+            ArrayList<Terrain> neighbors = new ArrayList<>();
+            ArrayList<Terrain> neighborsAtADistanceIndexMinusOne = terrainsAtInputDistance(terrains, index - 1, map);
+
+            neighbors.addAll(neighborsAtADistanceIndexMinusOne);
+            neighbors.addAll(NeighborsAtADistanceOfOneFromAnArraylistOfTerrains(neighborsAtADistanceIndexMinusOne, map));
+            neighbors.removeAll(terrains);
+
+            return deleteExcessTerrain(neighbors);
+
+        }
+
+    }
+
+    public void wakeUpFromAlert(CombatUnit combatUnit) {
+        ArrayList<Terrain> terrainsAtADistanceFour = terrainsAtInputDistance(new ArrayList<>() {
+            {
+                add(getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY()));
+            }
+
+        }, 4, this.getMap());
+
+        for (Terrain terrain : terrainsAtADistanceFour) {
+            if (terrain.getCombatUnit() != null && !getContainerCivilization(combatUnit).equals(getContainerCivilization(terrain.getCombatUnit()))) {
+                combatUnit.setAlert(false);
+                return;
+            }
+        }
+
+    }
+
+    public Civilization getContainerCivilization(Unit unit) {
+        for (User user : this.database.getUsers()) {
+            if (user.getCivilization().getUnits().contains(unit)) {
+                return user.getCivilization();
+            }
+        }
+        return null;
+    }
+
+    public String demographicPanel() {
+        StringBuilder output = new StringBuilder();
+
+        for (User user : database.getUsers()) {
+            Civilization civilization = user.getCivilization();
+            int numberOfCitizens = 0;
+            for (City city : civilization.getCities()) {
+                numberOfCitizens += city.getCitizens().size();
+            }
+            output.append("Civilization ").append(civilization.getName()).append(" size : ").append(civilization.getOwnedTerrains().size()).append("\n");
+            output.append("Civilization ").append(civilization.getName()).append(" Gold : ").append(civilization.getGold()).append("\n");
+            output.append("Civilization ").append(civilization.getName()).append(" Science : ").append(civilization.getScience()).append("\n");
+            output.append("Civilization ").append(civilization.getName()).append(" Happiness : ").append(civilization.getHappiness()).append("\n");
+            output.append("Civilization ").append(civilization.getName()).append(" Number of Cities : ").append(civilization.getCities().size()).append("\n");
+            output.append("Civilization ").append(civilization.getName()).append(" Number of Citizens : ").append(numberOfCitizens).append("\n\n\n");
+
+        }
+        return output.toString();
+    }
+
+    public String notificationHistory(User user) {
+        return notificationHistory.get(user);
+    }
+
+    public String militaryOverview(User user) {
+        StringBuilder unitsInformation = new StringBuilder();
+        for (Unit unit : user.getCivilization().getUnits()) {
+            unitsInformation.append(unit.toString()).append("\n");
+        }
+        return unitsInformation.toString();
+    }
+
+    public String unitsInfo(User user) {
+        StringBuilder unitsInformation = new StringBuilder();
+        for (Unit unit : user.getCivilization().getUnits()) {
+            unitsInformation.append(unit.getX()).append(" ").append(unit.getY()).append(" ").append(unit.getUnitType().name()).append("\n");
+        }
+        return unitsInformation.toString();
+    }
+
+
+    public Unit getUnitByCoordinatesAndName(User user, String name, int x, int y) {
+        for (Unit unit : user.getCivilization().getUnits()) {
+            if (unit.getUnitType().name().equals(name) && unit.getX() == x && unit.getY() == y) {
+                return unit;
+            }
+        }
+
+        return null;
+    }
+
+    public String activateUnit(User user, String name, int x, int y) {
+        Unit unit = getUnitByCoordinatesAndName(user, name, x, y);
+        if (unit == null) {
+            return "There is no unit with these characteristics";
+        } else {
+            setAllParametersFalse(unit);
+            return "Unit was activated";
+        }
+    }
+
+    public String economicOverview(User user) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (City city : user.getCivilization().getCities()) {
+            stringBuilder.append("Population ").append(city.getCitizens().size()).append("\n");
+            stringBuilder.append("HP ").append(city.getHP()).append("\n");
+            stringBuilder.append("Gold ").append(city.getGold()).append("\n");
+            stringBuilder.append("Science ").append(city.getScience()).append("\n");
+            stringBuilder.append("Food Storage ").append(city.getFoodStorage()).append("\n");
+
+
+        }
+        return stringBuilder.toString();
+    }
 }

@@ -63,7 +63,7 @@ public class Technology {
             "costsForResearch='" + getCostsForResearch() + "'" +
             ", technologyType='" + getTechnologyType() + "'" +
             ", isAvailable='" + isIsAvailable() + "'" +
-            ", leads to following technologies='" + getTechnologyType().getTechnologyUnlocks() + "'" +
+            ", leads to following technologies='" + getTechnologyType().getTechnologyUnlocks().toString() + "'" +
             "}";
     }
     
