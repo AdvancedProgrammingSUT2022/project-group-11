@@ -6837,4 +6837,82 @@ public void RevealedMapTest(){
     cityController.purchase("MINT", city);
 
   }
+
+  @Test
+  public void purchaseTest2(){
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain ter = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+   Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(null,civilTwo, ter, 0,"" , 0, 0, null);
+    CityController cityController = new CityController();
+    city.setNonCombatUnit(noncombatunit);
+    cityController.purchase("SETTLER", city);
+
+  }
+
+  @Test
+  public void purchaseTest3(){
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain ter = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+   Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(null,civilTwo, ter, 0,"" , 0, 0, null);
+    CityController cityController = new CityController();
+    city.setNonCombatUnit(null);
+    cityController.purchase("SETTLER", city);
+
+  }
+
+  @Test
+  public void purchaseTest4(){
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain ter = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+   Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(null,civilTwo, ter, 0,"" , 0, 0, null);
+    CityController cityController = new CityController();
+    city.setNonCombatUnit(null);
+    cityController.purchase("WORKER", city);
+
+  }
+
+  @Test
+  public void neighbourTwoTest(){
+    Map map = new Map();
+    Civilization civil = new Civilization(4, 8, "A");
+    User user = new User(null, null, null, civil);
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    ArrayList<Terrain> terrain = new ArrayList<>();
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+           terrain.add(terrains[i][j]);
+
+        }
+    }
+    map.setTerrains(terrains);
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain ter = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+   Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(null,civilTwo, ter, 0,"" , 0, 0, null);
+    CityController cityController = new CityController();
+   cityController.setMap(map);
+    ArrayList<Terrain> TwoTerrain = new ArrayList<>();
+    TwoTerrain.add(ter);
+    cityController.NeighborsAtADistanceOfTwoFromAnArraylistOfTerrains(TwoTerrain, map);
+  }
 }
