@@ -6915,4 +6915,27 @@ public void RevealedMapTest(){
     TwoTerrain.add(ter);
     cityController.NeighborsAtADistanceOfTwoFromAnArraylistOfTerrains(TwoTerrain, map);
   }
+
+  @Test
+  public void pillageImprovementTest(){
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain ter = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+     Database database = new Database();
+     DatabaseController databaseController = new DatabaseController(database);
+     databaseController.pillageImprovement(combatunit, ter);
+  }
+  @Test
+  public void pillageImprovementTest1(){
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+    CombatUnit combatunit =  new CombatUnit(3, 4, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improve = new Improvement(3, 4, ImprovementTypes.FARM);
+    Resource res = new Resource(ResourceTypes.BANANAS);
+     Terrain ter = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, null, res, new ArrayList<Revealed>());
+     Database database = new Database();
+     DatabaseController databaseController = new DatabaseController(database);
+     databaseController.pillageImprovement(combatunit, ter);
+  }
 }
