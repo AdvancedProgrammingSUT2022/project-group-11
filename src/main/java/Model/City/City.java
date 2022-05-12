@@ -23,7 +23,7 @@ public class City{
     private int rangedCombatStrength;
     private boolean garrisoned;
     private boolean isCaptured;
-    private ArrayList<Citizen> citizens;
+    private ArrayList<Citizen> citizens = new ArrayList<>();
     private boolean isBuildingSomething;
     private int food;
     private int science;
@@ -33,6 +33,7 @@ public class City{
     private int foodStorage;
     private boolean isUnderAttack;
     private ArrayList<BuildingTypes> buildings;
+    private ArrayList<Terrain> mainTerrains = new ArrayList<>();
 
 
     private CombatUnit combatUnit;
@@ -58,7 +59,7 @@ public class City{
         this.science = 0;
         this.foodStorage = 0;
         this.buildings = buildings;
-
+        this.mainTerrains.add(centralTerrain);
 
     }
 
@@ -326,5 +327,15 @@ public class City{
     public void removeCitiZen ( int index)
     {
         this.citizens.remove(index);
+    }
+
+    public void setMainTerrains(ArrayList<Terrain> mainTerrains)
+    {
+        this.mainTerrains = mainTerrains;
+    }
+
+    public ArrayList<Terrain> getMainTerrains()
+    {
+        return this.mainTerrains;
     }
 }

@@ -6675,4 +6675,13 @@ public void RevealedMapTest(){
   
 }
  
+@Test
+public void removeCityTest(){
+    Civilization civilOne = new Civilization(100, 400, "A");
+    Civilization civilTwo = new Civilization(100, 400, "A");
+    City city = new City(civilOne,null, null, 0,"" , 0, 0, null);
+    civilTwo.addCity(city);
+    CityController cityController = new CityController();
+    cityController.destroyCity(civilOne, civilTwo, city);
+}
 }

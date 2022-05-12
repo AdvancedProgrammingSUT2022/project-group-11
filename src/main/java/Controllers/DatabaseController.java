@@ -1345,5 +1345,77 @@ public class DatabaseController {
         return "There is no improvement to delete!";
     }
 
+    public void setTechnologyTypes( Civilization civilization)
+    {
+        ArrayList<Technology> technologies = civilization.getTechnologies();
+        ArrayList<TechnologyTypes> technologyTypes = civilization.getTechnologyTypes();
+        for ( Technology technology : technologies )
+        {
+            technologyTypes.add(technology.getTechnologyType());
 
+        }
+        civilization.setTechnologyTypes(technologyTypes);
+    }
+
+    public String pillageImprovement(CombatUnit combatUnit, Terrain terrain) {
+        if (terrain.getTerrainImprovement() == null) {
+            return "There is no improvement in this tile";
+        } else {
+            terrain.getTerrainImprovement().setPillaged(true);
+            combatUnit.getNextTerrain().clear();
+            combatUnit.setIsFinished(true);
+            combatUnit.setIsSelected(false);
+            return "Improvement was pillaged";
+
+        }
+    }
+
+    public ArrayList<Terrain> terrainsAtInputDistance(ArrayList<Terrain> terrains, int index, Map map) {
+        if (index == 1) {
+            return NeighborsAtADistanceOfOneFromAnArraylistOfTerrains(terrains, map);
+
+        } else {
+            ArrayList<Terrain> neighbors = new ArrayList<>();
+            ArrayList<Terrain> neighborsAtADistanceIndexMinusOne = terrainsAtInputDistance(terrains, index - 1, map);
+
+            neighbors.addAll(neighborsAtADistanceIndexMinusOne);
+            neighbors
+                    .addAll(NeighborsAtADistanceOfOneFromAnArraylistOfTerrains(neighborsAtADistanceIndexMinusOne, map));
+            neighbors.removeAll(terrains);
+
+            return deleteExcessTerrain(neighbors);
+
+        }
+
+    }
+
+    public void wakeUpFromAlert(CombatUnit combatUnit) {
+        ArrayList<Terrain> terrainsAtADistanceFour = terrainsAtInputDistance(new ArrayList<>() {
+            {
+                add(getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY()));
+            }
+
+        }, 4, this.getMap());
+
+        for(Terrain terrain : terrainsAtADistanceFour)
+        {
+            if(terrain.getCombatUnit() != null && !getContainerCivilization(combatUnit).equals(getContainerCivilization(terrain.getCombatUnit())) ){
+                combatUnit.setAlert(false);
+                return;
+            }
+        }
+
+    }
+
+    public Civilization getContainerCivilization(Unit unit)
+    {
+        for(User user : this.database.getUsers())
+        {
+            if(user.getCivilization().getUnits().contains(unit))
+            {
+                return user.getCivilization();
+            }
+        }
+        return null;
+    }
 }
