@@ -260,6 +260,34 @@ public class Map {
          }
     }
 
+   public int haveUsedThisFeature(TerrainFeatureTypes Feature){
+       int count = 0;
+       for(int i = 0; i < ROW;i++){
+           for(int j = 0; j < COL;j++){
+               if(Terrains[i][j].getTerrainFeatureTypes().indexOf(Feature) != -1){
+                   count++;
+               }
+           }
+       }
+       return count;
+   }
+
+   public boolean canExchange(TerrainFeatureTypes featureOne,TerrainFeatureTypes featureSecond){
+    for(int i = 0 ; i< ROW;i++){
+        for(int j = 0; j < COL;j++){
+            if(Terrains[i][j].getTerrainFeatureTypes().indexOf(featureSecond) != -1){
+                ArrayList <TerrainFeatureTypes> possibleTerrainFeature = Terrains[i][j].getTerrainTypes().getPossibleFeatures();
+                if(possibleTerrainFeature.indexOf(featureOne) != -1){
+                    Terrains[i][j].getTerrainFeatureTypes().remove(featureSecond);
+                    Terrains[i][j].setTerrainFeatureTypes(featureOne);
+                    return true;
+
+                }
+            }
+        }
+    }
+       return false;
+   }
     public void setFeature(){
         Random random = new Random();
        
@@ -270,6 +298,25 @@ public class Map {
                 Terrains[i][j].setTerrainFeatureTypes(possibleTerrainFeature.get(Math.abs(random.nextInt()) % possibleTerrainFeature.size()));
             }
         }
+       TerrainFeatureTypes[] allFeatures = TerrainFeatureTypes.values();
+       int[] haveUsed = new int[allFeatures.length];
+       for(int i = 0 ; i < allFeatures.length;i++){
+          haveUsed[i] = haveUsedThisFeature(allFeatures[i]);
+       }
+
+       for(int i = 0 ; i < allFeatures.length;i++){
+       if(haveUsed[i] == 0){
+           for(int j = 0; j < allFeatures.length;j++){
+               if(haveUsed[j] > 1){
+                  if(canExchange(allFeatures[i],allFeatures[j]) == true){
+                      haveUsed[i]++;
+                      haveUsed[j]--;
+                  }
+               }
+           }
+       }
+     }
+
 
     }
 
