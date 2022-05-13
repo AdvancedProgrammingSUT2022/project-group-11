@@ -20,18 +20,13 @@ import java.util.regex.Matcher;
 
 public class DatabaseController {
     private Database database;
-    HashMap<User, String> notificationHistory = new HashMap<>() {
-        {
-            for (User user : database.getUsers()) {
-                put(user, "");
-            }
-        }
-    };
+    
 
     public DatabaseController(Database database) {
         this.database = database;
+        
     }
-
+    public HashMap<User, String> notificationHistory = new HashMap<>();
     public void addUser(User user) {
         this.database.addUser(user);
     }
@@ -454,9 +449,17 @@ public class DatabaseController {
         int movementCost = 0;
         for (Terrain terrain : path) {
             if (terrain.getTerrainImprovement() != null && (terrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) || terrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD))) {
-                movementCost += 0.5 * (terrain.getTerrainTypes().getMovementCost() + terrain.getTerrainFeatureTypes().get(0).getMovementCost());
+
+                movementCost += 0.5 * terrain.getTerrainTypes().getMovementCost();
+                if( terrain.getTerrainFeatureTypes() != null &&  terrain.getTerrainFeatureTypes().size() > 0){
+                    movementCost += 0.5 *  terrain.getTerrainFeatureTypes().get(0).getMovementCost();
+                }
             } else {
-                movementCost += terrain.getTerrainTypes().getMovementCost() + terrain.getTerrainFeatureTypes().get(0).getMovementCost();
+
+                movementCost += terrain.getTerrainTypes().getMovementCost() ;
+                if( terrain.getTerrainFeatureTypes() != null &&  terrain.getTerrainFeatureTypes().size() > 0){
+                    movementCost +=   terrain.getTerrainFeatureTypes().get(0).getMovementCost();
+                }
             }
 
         }
@@ -1403,7 +1406,7 @@ public class DatabaseController {
         }, 4, this.getMap());
 
         for (Terrain terrain : terrainsAtADistanceFour) {
-            if (terrain.getCombatUnit() != null && !getContainerCivilization(combatUnit).equals(getContainerCivilization(terrain.getCombatUnit()))) {
+            if (terrain.getCombatUnit() != null && (getContainerCivilization(combatUnit) != (getContainerCivilization(terrain.getCombatUnit())))) {
                 combatUnit.setAlert(false);
                 return;
             }
@@ -1441,6 +1444,9 @@ public class DatabaseController {
     }
 
     public String notificationHistory(User user) {
+        if(notificationHistory.get(user) == null){
+            return "this user has no notification history";
+        }
         return notificationHistory.get(user);
     }
 

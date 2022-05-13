@@ -6223,11 +6223,11 @@ public class MapGeneratorTest {
         allUser.add(user);
         GameMenu gamemenu = new GameMenu(databaseController, allUser);
         Matcher matcher;
-        String input = "INFO UNITS";
-        if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
-            gamemenu.runCommands(user,input);
-        }
-        input = "INFO RESEARCH";
+      //  String input = "INFO UNITS";
+       // if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
+       //     gamemenu.runCommands(user,input);
+       // }
+       String input = "INFO RESEARCH";
         if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
             gamemenu.runCommands(user,input);
         }
