@@ -150,7 +150,7 @@ public class GameMapGenerator {
         int HowManySpaceLeft = 0;
         int HowManySpaceRight = 0;
         if (Terrains[iTerrain][l].getType().equals("revealed")) {
-            if (getRevealedFromArray(user, iTerrain, l).getTerrainFeatureTypes() != null) {
+            if (getRevealedFromArray(user, iTerrain, l).getTerrainFeatureTypes() != null && getRevealedFromArray(user, iTerrain, l).getTerrainFeatureTypes().size() > 0) {
                 TerrainFeatureType += getRevealedFromArray(user, iTerrain, l).getTerrainFeatureTypes().get(0)
                         .getShowFeatures();
             }

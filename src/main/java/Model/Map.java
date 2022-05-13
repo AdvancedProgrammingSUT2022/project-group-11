@@ -667,7 +667,7 @@ public class Map {
                         {
                             Terrains[i][j].setBooleanResource(false);
                         }
-                    }
+                 }
                 }
             }
         }

@@ -1511,8 +1511,8 @@ public class DatabaseController {
     public String cityPanel(User user) {
         StringBuilder stringBuilder = new StringBuilder();
         for (City city : user.getCivilization().getCities()) {
-            stringBuilder.append("X of Central Terrain").append(city.getCentralTerrain().getX()).append("\n");
-            stringBuilder.append("Y of Central Terrain").append(city.getCentralTerrain().getY()).append("\n\n\n");
+            stringBuilder.append("X of Central Terrain: ").append(city.getCentralTerrain().getX()).append("\n");
+            stringBuilder.append("Y of Central Terrain: ").append(city.getCentralTerrain().getY()).append("\n\n\n");
 
         }
         return stringBuilder.toString();
