@@ -1486,27 +1486,6 @@ public class DatabaseController {
             return "Unit was activated";
         }
     }
-    public String cityPanel(User user) {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (City city : user.getCivilization().getCities()) {
-            stringBuilder.append("X of Central Terrain").append(city.getCentralTerrain().getX()).append("\n");
-            stringBuilder.append("Y of Central Terrain").append(city.getCentralTerrain().getY()).append("\n\n\n");
-
-        }
-        return stringBuilder.toString();
-    }
-
-    public City getCityByCoordinates(int x , int y, User user)
-    {
-        for(City city: user.getCivilization().getCities())
-        {
-            if(x == city.getCentralTerrain().getX() && y == city.getCentralTerrain().getY())
-            {
-                return city;
-            }
-        }
-        return null;
-    }
 
     public String economicOverview(User user) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -1529,4 +1508,25 @@ public class DatabaseController {
         return stringBuilder.toString();
     }
 
+    public String cityPanel(User user) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (City city : user.getCivilization().getCities()) {
+            stringBuilder.append("X of Central Terrain").append(city.getCentralTerrain().getX()).append("\n");
+            stringBuilder.append("Y of Central Terrain").append(city.getCentralTerrain().getY()).append("\n\n\n");
+
+        }
+        return stringBuilder.toString();
+    }
+
+    public City getCityByCoordinates(int x , int y, User user)
+    {
+        for(City city: user.getCivilization().getCities())
+        {
+            if(x == city.getCentralTerrain().getX() && y == city.getCentralTerrain().getY())
+            {
+                return city;
+            }
+        }
+        return null;
+    }
 }

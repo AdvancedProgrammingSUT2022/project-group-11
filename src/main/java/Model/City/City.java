@@ -16,7 +16,7 @@ public class City {
     private ArrayList<Unit> constructionWaitList = new ArrayList<>();
     private Civilization owner;
     private boolean isPuppet;
-    private ArrayList<Terrain> neighbors ;
+    private ArrayList<Terrain> neighbors;
     private int population;
     private int HP;
     private String type;
@@ -50,7 +50,7 @@ public class City {
         this.HP = HP;
         this.type = type;
         this.combatStrength = combatStrength;
-        if (this.centralTerrain != null && this.centralTerrain.getTerrainTypes() != null &&  this.centralTerrain.getTerrainTypes().equals(TerrainTypes.HILLS))
+        if ( this.centralTerrain != null &&this.centralTerrain.getTerrainTypes() != null &&  this.centralTerrain.getTerrainTypes().equals(TerrainTypes.HILLS))
         {
             this.combatStrength += 10;
             this.HP += 7;

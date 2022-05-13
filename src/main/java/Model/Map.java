@@ -656,11 +656,17 @@ public class Map {
         }
         for(int i = 0; i < ROW;i++){
             for(int j = 0; j < COL;j++){
-                if(Terrains[i][j].getType().equals("visible")){
-                    if(Terrains[i][j].getTerrainImprovement().getImprovementType() == Terrains[i][j].getTerrainResource().getResourceType().getRequiredImprovements()){
-                        Terrains[i][j].setBooleanResource(true);
-                    }else{
-                        Terrains[i][j].setBooleanResource(false);
+                if(Terrains[i][j].getType().equals("visible"))
+                {
+                    if (Terrains[i][j].getTerrainImprovement() != null && Terrains[i][j].getTerrainResource() != null)
+                    {
+                        if (Terrains[i][j].getTerrainImprovement().getImprovementType().equals(Terrains[i][j].getTerrainResource().getResourceType().getRequiredImprovements()))
+                        {
+                            Terrains[i][j].setBooleanResource(true);
+                        } else
+                        {
+                            Terrains[i][j].setBooleanResource(false);
+                        }
                     }
                 }
             }

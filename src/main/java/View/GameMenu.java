@@ -28,10 +28,6 @@ public class GameMenu {
         this.users = users;
     }
 
-    public void setCityController(CityController cityController){
-       this.cityController = cityController;
-    }
-
     public void run(Scanner scanner) {
 
         this.databaseController.getMap().generateMap();
@@ -39,6 +35,7 @@ public class GameMenu {
 
         while (true) {
             for (User user : users) {
+
                 System.out.println(user.getUsername() + "'s turn");
                 this.databaseController.setAllUnitsUnfinished(user);
                 while (!this.databaseController.isAllTasksFinished(user)) {
@@ -46,8 +43,8 @@ public class GameMenu {
                     String input = scanner.nextLine();
                     // input.replaceFirst("^\\s*", "");
                     // input = input.trim().replaceAll("\\s+", " ");
-                    runCommands(user,input);
-                     if((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
+                    runCommands(user, input);
+                    if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
                         selectUnit(user, matcher);
                         while (this.databaseController.HasOneUnitBeenSelected()) {
                             input = scanner.nextLine();
@@ -60,26 +57,6 @@ public class GameMenu {
                 this.databaseController.setTerrainsOfEachCivilization(user);
             }
         }
-    }
-
-    public void cityInfoOptions(Matcher matcher, User user)
-    {
-        int x = Integer.parseInt(matcher.group("x"));
-        int y = Integer.parseInt(matcher.group("y"));
-        if (this.databaseController.getCityByCoordinates(x, y, user) == null) {
-            System.out.print("You do not own any city with this coordinates");
-        }
-
-        System.out.println("Food " + this.cityController
-                .cityOutput(this.databaseController.getCityByCoordinates(x, y, user)).get("food"));
-        System.out.println("production " + this.cityController
-                .cityOutput(this.databaseController.getCityByCoordinates(x, y, user)).get("production"));
-        System.out.println("gold " + this.cityController
-                .cityOutput(this.databaseController.getCityByCoordinates(x, y, user)).get("gold"));
-        System.out.println("turns remaining until population increase "
-                + this.cityController.cityOutput(this.databaseController.getCityByCoordinates(x, y, user))
-                        .get("turns remaining until population increase"));
-
     }
 
     public void showInfo(Scanner scanner, Matcher matcher, User user) {
@@ -106,18 +83,18 @@ public class GameMenu {
 
                 break;
             case "CITIES":
-            System.out.println(this.databaseController.cityPanel(user));
-            String input2 = scanner.nextLine();
-            if ((matcher = GameEnums.getMatcher(input2, GameEnums.CITY_INFO)) != null) {
-                cityInfoOptions(matcher, user);
 
-            } else if (input2.equals("INFO ECONOMIC")) {
+                System.out.println(this.databaseController.cityPanel(user));
+                String input2 = scanner.nextLine();
+                if ((matcher = GameEnums.getMatcher(input2, GameEnums.CITY_INFO)) != null) {
+                    cityInfoOptions(matcher, user);
 
-                System.out.println(this.databaseController.economicOverview(user));
-            } else {
-                System.out.println("You decided to not select any unit");
-            }
-            
+                } else if (input2.equals("INFO ECONOMIC")) {
+
+                    System.out.println(this.databaseController.economicOverview(user));
+                } else {
+                    System.out.println("You decided to not select any unit");
+                }
                 break;
 
             case "DEMOGRAPHICS":
@@ -134,7 +111,6 @@ public class GameMenu {
                 break;
             case "ECONOMIC":
                 System.out.println(this.databaseController.economicOverview(user));
-
 
                 break;
 
@@ -252,11 +228,13 @@ public class GameMenu {
         String name = matcher.group("name");
         switch (name) {
             case "AGRICULTURE":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.AGRICULTURE));
+                System.out
+                        .println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.AGRICULTURE));
 
                 break;
             case "ANIMAL_HUSBANDRY":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ANIMAL_HUSBANDRY));
+                System.out.println(
+                        this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ANIMAL_HUSBANDRY));
 
                 break;
             case "ARCHERY":
@@ -264,100 +242,92 @@ public class GameMenu {
 
                 break;
             case "BRONZE_WORKING":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.BRONZE_WORKING));
+                System.out.println(
+                        this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.BRONZE_WORKING));
 
                 break;
             case "CALENDAR":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.CALENDAR));
 
-
                 break;
             case "MASONRY":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.MASONRY));
-
 
                 break;
             case "MINING":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.MINING));
 
-
                 break;
             case "POTTERY":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.POTTERY));
-
 
                 break;
             case "THE_WHEEL":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.THE_WHEEL));
 
-
                 break;
             case "TRAPPING":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.TRAPPING));
-
 
                 break;
             case "WRITING":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.WRITING));
 
-
                 break;
             case "CONSTRUCTION":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.CONSTRUCTION));
-
+                System.out.println(
+                        this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.CONSTRUCTION));
 
                 break;
             case "HORSEBACK_RIDING":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.HORSEBACK_RIDING));
-
+                System.out.println(
+                        this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.HORSEBACK_RIDING));
 
                 break;
             case "IRON_WORKING":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.IRON_WORKING));
-
+                System.out.println(
+                        this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.IRON_WORKING));
 
                 break;
             case "MATHEMATICS":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.MATHEMATICS));
-
+                System.out
+                        .println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.MATHEMATICS));
 
                 break;
             case "PHILOSOPHY":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.PHILOSOPHY));
-
+                System.out
+                        .println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.PHILOSOPHY));
 
                 break;
             case "CHIVALRY":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.CHIVALRY));
 
-
                 break;
             case "CIVIL_SERVICE":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.CIVIL_SERVICE));
-
+                System.out.println(
+                        this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.CIVIL_SERVICE));
 
                 break;
             case "CURRENCY":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.CURRENCY));
 
-
                 break;
             case "EDUCATION":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.EDUCATION));
 
-
                 break;
             case "ENGINEERING":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ENGINEERING));
+                System.out
+                        .println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ENGINEERING));
 
                 break;
             case "MACHINERY":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.MACHINERY));
 
-
                 break;
             case "METAL_CASTING":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.METAL_CASTING));
+                System.out.println(
+                        this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.METAL_CASTING));
 
                 break;
             case "PHYSICS":
@@ -367,64 +337,59 @@ public class GameMenu {
             case "STEEL":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.STEEL));
 
-
                 break;
             case "THEOLOGY":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.THEOLOGY));
-
 
                 break;
             case "ACOUSTICS":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ACOUSTICS));
 
-
                 break;
             case "ARCHAEOLOGY":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ARCHAEOLOGY));
+                System.out
+                        .println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ARCHAEOLOGY));
 
                 break;
             case "BANKING":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.BANKING));
 
-
                 break;
             case "CHEMISTRY":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.CHEMISTRY));
-
 
                 break;
             case "ECONOMICS":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ECONOMICS));
 
-
                 break;
             case "FERTILIZER":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.FERTILIZER));
-
+                System.out
+                        .println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.FERTILIZER));
 
                 break;
             case "GUNPOWDER":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.GUNPOWDER));
 
-
                 break;
             case "METALLURGY":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.METALLURGY));
-
+                System.out
+                        .println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.METALLURGY));
 
                 break;
             case "MILITARY_SCIENCE":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.MILITARY_SCIENCE));
-
+                System.out.println(
+                        this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.MILITARY_SCIENCE));
 
                 break;
             case "PRINTING_PRESS":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.PRINTING_PRESS));
-
+                System.out.println(
+                        this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.PRINTING_PRESS));
 
                 break;
             case "SCIENTIFIC_THEORY":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.SCIENTIFIC_THEORY));
+                System.out.println(
+                        this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.SCIENTIFIC_THEORY));
 
                 break;
             case "BIOLOGY":
@@ -432,18 +397,17 @@ public class GameMenu {
 
                 break;
             case "COMBUSTION":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.COMBUSTION));
-
+                System.out
+                        .println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.COMBUSTION));
 
                 break;
             case "DYNAMITE":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.DYNAMITE));
 
-
                 break;
             case "ELECTRICITY":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ELECTRICITY));
-
+                System.out
+                        .println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.ELECTRICITY));
 
                 break;
             case "RADIO":
@@ -453,16 +417,15 @@ public class GameMenu {
             case "RAILROAD":
                 System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.RAILROAD));
 
-
                 break;
             case "REPLACEABLE_PARTS":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.REPLACEABLE_PARTS));
-
+                System.out.println(
+                        this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.REPLACEABLE_PARTS));
 
                 break;
             case "STEAM_POWER":
-                System.out.println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.STEAM_POWER));
-
+                System.out
+                        .println(this.databaseController.choosingATechnologyToStudy(user, TechnologyTypes.STEAM_POWER));
 
                 break;
             case "TELEGRAPH":
@@ -470,9 +433,7 @@ public class GameMenu {
 
                 break;
 
-
         }
-
 
     }
 
@@ -523,81 +484,65 @@ public class GameMenu {
             case "CALENDAR":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.CALENDAR));
 
-
                 break;
             case "MASONRY":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.MASONRY));
-
 
                 break;
             case "MINING":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.MINING));
 
-
                 break;
             case "POTTERY":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.POTTERY));
-
 
                 break;
             case "THE_WHEEL":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.THE_WHEEL));
 
-
                 break;
             case "TRAPPING":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.TRAPPING));
-
 
                 break;
             case "WRITING":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.WRITING));
 
-
                 break;
             case "CONSTRUCTION":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.CONSTRUCTION));
-
 
                 break;
             case "HORSEBACK_RIDING":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.HORSEBACK_RIDING));
 
-
                 break;
             case "IRON_WORKING":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.IRON_WORKING));
-
 
                 break;
             case "MATHEMATICS":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.MATHEMATICS));
 
-
                 break;
             case "PHILOSOPHY":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.PHILOSOPHY));
-
 
                 break;
             case "CHIVALRY":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.CHIVALRY));
 
-
                 break;
             case "CIVIL_SERVICE":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.CIVIL_SERVICE));
-
 
                 break;
             case "CURRENCY":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.CURRENCY));
 
-
                 break;
             case "EDUCATION":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.EDUCATION));
-
 
                 break;
             case "ENGINEERING":
@@ -606,7 +551,6 @@ public class GameMenu {
                 break;
             case "MACHINERY":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.MACHINERY));
-
 
                 break;
             case "METAL_CASTING":
@@ -620,16 +564,13 @@ public class GameMenu {
             case "STEEL":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.STEEL));
 
-
                 break;
             case "THEOLOGY":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.THEOLOGY));
 
-
                 break;
             case "ACOUSTICS":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.ACOUSTICS));
-
 
                 break;
             case "ARCHAEOLOGY":
@@ -639,41 +580,33 @@ public class GameMenu {
             case "BANKING":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.BANKING));
 
-
                 break;
             case "CHEMISTRY":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.CHEMISTRY));
-
 
                 break;
             case "ECONOMICS":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.ECONOMICS));
 
-
                 break;
             case "FERTILIZER":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.FERTILIZER));
-
 
                 break;
             case "GUNPOWDER":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.GUNPOWDER));
 
-
                 break;
             case "METALLURGY":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.METALLURGY));
-
 
                 break;
             case "MILITARY_SCIENCE":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.MILITARY_SCIENCE));
 
-
                 break;
             case "PRINTING_PRESS":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.PRINTING_PRESS));
-
 
                 break;
             case "SCIENTIFIC_THEORY":
@@ -687,16 +620,13 @@ public class GameMenu {
             case "COMBUSTION":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.COMBUSTION));
 
-
                 break;
             case "DYNAMITE":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.DYNAMITE));
 
-
                 break;
             case "ELECTRICITY":
                 System.out.println(this.databaseController.buyTechnologyCheat(user, TechnologyTypes.ELECTRICITY));
-
 
                 break;
             case "RADIO":
@@ -723,12 +653,10 @@ public class GameMenu {
 
     }
 
-
     public void repairImprovementCheat(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         System.out.println(this.databaseController.repairCheatImprovement(x, y));
-
 
     }
 
@@ -736,7 +664,6 @@ public class GameMenu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         System.out.println(this.databaseController.deleteCheatImprovement(x, y));
-
 
     }
 
@@ -771,7 +698,6 @@ public class GameMenu {
                 break;
         }
 
-
     }
 
     public void setCheatTerrainFeature(Matcher matcher) {
@@ -780,16 +706,19 @@ public class GameMenu {
         String name = matcher.group("name");
         switch (name) {
             case "FLOODPLAINS":
-                System.out.println(this.databaseController.setCheatTerrainFeatureType(TerrainFeatureTypes.FLOODPLAINS, x, y));
+                System.out.println(
+                        this.databaseController.setCheatTerrainFeatureType(TerrainFeatureTypes.FLOODPLAINS, x, y));
                 break;
             case "FOREST":
-                System.out.println(this.databaseController.setCheatTerrainFeatureType(TerrainFeatureTypes.FOREST, x, y));
+                System.out
+                        .println(this.databaseController.setCheatTerrainFeatureType(TerrainFeatureTypes.FOREST, x, y));
                 break;
             case "ICE":
                 System.out.println(this.databaseController.setCheatTerrainFeatureType(TerrainFeatureTypes.ICE, x, y));
                 break;
             case "JUNGLE":
-                System.out.println(this.databaseController.setCheatTerrainFeatureType(TerrainFeatureTypes.JUNGLE, x, y));
+                System.out
+                        .println(this.databaseController.setCheatTerrainFeatureType(TerrainFeatureTypes.JUNGLE, x, y));
                 break;
             case "MARSH":
                 System.out.println(this.databaseController.setCheatTerrainFeatureType(TerrainFeatureTypes.MARSH, x, y));
@@ -864,7 +793,6 @@ public class GameMenu {
             case "WHEAT":
                 System.out.println(this.databaseController.setCheatResource(ResourceTypes.WHEAT, x, y));
                 break;
-
 
         }
     }
@@ -944,7 +872,8 @@ public class GameMenu {
         Matcher matcher;
         if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
             Scanner scanner = new Scanner(System.in);
-            showInfo(scanner, matcher, user);;
+            showInfo(scanner, matcher, user);
+            ;
 
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_TECHNOLOGY)) != null) {
             selectTechnology(matcher, user);
@@ -980,15 +909,15 @@ public class GameMenu {
             selectedCityActions(getCityFromMatcher(matcher), input);
             scanner2.close();
 
-        }else if ((matcher = GameEnums.getMatcher(input, GameEnums.IMPROVEMENT_REPAIR)) != null) {
+        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.IMPROVEMENT_REPAIR)) != null) {
             repairImprovement();
 
-        }else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
+        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
             buildUnit(matcher, user);
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_REMOVE)) != null) {
             deleteUnit(matcher, user);
 
-        }  else if (input.equals("SHOW MAP")) {
+        } else if (input.equals("SHOW MAP")) {
             String[][] result = this.databaseController.getMap().printMap(this.databaseController.getDatabase(), user);
             for (int i = 0; i < this.databaseController.getMap().getROW(); i++) {
                 for (int j = 0; j < this.databaseController.getMap().getIteration(); j++) {
@@ -999,8 +928,6 @@ public class GameMenu {
             System.out.println("INVALID COMMAND");
         }
     }
-
-
 
     public void oneUnitHasBeenSelected(String input, Matcher matcher, User user) {
         if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_MOVETO)) != null) {
@@ -1032,7 +959,8 @@ public class GameMenu {
                 System.out.println("this unit is not a combat unit");
             } else {
                 CombatUnit combatUnit = this.databaseController.getSelectedCombatUnit();
-                System.out.println(this.databaseController.pillageImprovement(combatUnit, this.databaseController.getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY())));
+                System.out.println(this.databaseController.pillageImprovement(combatUnit,
+                        this.databaseController.getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY())));
             }
 
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY_HEAL)) != null) {
@@ -1062,7 +990,10 @@ public class GameMenu {
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ATTACK)) != null) {
 
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FOUND_CITY)) != null) {
-            this.cityController.foundCity( user.getCivilization(), this.databaseController.getSelectedNonCombatUnit(), this.databaseController.getTerrainByCoordinates( this.databaseController.getSelectedNonCombatUnit().getX(), this.databaseController.getSelectedNonCombatUnit().getY()));
+            this.cityController.foundCity(user.getCivilization(), this.databaseController.getSelectedNonCombatUnit(),
+                    this.databaseController.getTerrainByCoordinates(
+                            this.databaseController.getSelectedNonCombatUnit().getX(),
+                            this.databaseController.getSelectedNonCombatUnit().getY()));
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_CANCEL_MISSION)) != null) {
 
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_WAKE)) != null) {
@@ -1075,52 +1006,63 @@ public class GameMenu {
             System.out.println("INVALID COMMAND");
         }
     }
-    public City getCityFromMatcher(Matcher matcher)
-    {
+
+    public City getCityFromMatcher(Matcher matcher) {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         City city = this.databaseController.getTerrainByCoordinates(x, y).getCity();
-        if ( city != null)
-        {
+        if (city != null) {
             return city;
-        }
-        else
-        {
+        } else {
             System.out.println(" There are no cities in these coordinates");
             return null;
         }
 
-
     }
 
-    public void selectedCityActions( City city, String input )
-    {
-        if ( city != null)
-        {
+    public void selectedCityActions(City city, String input) {
+        if (city != null) {
             Matcher matcher;
-            if ((matcher = GameEnums.getMatcher(input, GameEnums.ASSIGN_CITIZEN)) != null)
-            {
+            if ((matcher = GameEnums.getMatcher(input, GameEnums.ASSIGN_CITIZEN)) != null) {
                 int index = Integer.parseInt(matcher.group("CitizenIndex"));
-                this.cityController.assignCitizen(city, city.getCitizens().get(index), this.databaseController.getTerrainByCoordinates(Integer.parseInt(matcher.group("X")), Integer.parseInt(matcher.group("Y"))));
-            }
-            else if ( ( matcher = GameEnums.getMatcher(input, GameEnums.BUY_UNIT)) != null )
-            {
+                this.cityController.assignCitizen(city, city.getCitizens().get(index),
+                        this.databaseController.getTerrainByCoordinates(Integer.parseInt(matcher.group("X")),
+                                Integer.parseInt(matcher.group("Y"))));
+            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_UNIT)) != null) {
                 this.cityController.createUnit(matcher, city);
-            }
-            else if ( ( matcher = GameEnums.getMatcher(input, GameEnums.REMOVE_FROM_WORK)) != null)
-            {
-                this.cityController.removeCitizenFromWork( city.getCitizens().get(Integer.parseInt(matcher.group("CitizenIndex"))));
-            }
-            else if ( (matcher = GameEnums.getMatcher(input, GameEnums.BUY_TILE) ) != null)
-            {
-                this.cityController.buyTile(Integer.parseInt(matcher.group("X")), Integer.parseInt(matcher.group("Y")), city);
+            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.REMOVE_FROM_WORK)) != null) {
+                this.cityController
+                        .removeCitizenFromWork(city.getCitizens().get(Integer.parseInt(matcher.group("CitizenIndex"))));
+            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TILE)) != null) {
+                this.cityController.buyTile(Integer.parseInt(matcher.group("X")), Integer.parseInt(matcher.group("Y")),
+                        city);
             }
 
         }
 
+    }
+
+    public void cityInfoOptions(Matcher matcher, User user)
+    {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if (this.databaseController.getCityByCoordinates(x, y, user) == null) {
+            System.out.print("You do not own any city with this coordinates");
+        }
+
+        System.out.println("Food " + this.cityController
+                .cityOutput(this.databaseController.getCityByCoordinates(x, y, user)).get("food"));
+        System.out.println("production " + this.cityController
+                .cityOutput(this.databaseController.getCityByCoordinates(x, y, user)).get("production"));
+        System.out.println("gold " + this.cityController
+                .cityOutput(this.databaseController.getCityByCoordinates(x, y, user)).get("gold"));
+        System.out.println("turns remaining until population increase "
+                + this.cityController.cityOutput(this.databaseController.getCityByCoordinates(x, y, user))
+                        .get("turns remaining until population increase"));
 
     }
 
+    public void setCityController(CityController cityController2) {
+    }
 
 }
-

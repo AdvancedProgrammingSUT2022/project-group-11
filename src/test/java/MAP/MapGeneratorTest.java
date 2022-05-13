@@ -7426,4 +7426,89 @@ public void RevealedMapTest(){
     databaseController.getUnitByCoordinatesAndName(user, "SETTLER", 3, 4);
     databaseController.activateUnit(user, "SETTLER", 3, 4);
  }
+ @Test
+ public void removeCitizenFromWorkTest(){
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    NonCombatUnit combatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit,
+            improvement, resource,
+            new ArrayList<Revealed>());
+
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+     Citizen citizen = new Citizen(city);
+     citizen.setHasWork(true);
+     CityController cityController = new CityController();
+     cityController.removeCitizenFromWork(citizen);
+ }
+
+ @Test
+ public void getCityFromMatcherTest(){
+    Map map = new Map();
+  
+   
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    map.setTerrains(terrains);
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    NonCombatUnit combatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit,
+            improvement, resource,
+            new ArrayList<Revealed>());
+    
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+    central.setCity(city);
+    String input = "SELECT CITY 3 4";
+    Matcher matcher;
+    User user = new User(null, null, null, civil);
+    Database database = new Database();
+    database.setMap(map);
+    database.addUser(user);
+    DatabaseController databaseController = new DatabaseController(database);
+    
+    GameMenu gameMenu = new GameMenu(databaseController, database.getUsers());
+    if((matcher = getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null){
+          gameMenu.getCityFromMatcher(matcher);
+    }
+    input = "SELECT CITY 3 5";
+    gameMenu.getCityFromMatcher(matcher);
+ }
+
+ @Test
+ public void whattoDoWithCityTest(){
+     String input = "ATTACH CITY";
+     Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+     CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+     UnitTypes.SETTLER, true, false, false, false, false);
+     Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+     Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+             improvement, resource,
+             new ArrayList<Revealed>());
+     ArrayList<Unit> units = new ArrayList<>();
+     units.add(combatunit);
+     Civilization civil = new Civilization(100, 3, "A");
+     civil.setUnits(units);
+     City city = new City(null, civil,central , 3, null,0, 0);
+     city.setHP(-2);
+     central.setCity(city);
+     CityController cityController = new CityController();
+     cityController.whatToDoWithTheCity(input, city, civil);
+     input = "DESTROY CITY";
+     cityController.whatToDoWithTheCity(input, city, civil);
+ }
 }
