@@ -20,18 +20,13 @@ import java.util.regex.Matcher;
 
 public class DatabaseController {
     private Database database;
-    HashMap<User, String> notificationHistory = new HashMap<>() {
-        {
-            for (User user : database.getUsers()) {
-                put(user, "");
-            }
-        }
-    };
+
 
     public DatabaseController(Database database) {
         this.database = database;
-    }
 
+    }
+    public HashMap<User, String> notificationHistory = new HashMap<>();
     public void addUser(User user) {
         this.database.addUser(user);
     }
@@ -190,12 +185,13 @@ public class DatabaseController {
         return "action completed";
     }
 
-
     public String changingTheStateOfANonCombatUnit(NonCombatUnit nonCombatUnit, String action) {
-        switch (action) {
-            case "sleep" -> nonCombatUnit.setIsAsleep(true);
-            case "wake" -> nonCombatUnit.setIsAsleep(false);
-            case "delete" -> nonCombatUnit = null;
+        if (action.equals("sleep")) {
+            nonCombatUnit.setIsAsleep(true);
+        } else if (action.equals("wake")) {
+            nonCombatUnit.setIsAsleep(false);
+        } else if (action.equals("delete")) {
+            nonCombatUnit = null;
         }
         if (!action.equals("delete")) {
             nonCombatUnit.setIsFinished(true);
@@ -453,9 +449,17 @@ public class DatabaseController {
         int movementCost = 0;
         for (Terrain terrain : path) {
             if (terrain.getTerrainImprovement() != null && (terrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) || terrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD))) {
-                movementCost += 0.5 * (terrain.getTerrainTypes().getMovementCost() + terrain.getTerrainFeatureTypes().get(0).getMovementCost());
+
+                movementCost += 0.5 * terrain.getTerrainTypes().getMovementCost();
+                if( terrain.getTerrainFeatureTypes() != null &&  terrain.getTerrainFeatureTypes().size() > 0){
+                    movementCost += 0.5 *  terrain.getTerrainFeatureTypes().get(0).getMovementCost();
+                }
             } else {
-                movementCost += terrain.getTerrainTypes().getMovementCost() + terrain.getTerrainFeatureTypes().get(0).getMovementCost();
+
+                movementCost += terrain.getTerrainTypes().getMovementCost() ;
+                if( terrain.getTerrainFeatureTypes() != null &&  terrain.getTerrainFeatureTypes().size() > 0){
+                    movementCost +=   terrain.getTerrainFeatureTypes().get(0).getMovementCost();
+                }
             }
 
         }
@@ -768,7 +772,12 @@ public class DatabaseController {
     }
 
     public String researchInfo(User user) {
-        return getUnderResearchTechnology(user).toString();
+        if(getUnderResearchTechnology(user)!=null)
+        {
+            return getUnderResearchTechnology(user).toString();
+        }
+        return "there is no under research technology";
+
     }
 
     public ArrayList<Terrain> getNeighborTerrainsOfOneTerrain(Terrain terrain, Map map) {
@@ -1037,6 +1046,7 @@ public class DatabaseController {
         notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " user's gold increased" + "\n");
         return "user's gold increased";
     }
+
 
     public String increaseHappinessCheat(User user, int amount) {
         user.getCivilization().setHappiness(user.getCivilization().getHappiness() + amount);
@@ -1396,7 +1406,7 @@ public class DatabaseController {
         }, 4, this.getMap());
 
         for (Terrain terrain : terrainsAtADistanceFour) {
-            if (terrain.getCombatUnit() != null && !getContainerCivilization(combatUnit).equals(getContainerCivilization(terrain.getCombatUnit()))) {
+            if (terrain.getCombatUnit() != null && (getContainerCivilization(combatUnit) != (getContainerCivilization(terrain.getCombatUnit())))) {
                 combatUnit.setAlert(false);
                 return;
             }
@@ -1434,6 +1444,9 @@ public class DatabaseController {
     }
 
     public String notificationHistory(User user) {
+        if(notificationHistory.get(user) == null){
+            return "this user has no notification history";
+        }
         return notificationHistory.get(user);
     }
 
@@ -1481,7 +1494,7 @@ public class DatabaseController {
             stringBuilder.append("HP ").append(city.getHP()).append("\n");
             stringBuilder.append("Gold ").append(city.getGold()).append("\n");
             stringBuilder.append("Science ").append(city.getScience()).append("\n");
-            stringBuilder.append("Food Storage ").append(city.getFoodStorage()).append("\n");
+            stringBuilder.append("Food Storage ").append(city.getFood()).append("\n");
 
 
         }

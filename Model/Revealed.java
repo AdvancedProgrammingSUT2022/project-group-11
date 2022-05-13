@@ -1,14 +1,14 @@
 package Model;
 
+import java.util.ArrayList;
+
 import Model.Improvements.Improvement;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
 
-import java.util.ArrayList;
-
-public class Revealed {
+public class Revealed{
 
     private User user;
     private TerrainTypes terrainTypes;
@@ -30,12 +30,13 @@ public class Revealed {
         this.unlockResource = bool;
     }
 
-    public boolean getBooleanResource() {
-        return this.unlockResource;
+
+    public void setBooleanResource(boolean bool){
+        this.unlockResource = bool;
     }
 
-    public void setBooleanResource(boolean bool) {
-        this.unlockResource = bool;
+    public boolean getBooleanResource(){
+        return this.unlockResource;
     }
 
     public User getUser() {

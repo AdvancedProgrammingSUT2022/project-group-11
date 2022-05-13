@@ -48,6 +48,10 @@ public enum GameEnums {
     SET_CHEAT_TERRAIN_TYPE("^SET\\sCHEAT\\sTERRAIN\\sTYPE\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     DELETE_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     REPAIR_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREPAIR\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    ASSIGN_CITIZEN("^CITY\\sASSIGN\\sCITIZEN\\sNUMBER\\s(<?CitizenIndex>\\d+)\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
+    BUY_UNIT("^CITY\\sBUY\\sUNIT\\s(<?subdivision>\\S+)"),
+    REMOVE_FROM_WORK("^CITY\\sREMOVE\\sCITIZEN\\sNUMBER\\s(<?CitizenIndex>\\d+)"),
+    BUY_TILE("CITY\\sBUY\\sTILE\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
 
 
     INTEGER("^-?\\d+$");

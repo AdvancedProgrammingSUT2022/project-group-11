@@ -17,7 +17,7 @@ public class Terrain {
     private int y;
     private String Type;
     private TerrainTypes terrainTypes;
-    private final ArrayList<TerrainFeatureTypes> terrainFeatureTypes;
+    private  ArrayList<TerrainFeatureTypes> terrainFeatureTypes;
     private boolean isBeingWorkedOn;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;

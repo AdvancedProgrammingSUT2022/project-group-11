@@ -58,7 +58,7 @@ public class Technology {
 
     @Override
     public String toString() {
-        return "{" + "costsForResearch='" + getCostsForResearch() + "'" + ", technologyType='" + getTechnologyType() + "'" + ", isAvailable='" + isIsAvailable() + "'" + ", leads to following technologies='" + getTechnologyType().getTechnologyUnlocks().toString() + "'" + "}";
+        return "{" + "costsForResearch='" + getCostsForResearch() + "'" + ", technologyType='" + getTechnologyType().name() + "'" + ", isAvailable='" + isIsAvailable() + "'" + ", leads to following technologies='" + getTechnologyType().getTechnologyUnlocks().toString() + "'" + "}";
     }
 
 

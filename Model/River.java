@@ -2,9 +2,9 @@ package Model;
 
 public class River {
 
-    private final Terrain first;
-    private final Terrain second;
-    private final Color color;
+    private Terrain first;
+    private Terrain second;
+    private Color color;
 
     public River(Terrain first, Terrain second) {
 

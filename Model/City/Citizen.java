@@ -3,7 +3,7 @@ package Model.City;
 import Model.Terrain;
 
 public class Citizen {
-    private final City city;
+    private City city;
     private boolean hasWork;
     private Terrain terrain;
     private int production;
@@ -20,26 +20,32 @@ public class Citizen {
         this.terrain = tile;
         this.hasWork = true;
 
+    }
+
+    public void deleteWork()
+    {
+        this.production = 1;
+        this.terrain = city.getCentralTerrain();
 
     }
 
-    public void deleteWork() {
-
-    }
-
-    public boolean getHasWork() {
+    public boolean getHasWork()
+    {
         return hasWork;
     }
 
-    public void setHasWork(boolean hasWork) {
+    public void setHasWork(boolean hasWork)
+    {
         this.hasWork = hasWork;
     }
 
-    public int getProduction() {
+    public int getProduction()
+    {
         return production;
     }
 
-    public void setProduction(int production) {
+    public void setProduction(int production)
+    {
         this.production = production;
     }
 }
