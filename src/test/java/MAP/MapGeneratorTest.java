@@ -7332,4 +7332,54 @@ public void RevealedMapTest(){
     DatabaseController databaseController = new DatabaseController(database);
     databaseController.increaseTurnInConstructingUnit(database.getUsers());
   }
+  @Test
+  public void demoghraphicPanelTest(){
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    NonCombatUnit combatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit,
+            improvement, resource,
+            new ArrayList<Revealed>());
+
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+    civil.addCity(city);
+    ArrayList<Unit> ConstructingUnit = new ArrayList<>();
+    combatunit.setPassedTurns(100000);
+    ConstructingUnit.add(combatunit);
+    city.setConstructionWaitList(ConstructingUnit);
+    User user = new User(null, null, null, civil);
+    Database database = new Database();
+    database.addUser(user);
+    DatabaseController databaseController = new DatabaseController(database);
+    databaseController.demographicPanel();
+    databaseController.notificationHistory(user);
+  }
+
+  @Test
+  public void militaryOverViewTest(){
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    NonCombatUnit combatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit,
+            improvement, resource,
+            new ArrayList<Revealed>());
+
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+    civil.addCity(city);
+    ArrayList<Unit> ConstructingUnit = new ArrayList<>();
+    combatunit.setPassedTurns(100000);
+    ConstructingUnit.add(combatunit);
+    civil.setUnits(ConstructingUnit);
+    city.setConstructionWaitList(ConstructingUnit);
+    User user = new User(null, null, null, civil);
+    Database database = new Database();
+    database.addUser(user);
+    DatabaseController databaseController = new DatabaseController(database);
+    databaseController.militaryOverview(user);
+  
+}
 }
