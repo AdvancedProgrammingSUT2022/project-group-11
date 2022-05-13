@@ -9,8 +9,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ProfileMenu {
-    private DatabaseController databaseController;
-    private User user;
+    private final DatabaseController databaseController;
+    private final User user;
 
     public ProfileMenu(DatabaseController databaseController, User user) {
         this.databaseController = databaseController;
@@ -26,8 +26,7 @@ public class ProfileMenu {
             } else if ((matcher = getCommandMatcher(input, MenuEnums.CHANGE_PASSWORD.getRegex())).matches()) {
                 System.out.println(this.databaseController.changePassword(matcher, this.user));
 
-            } else
-                System.out.println("invalid command");
+            } else System.out.println("invalid command");
         }
         return;
     }

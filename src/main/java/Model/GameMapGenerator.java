@@ -2,9 +2,6 @@ package Model;
 
 import java.util.ArrayList;
 
-import Model.TerrainFeatures.TerrainFeatureTypes;
-import Model.Terrains.TerrainTypes;
-
 public class GameMapGenerator {
 
     private int Iteration;
@@ -85,7 +82,7 @@ public class GameMapGenerator {
     private void betweetTwoTailFirstHalf(int i, int j, int l) {
 
         River river;
-        if (i > 0 && l < COL - 1 && (river = hasRiver(Terrains[i][l], Terrains[i - 1][l + 1])) != null) {
+        if (i > 0 && l < COL - 1 && (river = hasRiver(Terrains[i][l], Terrains[i - 1][l + 1])) != null && Terrains[i][l].getType().equals("visible") &&Terrains[i - 1][l + 1].getType().equals("visible") ) {
             Printmap[i][j] += river.getColor();
             Printmap[i][j] += "\\";
             Printmap[i][j] += Color.RESET;
@@ -97,7 +94,7 @@ public class GameMapGenerator {
 
     private void betweenTwoTailSecondHalf(int i, int j, int l) {
         River river;
-        if (l < COL - 1 && (river = hasRiver(Terrains[i][l], Terrains[i][l + 1])) != null) {
+        if (l < COL - 1 && (river = hasRiver(Terrains[i][l], Terrains[i][l + 1])) != null && Terrains[i][l].getType().equals("visible") &&Terrains[i][l + 1].getType().equals("visible")) {
             Printmap[i][j] += river.getColor();
             Printmap[i][j] += "/";
             Printmap[i][j] += Color.RESET;

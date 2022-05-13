@@ -3,7 +3,6 @@ package Model;
 import java.util.ArrayList;
 
 import Model.Improvements.Improvement;
-import Model.Improvements.ImprovementTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;

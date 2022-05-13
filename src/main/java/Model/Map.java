@@ -260,6 +260,34 @@ public class Map {
          }
     }
 
+   public int haveUsedThisFeature(TerrainFeatureTypes Feature){
+       int count = 0;
+       for(int i = 0; i < ROW;i++){
+           for(int j = 0; j < COL;j++){
+               if(Terrains[i][j].getTerrainFeatureTypes().indexOf(Feature) != -1){
+                   count++;
+               }
+           }
+       }
+       return count;
+   }
+
+   public boolean canExchange(TerrainFeatureTypes featureOne,TerrainFeatureTypes featureSecond){
+    for(int i = 0 ; i< ROW;i++){
+        for(int j = 0; j < COL;j++){
+            if(Terrains[i][j].getTerrainFeatureTypes().indexOf(featureSecond) != -1){
+                ArrayList <TerrainFeatureTypes> possibleTerrainFeature = Terrains[i][j].getTerrainTypes().getPossibleFeatures();
+                if(possibleTerrainFeature.indexOf(featureOne) != -1){
+                    Terrains[i][j].getTerrainFeatureTypes().remove(featureSecond);
+                    Terrains[i][j].setTerrainFeatureTypes(featureOne);
+                    return true;
+
+                }
+            }
+        }
+    }
+       return false;
+   }
     public void setFeature(){
         Random random = new Random();
        
@@ -270,8 +298,60 @@ public class Map {
                 Terrains[i][j].setTerrainFeatureTypes(possibleTerrainFeature.get(Math.abs(random.nextInt()) % possibleTerrainFeature.size()));
             }
         }
+       TerrainFeatureTypes[] allFeatures = TerrainFeatureTypes.values();
+       int[] haveUsed = new int[allFeatures.length];
+       for(int i = 0 ; i < allFeatures.length;i++){
+          haveUsed[i] = haveUsedThisFeature(allFeatures[i]);
+       }
+
+       for(int i = 0 ; i < allFeatures.length;i++){
+       if(haveUsed[i] == 0){
+           for(int j = 0; j < allFeatures.length;j++){
+               if(haveUsed[j] > 1){
+                  if(canExchange(allFeatures[i],allFeatures[j]) == true){
+                      haveUsed[i]++;
+                      haveUsed[j]--;
+                  }
+               }
+           }
+       }
+     }
+
 
     }
+
+
+
+    public int haveUsedThisResource(ResourceTypes rec){
+        int count = 0;
+        for(int i = 0; i < ROW;i++){
+            for(int j = 0; j < COL;j++){
+                if(Terrains[i][j].getTerrainResource() != null && Terrains[i][j].getTerrainResource().getResourceType() == rec){
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+ 
+    public boolean canExchangeRecource(ResourceTypes resourceOne,ResourceTypes resourceSecond){
+        for(int i = 0 ; i< ROW;i++){
+            for(int j = 0; j < COL;j++){
+                if(Terrains[i][j].getTerrainResource().getResourceType() == resourceSecond){
+
+                    ArrayList<Resource> possibleResource = findAllPossiblResource(Terrains[i][j]);
+                    for(int l = 0; l < possibleResource.size();l++){
+                        if(possibleResource.get(l).getResourceType() == resourceOne){
+                            Terrains[i][j].setTerrainResource(possibleResource.get(l));
+                            return true;
+                        }
+                    }
+                   
+                }
+            }
+        }
+           return false;
+       }
 
     private ArrayList<Resource> findAllPossiblResource(Terrain terrain){
         ArrayList<Resource> possibleResource = new ArrayList<Resource>();
@@ -308,6 +388,29 @@ public class Map {
                     Terrains[i][j].setTerrainResource(possibleResource.get(Math.abs(random.nextInt()) % possibleResource.size()));
             }
         }
+        ResourceTypes[] AllpossibleResource = {ResourceTypes.BANANAS,
+            ResourceTypes.CATTLE,ResourceTypes.DEER,ResourceTypes.SHEEP,ResourceTypes.WHEAT,ResourceTypes.COAL
+            ,ResourceTypes.HORSES,ResourceTypes.IRON,ResourceTypes.COTTON,ResourceTypes.DYES,ResourceTypes.FURS,
+            ResourceTypes.GEMS,ResourceTypes.GOLD,ResourceTypes.INCENSE,ResourceTypes.IVORY,ResourceTypes.MARBLE,
+            ResourceTypes.SILK,ResourceTypes.SILVER,ResourceTypes.SUGAR};
+            int[] haveUsed = new int[AllpossibleResource.length];
+            for(int i = 0 ; i < AllpossibleResource.length;i++){
+               haveUsed[i] = haveUsedThisResource(AllpossibleResource[i]);
+            }
+
+            for(int i = 0 ; i < AllpossibleResource.length;i++){
+                if(haveUsed[i] == 0){
+                    for(int j = 0; j < AllpossibleResource.length;j++){
+                        if(haveUsed[j] > 1){
+                           if(canExchangeRecource(AllpossibleResource[i],AllpossibleResource[j]) == true){
+                               haveUsed[i]++;
+                               haveUsed[j]--;
+                           }
+                        }
+                    }
+                }
+              }
+        
     }
 
     public void nullImprovementAndCombat(){

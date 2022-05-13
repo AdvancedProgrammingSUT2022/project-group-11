@@ -1,11 +1,10 @@
-
 package Model.Terrains;
-
-import java.util.ArrayList;
 
 import Model.Color;
 import Model.Resources.ResourceTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
+
+import java.util.ArrayList;
 
 public enum TerrainTypes {
     DESERT(0, 0, 0, -33, 1, new ArrayList<TerrainFeatureTypes>() {
@@ -25,7 +24,7 @@ public enum TerrainTypes {
             add(ResourceTypes.INCENSE);
             add(ResourceTypes.SHEEP);
         }
-    },Color.YELLOW_BACKGROUND_BRIGHT),
+    }, Color.YELLOW_BACKGROUND_BRIGHT),
     GRASSLLAND(2, 0, 0, -33, 1, new ArrayList<TerrainFeatureTypes>() {
         {
             add(TerrainFeatureTypes.FOREST);
@@ -43,7 +42,7 @@ public enum TerrainTypes {
             add(ResourceTypes.COTTON);
             add(ResourceTypes.SHEEP);
         }
-    },Color.GREEN_BACKGROUND_BRIGHT),
+    }, Color.GREEN_BACKGROUND_BRIGHT),
     HILLS(0, 2, 0, 25, 2, new ArrayList<TerrainFeatureTypes>() {
         {
             add(TerrainFeatureTypes.FOREST);
@@ -60,8 +59,8 @@ public enum TerrainTypes {
             add(ResourceTypes.MARBLE);
             add(ResourceTypes.SHEEP);
         }
-    },Color.GREEN_BACKGROUND),
-    MOUNTAIN(0, 0, 0, 25, 9999999, null, null,  Color.YELLOW_BACKGROUND),
+    }, Color.GREEN_BACKGROUND),
+    MOUNTAIN(0, 0, 0, 25, 9999999, null, null, Color.YELLOW_BACKGROUND),
     OCEAN(1, 0, 1, 0, 1, new ArrayList<TerrainFeatureTypes>() {
         {
             add(TerrainFeatureTypes.ICE);
@@ -70,7 +69,7 @@ public enum TerrainTypes {
         {
 
         }
-    },Color.CYAN_BACKGROUND),
+    }, Color.CYAN_BACKGROUND),
     PLAINS(1, 1, 0, -33, 1, new ArrayList<TerrainFeatureTypes>() {
         {
             add(TerrainFeatureTypes.FOREST);
@@ -90,12 +89,12 @@ public enum TerrainTypes {
             add(ResourceTypes.INCENSE);
             add(ResourceTypes.SHEEP);
         }
-    },Color.MAGENTA_BACKGROUND),
+    }, Color.MAGENTA_BACKGROUND),
     SNOW(0, 0, 0, -33, 1, null, new ArrayList<ResourceTypes>() {
         {
             add(ResourceTypes.IRON);
         }
-    },Color.WHITE_BACKGROUND),
+    }, Color.WHITE_BACKGROUND),
     TUNDRA(1, 0, 0, -33, 1, new ArrayList<TerrainFeatureTypes>() {
         {
             add(TerrainFeatureTypes.FOREST);
@@ -110,10 +109,18 @@ public enum TerrainTypes {
             add(ResourceTypes.MARBLE);
             add(ResourceTypes.FURS);
         }
-    },Color.RED_BACKGROUND);
+    }, Color.RED_BACKGROUND);
 
+    int food;
+    int product;
+    int gold;
+    int movementCost;
+    int combatModifier;
+    ArrayList<TerrainFeatureTypes> possibleFeatures;
+    ArrayList<ResourceTypes> possibleResources;
+    Color color;
     TerrainTypes(int food, int product, int gold, int combatModifier, int movementCost,
-            ArrayList<TerrainFeatureTypes> possibleFeatures, ArrayList<ResourceTypes> possibleResources,Color color) {
+                 ArrayList<TerrainFeatureTypes> possibleFeatures, ArrayList<ResourceTypes> possibleResources, Color color) {
         this.food = food;
         this.product = product;
         this.gold = gold;
@@ -124,32 +131,24 @@ public enum TerrainTypes {
         this.color = color;
     }
 
-    int food;
-    int product;
-    int gold;
-    int movementCost;
-    int combatModifier;
-    ArrayList<TerrainFeatureTypes> possibleFeatures;
-    ArrayList<ResourceTypes> possibleResources;
-    Color color;
-
-    public Color getColor(){
+    public Color getColor() {
         return this.color;
     }
 
-    public int getMovementCost()
-    {
+    public int getMovementCost() {
         return this.movementCost;
 
     }
-    public ArrayList<TerrainFeatureTypes> getPossibleFeatures(){
+
+    public ArrayList<TerrainFeatureTypes> getPossibleFeatures() {
         return this.possibleFeatures;
     }
 
-    public int getGold(){
+    public int getGold() {
         return this.gold;
     }
-    public int getFood(){
+
+    public int getFood() {
         return this.food;
     }
 

@@ -3,23 +3,24 @@ package Model;
 import Model.Resources.ResourceTypes;
 
 public class Resource {
-    
+
     private int food;
     private int gold;
     private int production;
     private ResourceTypes resourceType;
     private String name;
 
-    public Resource(ResourceTypes resourceType){
+    public Resource(ResourceTypes resourceType) {
         this.food = resourceType.getFood();
         this.gold = resourceType.getGold();
         this.production = resourceType.getProduction();
         this.resourceType = resourceType;
     }
 
-    public Resource clone(){
+    public Resource clone() {
         return new Resource(this.getResourceType());
     }
+
     public int getFood() {
         return this.food;
     }
@@ -52,13 +53,11 @@ public class Resource {
         this.name = name;
     }
 
-    public ResourceTypes getResourceType()
-    {
+    public ResourceTypes getResourceType() {
         return resourceType;
     }
 
-    public void setResourceType(ResourceTypes resourceType)
-    {
+    public void setResourceType(ResourceTypes resourceType) {
         this.resourceType = resourceType;
     }
 }

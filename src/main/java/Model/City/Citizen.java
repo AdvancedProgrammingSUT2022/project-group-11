@@ -8,16 +8,14 @@ public class Citizen {
     private Terrain terrain;
     private int production;
 
-    public Citizen ( City city)
-    {
+    public Citizen(City city) {
         this.city = city;
         this.hasWork = false;
         this.terrain = city.getCentralTerrain();
         this.production = 1;
     }
 
-    public void assignWork( Terrain tile)
-    {
+    public void assignWork(Terrain tile) {
         this.production += 1;
         this.terrain = tile;
         this.hasWork = true;
@@ -25,28 +23,23 @@ public class Citizen {
 
     }
 
-    public void deleteWork()
-    {
+    public void deleteWork() {
 
     }
 
-    public boolean getHasWork()
-    {
+    public boolean getHasWork() {
         return hasWork;
     }
 
-    public void setHasWork(boolean hasWork)
-    {
+    public void setHasWork(boolean hasWork) {
         this.hasWork = hasWork;
     }
 
-    public int getProduction()
-    {
+    public int getProduction() {
         return production;
     }
 
-    public void setProduction(int production)
-    {
+    public void setProduction(int production) {
         this.production = production;
     }
 }
