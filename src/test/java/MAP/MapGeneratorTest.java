@@ -4,6 +4,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -37,6 +38,7 @@ import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
+import Model.Units.RangedCombatUnit;
 import Model.Units.Unit;
 import Model.Units.UnitTypes;
 import View.GameMenu;
@@ -7416,7 +7418,7 @@ public void RevealedMapTest(){
     ConstructingUnit.add(combatunit);
     civil.setUnits(ConstructingUnit);
     city.setConstructionWaitList(ConstructingUnit);
-    User user = new User(null, null, null, civil);
+    User user = new User("a", null, null, civil);
     Database database = new Database();
     database.addUser(user);
     DatabaseController databaseController = new DatabaseController(database);
@@ -7425,6 +7427,7 @@ public void RevealedMapTest(){
     civil.setUnits(new ArrayList<>());
     databaseController.getUnitByCoordinatesAndName(user, "SETTLER", 3, 4);
     databaseController.activateUnit(user, "SETTLER", 3, 4);
+    databaseController.getUserByUsername("a");
  }
  @Test
  public void removeCitizenFromWorkTest(){
@@ -7510,5 +7513,205 @@ public void RevealedMapTest(){
      cityController.whatToDoWithTheCity(input, city, civil);
      input = "DESTROY CITY";
      cityController.whatToDoWithTheCity(input, city, civil);
+ }
+
+ @Test
+ public void rangedAttacktoOneCityTest(){
+    Map map = new Map();
+  
+   
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    map.setTerrains(terrains);
+
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    NonCombatUnit combatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit,
+            improvement, resource,
+            new ArrayList<Revealed>());
+    
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+    central.setCity(city);
+    Database database = new Database();
+    DatabaseController databaseController = new DatabaseController(database);
+    database.setMap(map);
+    CityController cityController = new CityController();
+    cityController.setDatabaseController(databaseController);
+    cityController.setMap(map);
+        RangedCombatUnit rangedcombatunit = new RangedCombatUnit(3, 5, 0, 0, 0, 0, false, false,
+        UnitTypes.CANNON, true, false, false, false, false, false);
+
+
+    cityController.rangedAttackToCityForOneTurn(rangedcombatunit, city);
+ }
+
+ @Test
+ public void rangedAttacktoOneCityTest1(){
+    Map map = new Map();
+  
+   
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    map.setTerrains(terrains);
+
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    NonCombatUnit combatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit,
+            improvement, resource,
+            new ArrayList<Revealed>());
+    
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+    central.setCity(city);
+    Database database = new Database();
+    DatabaseController databaseController = new DatabaseController(database);
+    databaseController.setDatabase(database);
+    database.setMap(map);
+    CityController cityController = new CityController();
+    cityController.setDatabaseController(databaseController);
+    cityController.setMap(map);
+        RangedCombatUnit rangedcombatunit = new RangedCombatUnit(6, 10, 0, 0, 0, 0, false, false,
+        UnitTypes.CANNON, true, false, false, false, false, false);
+
+
+    cityController.rangedAttackToCityForOneTurn(rangedcombatunit, city);
+
+ }
+ @Test
+ public void oneCombatTurnTest(){
+    Map map = new Map();
+  
+   
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    map.setTerrains(terrains);
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+            improvement, resource,
+            new ArrayList<Revealed>());
+    
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+    central.setCity(city);
+    city.setGarrisoned(true);
+    city.setCombatUnit(combatunit);
+
+    CombatUnit combatunit1 =  new CombatUnit(3, 5, 0, 0, 0, 0, false, false, UnitTypes.CANNON, true, false, false, false, false);
+    Database database = new Database();
+    DatabaseController databaseController = new DatabaseController(database);
+    databaseController.setDatabase(database);
+    database.setMap(map);
+    CityController cityController = new CityController();
+    cityController.setDatabaseController(databaseController);
+    cityController.setMap(map);
+    Scanner scanner = new Scanner(System.in);
+    cityController.oneCombatTurn(city, combatunit1, scanner);
+ }
+
+ @Test
+ public void oneCombatTurnTest1(){
+    Map map = new Map();
+  ArrayList<Terrain> myterrains = new ArrayList<>();
+  ArrayList<Unit> myunit = new ArrayList<>();
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    map.setTerrains(terrains);
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+            improvement, resource,
+            new ArrayList<Revealed>());
+    
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+    central.setCity(city);
+    city.setGarrisoned(true);
+    city.setCombatUnit(combatunit);
+
+    CombatUnit combatunit1 =  new CombatUnit(3, 5, 0, 0, 0, 0, false, false, UnitTypes.CANNON, true, false, false, false, false);
+    terrains[3][5].setCombatUnit(combatunit1);
+    myunit.add(combatunit1);
+    myterrains.add(terrains[3][5]);
+    civil.setTerrains(myterrains);
+    civil.setUnits(myunit);
+    User user = new User(null, null, null, civil);
+    Database database = new Database();
+    database.addUser(user);
+    combatunit1.setHp(-5);
+    DatabaseController databaseController = new DatabaseController(database);
+    databaseController.setDatabase(database);
+    database.setMap(map);
+    CityController cityController = new CityController();
+    cityController.setDatabaseController(databaseController);
+    cityController.setMap(map);
+    Scanner scanner = new Scanner(System.in);
+    cityController.oneCombatTurn(city, combatunit1, scanner);
+ }
+ @Test
+ public void kossher(){
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+            improvement, resource,
+            new ArrayList<Revealed>());
+    
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+    city.HP(3);
+    city.type("akbar");
+    city.combatStrength(3);
+    city.iConstructingUnit(true);
  }
 }

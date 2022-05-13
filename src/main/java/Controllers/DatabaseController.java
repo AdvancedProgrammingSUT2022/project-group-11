@@ -27,9 +27,6 @@ public class DatabaseController {
 
     }
     public HashMap<User, String> notificationHistory = new HashMap<>();
-    public void addUser(User user) {
-        this.database.addUser(user);
-    }
 
     public Database getDatabase() {
         return this.database;
