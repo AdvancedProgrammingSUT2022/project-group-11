@@ -24,7 +24,7 @@ public class Terrain {
     private Improvement TerrainImprovement;
     private Resource TerrainResource;
     private boolean unlockResource;
-    private ArrayList<Revealed> reveals;
+    private ArrayList<Revealed> reveals = new ArrayList<>();
     private City city;
 
     private boolean hasToBeDeleted = false;
