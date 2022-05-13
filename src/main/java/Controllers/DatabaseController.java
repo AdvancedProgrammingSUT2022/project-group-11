@@ -20,11 +20,11 @@ import java.util.regex.Matcher;
 
 public class DatabaseController {
     private Database database;
-    
+
 
     public DatabaseController(Database database) {
         this.database = database;
-        
+
     }
     public HashMap<User, String> notificationHistory = new HashMap<>();
     public void addUser(User user) {
@@ -755,7 +755,7 @@ public class DatabaseController {
 
     public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType() == (technologyType)) {
+            if (technology.getTechnologyType() != null && technology.getTechnologyType().equals(technologyType)) {
                 return true;
             }
         }
@@ -1494,7 +1494,7 @@ public class DatabaseController {
             stringBuilder.append("HP ").append(city.getHP()).append("\n");
             stringBuilder.append("Gold ").append(city.getGold()).append("\n");
             stringBuilder.append("Science ").append(city.getScience()).append("\n");
-            stringBuilder.append("Food Storage ").append(city.getFoodStorage()).append("\n");
+            stringBuilder.append("Food Storage ").append(city.getFood()).append("\n");
 
 
         }

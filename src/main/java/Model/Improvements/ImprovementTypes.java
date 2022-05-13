@@ -11,33 +11,35 @@ public enum ImprovementTypes {
     ROAD(3, 0, 0, 0, new ArrayList<>() {
     }, TechnologyTypes.THE_WHEEL, new ArrayList<>() {
         {
+
+            add(TerrainTypes.TUNDRA);
+            add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.HILLS);
-            add(TerrainTypes.TUNDRA);
-            add(TerrainTypes.PLAINS);
             add(TerrainTypes.SNOW);
             add(TerrainFeatureTypes.JUNGLE);
             add(TerrainFeatureTypes.FOREST);
-            add(TerrainFeatureTypes.FLOODPLAINS);
             add(TerrainFeatureTypes.MARSH);
+            add(TerrainFeatureTypes.FLOODPLAINS);
             add(TerrainFeatureTypes.OASIS);
             add(TerrainFeatureTypes.RIVER);
 
         }
-    }, "RO"), RAILROAD(3, 0, 0, 0, new ArrayList<>() {
+    }, "RO"),
+    RAILROAD(3, 0, 0, 0, new ArrayList<>() {
     }, TechnologyTypes.RAILROAD, new ArrayList<>() {
         {
+            add(TerrainTypes.TUNDRA);
+            add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
             add(TerrainTypes.GRASSLLAND);
             add(TerrainTypes.HILLS);
-            add(TerrainTypes.TUNDRA);
-            add(TerrainTypes.PLAINS);
             add(TerrainTypes.SNOW);
             add(TerrainFeatureTypes.JUNGLE);
             add(TerrainFeatureTypes.FOREST);
-            add(TerrainFeatureTypes.FLOODPLAINS);
             add(TerrainFeatureTypes.MARSH);
+            add(TerrainFeatureTypes.FLOODPLAINS);
             add(TerrainFeatureTypes.OASIS);
             add(TerrainFeatureTypes.RIVER);
         }

@@ -14,6 +14,7 @@ import Model.Units.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class CityController {
@@ -38,16 +39,24 @@ public class CityController {
 
     }
 
-    public void foundCity(Civilization civilization, NonCombatUnit unit, Terrain tile) {
+    public void foundCity(Civilization civilization, NonCombatUnit unit, Terrain tile)
+    {
+        if ( unit == null)
+        {
+            System.out.println("please select a unit first");
+            return;
+        }
         if (unit.getUnitType().equals(UnitTypes.SETTLER)) {
-            if (tile.getCity() != null) {
-
+            if (tile.getCity() != null)
+            {
+                System.out.println("error : city already exists");
                 return;
             }
-            City newCity = new City(civilization, civilization, tile, 0, "none", 0, 0, null);
+            City newCity = new City(civilization, civilization, tile, 20, "none", 0, 0);
             tile.setCity(newCity);
             civilization.addCity(newCity);
-            civilization.removeUnit(unit);
+            civilization.removeUnit((Unit) unit);
+            tile.setNonCombatUnit(null);
         }
     }
 
@@ -104,6 +113,7 @@ public class CityController {
     }
 
     public HashMap<String, String> cityOutput(City city) {
+
         HashMap<String, String> output = new HashMap<>();
         output.put("food", String.valueOf(city.getFood()));
         output.put("production", String.valueOf(city.getProduction()));
@@ -125,15 +135,18 @@ public class CityController {
     }
 
 
-    public HashMap<String, ArrayList<String>> cityMenu(City city) {
+    public HashMap<String, ArrayList<String>> cityMenu(City city)
+    {
         HashMap<String, ArrayList<String>> ans = new HashMap<>();
         Civilization civilization = city.getOwner();
-        ArrayList<String> units = new ArrayList<>();
+        ArrayList<String > units = new ArrayList<>();
         this.databaseController.setTechnologyTypes(civilization);
         ArrayList<TechnologyTypes> technologyTypes = civilization.getTechnologyTypes();
-        for (UnitTypes unitType : UnitTypes.values()) {
-            if (technologyTypes.contains(unitType.getTechnologyRequirements())) {
-                units.add("name: " + unitType.name() + " turn: " + unitType.getTurn());
+        for ( UnitTypes unitType : UnitTypes.values() )
+        {
+            if (technologyTypes.contains( unitType.getTechnologyRequirements() ))
+            {
+                units.add("name: " + unitType.name() + " turn: " + String.valueOf(unitType.getTurn()));
             }
         }
         ans.put("Units ", units);
@@ -184,8 +197,12 @@ public class CityController {
 
         for (UnitTypes unitTypes : nonCombat) {
             if (getUnitTypeByName(unitName).equals(unitTypes)) {
-                 if (city.getNonCombatUnit() != null) {
+                if (unitTypes.getTechnologyRequirements() != null && !containUnit(civilization.getTechnologies(), unitTypes.getTechnologyRequirements())) {
+                    return lackTechnology;
+                } else if (city.getNonCombatUnit() != null) {
                     return unitAlreadyExists;
+                } else if (city.getCentralTerrain().getResource() != null && unitTypes.getResourceRequirements() != null && !city.getCentralTerrain().getResource().getResourceType().equals(unitTypes.getResourceRequirements())) {
+                    return lackResources;
                 }
                 if (unitTypes.equals(UnitTypes.SETTLER)) {
                     if (civilization.getBooleanSettlerBuy()) {
@@ -635,14 +652,18 @@ public class CityController {
 
     }
 
-    public void buyTile(Terrain tile, City city) {
-        ArrayList<Terrain> mainTerrains = city.getMainTerrains();
-        if (NeighborsAtADistanceOfOneFromAnArraylistOfTerrains(mainTerrains, this.map).contains(tile)) {
-            if (city.getGold() < tile.getGold()) {
+    public void buyTile( int x, int y, City city)
+    {
+        Terrain tile = this.databaseController.getTerrainByCoordinates(x, y);
+        ArrayList< Terrain> mainTerrains = city.getMainTerrains();
+        if ( NeighborsAtADistanceOfOneFromAnArraylistOfTerrains(mainTerrains, this.map).contains(tile))
+        {
+            if ( city.getGold()< tile.getGold())
+            {
                 System.out.println("Not enough money");
                 return;
             }
-            city.setGold(city.getGold() - tile.getGold());
+            city.setGold( city.getGold() - tile.getGold());
             mainTerrains.add(tile);
             city.setMainTerrains(mainTerrains);
             return;
@@ -651,45 +672,7 @@ public class CityController {
 
     }
 
-    public void purchase(String input, City city) {
-        for (BuildingTypes buildingType : BuildingTypes.values()) {
-            if (input.equals(buildingType.name())) {
-                // marbut be building e
-                city.getOwner().setGold(43745);
-                return;
-            }
-        }
-        for (UnitTypes unitType : UnitTypes.values()) {
-            if (input.equals(unitType.name())) {
-                if (input.equals("WORKER") || input.equals("SETTLER")) {
-                    if (city.getNonCombatUnit() != null) {
-                        System.out.println("Error");
-                        return;
-                    } else {
-                        if (input.equals("WORKER")) {
-                            NonCombatUnit nonCombatUnit = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 1, 0, 0, 0, false, true, UnitTypes.WORKER, false);
-                            city.setNonCombatUnit(nonCombatUnit);
-                        } else {
-                            NonCombatUnit nonCombatUnit = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 1, 0, 0, 0, false, true, UnitTypes.SETTLER, false);
-                            city.setNonCombatUnit(nonCombatUnit);
-                        }
 
-                    }
-
-                } else {
-                    if (city.getCombatUnit() != null) {
-                        System.out.println("Error");
-                        return;
-                    }
-                }
-                Civilization civilization = city.getOwner();
-                civilization.setGold(civilization.getGold() - unitType.getCost());
-
-            }
-
-        }
-
-    }
 
     public ArrayList<Terrain> getNeighborTerrainsOfOneTerrain(Terrain terrain, Map map) {
         ArrayList<Terrain> neighbors = new ArrayList<>();
@@ -773,5 +756,82 @@ public class CityController {
         }
         return null;
     }
+
+    public void removeCitizenFromWork( Citizen citizen)
+    {
+        if ( citizen != null && citizen.getHasWork())
+        {
+            citizen.setHasWork(false);
+            citizen.deleteWork();
+        }
+        System.out.println("error");
+    }
+
+    public String oneCombatTurn (City city, CombatUnit attacker, Scanner scanner)
+    {
+        int cityCombatStrength = city.getCombatStrength();
+        int attackerCombatStrength = attacker.getCombatStrength();
+        city.setHP( city.getHP() - attackerCombatStrength + 1);
+        if (city.getGarrisoned())
+        {
+            attacker.setHp( attacker.getHp() - cityCombatStrength);
+            if ( attacker.getHp() <= 0)
+            {
+
+                Civilization unitOwner = this.databaseController.getContainerCivilization((Unit) attacker);
+                unitOwner.removeUnit( (Unit) attacker);
+                Terrain tile = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
+                tile.setCombatUnit(null);
+                return "The city won.";
+            }
+        }
+        if ( city.getHP() <= 0)
+        {
+            /*Civilization civilization = city.getOwner();
+            civilization.removeCity(city);*/
+            //Unit bayad bere tush
+            return "The city lost.";
+            // bayad bebinim turn kie
+
+        }
+        return null;
+    }
+
+    public void whatToDoWithTheCity( String input, City city, Civilization civilization)
+    {
+        if ( civilization.getUnits().contains( (Unit) city.getCentralTerrain().getCombatUnit()) && city.getHP() <= 0)
+        {
+            if (input.equals("ATTACH CITY"))
+            {
+                this.attachCity(civilization, city);
+            } else
+            {
+                this.destroyCity(civilization, city.getOwner(), city);
+            }
+        }
+    }
+
+    public void rangedAttackToCityForOneTurn( RangedCombatUnit attacker, City city)
+    {
+        int combatStrengh = attacker.getUnitType().getRangedCombatStrengh();
+        int combatRange = attacker.getUnitType().getRange();
+        if ( combatRange != 0)
+        {
+            Terrain tile = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
+            if ( NeighborsAtADistanceOfTwoFromAnArraylistOfTerrains(city.getMainTerrains(), map).contains(tile))
+            {
+                city.setHP( city.getHP() - combatStrengh + 1);
+                return;
+            }
+            else
+            {
+                System.out.println("The unit is not close enough");
+                return;
+            }
+        }
+        System.out.println("This unit is not a ranged combat unit");
+    }
+
+
 
 }

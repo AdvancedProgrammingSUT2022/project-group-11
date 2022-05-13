@@ -9,11 +9,13 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class LoginMenu {
-    private final DatabaseController databaseController;
+public class LoginMenu
+{
+    private DatabaseController databaseController;
     private User user;
 
-    public LoginMenu(DatabaseController databaseController) {
+    public LoginMenu(DatabaseController databaseController)
+    {
         this.databaseController = databaseController;
 
         this.user = null;
