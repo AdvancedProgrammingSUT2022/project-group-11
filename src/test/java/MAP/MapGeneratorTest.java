@@ -7322,4 +7322,29 @@ public void RevealedMapTest(){
          cityController.createUnitWithTurn(matcher, city);
       }
   }
+  /*
+  @Test
+  public void purchaseTestWorker(){
+    NonCombatUnit noncombatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true);
+
+
+
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+            improvement, resource,
+            new ArrayList<Revealed>());
+
+  
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0, null);
+    CityController cityController = new CityController();
+    cityController.purchase("", city);
+
+
+  }
+  */
 }

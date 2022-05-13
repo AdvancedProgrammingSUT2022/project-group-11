@@ -661,12 +661,12 @@ public class CityController {
         }
         for (UnitTypes unitType : UnitTypes.values()) {
             if (input.equals(unitType.name())) {
-                if (input.equals("Worker") || input.equals("Settler")) {
+                if (input.equals("WORKER") || input.equals("SETTLER")) {
                     if (city.getNonCombatUnit() != null) {
                         System.out.println("Error");
                         return;
                     } else {
-                        if (input.equals("Worker")) {
+                        if (input.equals("WORKER")) {
                             NonCombatUnit nonCombatUnit = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 1, 0, 0, 0, false, true, UnitTypes.WORKER, false);
                             city.setNonCombatUnit(nonCombatUnit);
                         } else {
