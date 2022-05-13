@@ -28,6 +28,10 @@ public class GameMenu {
         this.users = users;
     }
 
+    public void setCityController(CityController cityController){
+       this.cityController = cityController;
+    }
+
     public void run(Scanner scanner) {
 
         this.databaseController.getMap().generateMap();
@@ -58,6 +62,26 @@ public class GameMenu {
         }
     }
 
+    public void cityInfoOptions(Matcher matcher, User user)
+    {
+        int x = Integer.parseInt(matcher.group("x"));
+        int y = Integer.parseInt(matcher.group("y"));
+        if (this.databaseController.getCityByCoordinates(x, y, user) == null) {
+            System.out.print("You do not own any city with this coordinates");
+        }
+
+        System.out.println("Food " + this.cityController
+                .cityOutput(this.databaseController.getCityByCoordinates(x, y, user)).get("food"));
+        System.out.println("production " + this.cityController
+                .cityOutput(this.databaseController.getCityByCoordinates(x, y, user)).get("production"));
+        System.out.println("gold " + this.cityController
+                .cityOutput(this.databaseController.getCityByCoordinates(x, y, user)).get("gold"));
+        System.out.println("turns remaining until population increase "
+                + this.cityController.cityOutput(this.databaseController.getCityByCoordinates(x, y, user))
+                        .get("turns remaining until population increase"));
+
+    }
+
     public void showInfo(Scanner scanner, Matcher matcher, User user) {
         switch (matcher.group("section")) {
             case "RESEARCH":
@@ -82,7 +106,19 @@ public class GameMenu {
 
                 break;
             case "CITIES":
+            System.out.println(this.databaseController.cityPanel(user));
+            String input2 = scanner.nextLine();
+            if ((matcher = GameEnums.getMatcher(input2, GameEnums.CITY_INFO)) != null) {
+                cityInfoOptions(matcher, user);
 
+            } else if (input2.equals("INFO ECONOMIC")) {
+
+                System.out.println(this.databaseController.economicOverview(user));
+            } else {
+                System.out.println("You decided to not select any unit");
+            }
+            
+                break;
 
             case "DEMOGRAPHICS":
                 System.out.println(this.databaseController.demographicPanel());

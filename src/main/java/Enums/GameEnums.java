@@ -52,8 +52,7 @@ public enum GameEnums {
     BUY_UNIT("^CITY\\sBUY\\sUNIT\\s(<?subdivision>\\S+)"),
     REMOVE_FROM_WORK("^CITY\\sREMOVE\\sCITIZEN\\sNUMBER\\s(<?CitizenIndex>\\d+)"),
     BUY_TILE("CITY\\sBUY\\sTILE\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
-
-
+    CITY_INFO("^CITY\\sINFO\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     INTEGER("^-?\\d+$");
 
     public String regex;

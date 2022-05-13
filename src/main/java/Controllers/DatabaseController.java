@@ -1486,6 +1486,27 @@ public class DatabaseController {
             return "Unit was activated";
         }
     }
+    public String cityPanel(User user) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (City city : user.getCivilization().getCities()) {
+            stringBuilder.append("X of Central Terrain").append(city.getCentralTerrain().getX()).append("\n");
+            stringBuilder.append("Y of Central Terrain").append(city.getCentralTerrain().getY()).append("\n\n\n");
+
+        }
+        return stringBuilder.toString();
+    }
+
+    public City getCityByCoordinates(int x , int y, User user)
+    {
+        for(City city: user.getCivilization().getCities())
+        {
+            if(x == city.getCentralTerrain().getX() && y == city.getCentralTerrain().getY())
+            {
+                return city;
+            }
+        }
+        return null;
+    }
 
     public String economicOverview(User user) {
         StringBuilder stringBuilder = new StringBuilder();
@@ -1495,9 +1516,17 @@ public class DatabaseController {
             stringBuilder.append("Gold ").append(city.getGold()).append("\n");
             stringBuilder.append("Science ").append(city.getScience()).append("\n");
             stringBuilder.append("Food Storage ").append(city.getFood()).append("\n");
+            if(!city.getConstructionWaitList().isEmpty())
+            {
+                stringBuilder.append(city.getConstructionWaitList().get(0).getUnitType().name()).append(" will be constructed in ").append(city.getConstructionWaitList().get(0).getUnitType().getTurn() - city.getConstructionWaitList().get(0).getPassedTurns()).append(" Turn").append("\n");
+            }
+            else{
+                stringBuilder.append("You are not constructing any unit in this city").append("\n");
+            }
 
 
         }
         return stringBuilder.toString();
     }
+
 }

@@ -7307,7 +7307,23 @@ public void RevealedMapTest(){
     Database database = new Database();
     database.addUser(user);
     DatabaseController databaseController = new DatabaseController(database);
+    databaseController.economicOverview(user);
+    databaseController.getCityByCoordinates(3, 4, user);
+    databaseController.getCityByCoordinates(3, 5, user);
+    databaseController.cityPanel(user);
     databaseController.increaseTurnInConstructingUnit(database.getUsers());
+    city.setConstructionWaitList(new ArrayList<>());
+    databaseController.economicOverview(user);
+
+    CityController cityController = new CityController();
+    cityController.setDatabaseController(databaseController);
+        GameMenu gamemenu = new GameMenu(databaseController, database.getUsers());
+        gamemenu.setCityController(cityController);
+        Matcher matcher;
+       String input = "CITY INFO 3 4";
+       if((matcher = getMatcher(input, GameEnums.CITY_INFO)) != null){
+           gamemenu.cityInfoOptions(matcher, user);
+       }
   }
   @Test
   public void increaseTurnWithconstructUnitTest1(){
@@ -7382,4 +7398,32 @@ public void RevealedMapTest(){
     databaseController.militaryOverview(user);
   
 }
+ @Test
+ public void getUnitsbyNameTest(){
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    NonCombatUnit combatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), null, combatunit,
+            improvement, resource,
+            new ArrayList<Revealed>());
+
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+    civil.addCity(city);
+    ArrayList<Unit> ConstructingUnit = new ArrayList<>();
+    combatunit.setPassedTurns(100000);
+    ConstructingUnit.add(combatunit);
+    civil.setUnits(ConstructingUnit);
+    city.setConstructionWaitList(ConstructingUnit);
+    User user = new User(null, null, null, civil);
+    Database database = new Database();
+    database.addUser(user);
+    DatabaseController databaseController = new DatabaseController(database);
+    databaseController.getUnitByCoordinatesAndName(user, "SETTLER", 3, 4);
+    databaseController.activateUnit(user, "SETTLER", 3, 4);
+    civil.setUnits(new ArrayList<>());
+    databaseController.getUnitByCoordinatesAndName(user, "SETTLER", 3, 4);
+    databaseController.activateUnit(user, "SETTLER", 3, 4);
+ }
 }
