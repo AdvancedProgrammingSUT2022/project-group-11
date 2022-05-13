@@ -1,16 +1,18 @@
 package Model.Units;
 
-import java.util.ArrayList;
-
 import Model.Terrain;
 
-public class Unit {
-    private int x,y;
-    private int number;
-    private int militaryPower; 
-    private int life; 
+import java.util.ArrayList;
 
-    private int speed; 
+public class Unit {
+
+    private int passedTurns = 0;
+    private int x, y;
+    private int number;
+    private int militaryPower;
+    private int life;
+
+    private int speed;
     private boolean isAsleep;
     private boolean isFinished;
     private ArrayList<Terrain> nextTerrain = new ArrayList<>();
@@ -41,7 +43,6 @@ public class Unit {
     }
 
 
-
     public boolean isIsFinished() {
         return this.isFinished;
     }
@@ -53,51 +54,58 @@ public class Unit {
     public void setIsFinished(boolean isFinished) {
         this.isFinished = isFinished;
     }
-    
 
 
-
-
-    public void move(){
-
-    }
-    public void combat(Terrain destination){
-
-    }
-    public void fortify(){
-
-    }
-    public void sleep()
-    {
-
-    }
-    public void fortifyUntilHeal(){
-
-    }
-    public void garrison(){
-
-    }
-    public void setUpForRangedAttack(){
+    public void move() {
 
     }
 
-    public void rangedAttack(){
+    public void combat(Terrain destination) {
 
     }
-    public void pillage(Terrain terrain){
+
+    public void fortify() {
 
     }
-    public void foundCity(){
+
+    public void sleep() {
 
     }
-    public void cancelCommand(){
+
+    public void fortifyUntilHeal() {
 
     }
-    public void wakeUp(){
+
+    public void garrison() {
 
     }
-    public void deleteUnit(){
-        
+
+    public void setUpForRangedAttack() {
+
+    }
+
+    public void rangedAttack() {
+
+    }
+
+    public void pillage(Terrain terrain) {
+
+    }
+
+    public void foundCity() {
+
+    }
+
+    public void cancelCommand() {
+
+    }
+
+    public void wakeUp() {
+
+    }
+
+    public void deleteUnit() {
+
     }
 
 
@@ -109,6 +117,10 @@ public class Unit {
         return this.isSelected;
     }
 
+    public void setIsSelected(boolean isSelected) {
+        this.isSelected = isSelected;
+    }
+
     public UnitTypes getUnitType() {
         return this.unitType;
     }
@@ -116,17 +128,16 @@ public class Unit {
     public void setUnitType(UnitTypes unitType) {
         this.unitType = unitType;
     }
-   
-
-    public void setIsSelected(boolean isSelected) {
-        this.isSelected = isSelected;
-    }
 
     public int getX() {
         return this.x;
     }
 
-    public void setXAndY(int x,int y) {
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public void setXAndY(int x, int y) {
         this.x = x;
         this.y = y;
     }
@@ -134,7 +145,11 @@ public class Unit {
     public int getY() {
         return this.y;
     }
-   
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
     public int getNumber() {
         return this.number;
     }
@@ -150,16 +165,6 @@ public class Unit {
     public void setMilitaryPower(int militaryPower) {
         this.militaryPower = militaryPower;
     }
-
-
-
-    public void setX(int x) {
-        this.x = x;
-    }
-    public void setY(int y) {
-        this.y = y;
-    }
-
 
     public int getLife() {
         return this.life;
@@ -189,22 +194,26 @@ public class Unit {
         this.isAsleep = isAsleep;
     }
 
-   
 
     @Override
     public String toString() {
         return "{" +
-            " x='" + getX() + "'" +
-            ", y='" + getY() + "'" +
-            ", number='" + getNumber() + "'" +
-            ", militaryPower='" + getMilitaryPower() + "'" +
-            ", life='" + getLife() + "'" +
-            ", speed='" + getSpeed() + "'" +
-            ", isAsleep='" + isIsAsleep() + "'" +
-            ", unitType='" + getUnitType() + "'" +
-            "}";
+                " x='" + getX() + "'" +
+                ", y='" + getY() + "'" +
+                ", number='" + getNumber() + "'" +
+                ", militaryPower='" + getMilitaryPower() + "'" +
+                ", life='" + getLife() + "'" +
+                ", speed='" + getSpeed() + "'" +
+                ", isAsleep='" + isIsAsleep() + "'" +
+                ", unitType='" + getUnitType().name() + "'" +
+                "}";
     }
 
-    
+    public int getPassedTurns() {
+        return passedTurns;
+    }
 
+    public void setPassedTurns(int passedTurns) {
+        this.passedTurns = passedTurns;
+    }
 }

@@ -6,11 +6,13 @@ import java.util.regex.Pattern;
 public enum GameEnums {
     INFO("^INFO\\s(?<section>\\S+)$"),
     SELECT_UNIT("^SELECT\\sUNIT\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    ACTIVATE_UNIT("^ACTIVATE\\sUNIT\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     SELECT_CITY_POSITION("^SELECT\\sCITY\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     SELECT_CITY_NAME("^SELECT\\sCITY\\s(?<subdivision>\\S+)$"),
     UNIT_MOVETO("^UNIT\\sMOVETO\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     UNIT_SLEEP("^UNIT\\sSLEEP$"),
     UNIT_ALERT("^UNIT\\sALERT$"),
+    UNIT_PILLAGE("^UNIT\\sPILLAGE$"),
     UNIT_FORTIFY("^UNIT\\sFORTIFY$"),
     UNIT_FORTIFY_HEAL("^UNIT\\sFORTIFY\\sHEAL$"),
     UNIT_GARRISON("^UNIT\\sGARRISON$"),
@@ -37,7 +39,7 @@ public enum GameEnums {
     INCREASE_SCIENCE("^INCREASE\\s-SCIENCE\\s(?<amount>\\S+)$"),
     BUY_TECHNOLOGY("^BUY\\sTECHNOLOGY\\s(?<name>\\S+)$"),
     COMBAT_UNIT_CHEAT_MOVE("^COMBAT\\sUNIT\\sCHEAT\\sMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
-    NON_COMBAT_UNIT_CHEAT_MOVE("^NONCOMBAT\\sUNIT\\sCHEAT\\sMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    NON_COMBAT_UNIT_CHEAT_MOVE("^NON\\sCOMBAT\\sUNIT\\sCHEAT\\sMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     BUY_CHEAT_TILE("^BUY\\sCHEAT\\sTILE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     SET_CHEAT_UNIT("^SET\\sCHEAT\\sUNIT\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     SET_CHEAT_IMPROVEMENT("^SET\\sCHEAT\\sIMPROVEMENT\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
@@ -46,6 +48,7 @@ public enum GameEnums {
     SET_CHEAT_TERRAIN_TYPE("^SET\\sCHEAT\\sTERRAIN\\sTYPE\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     DELETE_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     REPAIR_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREPAIR\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+
 
     INTEGER("^-?\\d+$");
 

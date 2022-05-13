@@ -2,9 +2,12 @@ package Model.Units;
 
 public class CombatUnit extends Unit {
 
-    public CombatUnit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep,
-            boolean isFinished, UnitTypes unitType, boolean isSelected, boolean isGarrisoned, boolean alert,
-            boolean fortify, boolean fortifyUntilHeal) {
+    private boolean isGarrisoned;
+    private boolean alert;
+    private boolean fortify;
+    private boolean fortifyUntilHeal;
+    private int CombatStrength;
+    public CombatUnit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected, boolean isGarrisoned, boolean alert, boolean fortify, boolean fortifyUntilHeal) {
         super(x, y, number, militaryPower, life, speed, isAsleep, isFinished, unitType, isSelected);
         // TODO Auto-generated constructor stub
         this.isGarrisoned = isGarrisoned;
@@ -14,18 +17,10 @@ public class CombatUnit extends Unit {
         this.CombatStrength = 10;
     }
 
-   public CombatUnit clone(){
-       return new CombatUnit(this.getX(), this.getY(), this.getNumber(), this.getMilitaryPower(), this.getLife(), this.getSpeed(), this.getIsAsleep(), this.getIsFinished(), this.getUnitType(), this.getIsSelected(), this.getIsGarrisoned(), this.getAlert(), this.getFortify(), this.fortifyUntilHeal);
+    public CombatUnit clone() {
+        return new CombatUnit(this.getX(), this.getY(), this.getNumber(), this.getMilitaryPower(), this.getLife(), this.getSpeed(), this.getIsAsleep(), this.getIsFinished(), this.getUnitType(), this.getIsSelected(), this.getIsGarrisoned(), this.getAlert(), this.getFortify(), this.fortifyUntilHeal);
 
-   }
-     
-  
-
-    private boolean isGarrisoned;
-    private boolean alert;
-    private boolean fortify;
-    private boolean fortifyUntilHeal;
-    private int CombatStrength;
+    }
 
     public boolean isIsGarrisoned() {
         return this.isGarrisoned;
@@ -75,13 +70,11 @@ public class CombatUnit extends Unit {
         this.fortifyUntilHeal = fortifyUntilHeal;
     }
 
-    public int getCombatStrength()
-    {
+    public int getCombatStrength() {
         return CombatStrength;
     }
 
-    public void setCombatStrength(int combatStrength)
-    {
+    public void setCombatStrength(int combatStrength) {
         CombatStrength = combatStrength;
     }
 }

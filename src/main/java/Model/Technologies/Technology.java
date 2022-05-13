@@ -15,7 +15,6 @@ public class Technology {
         this.isAvailable = isAvailable;
     }
 
- 
 
     public boolean isIsAvailable() {
         return this.isAvailable;
@@ -59,13 +58,8 @@ public class Technology {
 
     @Override
     public String toString() {
-        return "{" +
-            "costsForResearch='" + getCostsForResearch() + "'" +
-            ", technologyType='" + getTechnologyType() + "'" +
-            ", isAvailable='" + isIsAvailable() + "'" +
-            ", leads to following technologies='" + getTechnologyType().getTechnologyUnlocks() + "'" +
-            "}";
+        return "{" + "costsForResearch='" + getCostsForResearch() + "'" + ", technologyType='" + getTechnologyType() + "'" + ", isAvailable='" + isIsAvailable() + "'" + ", leads to following technologies='" + getTechnologyType().getTechnologyUnlocks().toString() + "'" + "}";
     }
-    
-    
+
+
 }

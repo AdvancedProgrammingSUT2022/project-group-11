@@ -1,14 +1,14 @@
 package Model.Technologies;
 
-import java.util.ArrayList;
-
 import Model.Buildings.BuildingTypes;
 import Model.Improvements.ImprovementTypes;
 import Model.Resources.ResourceTypes;
 import Model.Units.UnitTypes;
 
+import java.util.ArrayList;
+
 public enum TechnologyTypes {
-    AGRICULTURE(20,  new ArrayList<>() {
+    AGRICULTURE(20, new ArrayList<>() {
     }, new ArrayList<>() {
         {
             add(TechnologyTypes.POTTERY);
@@ -618,25 +618,23 @@ public enum TechnologyTypes {
         }
     });
 
+    int cost;
+    ArrayList<TechnologyTypes> requirement;
+    ArrayList<TechnologyTypes> technologyUnlocks;
+    ArrayList<Object> unlocks;
     TechnologyTypes(int cost, ArrayList<TechnologyTypes> requirement, ArrayList<TechnologyTypes> technologyUnlocks,
-            ArrayList<Object> unlocks) {
+                    ArrayList<Object> unlocks) {
         this.cost = cost;
         this.requirement = requirement;
         this.technologyUnlocks = technologyUnlocks;
         this.unlocks = unlocks;
     }
 
-    int cost;
-    ArrayList<TechnologyTypes> requirement;
-    ArrayList<TechnologyTypes> technologyUnlocks;
-    ArrayList<Object> unlocks;
-
-    public ArrayList<TechnologyTypes> getRequirements()
-    {
+    public ArrayList<TechnologyTypes> getRequirements() {
         return requirement;
     }
-    public ArrayList<TechnologyTypes> getTechnologyUnlocks()
-    {
+
+    public ArrayList<TechnologyTypes> getTechnologyUnlocks() {
         return technologyUnlocks;
     }
 
