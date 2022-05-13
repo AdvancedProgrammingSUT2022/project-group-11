@@ -22,16 +22,39 @@ public enum GameEnums {
     UNIT_DELETE("^UNIT\\sDELETE$"),
     UNIT_BUILD("^UNIT\\sBUILD\\s(?<subdivision>\\S+)$"),
     UNIT_REMOVE("^UNIT\\sREMOVE\\s(?<subdivision>\\S+)$"),
+    IMPROVEMENT_REPAIR("^UNIT\\sREPAIR"),
     UNIT_REPAIR("^UNIT\\sREPAIR$"),
-    CREATE_UNIT("^CONSTRUCT UNIT (?<unitName>[A-Za-z]+)"),
+    CREATE_UNIT("^CONSTRUCT UNIT (?<unitName>[A-Z_a-z]+)"),
     MAP_SHOW_POSITION("^MAP\\sSHOW\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     MAP_SHOW_CITYNAME("^MAP\\sSHOW\\s(?<subdivision>\\S+)$"),
-    MAP_MOVE("^MAP\\sMOVE\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),    
+    MAP_MOVE("^MAP\\sMOVE\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     INFO_RESEARCH("INFO RESEARCH"),
     SELECT_TECHNOLOGY("^SELECT\\sTECHNOLOGY\\s(?<name>\\S+)$"),
+    INCREASE_TURN("^INCREASE\\s-TURN\\s(?<amount>\\S+)$"),
+    INCREASE_GOLD("^INCREASE\\s-GOLD\\s(?<amount>\\S+)$"),
+    INCREASE_FOOD("^INCREASE\\s-FOOD\\s(?<amount>\\S+)$"),
+    INCREASE_HAPPINESS("^INCREASE\\s-HAPPINESS\\s(?<amount>\\S+)$"),
+    INCREASE_SCIENCE("^INCREASE\\s-SCIENCE\\s(?<amount>\\S+)$"),
+    BUY_TECHNOLOGY("^BUY\\sTECHNOLOGY\\s(?<name>\\S+)$"),
+    COMBAT_UNIT_CHEAT_MOVE("^COMBAT\\sUNIT\\sCHEAT\\sMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    NON_COMBAT_UNIT_CHEAT_MOVE("^NON\\sCOMBAT\\sUNIT\\sCHEAT\\sMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    BUY_CHEAT_TILE("^BUY\\sCHEAT\\sTILE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    SET_CHEAT_UNIT("^SET\\sCHEAT\\sUNIT\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    SET_CHEAT_IMPROVEMENT("^SET\\sCHEAT\\sIMPROVEMENT\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    SET_CHEAT_RESOURCE("^SET\\sCHEAT\\sRESOURCE\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    SET_CHEAT_TERRAIN_FEATURE_TYPE("^SET\\sCHEAT\\sTERRAIN\\sFEATURE\\sTYPE\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    SET_CHEAT_TERRAIN_TYPE("^SET\\sCHEAT\\sTERRAIN\\sTYPE\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    DELETE_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    REPAIR_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREPAIR\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    ASSIGN_CITIZEN("^CITY\\sASSIGN\\sCITIZEN\\sNUMBER\\s(<?CitizenIndex>\\d+)\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
+    BUY_UNIT("^CITY\\sBUY\\sUNIT\\s(<?subdivision>\\S+)"),
+    REMOVE_FROM_WORK("^CITY\\sREMOVE\\sCITIZEN\\sNUMBER\\s(<?CitizenIndex>\\d+)"),
+    BUY_TILE("CITY\\sBUY\\sTILE\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
+
+
     INTEGER("^-?\\d+$");
 
-    private String regex;
+    public String regex;
 
     GameEnums(String regex) {
         this.regex = regex;

@@ -3,7 +3,7 @@ package Model;
 import java.util.ArrayList;
 
 import Model.City.City;
-import Model.Improvements.Improvements;
+import Model.Improvements.Improvement;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
@@ -12,23 +12,29 @@ import Model.Units.Unit;
 
 public class Terrain {
 
-    private final ArrayList<TerrainFeatureTypes> terrainFeatureTypes;
-    private boolean isBeingWorkedOn;
+    
+
     private int x;
     private int y;
     private String Type;
     private TerrainTypes terrainTypes;
+    private  ArrayList<TerrainFeatureTypes> terrainFeatureTypes;
+    private boolean isBeingWorkedOn;
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
-    private Improvements TerrrainImprovement;
+    private Improvement TerrainImprovement;
     private Resource TerrainResource;
     private boolean unlockResource;
     private ArrayList<Revealed> reveals;
     private City city;
 
+    private boolean hasToBeDeleted = false;
+
+    private int passedTurns = 0;
+
     public Terrain(int x, int y, String Type, TerrainTypes terrainTypes,
             ArrayList<TerrainFeatureTypes> terrainFeatureTypes,
-            CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvements TerrrainImprovement,
+            CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvement TerrainImprovement,
             Resource TerrainResource, ArrayList<Revealed> reveals) {
 
         this.x = x;
@@ -41,10 +47,26 @@ public class Terrain {
 
         this.isBeingWorkedOn = false;
 
-        this.TerrrainImprovement = TerrrainImprovement;
+        this.TerrainImprovement = TerrainImprovement;
         this.TerrainResource = TerrainResource;
         this.reveals = reveals;
         // this.city = null;
+    }
+
+    public int getPassedTurns() {
+        return passedTurns;
+    }
+
+    public void setPassedTurns(int passedTurns) {
+        this.passedTurns = passedTurns;
+    }
+
+    public boolean isHasToBeDeleted() {
+        return hasToBeDeleted;
+    }
+
+    public void setHasToBeDeleted(boolean hasToBeDeleted) {
+        this.hasToBeDeleted = hasToBeDeleted;
     }
 
     public void setBooleanResource(boolean bool) {
@@ -115,8 +137,8 @@ public class Terrain {
         return TerrainResource;
     }
 
-    public void setTerrrainImprovement(Improvements TerrrainImprovement) {
-        this.TerrrainImprovement = TerrrainImprovement;
+    public void setTerrainImprovement(Improvement TerrainImprovement) {
+        this.TerrainImprovement = TerrainImprovement;
     }
 
     public Resource getTerrainResource() {
@@ -168,8 +190,8 @@ public class Terrain {
         return 0;
     }
 
-    public Improvements getTerrrainImprovement() {
-        return this.TerrrainImprovement;
+    public Improvement getTerrainImprovement() {
+        return this.TerrainImprovement;
     }
 
 }

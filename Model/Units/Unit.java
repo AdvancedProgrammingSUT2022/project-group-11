@@ -2,18 +2,20 @@ package Model.Units;
 
 import java.util.ArrayList;
 
+import Model.Civilization;
 import Model.Terrain;
 
 public class Unit {
     private int x,y;
     private int number;
     private int militaryPower; 
-    private int life; 
+    private int life;
+    private int hp;
 
     private int speed; 
     private boolean isAsleep;
     private boolean isFinished;
-    private ArrayList<Terrain> nextTerrain;
+    private ArrayList<Terrain> nextTerrain = new ArrayList<>();
     private UnitTypes unitType;
     private boolean isSelected;
 
@@ -29,6 +31,7 @@ public class Unit {
         this.isFinished = isFinished;
         this.unitType = unitType;
         this.isSelected = isSelected;
+        this.hp = 10;
     }
 
 
@@ -189,7 +192,15 @@ public class Unit {
         this.isAsleep = isAsleep;
     }
 
-   
+    public void setHp(int hp)
+    {
+        this.hp = hp;
+    }
+
+    public int getHp ()
+    {
+        return this.hp;
+    }
 
     @Override
     public String toString() {
@@ -205,6 +216,6 @@ public class Unit {
             "}";
     }
 
-    
+
 
 }

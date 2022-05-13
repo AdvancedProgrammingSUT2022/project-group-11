@@ -217,8 +217,6 @@ public class Civilization {
         }
     }
 
-
-
     public ArrayList<TechnologyTypes> getTechnologyTypes()
     {
         return technologyTypes;
@@ -228,4 +226,7 @@ public class Civilization {
     {
         this.technologyTypes = technologyTypes;
     }
+
+
+
 }

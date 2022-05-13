@@ -3,6 +3,7 @@ package Model.City;
 import Model.Civilization;
 import Model.Terrain;
 import Model.Buildings.BuildingTypes;
+import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.Units.NonCombatUnit;
 
@@ -48,6 +49,11 @@ public class City{
         this.HP = HP;
         this.type = type;
         this.combatStrength = combatStrength;
+        if ( this.centralTerrain.getTerrainTypes().equals(TerrainTypes.HILLS))
+        {
+            this.combatStrength += 10;
+            this.HP += 7;
+        }
         this.iConstructingUnit = false;
         this.rangedCombatStrength = rangedCombatStrength;
         this.garrisoned = false;
@@ -297,7 +303,10 @@ public class City{
     {
         this.turnsRemainingUntilPopulationIncrease = turnsRemainingUntilPopulationIncrease;
     }
-
+    public void setNeighbors(ArrayList<Terrain> neighbour)
+    {
+       this.neighbors = neighbour;
+    }
     public ArrayList<Terrain> getNeighbors()
     {
         return neighbors;

@@ -22,11 +22,12 @@ public class Citizen {
         this.terrain = tile;
         this.hasWork = true;
 
-
     }
 
     public void deleteWork()
     {
+        this.production = 1;
+        this.terrain = city.getCentralTerrain();
 
     }
 
