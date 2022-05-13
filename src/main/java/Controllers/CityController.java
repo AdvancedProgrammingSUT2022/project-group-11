@@ -144,7 +144,7 @@ public class CityController {
 
     public String createUnitWithTurn(Matcher matcher, City city) {
         Civilization civilization = city.getOwner();
-        String unitName = matcher.group("subdivision");
+        String unitName = matcher.group("unitName");
         String notEnoughMoney = "You do not have enough gold to construct this unit";
         String lackTechnology = "You lack the required technology to construct this unit";
         String lackResources = "You lack the required resources to construct this unit";
@@ -184,12 +184,8 @@ public class CityController {
 
         for (UnitTypes unitTypes : nonCombat) {
             if (getUnitTypeByName(unitName).equals(unitTypes)) {
-                if (unitTypes.getTechnologyRequirements() != null && !containUnit(civilization.getTechnologies(), unitTypes.getTechnologyRequirements())) {
-                    return lackTechnology;
-                } else if (city.getNonCombatUnit() != null) {
+                 if (city.getNonCombatUnit() != null) {
                     return unitAlreadyExists;
-                } else if (city.getCentralTerrain().getResource() != null && unitTypes.getResourceRequirements() != null && !city.getCentralTerrain().getResource().getResourceType().equals(unitTypes.getResourceRequirements())) {
-                    return lackResources;
                 }
                 if (unitTypes.equals(UnitTypes.SETTLER)) {
                     if (civilization.getBooleanSettlerBuy()) {
