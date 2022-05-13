@@ -20,11 +20,11 @@ import java.util.regex.Matcher;
 
 public class DatabaseController {
     private Database database;
-    
+
 
     public DatabaseController(Database database) {
         this.database = database;
-        
+
     }
     public HashMap<User, String> notificationHistory = new HashMap<>();
     public void addUser(User user) {
@@ -755,7 +755,7 @@ public class DatabaseController {
 
     public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType() == (technologyType)) {
+            if (technology.getTechnologyType().equals(technologyType)) {
                 return true;
             }
         }
@@ -1494,10 +1494,39 @@ public class DatabaseController {
             stringBuilder.append("HP ").append(city.getHP()).append("\n");
             stringBuilder.append("Gold ").append(city.getGold()).append("\n");
             stringBuilder.append("Science ").append(city.getScience()).append("\n");
-            stringBuilder.append("Food Storage ").append(city.getFoodStorage()).append("\n");
+            stringBuilder.append("Food Storage ").append(city.getFood()).append("\n");
+            if(!city.getConstructionWaitList().isEmpty())
+            {
+                stringBuilder.append(city.getConstructionWaitList().get(0).getUnitType().name()).append(" will be constructed in ").append(city.getConstructionWaitList().get(0).getUnitType().getTurn() - city.getConstructionWaitList().get(0).getPassedTurns()).append(" Turn").append("\n");
+            }
+            else{
+                stringBuilder.append("You are not constructing any unit in this city").append("\n");
+            }
 
 
         }
         return stringBuilder.toString();
+    }
+
+    public String cityPanel(User user) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (City city : user.getCivilization().getCities()) {
+            stringBuilder.append("X of Central Terrain").append(city.getCentralTerrain().getX()).append("\n");
+            stringBuilder.append("Y of Central Terrain").append(city.getCentralTerrain().getY()).append("\n\n\n");
+
+        }
+        return stringBuilder.toString();
+    }
+
+    public City getCityByCoordinates(int x , int y, User user)
+    {
+        for(City city: user.getCivilization().getCities())
+        {
+            if(x == city.getCentralTerrain().getX() && y == city.getCentralTerrain().getY())
+            {
+                return city;
+            }
+        }
+        return null;
     }
 }

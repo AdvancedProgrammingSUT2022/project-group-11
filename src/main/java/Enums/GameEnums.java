@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 public enum GameEnums {
     INFO("^INFO\\s(?<section>\\S+)$"),
     SELECT_UNIT("^SELECT\\sUNIT\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    CITY_INFO("^CITY\\sINFO\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     ACTIVATE_UNIT("^ACTIVATE\\sUNIT\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     SELECT_CITY_POSITION("^SELECT\\sCITY\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     SELECT_CITY_NAME("^SELECT\\sCITY\\s(?<subdivision>\\S+)$"),
@@ -48,6 +49,10 @@ public enum GameEnums {
     SET_CHEAT_TERRAIN_TYPE("^SET\\sCHEAT\\sTERRAIN\\sTYPE\\s(?<name>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     DELETE_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     REPAIR_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREPAIR\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
+    ASSIGN_CITIZEN("^CITY\\sASSIGN\\sCITIZEN\\sNUMBER\\s(<?CitizenIndex>\\d+)\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
+    BUY_UNIT("^CITY\\sBUY\\sUNIT\\s(<?subdivision>\\S+)"),
+    REMOVE_FROM_WORK("^CITY\\sREMOVE\\sCITIZEN\\sNUMBER\\s(<?CitizenIndex>\\d+)"),
+    BUY_TILE("CITY\\sBUY\\sTILE\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
 
 
     INTEGER("^-?\\d+$");

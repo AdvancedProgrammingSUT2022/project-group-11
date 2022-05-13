@@ -1,6 +1,7 @@
 package Model.City;
 
 import Model.Buildings.BuildingTypes;
+import Model.Terrains.TerrainTypes;
 import Model.Civilization;
 import Model.Terrain;
 import Model.Units.CombatUnit;
@@ -24,7 +25,7 @@ public class City {
     private int rangedCombatStrength;
     private boolean garrisoned;
     private boolean isCaptured;
-    private ArrayList<Citizen> citizens = new ArrayList<>();
+    private ArrayList<Citizen> citizens;
     private boolean isBuildingSomething;
     private int food;
     private int science;
@@ -33,7 +34,7 @@ public class City {
     private int turnsRemainingUntilPopulationIncrease;
     private int foodStorage;
     private boolean isUnderAttack;
-    private ArrayList<BuildingTypes> buildings;
+    private ArrayList<BuildingTypes> buildings = new ArrayList<>();
     private ArrayList<Terrain> mainTerrains = new ArrayList<>();
 
 
@@ -41,7 +42,7 @@ public class City {
     private NonCombatUnit nonCombatUnit;
 
 
-    public City(Civilization founder, Civilization owner, Terrain centralTerrain, int HP, String type, int combatStrength, int rangedCombatStrength, ArrayList<BuildingTypes> buildings) {
+    public City(Civilization founder, Civilization owner, Terrain centralTerrain, int HP, String type, int combatStrength, int rangedCombatStrength) {
         this.founder = founder;
         this.owner = owner;
         this.isPuppet = false;
@@ -49,6 +50,11 @@ public class City {
         this.HP = HP;
         this.type = type;
         this.combatStrength = combatStrength;
+        if ( this.centralTerrain.getTerrainTypes().equals(TerrainTypes.HILLS))
+        {
+            this.combatStrength += 10;
+            this.HP += 7;
+        }
         this.iConstructingUnit = false;
         this.rangedCombatStrength = rangedCombatStrength;
         this.garrisoned = false;
@@ -59,7 +65,6 @@ public class City {
         this.food = 0;
         this.science = 0;
         this.foodStorage = 0;
-        this.buildings = buildings;
         this.mainTerrains.add(centralTerrain);
 
     }
@@ -235,71 +240,86 @@ public class City {
     }
 
 
-    public CombatUnit getCombatUnit() {
+    public CombatUnit getCombatUnit()
+    {
         return combatUnit;
     }
 
-    public void setCombatUnit(CombatUnit combatUnit) {
+    public void setCombatUnit(CombatUnit combatUnit)
+    {
         this.combatUnit = combatUnit;
     }
 
-    public NonCombatUnit getNonCombatUnit() {
+    public NonCombatUnit getNonCombatUnit()
+    {
         return nonCombatUnit;
     }
 
-    public void setNonCombatUnit(NonCombatUnit nonCombatUnit) {
+    public void setNonCombatUnit(NonCombatUnit nonCombatUnit)
+    {
         this.nonCombatUnit = nonCombatUnit;
     }
 
-    public int getPopulation() {
+    public int getPopulation()
+    {
         return population;
     }
 
-    public void setPopulation(int population) {
+    public void setPopulation(int population)
+    {
         this.population = population;
     }
 
-    public int getGold() {
+    public int getGold()
+    {
         return gold;
     }
 
-    public void setGold(int gold) {
+    public void setGold(int gold)
+    {
         this.gold = gold;
     }
 
-    public int getProduction() {
+    public int getProduction()
+    {
         return production;
     }
 
-    public void setProduction(int production) {
+    public void setProduction(int production)
+    {
         this.production = production;
     }
 
-    public int getTurnsRemainingUntilPopulationIncrease() {
+    public int getTurnsRemainingUntilPopulationIncrease()
+    {
         return turnsRemainingUntilPopulationIncrease;
     }
 
-    public void setTurnsRemainingUntilPopulationIncrease(int turnsRemainingUntilPopulationIncrease) {
+    public void setTurnsRemainingUntilPopulationIncrease(int turnsRemainingUntilPopulationIncrease)
+    {
         this.turnsRemainingUntilPopulationIncrease = turnsRemainingUntilPopulationIncrease;
     }
-
-    public ArrayList<Terrain> getNeighbors() {
+    public void setNeighbors(ArrayList<Terrain> neighbour)
+    {
+       this.neighbors = neighbour;
+    }
+    public ArrayList<Terrain> getNeighbors()
+    {
         return neighbors;
     }
 
-    public void setNeighbors(ArrayList<Terrain> neighbour) {
-        this.neighbors = neighbour;
-    }
-
-    public int getFoodStorage() {
+    public int getFoodStorage()
+    {
         return foodStorage;
     }
 
-    public void setFoodStorage(int foodStorage) {
+    public void setFoodStorage(int foodStorage)
+    {
         this.foodStorage = foodStorage;
     }
 
-    public void addCitizen(Citizen citizen) {
+    public void addCitizen ( Citizen citizen)
+    {
         ArrayList<Citizen> cityCitizens = this.getCitizens();
         cityCitizens.add(citizen);
         this.setCitizens(cityCitizens);
