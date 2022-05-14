@@ -298,10 +298,10 @@ public class DatabaseController {
         NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
 
         if (combatUnit != null) {
-            System.out.println(combatUnitMovement(combatUnit, x_final, y_final, user, map));
+            return combatUnitMovement(combatUnit, x_final, y_final, user, map);
 
         } else if (nonCombatUnit != null) {
-            System.out.println(nonCombatUnitMovement(nonCombatUnit, x_final, y_final, user, map));
+            return nonCombatUnitMovement(nonCombatUnit, x_final, y_final, user, map);
         }
 
         return "action completed";
@@ -755,7 +755,7 @@ public class DatabaseController {
 
     public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType() != null &&technology.getTechnologyType().equals(technologyType)) {
+            if (technology.getTechnologyType() != null && technology.getTechnologyType().equals(technologyType)) {
                 return true;
             }
         }

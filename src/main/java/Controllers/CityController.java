@@ -103,7 +103,6 @@ public class CityController {
         int foodIncrease = 0;
         for (Terrain terrain : city.getMainTerrains())
         {
-            if(terrain != null)
             foodIncrease += terrain.getTerrainTypes().getFood();
             if ( terrain.getTerrainFeatureTypes() != null)
             {

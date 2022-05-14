@@ -7717,5 +7717,9 @@ public void RevealedMapTest(){
     city.garrisoned(true);
     city.isCaptured(true);
     city.citizens(new ArrayList<>());
+    city.setBuildings(new ArrayList<>());
+    city.setScience(3);
+    city.setIsPuppet(true);
+    city.isIsPuppet();
  }
 }
