@@ -1,6 +1,5 @@
 package Controllers;
 
-import Model.Buildings.BuildingTypes;
 import Model.City.Citizen;
 import Model.City.City;
 import Model.Civilization;
@@ -821,8 +820,8 @@ public class CityController {
         city.setHP( city.getHP() - attackerCombatStrength + 1);
         if (city.getGarrisoned())
         {
-            attacker.setHp( attacker.getHp() - cityCombatStrength);
-            if ( attacker.getHp() <= 0)
+            attacker.setHP( attacker.getHP() - cityCombatStrength);
+            if ( attacker.getHP() <= 0)
             {
 
                 Civilization unitOwner = this.databaseController.getContainerCivilization((Unit) attacker);

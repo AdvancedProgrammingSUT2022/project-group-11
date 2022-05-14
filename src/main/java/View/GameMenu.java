@@ -70,6 +70,7 @@ public class GameMenu {
                 }
                 this.databaseController.movementOfAllUnits(user);
                 this.databaseController.setTerrainsOfEachCivilization(user);
+                this.databaseController.setUnitsParametersAfterEachTurn(users);
             }
         }
     }
