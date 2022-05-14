@@ -1139,6 +1139,7 @@ public class GameMenu {
     }
 
     public void setCityController(CityController cityController2) {
+        this.cityController = cityController2;
     }
 
 }

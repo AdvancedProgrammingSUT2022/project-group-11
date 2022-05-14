@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import Controllers.CityController;
 import Controllers.DatabaseController;
+import Controllers.saveData;
 import Enums.GameEnums;
 import Enums.MenuEnums;
 import Model.Civilization;
@@ -7731,7 +7732,9 @@ public void RevealedMapTest(){
     combatunit1.setHP(-5);
     DatabaseController databaseController = new DatabaseController(database);
     databaseController.setDatabase(database);
+
     database.setMap(map);
+    databaseController.setUnitsParametersAfterEachTurn(database.getUsers());
     CityController cityController = new CityController();
     cityController.setDatabaseController(databaseController);
     cityController.setMap(map);
@@ -7751,6 +7754,7 @@ public void RevealedMapTest(){
     
     Civilization civil = new Civilization(100, 3, "A");
     City city = new City(null, civil,central , 3, null,0, 0);
+    city.getFoodStorage();
     city.HP(3);
     city.type("akbar");
     city.combatStrength(3);
@@ -7764,5 +7768,134 @@ public void RevealedMapTest(){
     city.setIsPuppet(true);
     city.isIsPuppet();
  }
+
+ @Test
+ public void ChangingCombatUnitsParamtere(){
+    Map map = new Map();
+  
+   
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    map.setTerrains(terrains);
+
+    CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true, false, false, false, false);
+    Database database = new Database();
+    database.setMap(map);
+    DatabaseController databaseController = new DatabaseController(database);
+    combatunit.setAlert(true);
+    databaseController.changingCombatUnitsParameters(combatunit);
+    combatunit.setAlert(false);
+    combatunit.setFortify(true);
+    databaseController.changingCombatUnitsParameters(combatunit);
+    combatunit.setAlert(false);
+    combatunit.setFortify(false);
+    combatunit.setFortifyUntilHeal(true);
+    databaseController.changingCombatUnitsParameters(combatunit);
+ }
+
+ @Test
+ public void selectedCityOptionTest(){
+    Map map = new Map();
+  
+   
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    map.setTerrains(terrains);
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.SETTLER, true, false, false, false, false);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+            improvement, resource,
+            new ArrayList<Revealed>());
+    
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+    Citizen citizenone = new Citizen(city);
+    Citizen citizentwo = new Citizen(city);
+    ArrayList<Citizen> citizens = new ArrayList<>();
+    citizens.add(citizenone);
+    citizens.add(citizentwo);
+    city.setCitizens(citizens);
+    User user = new User(null, null, null, civil);
+    Database database = new Database();
+    database.setMap(map);
+    database.addUser(user);
+   saveData saveData = new saveData();
+   saveData.saveUsers(database);
+    DatabaseController databaseController = new DatabaseController(database);
+    databaseController.addUser(user);
+    CityController cityController = new CityController();
+    cityController.setDatabaseController(databaseController);
+    cityController.setMap(map);
+    GameMenu gamemenu = new GameMenu(databaseController, database.getUsers());
+    gamemenu.setCityController(cityController);
+    String input = null;
+    input = "CITY ASSIGN CITIZEN NUMBER 0 3 4";
+    Matcher matcher;
+   matcher = getMatcher(input,  GameEnums.ASSIGN_CITIZEN);
+   
+     gamemenu.selectedCityActions(city, input);
+     input = "CITY BUY UNIT ARCHER";
+     gamemenu.selectedCityActions(city, input);
+
+     input = "CONSTRUCT UNIT ARCHER";
+     gamemenu.selectedCityActions(city, input);
+
+     input = "CITY REMOVE CITIZEN NUMBER 0";
+     gamemenu.selectedCityActions(city, input);
+
+     input = "CITY BUY TILE 5 5";
+     gamemenu.selectedCityActions(city, input);
+}
+@Test
+public void MovementCostTest(){
+    Map map = new Map();
+  
+   ArrayList<Terrain> path = new ArrayList<>();
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    ArrayList <TerrainFeatureTypes> types = new ArrayList<>();
+types.add(TerrainFeatureTypes.FLOODPLAINS);
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.ROAD);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, types, combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          path.add(terrains[i][j]);
+
+        }
+    }
+    Database database = new Database();
+    database.setMap(map);
+   // database.addUser(user);
+
+    DatabaseController databaseController = new DatabaseController(database);
+  //  databaseController.addUser(user);
+  databaseController.calculatingTheMovementCost(path);
+
+}
 
 }
