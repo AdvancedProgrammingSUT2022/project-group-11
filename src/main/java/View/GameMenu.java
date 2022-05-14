@@ -1019,7 +1019,11 @@ public class GameMenu {
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
             System.out.println(this.databaseController.changingTheStateOfAUnit("delete"));
 
-        } else {
+        } else if ( (matcher = GameEnums.getMatcher(input, GameEnums.ATTACK_CITY)) != null)
+        {
+            
+        }
+        else {
             System.out.println("INVALID COMMAND");
         }
     }
@@ -1047,7 +1051,11 @@ public class GameMenu {
                                 Integer.parseInt(matcher.group("Y"))));
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_UNIT)) != null) {
                 this.cityController.createUnit(matcher, city);
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.REMOVE_FROM_WORK)) != null) {
+            } else if ( (matcher = GameEnums.getMatcher(input, GameEnums.CREATE_UNIT)) != null)
+            {
+                this.cityController.createUnitWithTurn(matcher, city);
+            }
+            else if ((matcher = GameEnums.getMatcher(input, GameEnums.REMOVE_FROM_WORK)) != null) {
                 this.cityController
                         .removeCitizenFromWork(city.getCitizens().get(Integer.parseInt(matcher.group("CitizenIndex"))));
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TILE)) != null) {
