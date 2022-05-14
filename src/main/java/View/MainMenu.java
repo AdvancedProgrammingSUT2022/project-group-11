@@ -1,6 +1,7 @@
 package View;
 
 import Controllers.DatabaseController;
+import Controllers.saveData;
 import Enums.MenuEnums;
 import Model.User;
 
@@ -40,6 +41,7 @@ public class MainMenu
                     input = input.substring(9 + 1 + username.length());
                 }
                 users.add(this.user);
+               
                 return users;
             }
             else if ((matcher = getCommandMatcher(input, MenuEnums.SHOWCURRENT.getRegex())).matches())
@@ -55,7 +57,7 @@ public class MainMenu
                 }
                 else if (menuName.equals("Main"))
                 {
-
+                    
                 }
                 else if (menuName.equals("Profile"))
                 {

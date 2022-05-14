@@ -18,6 +18,7 @@ public class saveData{
             FileWriter Writer = new FileWriter("src/main/resources/Users.json");
             Writer.write(new Gson().toJson(database.getUsers()));
             Writer.close();
+            System.out.println(1);
         } catch (Exception e) {
             e.printStackTrace();
         }

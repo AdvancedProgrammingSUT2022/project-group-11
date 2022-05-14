@@ -47,6 +47,11 @@ public class GameMenu {
                     String input = scanner.nextLine();
                     // input.replaceFirst("^\\s*", "");
                     // input = input.trim().replaceAll("\\s+", " ");
+                    if(input.equals("EXIT")){
+                        saveData saveData = new saveData();
+                        saveData.saveUsers(this.databaseController.getDatabase());
+                        System.exit(0);
+                    }
                     if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
                         selectUnit(user, matcher);
                         while (this.databaseController.HasOneUnitBeenSelected()) {
