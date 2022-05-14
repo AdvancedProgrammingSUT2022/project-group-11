@@ -9,6 +9,7 @@ import Model.Resources.ResourceTypes;
 import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
 import Model.Terrain;
+import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Units.*;
 
 import java.util.ArrayList;
@@ -71,6 +72,7 @@ public class CityController {
             goldIncrease += tile.getGold();
             productionIncrease += tile.getResource().getProduction();
         }
+        foodIncrease += calculateCityFood(city);
         for (Citizen citizen : city.getCitizens()) {
             productionIncrease += citizen.getProduction();
         }
@@ -94,6 +96,24 @@ public class CityController {
         }
         // update constructions
 
+    }
+
+    private int calculateCityFood( City city)
+    {
+        int foodIncrease = 0;
+        for (Terrain terrain : city.getMainTerrains())
+        {
+            foodIncrease += terrain.getTerrainTypes().getFood();
+            if ( terrain.getTerrainFeatureTypes() != null)
+            {
+                for ( TerrainFeatureTypes terrainFeatureTypes : terrain.getTerrainFeatureTypes())
+                {
+                    foodIncrease += terrainFeatureTypes.getFood();
+
+                }
+            }
+        }
+        return foodIncrease;
     }
 
     public void destroyCity(Civilization destroyer, Civilization loser, City city) {
@@ -231,6 +251,7 @@ public class CityController {
         String lackTechnology = "You lack the required technology to construct this unit";
         String lackResources = "You lack the required resources to construct this unit";
         String unitAlreadyExists = "There is already a unit in this city";
+        String unitPurchasedSuccessfully = "Unit purchase was successful";
 
         switch (unitName) {
             case "ARCHER":
@@ -245,8 +266,9 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.ARCHER.getCost());
                     civilization.addUnit(newArcher);
                     city.setCombatUnit(newArcher);
+                    return unitPurchasedSuccessfully;
                 }
-                break;
+
             case "CHARIOT_ARCHER":
                 if (money < UnitTypes.CHARIOT_ARCHER.getCost()) {
                     return notEnoughMoney;
@@ -261,10 +283,11 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.CHARIOT_ARCHER.getCost());
                     civilization.addUnit(newChariotArcher);
                     city.setCombatUnit(newChariotArcher);
+                    return unitPurchasedSuccessfully;
                 }
 
 
-                break;
+
             case "SCOUT":
                 if (money < UnitTypes.SCOUT.getCost()) {
                     return notEnoughMoney;
@@ -275,9 +298,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.SCOUT.getCost());
                     civilization.addUnit(newScout);
                     city.setCombatUnit(newScout);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "SETTLER":
                 if (money < UnitTypes.SETTLER.getCost()) {
                     return notEnoughMoney;
@@ -289,11 +313,12 @@ public class CityController {
                         civilization.setGold(money - UnitTypes.SETTLER.getCost());
                         civilization.addUnit(newSettler);
                         city.setNonCombatUnit(newSettler);
+                        return unitPurchasedSuccessfully;
                     }
 
                 }
 
-                break;
+
             case "SPEARMAN":
                 if (money < UnitTypes.SPEARMAN.getCost()) {
                     return notEnoughMoney;
@@ -304,9 +329,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.SPEARMAN.getCost());
                     civilization.addUnit(newScout);
                     city.setCombatUnit(newScout);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "WARRIOR":
                 if (money < UnitTypes.WARRIOR.getCost()) {
                     return notEnoughMoney;
@@ -317,9 +343,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.WARRIOR.getCost());
                     civilization.addUnit(newWarrior);
                     city.setCombatUnit(newWarrior);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "WORKER":
                 if (money < UnitTypes.WORKER.getCost()) {
                     return notEnoughMoney;
@@ -330,9 +357,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.WORKER.getCost());
                     civilization.addUnit(newWorker);
                     city.setNonCombatUnit(newWorker);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "CATAPULT":
                 if (money < UnitTypes.CATAPULT.getCost()) {
                     return notEnoughMoney;
@@ -347,9 +375,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.CATAPULT.getCost());
                     civilization.addUnit(newCatapult);
                     city.setCombatUnit(newCatapult);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "HORSESMAN":
                 if (money < UnitTypes.HORSESMAN.getCost()) {
                     return notEnoughMoney;
@@ -364,9 +393,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.HORSESMAN.getCost());
                     civilization.addUnit(newHorsesman);
                     city.setCombatUnit(newHorsesman);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "SWORDSMAN":
                 if (money < UnitTypes.SWORDSMAN.getCost()) {
                     return notEnoughMoney;
@@ -381,9 +411,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.SWORDSMAN.getCost());
                     civilization.addUnit(newSwordsman);
                     city.setCombatUnit(newSwordsman);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "CROSSBOWMAN":
                 if (money < UnitTypes.CROSSBOWMAN.getCost()) {
                     return notEnoughMoney;
@@ -396,9 +427,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.CROSSBOWMAN.getCost());
                     civilization.addUnit(newCrossbowman);
                     city.setCombatUnit(newCrossbowman);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "KNIGHT":
                 if (money < UnitTypes.KNIGHT.getCost()) {
                     return notEnoughMoney;
@@ -413,10 +445,11 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.KNIGHT.getCost());
                     civilization.addUnit(newKnight);
                     city.setCombatUnit(newKnight);
+                    return unitPurchasedSuccessfully;
 
                 }
 
-                break;
+
             case "LONGSWORDSMAN":
                 if (money < UnitTypes.LONGSWORDSMAN.getCost()) {
                     return notEnoughMoney;
@@ -431,9 +464,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.LONGSWORDSMAN.getCost());
                     civilization.addUnit(newLong);
                     city.setCombatUnit(newLong);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "PIKEMAN":
                 if (money < UnitTypes.PIKEMAN.getCost()) {
                     return notEnoughMoney;
@@ -446,9 +480,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.PIKEMAN.getCost());
                     civilization.addUnit(newPikeman);
                     city.setCombatUnit(newPikeman);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "TREBUCHET":
                 if (money < UnitTypes.TREBUCHET.getCost()) {
                     return notEnoughMoney;
@@ -463,10 +498,11 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.TREBUCHET.getCost());
                     civilization.addUnit(newTrebuchet);
                     city.setCombatUnit(newTrebuchet);
+                    return unitPurchasedSuccessfully;
 
                 }
 
-                break;
+
             case "CANNON":
                 if (money < UnitTypes.CANNON.getCost()) {
                     return notEnoughMoney;
@@ -479,10 +515,11 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.CANNON.getCost());
                     civilization.addUnit(newCannon);
                     city.setCombatUnit(newCannon);
+                    return unitPurchasedSuccessfully;
 
                 }
 
-                break;
+
             case "CAVALRY":
                 if (money < UnitTypes.CAVALRY.getCost()) {
                     return notEnoughMoney;
@@ -497,10 +534,11 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.CAVALRY.getCost());
                     civilization.addUnit(newUnit);
                     city.setCombatUnit(newUnit);
+                    return unitPurchasedSuccessfully;
 
                 }
 
-                break;
+
             case "LANCER":
                 if (money < UnitTypes.LANCER.getCost()) {
                     return notEnoughMoney;
@@ -515,9 +553,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.LANCER.getCost());
                     civilization.addUnit(newUnit);
                     city.setCombatUnit(newUnit);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "MUSKETMAN":
                 if (money < UnitTypes.MUSKETMAN.getCost()) {
                     return notEnoughMoney;
@@ -530,9 +569,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.MUSKETMAN.getCost());
                     civilization.addUnit(newUnit);
                     city.setCombatUnit(newUnit);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "RIFLEMAN":
                 if (money < UnitTypes.RIFLEMAN.getCost()) {
                     return notEnoughMoney;
@@ -545,10 +585,11 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.RIFLEMAN.getCost());
                     civilization.addUnit(newUnit);
                     city.setCombatUnit(newUnit);
+                    return unitPurchasedSuccessfully;
 
                 }
 
-                break;
+
             case "ANTI_TANKGUN":
                 if (money < UnitTypes.ANTI_TANKGUN.getCost()) {
                     return notEnoughMoney;
@@ -561,9 +602,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.ANTI_TANKGUN.getCost());
                     civilization.addUnit(newUnit);
                     city.setCombatUnit(newUnit);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "ARTILLERY":
                 if (money < UnitTypes.ARTILLERY.getCost()) {
                     return notEnoughMoney;
@@ -576,9 +618,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.ARTILLERY.getCost());
                     civilization.addUnit(newUnit);
                     city.setCombatUnit(newUnit);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "INFANTRY":
                 if (money < UnitTypes.INFANTRY.getCost()) {
                     return notEnoughMoney;
@@ -591,9 +634,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.INFANTRY.getCost());
                     civilization.addUnit(newUnit);
                     city.setCombatUnit(newUnit);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "PANZER":
                 if (money < UnitTypes.PANZER.getCost()) {
                     return notEnoughMoney;
@@ -606,9 +650,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.PANZER.getCost());
                     civilization.addUnit(newUnit);
                     city.setCombatUnit(newUnit);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
             case "TANK":
                 if (money < UnitTypes.TANK.getCost()) {
                     return notEnoughMoney;
@@ -621,9 +666,10 @@ public class CityController {
                     civilization.setGold(money - UnitTypes.TANK.getCost());
                     civilization.addUnit(newUnit);
                     city.setCombatUnit(newUnit);
+                    return unitPurchasedSuccessfully;
                 }
 
-                break;
+
         }
         return "invalid unit name";
     }
@@ -633,6 +679,7 @@ public class CityController {
         if (city.getCitizens().contains(citizen)) {
             if (city.getNeighbors().contains(tile) && citizen.getHasWork()) {
                 citizen.assignWork(tile);
+                System.out.println("Citizen assigned successfully");
                 return;
             }
         }

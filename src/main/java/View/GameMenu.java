@@ -55,7 +55,13 @@ public class GameMenu {
                         System.out.println("City selected successfully");
                         input = scanner.nextLine();
                         selectedCityActions(getCityFromMatcher(matcher), input);
-                        System.out.println("Action completed successfully");
+                    }
+                }
+                if ( user.getCivilization().getCities() != null)
+                {
+                    for ( City city : user.getCivilization().getCities())
+                    {
+                        this.cityController.playTurn(city);
                     }
                 }
                 this.databaseController.movementOfAllUnits(user);
