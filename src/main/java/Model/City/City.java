@@ -1,5 +1,6 @@
 package Model.City;
 
+import Controllers.CityController;
 import Model.Buildings.BuildingTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Civilization;
@@ -36,7 +37,7 @@ public class City {
     private boolean isUnderAttack;
     private ArrayList<BuildingTypes> buildings = new ArrayList<>();
     private ArrayList<Terrain> mainTerrains = new ArrayList<>();
-
+    private CityController cityController = new CityController();
 
     private CombatUnit combatUnit;
     private NonCombatUnit nonCombatUnit;
