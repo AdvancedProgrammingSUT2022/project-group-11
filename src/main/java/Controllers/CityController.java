@@ -915,25 +915,17 @@ public class CityController {
         }
     }
 
-    public void rangedAttackToCityForOneTurn( RangedCombatUnit attacker, City city)
+    public boolean rangedAttackToCityForOneTurn( RangedCombatUnit attacker, City city)
     {
         int combatStrengh = attacker.getUnitType().getRangedCombatStrengh();
         int combatRange = attacker.getUnitType().getRange();
-        if ( combatRange != 0)
+        city.setHP( city.getHP() - combatStrengh + 1);
+        if ( city.getHP() <= 0)
         {
-            Terrain tile = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
-            if ( NeighborsAtADistanceOfTwoFromAnArraylistOfTerrains(city.getMainTerrains(), map).contains(tile))
-            {
-                city.setHP( city.getHP() - combatStrengh + 1);
-                return;
-            }
-            else
-            {
-                System.out.println("The unit is not close enough");
-                return;
-            }
+            return true;
         }
-        System.out.println("This unit is not a ranged combat unit");
+        return false;
+
     }
 
 

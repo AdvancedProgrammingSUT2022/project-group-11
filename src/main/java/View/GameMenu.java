@@ -8,6 +8,7 @@ import Enums.GameEnums;
 import Model.Improvements.ImprovementTypes;
 import Model.Resources.ResourceTypes;
 import Model.Technologies.TechnologyTypes;
+import Model.Terrain;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
@@ -50,7 +51,47 @@ public class GameMenu {
                         selectUnit(user, matcher);
                         while (this.databaseController.HasOneUnitBeenSelected()) {
                             input = scanner.nextLine();
-                            oneUnitHasBeenSelected(input, matcher, user);
+                            if((matcher = GameEnums.getMatcher(input, GameEnums.ATTACK_CITY) ) != null)
+                            {
+                                if (this.databaseController.getSelectedCombatUnit() != null)
+                                {
+                                    CombatUnit combatUnit = this.databaseController.getSelectedCombatUnit();
+                                    String temp = combatController.unitAttackCity(matcher, user);
+                                    if (temp.equals("You won.The city is yours. Do you wish to destroy it or make it yours?"))
+                                    {
+                                        System.out.println("You won.The city is yours. Do you wish to destroy it or make it yours?");
+                                        input = scanner.nextLine();
+                                        Terrain terrain = this.databaseController.getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY());
+                                        City city = terrain.getCity();
+                                        this.cityController.whatToDoWithTheCity(input, city, user.getCivilization());
+                                    }
+                                    else
+                                        System.out.println(temp);
+                                }
+                                else
+                                    System.out.println("You cannot attack a city with a non-combat unit.");
+                            }
+                            else if ((matcher = GameEnums.getMatcher(input, GameEnums.RANGED_ATTACK_CITY) ) != null)
+                            {
+                                if ( this.databaseController.getSelectedCombatUnit() != null)
+                                {
+                                    CombatUnit combatUnit = this.databaseController.getSelectedCombatUnit();
+                                    String temp = combatController.rangedAttack(matcher, user);
+                                    if ( temp.equals("You won. The city is yours. Please move a combat unit to the tile to win it"))
+                                    {
+                                        System.out.println("You won. The city is yours. Please move a combat unit to the tile to win it");
+
+
+                                    }
+                                    else
+                                        System.out.println(temp);
+                                }
+                                else
+                                    System.out.println("You cannot attack a city with a non-combat unit.");
+                            }
+
+                            else
+                                oneUnitHasBeenSelected(input, matcher, user);
 
                         }
                     }
@@ -59,6 +100,7 @@ public class GameMenu {
                         input = scanner.nextLine();
                         selectedCityActions(getCityFromMatcher(matcher), input);
                     }
+
                     else{
                         runCommands(user, input);
                     }
@@ -945,13 +987,6 @@ public class GameMenu {
     public void oneUnitHasBeenSelected(String input, Matcher matcher, User user) {
         if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_MOVETO)) != null) {
             moveUnit(user, matcher);
-        } else if((matcher = GameEnums.getMatcher(input, GameEnums.ATTACK_CITY) ) != null)
-        {
-            String temp = combatController.unitAttackCity(matcher, user);
-            if ( temp.equals("You won.The city is yours. Do you wish to destroy it or make it yours?"))
-            {
-            }
-            System.out.println(temp);
         }
         else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
             this.databaseController.changingTheStateOfAUnit("sleep");

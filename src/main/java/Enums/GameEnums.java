@@ -50,10 +50,11 @@ public enum GameEnums {
     REPAIR_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREPAIR\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     ASSIGN_CITIZEN("^CITY\\sASSIGN\\sCITIZEN\\sNUMBER\\s(<?CitizenIndex>\\d+)\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
     BUY_UNIT("^CITY\\sBUY\\sUNIT\\s(<?unitName>\\S+)"),
-    CREATE_UNIT("CITY\\sCREATE\\sUNIT\\s(<?unitName>\\S+"),
+    CREATE_UNIT("CITY\\sCREATE\\sUNIT\\s(<?unitName>\\S+)"),
     REMOVE_FROM_WORK("^CITY\\sREMOVE\\sCITIZEN\\sNUMBER\\s(<?CitizenIndex>\\d+)"),
     BUY_TILE("CITY\\sBUY\\sTILE\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
     ATTACK_CITY("UNIT\\sATTACK\\sCITY\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
+    RANGED_ATTACK_CITY("RANGED\\sUNIT\\sATTACK\\sCITY\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
 
 
     INTEGER("^-?\\d+$");
