@@ -4009,7 +4009,7 @@ public class MapGeneratorTest {
        
         Civilization civil = new Civilization(100, 3, "A");
        
-        City city = new City(null, civil,null , 3, null,0, 0);
+        City city = new City(null, civil,terrainone , 3, null,0, 0);
         Citizen citizen = new Citizen(city);
         ArrayList<Citizen> citizens = new ArrayList<>();
         city.setFoodStorage(1000);
@@ -4037,7 +4037,7 @@ public class MapGeneratorTest {
        
         Civilization civil = new Civilization(100, 3, "A");
        
-        City city = new City(null, civil,null , 3, null,0, 0);
+        City city = new City(null, civil,terrainone , 3, null,0, 0);
         Citizen citizen = new Citizen(city);
         ArrayList<Citizen> citizens = new ArrayList<>();
         city.setFoodStorage(1000);
@@ -7713,5 +7713,9 @@ public void RevealedMapTest(){
     city.type("akbar");
     city.combatStrength(3);
     city.iConstructingUnit(true);
+    city.rangedCombatStrength(4);
+    city.garrisoned(true);
+    city.isCaptured(true);
+    city.citizens(new ArrayList<>());
  }
 }

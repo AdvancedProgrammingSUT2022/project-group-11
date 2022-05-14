@@ -24,7 +24,7 @@ public class Terrain {
     private Improvement TerrainImprovement;
     private Resource TerrainResource;
     private boolean unlockResource;
-    private ArrayList<Revealed> reveals;
+    private ArrayList<Revealed> reveals ;
     private City city;
 
     private boolean hasToBeDeleted = false;
@@ -45,7 +45,8 @@ public class Terrain {
 
         this.TerrainImprovement = TerrainImprovement;
         this.TerrainResource = TerrainResource;
-        this.reveals = reveals;
+        this.reveals = new ArrayList<>();
+
         // this.city = null;
     }
 

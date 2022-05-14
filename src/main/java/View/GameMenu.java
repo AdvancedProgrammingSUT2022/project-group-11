@@ -35,7 +35,6 @@ public class GameMenu {
 
         while (true) {
             for (User user : users) {
-
                 System.out.println(user.getUsername() + "'s turn");
                 this.databaseController.setAllUnitsUnfinished(user);
                 while (!this.databaseController.isAllTasksFinished(user)) {
@@ -51,6 +50,18 @@ public class GameMenu {
                             oneUnitHasBeenSelected(input, matcher, user);
 
                         }
+                    }
+                    else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null) {
+                        System.out.println("City selected successfully");
+                        input = scanner.nextLine();
+                        selectedCityActions(getCityFromMatcher(matcher), input);
+                    }
+                }
+                if ( user.getCivilization().getCities() != null)
+                {
+                    for ( City city : user.getCivilization().getCities())
+                    {
+                        this.cityController.playTurn(city);
                     }
                 }
                 this.databaseController.movementOfAllUnits(user);
@@ -903,13 +914,7 @@ public class GameMenu {
             deleteImprovementCheat(matcher);
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.REPAIR_CHEAT_IMPROVEMENT)) != null) {
             repairImprovementCheat(matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_CITY_POSITION)) != null) {
-            Scanner scanner2 = new Scanner(System.in);
-            input = scanner2.nextLine();
-            selectedCityActions(getCityFromMatcher(matcher), input);
-            scanner2.close();
-
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.IMPROVEMENT_REPAIR)) != null) {
+        }  else if ((matcher = GameEnums.getMatcher(input, GameEnums.IMPROVEMENT_REPAIR)) != null) {
             repairImprovement();
 
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_BUILD)) != null) {
@@ -990,10 +995,17 @@ public class GameMenu {
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ATTACK)) != null) {
 
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FOUND_CITY)) != null) {
-            this.cityController.foundCity(user.getCivilization(), this.databaseController.getSelectedNonCombatUnit(),
-                    this.databaseController.getTerrainByCoordinates(
-                            this.databaseController.getSelectedNonCombatUnit().getX(),
-                            this.databaseController.getSelectedNonCombatUnit().getY()));
+            if ( this.databaseController.getSelectedNonCombatUnit() != null)
+            {
+                this.cityController.foundCity(user.getCivilization(), this.databaseController.getSelectedNonCombatUnit(),
+                        this.databaseController.getTerrainByCoordinates(
+                                this.databaseController.getSelectedNonCombatUnit().getX(),
+                                this.databaseController.getSelectedNonCombatUnit().getY()));
+            }
+            else
+            {
+                System.out.println("This unit cannot found a city");
+            }
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_CANCEL_MISSION)) != null) {
 
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_WAKE)) != null) {

@@ -27,6 +27,9 @@ public class DatabaseController {
 
     }
     public HashMap<User, String> notificationHistory = new HashMap<>();
+    public void addUser(User user) {
+        this.database.addUser(user);
+    }
 
     public Database getDatabase() {
         return this.database;
@@ -752,7 +755,7 @@ public class DatabaseController {
 
     public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType() != null && technology.getTechnologyType().equals(technologyType)) {
+            if (technology.getTechnologyType() != null &&technology.getTechnologyType().equals(technologyType)) {
                 return true;
             }
         }
@@ -1508,8 +1511,8 @@ public class DatabaseController {
     public String cityPanel(User user) {
         StringBuilder stringBuilder = new StringBuilder();
         for (City city : user.getCivilization().getCities()) {
-            stringBuilder.append("X of Central Terrain").append(city.getCentralTerrain().getX()).append("\n");
-            stringBuilder.append("Y of Central Terrain").append(city.getCentralTerrain().getY()).append("\n\n\n");
+            stringBuilder.append("X of Central Terrain: ").append(city.getCentralTerrain().getX()).append("\n");
+            stringBuilder.append("Y of Central Terrain: ").append(city.getCentralTerrain().getY()).append("\n\n\n");
 
         }
         return stringBuilder.toString();

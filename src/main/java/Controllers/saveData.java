@@ -1,5 +1,8 @@
 package Controllers;
 
+import Model.Database;
+import Model.User;
+
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -7,9 +10,6 @@ import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import Model.Database;
-import Model.User;
 
 public class saveData{
 
