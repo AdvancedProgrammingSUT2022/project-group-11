@@ -1513,6 +1513,7 @@ public class DatabaseController {
             stringBuilder.append("Gold ").append(city.getGold()).append("\n");
             stringBuilder.append("Science ").append(city.getScience()).append("\n");
             stringBuilder.append("Food Storage ").append(city.getFood()).append("\n");
+            stringBuilder.append("Production ").append(city.getProduction()).append("\n");
             if (!city.getConstructionWaitList().isEmpty()) {
                 stringBuilder.append(city.getConstructionWaitList().get(0).getUnitType().name()).append(" will be constructed in ").append(city.getConstructionWaitList().get(0).getUnitType().getTurn() - city.getConstructionWaitList().get(0).getPassedTurns()).append(" Turn").append("\n");
             } else {

@@ -62,7 +62,6 @@ public class CityController {
 
     public void playTurn(City city) {
 
-        // update food
         city.setNeighbors( NeighborsAtADistanceOfOneFromAnArraylistOfTerrains(city.getMainTerrains(), databaseController.getMap()));
         int foodIncrease = 0;
         int goldIncrease = 0;
@@ -75,6 +74,7 @@ public class CityController {
         }
         goldIncrease += calculateCityGold(city);
         foodIncrease += calculateCityFood(city);
+        productionIncrease += calculateCityProduction(city);
         for (Citizen citizen : city.getCitizens()) {
             productionIncrease += citizen.getProduction();
         }
@@ -85,21 +85,30 @@ public class CityController {
             if (city.getFood() > 20) {
                 Citizen newCitizen = new Citizen(city);
                 city.addCitizen(newCitizen);
-                city.setFood(city.getFoodStorage() - 20);
+                city.setFood(city.getFood() - 20);
             }
         } else if (foodIncrease < 0) // Killing Citizens
         {
-            foodIncrease = -foodIncrease;
+            foodIncrease = - foodIncrease;
             int numberOfDyingCitizens = foodIncrease / 2;
             for (int i = 0; i < numberOfDyingCitizens; i++) {
                 city.removeCitiZen(i);
+            }
+            if ( city.getFood() - foodIncrease >= 0 )
+            {
+                city.setFood(city.getFood() - foodIncrease);
+            }
+            else
+            {
+                city.setFood(0);
             }
 
         }
         city.setGold( city.getGold() + goldIncrease);
         city.setProduction(city.getProduction() + productionIncrease);
-        // update constructions
+        city.setScience( 5 + city.getCitizens().size());
 
+        // update constructions
     }
 
     private int calculateCityFood( City city)
@@ -115,6 +124,10 @@ public class CityController {
                     foodIncrease += terrainFeatureTypes.getFood();
 
                 }
+            }
+            if ( terrain.getTerrainImprovement() != null)
+            {
+               foodIncrease += terrain.getTerrainImprovement().getImprovementType().getFood();
             }
         }
         return foodIncrease;
@@ -134,8 +147,35 @@ public class CityController {
 
                 }
             }
+            if ( terrain.getTerrainImprovement() != null)
+            {
+                goldIncrease += terrain.getTerrainImprovement().getImprovementType().getGold();
+            }
         }
         return goldIncrease;
+    }
+
+    private int calculateCityProduction( City city)
+    {
+        int productionIncrease = 0;
+        for (Terrain terrain : city.getMainTerrains())
+        {
+            productionIncrease += terrain.getTerrainTypes().getProduct();
+            if ( terrain.getTerrainFeatureTypes() != null)
+            {
+                for ( TerrainFeatureTypes terrainFeatureTypes : terrain.getTerrainFeatureTypes())
+                {
+                    productionIncrease += terrainFeatureTypes.getProduct();
+
+                }
+            }
+            if ( terrain.getTerrainImprovement() != null)
+            {
+                productionIncrease += terrain.getTerrainImprovement().getImprovementType().getProduction();
+            }
+        }
+        return productionIncrease;
+
     }
 
     public void destroyCity(Civilization destroyer, Civilization loser, City city) {
@@ -188,7 +228,7 @@ public class CityController {
         {
             if (technologyTypes.contains( unitType.getTechnologyRequirements() ))
             {
-                units.add("name: " + unitType.name() + " turn: " + String.valueOf(unitType.getTurn()));
+                units.add("name: " + unitType.name() + " turn: " + unitType.getTurn());
             }
         }
         ans.put("Units ", units);

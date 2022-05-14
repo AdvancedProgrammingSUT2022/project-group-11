@@ -631,16 +631,23 @@ public class Map {
             }
         }
 
+        ArrayList<Terrain> toBeAdded = new ArrayList<>();
         for (Terrain tile : user.getCivilization().getVisibleTerrains()) {
             if (!tile.getType().equals("visible")) {
-                user.getCivilization().getRevealedTerrains().add(tile);
+                toBeAdded.add(tile);
             }
         }
-        
+        user.getCivilization().getRevealedTerrains().addAll(toBeAdded);
+
+        ArrayList<Terrain> toBeRemoved = new ArrayList<>();
         for (Terrain tile : user.getCivilization().getRevealedTerrains()) {
             if (tile.getType().equals("visible")) {
-                user.getCivilization().getRevealedTerrains().remove(tile);
+                toBeRemoved.add(tile);
             }
+        }
+        if ( toBeRemoved != null)
+        {
+            user.getCivilization().getRevealedTerrains().removeAll(toBeRemoved);
         }
 
         user.getCivilization().setVisibleTerrains(visibleTerrains);

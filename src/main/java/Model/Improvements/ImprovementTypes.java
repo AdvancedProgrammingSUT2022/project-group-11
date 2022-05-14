@@ -186,6 +186,11 @@ public enum ImprovementTypes {
         return this.food;
     }
 
+    public int getProduction()
+    {
+        return production;
+    }
+
     public ArrayList<Object> getCanBeBuiltON() {
         return canBeBuiltON;
     }

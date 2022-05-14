@@ -152,4 +152,8 @@ public enum TerrainTypes {
         return this.food;
     }
 
+    public int getProduct()
+    {
+        return product;
+    }
 }
