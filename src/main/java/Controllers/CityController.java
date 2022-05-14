@@ -14,7 +14,6 @@ import Model.Units.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class CityController {
@@ -62,7 +61,6 @@ public class CityController {
 
     public void playTurn(City city) {
 
-        // update food
         city.setNeighbors( NeighborsAtADistanceOfOneFromAnArraylistOfTerrains(city.getMainTerrains(), databaseController.getMap()));
         int foodIncrease = 0;
         int goldIncrease = 0;
@@ -75,6 +73,7 @@ public class CityController {
         }
         goldIncrease += calculateCityGold(city);
         foodIncrease += calculateCityFood(city);
+        productionIncrease += calculateCityProduction(city);
         for (Citizen citizen : city.getCitizens()) {
             productionIncrease += citizen.getProduction();
         }
@@ -85,21 +84,30 @@ public class CityController {
             if (city.getFood() > 20) {
                 Citizen newCitizen = new Citizen(city);
                 city.addCitizen(newCitizen);
-                city.setFood(city.getFoodStorage() - 20);
+                city.setFood(city.getFood() - 20);
             }
         } else if (foodIncrease < 0) // Killing Citizens
         {
-            foodIncrease = -foodIncrease;
+            foodIncrease = - foodIncrease;
             int numberOfDyingCitizens = foodIncrease / 2;
             for (int i = 0; i < numberOfDyingCitizens; i++) {
                 city.removeCitiZen(i);
+            }
+            if ( city.getFood() - foodIncrease >= 0 )
+            {
+                city.setFood(city.getFood() - foodIncrease);
+            }
+            else
+            {
+                city.setFood(0);
             }
 
         }
         city.setGold( city.getGold() + goldIncrease);
         city.setProduction(city.getProduction() + productionIncrease);
-        // update constructions
+        city.setScience( 5 + city.getCitizens().size());
 
+        // update constructions
     }
 
     private int calculateCityFood( City city)
@@ -115,6 +123,10 @@ public class CityController {
                     foodIncrease += terrainFeatureTypes.getFood();
 
                 }
+            }
+            if ( terrain.getTerrainImprovement() != null)
+            {
+               foodIncrease += terrain.getTerrainImprovement().getImprovementType().getFood();
             }
         }
         return foodIncrease;
@@ -134,8 +146,35 @@ public class CityController {
 
                 }
             }
+            if ( terrain.getTerrainImprovement() != null)
+            {
+                goldIncrease += terrain.getTerrainImprovement().getImprovementType().getGold();
+            }
         }
         return goldIncrease;
+    }
+
+    private int calculateCityProduction( City city)
+    {
+        int productionIncrease = 0;
+        for (Terrain terrain : city.getMainTerrains())
+        {
+            productionIncrease += terrain.getTerrainTypes().getProduct();
+            if ( terrain.getTerrainFeatureTypes() != null)
+            {
+                for ( TerrainFeatureTypes terrainFeatureTypes : terrain.getTerrainFeatureTypes())
+                {
+                    productionIncrease += terrainFeatureTypes.getProduct();
+
+                }
+            }
+            if ( terrain.getTerrainImprovement() != null)
+            {
+                productionIncrease += terrain.getTerrainImprovement().getImprovementType().getProduction();
+            }
+        }
+        return productionIncrease;
+
     }
 
     public void destroyCity(Civilization destroyer, Civilization loser, City city) {
@@ -188,7 +227,7 @@ public class CityController {
         {
             if (technologyTypes.contains( unitType.getTechnologyRequirements() ))
             {
-                units.add("name: " + unitType.name() + " turn: " + String.valueOf(unitType.getTurn()));
+                units.add("name: " + unitType.name() + " turn: " + unitType.getTurn());
             }
         }
         ans.put("Units ", units);
@@ -717,9 +756,6 @@ public class CityController {
         }
     }
 
-    public void playATurnInCombat(City city, Unit AttackingUnit) {
-
-    }
 
     public void buyTile( int x, int y, City city)
     {
@@ -836,34 +872,32 @@ public class CityController {
         System.out.println("error");
     }
 
-    public String oneCombatTurn (City city, CombatUnit attacker, Scanner scanner)
+    public Boolean oneCombatTurn (City city, CombatUnit attacker)
     {
         int cityCombatStrength = city.getCombatStrength();
         int attackerCombatStrength = attacker.getCombatStrength();
         city.setHP( city.getHP() - attackerCombatStrength + 1);
-        if (city.getGarrisoned())
+        attacker.setHP( attacker.getHP() - cityCombatStrength);
+        if ( attacker.getHP() <= 0)
         {
-            attacker.setHP( attacker.getHP() - cityCombatStrength);
-            if ( attacker.getHP() <= 0)
-            {
-
-                Civilization unitOwner = this.databaseController.getContainerCivilization((Unit) attacker);
-                unitOwner.removeUnit( (Unit) attacker);
-                Terrain tile = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
-                tile.setCombatUnit(null);
-                return "The city won.";
-            }
+            Civilization unitOwner = this.databaseController.getContainerCivilization((Unit) attacker);
+            unitOwner.removeUnit( (Unit) attacker);
+            Terrain tile = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
+            tile.setCombatUnit(null);
+            System.out.println( "The city won.");
+            return false;
         }
         if ( city.getHP() <= 0)
         {
+            System.out.println("The city lost.");
+            return true;
             /*Civilization civilization = city.getOwner();
             civilization.removeCity(city);*/
             //Unit bayad bere tush
-            return "The city lost.";
             // bayad bebinim turn kie
 
         }
-        return null;
+        return false;
     }
 
     public void whatToDoWithTheCity( String input, City city, Civilization civilization)
@@ -880,26 +914,19 @@ public class CityController {
         }
     }
 
-    public void rangedAttackToCityForOneTurn( RangedCombatUnit attacker, City city)
+    public boolean rangedAttackToCityForOneTurn( RangedCombatUnit attacker, City city)
     {
         int combatStrengh = attacker.getUnitType().getRangedCombatStrengh();
         int combatRange = attacker.getUnitType().getRange();
-        if ( combatRange != 0)
+        city.setHP( city.getHP() - combatStrengh + 1);
+        if ( city.getHP() <= 0)
         {
-            Terrain tile = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
-            if ( NeighborsAtADistanceOfTwoFromAnArraylistOfTerrains(city.getMainTerrains(), map).contains(tile))
-            {
-                city.setHP( city.getHP() - combatStrengh + 1);
-                return;
-            }
-            else
-            {
-                System.out.println("The unit is not close enough");
-                return;
-            }
+            return true;
         }
-        System.out.println("This unit is not a ranged combat unit");
+        return false;
+
     }
+
 
 
 

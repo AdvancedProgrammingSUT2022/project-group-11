@@ -3995,6 +3995,24 @@ public class MapGeneratorTest {
 
     @Test
     public void playATurnTestplus(){
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
+        }
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<User> allUser = new ArrayList<>();
         Resource resourceone = new Resource(ResourceTypes.CATTLE);
         Terrain terrainone = new Terrain(3, 4, null, TerrainTypes.DESERT, new ArrayList<>(), null, null, null, resourceone, null);
         Resource resourcetwo = new Resource(ResourceTypes.BANANAS);
@@ -4007,7 +4025,7 @@ public class MapGeneratorTest {
 
         neighboursTerrain.add(terrainthree);
        
-        Civilization civil = new Civilization(100, 3, "A");
+
        
         City city = new City(null, civil,terrainone , 3, null,0, 0);
         Citizen citizen = new Citizen(city);
@@ -4018,11 +4036,31 @@ public class MapGeneratorTest {
         city.setNeighbors(neighboursTerrain);
 
         CityController cityController = new CityController();
+        cityController.setDatabaseController(databaseController);
+        cityController.setMap(map);
         cityController.playTurn(city);
     }
 
     @Test
     public void playATurnTestminus(){
+        Civilization civil = new Civilization(0, 3, "A");
+        Map map = new Map();
+        terrains = new Terrain[map.getROW()][map.getCOL()];
+        for (int i = 0; i < map.getROW(); i++) {
+            for (int j = 0; j < map.getCOL(); j++) {
+                CombatUnit combatunit = new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true, false, false, false, false);
+                Improvement improvement = new Improvement(i, j, ImprovementTypes.FARM);
+                terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null, improvement, null, new ArrayList<Revealed>());
+
+            }
+        }
+        map.setTerrains(terrains);
+        User user = new User(null, null, null, civil);
+        Database database = new Database();
+        database.addUser(user);
+        database.setMap(map);
+        DatabaseController databaseController = new DatabaseController(database);
+        ArrayList<User> allUser = new ArrayList<>();
         Resource resourceone = new Resource(ResourceTypes.CATTLE);
         Terrain terrainone = new Terrain(3, 4, null, TerrainTypes.DESERT, new ArrayList<>(), null, null, null, resourceone, null);
         Resource resourcetwo = new Resource(ResourceTypes.BANANAS);
@@ -4035,7 +4073,7 @@ public class MapGeneratorTest {
 
         neighboursTerrain.add(terrainthree);
        
-        Civilization civil = new Civilization(100, 3, "A");
+
        
         City city = new City(null, civil,terrainone , 3, null,0, 0);
         Citizen citizen = new Citizen(city);
@@ -4049,6 +4087,8 @@ public class MapGeneratorTest {
         city.setNeighbors(neighboursTerrain);
 
         CityController cityController = new CityController();
+        cityController.setDatabaseController(databaseController);
+        cityController.setMap(map);
         cityController.playTurn(city);
     }
 
@@ -7642,8 +7682,8 @@ public void RevealedMapTest(){
     CityController cityController = new CityController();
     cityController.setDatabaseController(databaseController);
     cityController.setMap(map);
-    Scanner scanner = new Scanner(System.in);
-    cityController.oneCombatTurn(city, combatunit1, scanner);
+    
+    cityController.oneCombatTurn(city, combatunit1);
  }
 
  @Test
@@ -7694,9 +7734,10 @@ public void RevealedMapTest(){
     CityController cityController = new CityController();
     cityController.setDatabaseController(databaseController);
     cityController.setMap(map);
-    Scanner scanner = new Scanner(System.in);
-    cityController.oneCombatTurn(city, combatunit1, scanner);
+    cityController.oneCombatTurn(city, combatunit1);
  }
+
+ 
  @Test
  public void kossher(){
     Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
@@ -7722,4 +7763,5 @@ public void RevealedMapTest(){
     city.setIsPuppet(true);
     city.isIsPuppet();
  }
+
 }

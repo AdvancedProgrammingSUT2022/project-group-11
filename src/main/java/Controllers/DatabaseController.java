@@ -329,6 +329,10 @@ public class DatabaseController {
         for (Terrain terrain : combatUnit.getNextTerrain()) {
             System.out.println(terrain.getX() + " Mani " + terrain.getY());
         }
+        if ( combatUnit.getNextTerrain().isEmpty())
+        {
+            return "You're unable to go to your destination";
+        }
         combatUnit.setIsSelected(false);
         combatUnit.setIsFinished(true);
         return "action completed";
@@ -345,6 +349,10 @@ public class DatabaseController {
         ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
         addingAllPath(0, nonCombatUnit.getX(), nonCombatUnit.getY(), x_final, y_final, map, path, allPaths);
         nonCombatUnit.setNextTerrain(findingTheShortestPath(allPaths));
+        if( nonCombatUnit.getNextTerrain().isEmpty())
+        {
+            return "You're unable to go to your destination.";
+        }
         nonCombatUnit.setIsSelected(false);
         nonCombatUnit.setIsFinished(true);
         return "action completed";
@@ -574,10 +582,11 @@ public class DatabaseController {
         return false;
     }
 
+
     public void createUnitForEachCivilization(User user) {
         ArrayList<Integer> unitsCoordinates = findingEmptyTiles();
         NonCombatUnit newSettler = new NonCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
-        NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
+        NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) , 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)].setCombatUnit(newWarrior);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1) + 1].setNonCombatUnit(newSettler);
         user.getCivilization().getUnits().add(newSettler);
@@ -764,7 +773,7 @@ public class DatabaseController {
 
     public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType().equals(technologyType)) {
+            if (technology.getTechnologyType() != null && technology.getTechnologyType().equals(technologyType)) {
                 return true;
             }
         }
@@ -1513,6 +1522,7 @@ public class DatabaseController {
             stringBuilder.append("Gold ").append(city.getGold()).append("\n");
             stringBuilder.append("Science ").append(city.getScience()).append("\n");
             stringBuilder.append("Food Storage ").append(city.getFood()).append("\n");
+            stringBuilder.append("Production ").append(city.getProduction()).append("\n");
             if (!city.getConstructionWaitList().isEmpty()) {
                 stringBuilder.append(city.getConstructionWaitList().get(0).getUnitType().name()).append(" will be constructed in ").append(city.getConstructionWaitList().get(0).getUnitType().getTurn() - city.getConstructionWaitList().get(0).getPassedTurns()).append(" Turn").append("\n");
             } else {

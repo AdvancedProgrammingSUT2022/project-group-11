@@ -27,7 +27,6 @@ public enum GameEnums {
     UNIT_REMOVE("^UNIT\\sREMOVE\\s(?<subdivision>\\S+)$"),
     IMPROVEMENT_REPAIR("^UNIT\\sREPAIR"),
     UNIT_REPAIR("^UNIT\\sREPAIR$"),
-    CREATE_UNIT("^CONSTRUCT UNIT (?<unitName>[A-Z_a-z]+)"),
     MAP_SHOW_POSITION("^MAP\\sSHOW\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     MAP_SHOW_CITYNAME("^MAP\\sSHOW\\s(?<subdivision>\\S+)$"),
     MAP_MOVE("^MAP\\sMOVE\\s(?<subdivision>\\S+)\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
@@ -50,9 +49,12 @@ public enum GameEnums {
     DELETE_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREMOVE\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     REPAIR_CHEAT_IMPROVEMENT("^UNIT\\sCHEAT\\sREPAIR\\s(?<x>\\d+)\\s(?<y>\\d+)$"),
     ASSIGN_CITIZEN("^CITY\\sASSIGN\\sCITIZEN\\sNUMBER\\s(<?CitizenIndex>\\d+)\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
-    BUY_UNIT("^CITY\\sBUY\\sUNIT\\s(<?subdivision>\\S+)"),
+    BUY_UNIT("^CITY\\sBUY\\sUNIT\\s(<?unitName>\\S+)"),
+    CREATE_UNIT("CITY\\sCREATE\\sUNIT\\s(<?unitName>\\S+)"),
     REMOVE_FROM_WORK("^CITY\\sREMOVE\\sCITIZEN\\sNUMBER\\s(<?CitizenIndex>\\d+)"),
     BUY_TILE("CITY\\sBUY\\sTILE\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
+    ATTACK_CITY("UNIT\\sATTACK\\sCITY\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
+    RANGED_ATTACK_CITY("RANGED\\sUNIT\\sATTACK\\sCITY\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
 
 
     INTEGER("^-?\\d+$");

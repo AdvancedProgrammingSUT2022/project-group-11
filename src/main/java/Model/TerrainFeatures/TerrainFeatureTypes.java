@@ -76,4 +76,9 @@ public enum TerrainFeatureTypes {
     public void setMovementCost(int movementCost) {
         this.movementCost = movementCost;
     }
+
+    public int getProduct()
+    {
+        return product;
+    }
 }

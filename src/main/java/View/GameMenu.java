@@ -1,12 +1,14 @@
 package View;
 
 import Controllers.CityController;
+import Controllers.CombatController;
 import Controllers.DatabaseController;
 import Controllers.saveData;
 import Enums.GameEnums;
 import Model.Improvements.ImprovementTypes;
 import Model.Resources.ResourceTypes;
 import Model.Technologies.TechnologyTypes;
+import Model.Terrain;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
@@ -21,12 +23,14 @@ public class GameMenu {
     private final DatabaseController databaseController;
     private final ArrayList<User> users;
     private CityController cityController;
+    private CombatController combatController;
 
     public GameMenu(DatabaseController databaseController, ArrayList<User> users) {
         this.cityController = new CityController();
         cityController.setDatabaseController(databaseController);
         this.databaseController = databaseController;
         this.users = users;
+        this.combatController = new CombatController(this.databaseController, this.cityController);
     }
 
     public void run(Scanner scanner) {
@@ -47,7 +51,47 @@ public class GameMenu {
                         selectUnit(user, matcher);
                         while (this.databaseController.HasOneUnitBeenSelected()) {
                             input = scanner.nextLine();
-                            oneUnitHasBeenSelected(input, matcher, user);
+                            if((matcher = GameEnums.getMatcher(input, GameEnums.ATTACK_CITY) ) != null)
+                            {
+                                if (this.databaseController.getSelectedCombatUnit() != null)
+                                {
+                                    CombatUnit combatUnit = this.databaseController.getSelectedCombatUnit();
+                                    String temp = combatController.unitAttackCity(matcher, user);
+                                    if (temp.equals("You won.The city is yours. Do you wish to destroy it or make it yours?"))
+                                    {
+                                        System.out.println("You won.The city is yours. Do you wish to destroy it or make it yours?");
+                                        input = scanner.nextLine();
+                                        Terrain terrain = this.databaseController.getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY());
+                                        City city = terrain.getCity();
+                                        this.cityController.whatToDoWithTheCity(input, city, user.getCivilization());
+                                    }
+                                    else
+                                        System.out.println(temp);
+                                }
+                                else
+                                    System.out.println("You cannot attack a city with a non-combat unit.");
+                            }
+                            else if ((matcher = GameEnums.getMatcher(input, GameEnums.RANGED_ATTACK_CITY) ) != null)
+                            {
+                                if ( this.databaseController.getSelectedCombatUnit() != null)
+                                {
+                                    CombatUnit combatUnit = this.databaseController.getSelectedCombatUnit();
+                                    String temp = combatController.rangedAttack(matcher, user);
+                                    if ( temp.equals("You won. The city is yours. Please move a combat unit to the tile to win it"))
+                                    {
+                                        System.out.println("You won. The city is yours. Please move a combat unit to the tile to win it");
+
+
+                                    }
+                                    else
+                                        System.out.println(temp);
+                                }
+                                else
+                                    System.out.println("You cannot attack a city with a non-combat unit.");
+                            }
+
+                            else
+                                oneUnitHasBeenSelected(input, matcher, user);
 
                         }
                     }
@@ -56,6 +100,7 @@ public class GameMenu {
                         input = scanner.nextLine();
                         selectedCityActions(getCityFromMatcher(matcher), input);
                     }
+
                     else{
                         runCommands(user, input);
                     }
@@ -942,7 +987,8 @@ public class GameMenu {
     public void oneUnitHasBeenSelected(String input, Matcher matcher, User user) {
         if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_MOVETO)) != null) {
             moveUnit(user, matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
+        }
+        else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
             this.databaseController.changingTheStateOfAUnit("sleep");
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.COMBAT_UNIT_CHEAT_MOVE)) != null) {
             cheatMoveCombatUnit(matcher);
@@ -964,7 +1010,7 @@ public class GameMenu {
 
             }
 
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY)) != null) {
+        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_PILLAGE)) != null) {
             if (this.databaseController.getSelectedCombatUnit() == null) {
                 System.out.println("this unit is not a combat unit");
             } else {
@@ -1019,7 +1065,11 @@ public class GameMenu {
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
             System.out.println(this.databaseController.changingTheStateOfAUnit("delete"));
 
-        } else {
+        } else if ( (matcher = GameEnums.getMatcher(input, GameEnums.ATTACK_CITY)) != null)
+        {
+
+        }
+        else {
             System.out.println("INVALID COMMAND");
         }
     }
@@ -1047,7 +1097,11 @@ public class GameMenu {
                                 Integer.parseInt(matcher.group("Y"))));
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_UNIT)) != null) {
                 this.cityController.createUnit(matcher, city);
-            } else if ((matcher = GameEnums.getMatcher(input, GameEnums.REMOVE_FROM_WORK)) != null) {
+            } else if ( (matcher = GameEnums.getMatcher(input, GameEnums.CREATE_UNIT)) != null)
+            {
+                this.cityController.createUnitWithTurn(matcher, city);
+            }
+            else if ((matcher = GameEnums.getMatcher(input, GameEnums.REMOVE_FROM_WORK)) != null) {
                 this.cityController
                         .removeCitizenFromWork(city.getCitizens().get(Integer.parseInt(matcher.group("CitizenIndex"))));
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_TILE)) != null) {
