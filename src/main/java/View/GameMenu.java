@@ -42,7 +42,6 @@ public class GameMenu {
                     String input = scanner.nextLine();
                     // input.replaceFirst("^\\s*", "");
                     // input = input.trim().replaceAll("\\s+", " ");
-                    runCommands(user, input);
                     if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
                         selectUnit(user, matcher);
                         while (this.databaseController.HasOneUnitBeenSelected()) {
@@ -56,6 +55,11 @@ public class GameMenu {
                         input = scanner.nextLine();
                         selectedCityActions(getCityFromMatcher(matcher), input);
                     }
+                    else{
+                        runCommands(user, input);
+                    }
+
+
                 }
                 if ( user.getCivilization().getCities() != null)
                 {
@@ -883,8 +887,7 @@ public class GameMenu {
         Matcher matcher;
         if ((matcher = GameEnums.getMatcher(input, GameEnums.INFO)) != null) {
             Scanner scanner = new Scanner(System.in);
-            showInfo(scanner, matcher, user);
-            ;
+             showInfo(scanner, matcher, user);
 
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_TECHNOLOGY)) != null) {
             selectTechnology(matcher, user);

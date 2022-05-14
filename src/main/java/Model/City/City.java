@@ -16,7 +16,7 @@ public class City {
     private ArrayList<Unit> constructionWaitList = new ArrayList<>();
     private Civilization owner;
     private boolean isPuppet;
-    private ArrayList<Terrain> neighbors;
+    private ArrayList<Terrain> neighbors = new ArrayList<>();
     private int population;
     private int HP;
     private String type;
