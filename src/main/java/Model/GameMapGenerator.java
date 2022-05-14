@@ -82,7 +82,7 @@ public class GameMapGenerator {
     private void betweetTwoTailFirstHalf(int i, int j, int l) {
 
         River river;
-        if (i > 0 && l < COL - 1 && (river = hasRiver(Terrains[i][l], Terrains[i - 1][l + 1])) != null && !Terrains[i][l].getType().equals("fog of war") && !Terrains[i - 1][l + 1].getType().equals("fog of war") ) {
+        if (i > 0 && l < COL - 1  && !Terrains[i][l].getType().equals("fog of war") && !Terrains[i - 1][l + 1].getType().equals("fog of war") &&(river = hasRiver(Terrains[i][l], Terrains[i - 1][l + 1])) != null ) {
             Printmap[i][j] += river.getColor();
             Printmap[i][j] += "\\";
             Printmap[i][j] += Color.RESET;
@@ -94,7 +94,7 @@ public class GameMapGenerator {
 
     private void betweenTwoTailSecondHalf(int i, int j, int l) {
         River river;
-        if (l < COL - 1 && (river = hasRiver(Terrains[i][l], Terrains[i][l + 1])) != null && !Terrains[i][l].getType().equals("fog of war") && !Terrains[i][l + 1].getType().equals("fog of war")) {
+        if (l < COL - 1 &&  !Terrains[i][l].getType().equals("fog of war") && !Terrains[i][l + 1].getType().equals("fog of war") &&(river = hasRiver(Terrains[i][l], Terrains[i][l + 1])) != null ) {
             Printmap[i][j] += river.getColor();
             Printmap[i][j] += "/";
             Printmap[i][j] += Color.RESET;
@@ -342,7 +342,7 @@ public class GameMapGenerator {
 
     private void CivilizationPrintFirstHalf(int i, int j, int l, Database database) {
         River river;
-        if (i > 0 && l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i - 1][l - 1])) != null)) {
+        if (i > 0 && l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i - 1][l - 1])) != null) && !Terrains[i][l].getType().equals("fog of war") && !Terrains[i - 1][l - 1].getType().equals("fog of war")) {
             Printmap[i][j] += river.getColor();
             Printmap[i][j] += "/";
             Printmap[i][j] += Color.RESET;
@@ -363,7 +363,7 @@ public class GameMapGenerator {
     private void TerrainFeaturesSecondHalf(int i, int j, int l, User user) {
         River river;
 
-        if (l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i][l - 1])) != null)) {
+        if (l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i][l - 1])) != null) &&  !Terrains[i][l].getType().equals("fog of war") && !Terrains[i][l - 1].getType().equals("fog of war")) {
             Printmap[i][j] += river.getColor();
             Printmap[i][j] += "\\";
             Printmap[i][j] += Color.RESET;
@@ -376,7 +376,7 @@ public class GameMapGenerator {
 
     private void XandYFirstHalf(int i, int j, int l) {
         River river;
-        if (i > 0 && l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i - 1][l - 1])) != null)) {
+        if (i > 0 && l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i - 1][l - 1])) != null) &&  !Terrains[i][l].getType().equals("fog of war") && !Terrains[i - 1][l - 1].getType().equals("fog of war")) {
             Printmap[i][j] += river.getColor();
             Printmap[i][j] += "/";
             Printmap[i][j] += Color.RESET;
@@ -397,7 +397,7 @@ public class GameMapGenerator {
     private void ResourceSecondHalf(int i, int j, int l, User user) {
         River river;
 
-        if (l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i][l - 1])) != null)) {
+        if (l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i][l - 1])) != null) &&  !Terrains[i][l].getType().equals("fog of war") && !Terrains[i][l - 1].getType().equals("fog of war")) {
             Printmap[i][j] += river.getColor();
             Printmap[i][j] += "\\";
             Printmap[i][j] += Color.RESET;
@@ -410,7 +410,7 @@ public class GameMapGenerator {
     private void twoCombatFirstHalf(int i, int j, int l, User user) {
 
         River river;
-        if (i > 0 && l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i - 1][l - 1])) != null)) {
+        if (i > 0 && l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i - 1][l - 1])) != null) &&  !Terrains[i][l].getType().equals("fog of war") && !Terrains[i - 1][l - 1].getType().equals("fog of war")) {
             Printmap[i][j] += river.getColor();
             Printmap[i][j] += "/";
             Printmap[i][j] += Color.RESET;
@@ -430,7 +430,7 @@ public class GameMapGenerator {
 
     private void ImprovementSecondHalf(int i, int j, int l, User user) {
         River river;
-        if (l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i][l - 1])) != null)) {
+        if (l > 0 && ((river = hasRiver(Terrains[i][l], Terrains[i][l - 1])) != null) &&  !Terrains[i][l].getType().equals("fog of war") && !Terrains[i][l - 1].getType().equals("fog of war")) {
             Printmap[i][j] += river.getColor();
             Printmap[i][j] += "\\";
             Printmap[i][j] += Color.RESET;

@@ -574,10 +574,11 @@ public class DatabaseController {
         return false;
     }
 
+
     public void createUnitForEachCivilization(User user) {
         ArrayList<Integer> unitsCoordinates = findingEmptyTiles();
         NonCombatUnit newSettler = new NonCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
-        NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
+        NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) , 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)].setCombatUnit(newWarrior);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1) + 1].setNonCombatUnit(newSettler);
         user.getCivilization().getUnits().add(newSettler);
