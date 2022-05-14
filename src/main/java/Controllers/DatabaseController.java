@@ -1,7 +1,7 @@
 package Controllers;
 
 import Model.Buildings.BuildingTypes;
-import Model.City.City;
+import Model.CITY.City;
 import Model.*;
 import Model.Improvements.Improvement;
 import Model.Improvements.ImprovementTypes;

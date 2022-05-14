@@ -1,13 +1,13 @@
 package Controllers;
 
-import Model.City.Citizen;
-import Model.City.City;
 import Model.Civilization;
 import Model.Map;
 import Model.Resources.ResourceTypes;
 import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
 import Model.Terrain;
+import Model.CITY.Citizen;
+import Model.CITY.City;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Units.*;
 

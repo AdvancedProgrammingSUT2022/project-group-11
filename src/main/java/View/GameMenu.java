@@ -13,7 +13,7 @@ import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.User;
-import Model.City.City;
+import Model.CITY.City;
 
 import java.util.ArrayList;
 import java.util.Scanner;

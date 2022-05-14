@@ -1,6 +1,6 @@
 package Model;
 
-import Model.City.City;
+import Model.CITY.City;
 import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
 import Model.Units.CombatUnit;

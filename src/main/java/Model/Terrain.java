@@ -1,6 +1,6 @@
 package Model;
 
-import Model.City.City;
+import Model.CITY.City;
 import Model.Improvements.Improvement;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;

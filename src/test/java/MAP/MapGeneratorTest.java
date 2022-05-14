@@ -27,8 +27,8 @@ import Model.Revealed;
 import Model.River;
 import Model.Terrain;
 import Model.User;
-import Model.City.Citizen;
-import Model.City.City;
+import Model.CITY.Citizen;
+import Model.CITY.City;
 import Model.Improvements.Improvement;
 import Model.Improvements.ImprovementTypes;
 import Model.Resources.ResourceTypes;
@@ -3660,7 +3660,8 @@ public class MapGeneratorTest {
         Matcher matcher;
         CityController cityController = new CityController();
         if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
-            cityController.createUnit(matcher, city);
+            
+            System.out.println(cityController.createUnit(matcher, city));
         }
         
     }
