@@ -329,6 +329,10 @@ public class DatabaseController {
         for (Terrain terrain : combatUnit.getNextTerrain()) {
             System.out.println(terrain.getX() + " Mani " + terrain.getY());
         }
+        if ( combatUnit.getNextTerrain().isEmpty())
+        {
+            return "You're unable to go to your destination";
+        }
         combatUnit.setIsSelected(false);
         combatUnit.setIsFinished(true);
         return "action completed";
@@ -345,6 +349,10 @@ public class DatabaseController {
         ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
         addingAllPath(0, nonCombatUnit.getX(), nonCombatUnit.getY(), x_final, y_final, map, path, allPaths);
         nonCombatUnit.setNextTerrain(findingTheShortestPath(allPaths));
+        if( nonCombatUnit.getNextTerrain().isEmpty())
+        {
+            return "You're unable to go to your destination.";
+        }
         nonCombatUnit.setIsSelected(false);
         nonCombatUnit.setIsFinished(true);
         return "action completed";

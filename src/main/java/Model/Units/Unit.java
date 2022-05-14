@@ -29,9 +29,6 @@ public class Unit {
         this.number = number;
         this.combatStrength = unitType.getCombatStrengh();
         this.rangedCombatStrength = unitType.getRangedCombatStrengh();
-
-        this.life = life;
-        this.speed = speed;
         this.isAsleep = isAsleep;
         this.isFinished = isFinished;
         this.unitType = unitType;

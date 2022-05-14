@@ -42,8 +42,19 @@ public class CombatController
         {
             return "You have to enter the city first";
         }
-
-        
-
+        if ( combatUnit instanceof NonRangedCombatUnit)
+        {
+            if (cityController.oneCombatTurn(city, combatUnit))
+            {
+                return "You won.The city is yours. Do you wish to destroy it or make it yours?";
+            }
+            else
+                return "You played one turn in combat. Please attack the city next turn again if you wish to continue.";
+        }
+        if ( combatUnit instanceof RangedCombatUnit)
+        {
+            return "This unit is a ranged combat unit. Please initialize a ranged attack.";
+        }
+        return "Error";
     }
 }

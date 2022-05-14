@@ -1,6 +1,7 @@
 package View;
 
 import Controllers.CityController;
+import Controllers.CombatController;
 import Controllers.DatabaseController;
 import Controllers.saveData;
 import Enums.GameEnums;
@@ -21,12 +22,14 @@ public class GameMenu {
     private final DatabaseController databaseController;
     private final ArrayList<User> users;
     private CityController cityController;
+    private CombatController combatController;
 
     public GameMenu(DatabaseController databaseController, ArrayList<User> users) {
         this.cityController = new CityController();
         cityController.setDatabaseController(databaseController);
         this.databaseController = databaseController;
         this.users = users;
+        this.combatController = new CombatController(this.databaseController, this.cityController);
     }
 
     public void run(Scanner scanner) {
@@ -942,7 +945,15 @@ public class GameMenu {
     public void oneUnitHasBeenSelected(String input, Matcher matcher, User user) {
         if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_MOVETO)) != null) {
             moveUnit(user, matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
+        } else if((matcher = GameEnums.getMatcher(input, GameEnums.ATTACK_CITY) ) != null)
+        {
+            String temp = combatController.unitAttackCity(matcher, user);
+            if ( temp.equals("You won.The city is yours. Do you wish to destroy it or make it yours?"))
+            {
+            }
+            System.out.println(temp);
+        }
+        else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_SLEEP)) != null) {
             this.databaseController.changingTheStateOfAUnit("sleep");
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.COMBAT_UNIT_CHEAT_MOVE)) != null) {
             cheatMoveCombatUnit(matcher);

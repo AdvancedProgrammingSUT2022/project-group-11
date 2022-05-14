@@ -757,9 +757,6 @@ public class CityController {
         }
     }
 
-    public void playATurnInCombat(City city, Unit AttackingUnit) {
-
-    }
 
     public void buyTile( int x, int y, City city)
     {
@@ -881,26 +878,27 @@ public class CityController {
         int cityCombatStrength = city.getCombatStrength();
         int attackerCombatStrength = attacker.getCombatStrength();
         city.setHP( city.getHP() - attackerCombatStrength + 1);
-            attacker.setHP( attacker.getHP() - cityCombatStrength);
-            if ( attacker.getHP() <= 0)
-            {
-
-                Civilization unitOwner = this.databaseController.getContainerCivilization((Unit) attacker);
-                unitOwner.removeUnit( (Unit) attacker);
-                Terrain tile = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
-                tile.setCombatUnit(null);
-                System.out.println( "The city won.");
-            }
+        attacker.setHP( attacker.getHP() - cityCombatStrength);
+        if ( attacker.getHP() <= 0)
+        {
+            Civilization unitOwner = this.databaseController.getContainerCivilization((Unit) attacker);
+            unitOwner.removeUnit( (Unit) attacker);
+            Terrain tile = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
+            tile.setCombatUnit(null);
+            System.out.println( "The city won.");
+            return false;
+        }
         if ( city.getHP() <= 0)
         {
+            System.out.println("The city lost.");
+            return true;
             /*Civilization civilization = city.getOwner();
             civilization.removeCity(city);*/
             //Unit bayad bere tush
-            System.out.println("The city lost.");
             // bayad bebinim turn kie
 
         }
-        return null;
+        return false;
     }
 
     public void whatToDoWithTheCity( String input, City city, Civilization civilization)
