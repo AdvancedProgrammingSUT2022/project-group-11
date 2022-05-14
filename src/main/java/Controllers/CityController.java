@@ -1,6 +1,5 @@
 package Controllers;
 
-import Model.Buildings.BuildingTypes;
 import Model.City.Citizen;
 import Model.City.City;
 import Model.Civilization;
@@ -62,16 +61,19 @@ public class CityController {
     }
 
     public void playTurn(City city) {
+
         // update food
+        city.setNeighbors( NeighborsAtADistanceOfOneFromAnArraylistOfTerrains(city.getMainTerrains(), databaseController.getMap()));
         int foodIncrease = 0;
         int goldIncrease = 0;
         int productionIncrease = 0;
         for (Terrain tile : city.getNeighbors()) {
-            foodIncrease += tile.getResource().getFood();
+            if (tile.getResource() != null) {foodIncrease += tile.getResource().getFood();
             goldIncrease += tile.getResource().getGold();
+                productionIncrease += tile.getResource().getProduction(); }
             goldIncrease += tile.getGold();
-            productionIncrease += tile.getResource().getProduction();
         }
+        goldIncrease += calculateCityGold(city);
         foodIncrease += calculateCityFood(city);
         for (Citizen citizen : city.getCitizens()) {
             productionIncrease += citizen.getProduction();
@@ -79,11 +81,11 @@ public class CityController {
         foodIncrease -= city.getPopulation() * 2;
         if (foodIncrease > 0) // creating Citizens
         {
-            city.setFoodStorage(city.getFoodStorage() + foodIncrease);
-            if (city.getFoodStorage() > 100) {
+            city.setFood(city.getFood() + foodIncrease);
+            if (city.getFood() > 20) {
                 Citizen newCitizen = new Citizen(city);
                 city.addCitizen(newCitizen);
-                city.setFoodStorage(city.getFoodStorage() - 100);
+                city.setFood(city.getFoodStorage() - 20);
             }
         } else if (foodIncrease < 0) // Killing Citizens
         {
@@ -94,6 +96,8 @@ public class CityController {
             }
 
         }
+        city.setGold( city.getGold() + goldIncrease);
+        city.setProduction(city.getProduction() + productionIncrease);
         // update constructions
 
     }
@@ -114,6 +118,24 @@ public class CityController {
             }
         }
         return foodIncrease;
+    }
+
+    private int calculateCityGold( City city)
+    {
+        int goldIncrease = 0;
+        for (Terrain terrain : city.getMainTerrains())
+        {
+            goldIncrease += terrain.getTerrainTypes().getGold();
+            if ( terrain.getTerrainFeatureTypes() != null)
+            {
+                for ( TerrainFeatureTypes terrainFeatureTypes : terrain.getTerrainFeatureTypes())
+                {
+                    goldIncrease += terrainFeatureTypes.getGold();
+
+                }
+            }
+        }
+        return goldIncrease;
     }
 
     public void destroyCity(Civilization destroyer, Civilization loser, City city) {
@@ -821,8 +843,8 @@ public class CityController {
         city.setHP( city.getHP() - attackerCombatStrength + 1);
         if (city.getGarrisoned())
         {
-            attacker.setHp( attacker.getHp() - cityCombatStrength);
-            if ( attacker.getHp() <= 0)
+            attacker.setHP( attacker.getHP() - cityCombatStrength);
+            if ( attacker.getHP() <= 0)
             {
 
                 Civilization unitOwner = this.databaseController.getContainerCivilization((Unit) attacker);

@@ -7687,7 +7687,7 @@ public void RevealedMapTest(){
     User user = new User(null, null, null, civil);
     Database database = new Database();
     database.addUser(user);
-    combatunit1.setHp(-5);
+    combatunit1.setHP(-5);
     DatabaseController databaseController = new DatabaseController(database);
     databaseController.setDatabase(database);
     database.setMap(map);

@@ -19,14 +19,14 @@ import java.util.Random;
 import java.util.regex.Matcher;
 
 public class DatabaseController {
+    public HashMap<User, String> notificationHistory = new HashMap<>();
     private Database database;
-
 
     public DatabaseController(Database database) {
         this.database = database;
 
     }
-    public HashMap<User, String> notificationHistory = new HashMap<>();
+
     public void addUser(User user) {
         this.database.addUser(user);
     }
@@ -146,6 +146,7 @@ public class DatabaseController {
     }
 
     public String changingTheStateOfACombatUnit(CombatUnit combatUnit, String action) {
+        setAllParametersFalse(combatUnit);
         switch (action) {
             case "sleep":
                 combatUnit.setIsAsleep(true);
@@ -186,6 +187,7 @@ public class DatabaseController {
     }
 
     public String changingTheStateOfANonCombatUnit(NonCombatUnit nonCombatUnit, String action) {
+        setAllParametersFalse(nonCombatUnit);
         if (action.equals("sleep")) {
             nonCombatUnit.setIsAsleep(true);
         } else if (action.equals("wake")) {
@@ -282,6 +284,12 @@ public class DatabaseController {
         for (Unit unit : user.getCivilization().getUnits()) {
             if (!unit.getIsAsleep() || !unit.getNextTerrain().isEmpty()) {
                 unit.setIsFinished(false);
+            }
+            if (unit instanceof CombatUnit) {
+                if (((CombatUnit) unit).getAlert() || ((CombatUnit) unit).getFortify() || ((CombatUnit) unit).getFortifyUntilHeal() || ((CombatUnit) unit).getIsGarrisoned()) {
+                    unit.setIsFinished(true);
+                }
+
             }
 
         }
@@ -451,14 +459,14 @@ public class DatabaseController {
             if (terrain.getTerrainImprovement() != null && (terrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) || terrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD))) {
 
                 movementCost += 0.5 * terrain.getTerrainTypes().getMovementCost();
-                if( terrain.getTerrainFeatureTypes() != null &&  terrain.getTerrainFeatureTypes().size() > 0){
-                    movementCost += 0.5 *  terrain.getTerrainFeatureTypes().get(0).getMovementCost();
+                if (terrain.getTerrainFeatureTypes() != null && terrain.getTerrainFeatureTypes().size() > 0) {
+                    movementCost += 0.5 * terrain.getTerrainFeatureTypes().get(0).getMovementCost();
                 }
             } else {
 
-                movementCost += terrain.getTerrainTypes().getMovementCost() ;
-                if( terrain.getTerrainFeatureTypes() != null &&  terrain.getTerrainFeatureTypes().size() > 0){
-                    movementCost +=   terrain.getTerrainFeatureTypes().get(0).getMovementCost();
+                movementCost += terrain.getTerrainTypes().getMovementCost();
+                if (terrain.getTerrainFeatureTypes() != null && terrain.getTerrainFeatureTypes().size() > 0) {
+                    movementCost += terrain.getTerrainFeatureTypes().get(0).getMovementCost();
                 }
             }
 
@@ -485,8 +493,9 @@ public class DatabaseController {
         } else if (combatUnit.getIsGarrisoned()) {
 
         } else if (combatUnit.getFortify()) {
-
+            combatUnit.setCombatStrength(combatUnit.getCombatStrength() + 1);
         } else if (combatUnit.getFortifyUntilHeal()) {
+            combatUnit.setHP(combatUnit.getHP() + 1);
 
         }
     }
@@ -755,7 +764,7 @@ public class DatabaseController {
 
     public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType() != null && technology.getTechnologyType().equals(technologyType)) {
+            if (technology.getTechnologyType().equals(technologyType)) {
                 return true;
             }
         }
@@ -772,8 +781,7 @@ public class DatabaseController {
     }
 
     public String researchInfo(User user) {
-        if(getUnderResearchTechnology(user)!=null)
-        {
+        if (getUnderResearchTechnology(user) != null) {
             return getUnderResearchTechnology(user).toString();
         }
         return "there is no under research technology";
@@ -1033,6 +1041,16 @@ public class DatabaseController {
                 city.getConstructionWaitList().removeAll(needToRemove);
             }
         }
+    }
+
+    public void setUnitsParametersAfterEachTurn(ArrayList<User> users) {
+        increasingTurnInWorkersActions();
+        increaseTurnInConstructingUnit(users);
+        for (User user : users) {
+            changingUnitsParameters(user);
+        }
+
+
     }
 
     public String increaseTurnCheat(int amount) {
@@ -1444,7 +1462,7 @@ public class DatabaseController {
     }
 
     public String notificationHistory(User user) {
-        if(notificationHistory.get(user) == null){
+        if (notificationHistory.get(user) == null) {
             return "this user has no notification history";
         }
         return notificationHistory.get(user);
@@ -1495,11 +1513,9 @@ public class DatabaseController {
             stringBuilder.append("Gold ").append(city.getGold()).append("\n");
             stringBuilder.append("Science ").append(city.getScience()).append("\n");
             stringBuilder.append("Food Storage ").append(city.getFood()).append("\n");
-            if(!city.getConstructionWaitList().isEmpty())
-            {
+            if (!city.getConstructionWaitList().isEmpty()) {
                 stringBuilder.append(city.getConstructionWaitList().get(0).getUnitType().name()).append(" will be constructed in ").append(city.getConstructionWaitList().get(0).getUnitType().getTurn() - city.getConstructionWaitList().get(0).getPassedTurns()).append(" Turn").append("\n");
-            }
-            else{
+            } else {
                 stringBuilder.append("You are not constructing any unit in this city").append("\n");
             }
 
@@ -1518,12 +1534,9 @@ public class DatabaseController {
         return stringBuilder.toString();
     }
 
-    public City getCityByCoordinates(int x , int y, User user)
-    {
-        for(City city: user.getCivilization().getCities())
-        {
-            if(x == city.getCentralTerrain().getX() && y == city.getCentralTerrain().getY())
-            {
+    public City getCityByCoordinates(int x, int y, User user) {
+        for (City city : user.getCivilization().getCities()) {
+            if (x == city.getCentralTerrain().getX() && y == city.getCentralTerrain().getY()) {
                 return city;
             }
         }

@@ -24,6 +24,7 @@ public class GameMenu {
 
     public GameMenu(DatabaseController databaseController, ArrayList<User> users) {
         this.cityController = new CityController();
+        cityController.setDatabaseController(databaseController);
         this.databaseController = databaseController;
         this.users = users;
     }
@@ -70,6 +71,7 @@ public class GameMenu {
                 }
                 this.databaseController.movementOfAllUnits(user);
                 this.databaseController.setTerrainsOfEachCivilization(user);
+                this.databaseController.setUnitsParametersAfterEachTurn(users);
             }
         }
     }

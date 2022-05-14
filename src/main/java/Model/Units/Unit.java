@@ -9,9 +9,10 @@ public class Unit {
     private int passedTurns = 0;
     private int x, y;
     private int number;
-    private int militaryPower;
+    private int combatStrength;
+    private int rangedCombatStrength;
     private int life;
-    private int hp;
+    private int HP;
 
 
     private int speed;
@@ -22,18 +23,20 @@ public class Unit {
     private boolean isSelected;
 
 
-    public Unit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected) {
+    public Unit(int x, int y, int number, int combatStrength, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected) {
         this.x = x;
         this.y = y;
         this.number = number;
-        this.militaryPower = militaryPower;
+        this.combatStrength = unitType.getCombatStrengh();
+        this.rangedCombatStrength = unitType.getRangedCombatStrengh();
+
         this.life = life;
         this.speed = speed;
         this.isAsleep = isAsleep;
         this.isFinished = isFinished;
         this.unitType = unitType;
         this.isSelected = isSelected;
-        this.hp = 10;
+        this.HP = 10;
     }
 
 
@@ -162,11 +165,11 @@ public class Unit {
     }
 
     public int getMilitaryPower() {
-        return this.militaryPower;
+        return this.combatStrength;
     }
 
-    public void setMilitaryPower(int militaryPower) {
-        this.militaryPower = militaryPower;
+    public void setMilitaryPower(int combatStrength) {
+        this.combatStrength = combatStrength;
     }
 
     public int getLife() {
@@ -197,14 +200,14 @@ public class Unit {
         this.isAsleep = isAsleep;
     }
 
-    public void setHp(int hp)
+    public void setHP(int HP)
     {
-        this.hp = hp;
+        this.HP = HP;
     }
 
-    public int getHp ()
+    public int getHP()
     {
-        return this.hp;
+        return this.HP;
     }
 
     @Override
