@@ -239,7 +239,7 @@ public class CityController {
 
     public String createUnitWithTurn(Matcher matcher, City city) {
         Civilization civilization = city.getOwner();
-        String unitName = matcher.group("subdivision");
+        String unitName = matcher.group("unitName");
         String notEnoughMoney = "You do not have enough gold to construct this unit";
         String lackTechnology = "You lack the required technology to construct this unit";
         String lackResources = "You lack the required resources to construct this unit";
@@ -876,13 +876,11 @@ public class CityController {
         System.out.println("error");
     }
 
-    public String oneCombatTurn (City city, CombatUnit attacker, Scanner scanner)
+    public Boolean oneCombatTurn (City city, CombatUnit attacker)
     {
         int cityCombatStrength = city.getCombatStrength();
         int attackerCombatStrength = attacker.getCombatStrength();
         city.setHP( city.getHP() - attackerCombatStrength + 1);
-        if (city.getGarrisoned())
-        {
             attacker.setHP( attacker.getHP() - cityCombatStrength);
             if ( attacker.getHP() <= 0)
             {
@@ -891,15 +889,14 @@ public class CityController {
                 unitOwner.removeUnit( (Unit) attacker);
                 Terrain tile = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
                 tile.setCombatUnit(null);
-                return "The city won.";
+                System.out.println( "The city won.");
             }
-        }
         if ( city.getHP() <= 0)
         {
             /*Civilization civilization = city.getOwner();
             civilization.removeCity(city);*/
             //Unit bayad bere tush
-            return "The city lost.";
+            System.out.println("The city lost.");
             // bayad bebinim turn kie
 
         }

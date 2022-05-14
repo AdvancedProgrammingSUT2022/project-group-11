@@ -964,7 +964,7 @@ public class GameMenu {
 
             }
 
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FORTIFY)) != null) {
+        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_PILLAGE)) != null) {
             if (this.databaseController.getSelectedCombatUnit() == null) {
                 System.out.println("this unit is not a combat unit");
             } else {
@@ -1021,7 +1021,7 @@ public class GameMenu {
 
         } else if ( (matcher = GameEnums.getMatcher(input, GameEnums.ATTACK_CITY)) != null)
         {
-            
+
         }
         else {
             System.out.println("INVALID COMMAND");
