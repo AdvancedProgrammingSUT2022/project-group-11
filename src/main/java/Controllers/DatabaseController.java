@@ -755,7 +755,7 @@ public class DatabaseController {
         for (Terrain allTerrains : user.getCivilization().getOwnedTerrains()) {
             if (allTerrains.getTerrainResource() != null && allTerrains.getBooleanResource()) {
                 for (ResourceTypes resourceTypes : luxuryResource) {
-                    if (resourceTypes == allTerrains.getTerrainResource().getResourceType()) {
+                    if (resourceTypes.equals(allTerrains.getTerrainResource().getResourceType())) {
                         if (!happinessLuxuryIncrease.contains(allTerrains.getTerrainResource().getResourceType())) {
                             happinessLuxuryIncrease.add(resourceTypes);
                         }
@@ -782,6 +782,8 @@ public class DatabaseController {
             }
             user.getCivilization().setBooleanSettlerBuy(true);
         }
+
+
 
     }
 
