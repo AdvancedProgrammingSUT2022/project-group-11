@@ -9,8 +9,6 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
-
 public class MainMenu
 {
     private DatabaseController databaseController;
@@ -51,21 +49,20 @@ public class MainMenu
             else if ( ((matcher = getCommandMatcher(input, MenuEnums.ENTER.getRegex())).matches()))
             {
                 String menuName = matcher.group("menuName");
-                if (menuName.equals("Login"))
-                {
-                    return null;
-                }
-                else if (menuName.equals("Main"))
-                {
+                switch (menuName) {
+                    case "Login":
+                        return null;
+                    case "Main":
 
+                        break;
+                    case "Profile":
+                        ProfileMenu profileMenu = new ProfileMenu(this.databaseController, this.user);
+                        profileMenu.run(scanner);
+                        break;
+                    default:
+                        System.out.println("invalid command");
+                        break;
                 }
-                else if (menuName.equals("Profile"))
-                {
-                    ProfileMenu profileMenu = new ProfileMenu (this.databaseController, this.user);
-                    profileMenu.run(scanner);
-                }
-                else
-                    System.out.println("invalid command");
             }
             else{
                 System.out.println("invalid command");

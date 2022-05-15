@@ -8872,11 +8872,12 @@ public void calculateMovementCostTestScout(){
    combatunit.getSpeed();
    combatunit.isIsAsleep();
    civil.setName(null);
-   civil.setAvailablity();
+   civil.setAvailability();
    civil.setCities(null);
    city.setNonCombatUnit(null);
    city.setCombatUnit(null);
    city.getNonCombatUnit();
+   
 }
 
 }

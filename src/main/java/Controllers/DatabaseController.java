@@ -392,11 +392,11 @@ public class DatabaseController {
             if (movementCost > unit.getUnitType().getMovement()) {
                 break;
             }
-
             if (containEnemyInNearTerrains(unit))
             {
                 break;
             }
+
         }
 
         ArrayList<Terrain> needToRemove = new ArrayList<>();
@@ -484,7 +484,6 @@ public class DatabaseController {
         }
 
         for (Terrain terrain : shortestPath) {
-            System.out.println("hello");
             System.out.println(terrain.getX() + " " + terrain.getY());
         }
         return shortestPath;
@@ -659,7 +658,7 @@ public class DatabaseController {
     }
 
     public void addGoldToUser(User user) {
-
+        /*
         for (Terrain allTerrains : user.getCivilization().getOwnedTerrains()) {
             int gold = allTerrains.getCity().getGold();
             if (allTerrains.getTerrainTypes() != null) {
@@ -682,7 +681,7 @@ public class DatabaseController {
             allTerrains.getCity().setGold(gold);
         }
 
-
+         */
 
         for (City city : user.getCivilization().getCities()) {
             int gold = city.getGold();
@@ -841,7 +840,7 @@ public class DatabaseController {
 
     public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType()!= null &&technology.getTechnologyType().equals(technologyType)) {
+            if (technology.getTechnologyType() != null && technology.getTechnologyType().equals(technologyType)) {
                 return true;
             }
         }

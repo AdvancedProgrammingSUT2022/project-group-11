@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 
-
-
 public class GameMenu {
     private final DatabaseController databaseController;
     private final ArrayList<User> users;
@@ -82,13 +80,6 @@ public class GameMenu {
                             {
                                 if ( this.databaseController.getSelectedCombatUnit() != null)
                                 {
-
-
-
-
-
-
-
                                     CombatUnit combatUnit = this.databaseController.getSelectedCombatUnit();
                                     String temp = combatController.rangedAttack(matcher, user);
                                     if ( temp.equals("You won. The city is yours. Please move a combat unit to the tile to win it"))
@@ -131,7 +122,7 @@ public class GameMenu {
                 this.databaseController.setTerrainsOfEachCivilization(user);
                 this.databaseController.setHappinessUser(user);
                 this.databaseController.setScience(user);
-                user.getCivilization().setAvailablity();
+                user.getCivilization().setAvailability();
                 this.databaseController.setUnitsParametersAfterEachTurn(users);
             }
         }
@@ -1153,8 +1144,7 @@ public class GameMenu {
 
     }
 
-    public void setCityController(CityController cityController2) {
-        this.cityController = cityController2;
+    public void setCityController(CityController cityController) {
+        this.cityController = cityController;
     }
-
 }
