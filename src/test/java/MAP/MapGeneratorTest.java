@@ -8406,4 +8406,125 @@ public void unitRangedAttackTest4(){
     combatController.rangedAttack(matcher, user);
 }
 
+@Test
+
+public void unitRangedAttackTest5(){
+
+    Map map = new Map();
+  
+   
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    
+
+
+    ArrayList<Terrain> mainterrain = new ArrayList<>();
+    mainterrain.add(terrains[3][5]);
+    mainterrain.add(terrains[3][3]);
+    String input = "UNIT ATTACK CITY 3 4";
+
+    map.setTerrains(terrains);
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.WARRIOR, true, false, false, false, false);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+            improvement, resource,
+            new ArrayList<Revealed>());
+    
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+    city.setMainTerrains(mainterrain);
+    terrains[3][4].setCity(city);
+    Civilization civil1 = new Civilization(100, 3, "A");
+    User user = new User(null, null, null, civil1);
+    Database database = new Database();
+    database.setMap(map);
+    database.addUser(user);
+   saveData saveData = new saveData();
+   saveData.saveUsers(database);
+   saveData.loadUsers(database);
+    DatabaseController databaseController = new DatabaseController(database);
+    databaseController.addUser(user);
+    CityController cityController = new CityController();
+    cityController.setDatabaseController(databaseController);
+    cityController.setMap(map);
+    CombatController combatController = new CombatController(databaseController, cityController);
+    Matcher matcher;
+    matcher = getMatcher(input, GameEnums.ATTACK_CITY);
+
+   
+    combatController.rangedAttack(matcher, user);
+}
+
+@Test
+
+public void unitRangedAttackTest6(){
+
+    Map map = new Map();
+  
+   
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    
+
+
+  
+    String input = "UNIT ATTACK CITY 3 4";
+
+    map.setTerrains(terrains);
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.WARRIOR, true, false, false, false, false);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+            improvement, resource,
+            new ArrayList<Revealed>());
+    
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+   
+    terrains[3][4].setCity(city);
+    Civilization civil1 = new Civilization(100, 3, "A");
+    User user = new User(null, null, null, civil1);
+    Database database = new Database();
+    database.setMap(map);
+    database.addUser(user);
+   saveData saveData = new saveData();
+   saveData.saveUsers(database);
+   saveData.loadUsers(database);
+    DatabaseController databaseController = new DatabaseController(database);
+    databaseController.addUser(user);
+    CityController cityController = new CityController();
+    cityController.setDatabaseController(databaseController);
+    cityController.setMap(map);
+    CombatController combatController = new CombatController(databaseController, cityController);
+    Matcher matcher;
+    matcher = getMatcher(input, GameEnums.ATTACK_CITY);
+
+   
+    combatController.rangedAttack(matcher, user);
+}
+
+
 }
