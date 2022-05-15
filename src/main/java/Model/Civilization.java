@@ -22,7 +22,7 @@ public class Civilization {
     private ArrayList<Technology> technologies = new ArrayList<>();
     private ArrayList<TechnologyTypes> technologyTypes = new ArrayList<>();
     private String name;
-    private int science;
+    private int science = 500;
     private boolean canBuySettler;
 
     public Civilization(int gold, int happiness, String name) {

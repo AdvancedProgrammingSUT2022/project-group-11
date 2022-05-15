@@ -121,6 +121,7 @@ public class GameMenu {
                 this.databaseController.movementOfAllUnits(user);
                 this.databaseController.setTerrainsOfEachCivilization(user);
                 this.databaseController.setHappinessUser(user);
+                this.databaseController.setScience(user);
                 this.databaseController.setUnitsParametersAfterEachTurn(users);
             }
         }

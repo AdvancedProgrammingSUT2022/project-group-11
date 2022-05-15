@@ -125,6 +125,13 @@ public class CityController {
         foodIncrease -= city.getPopulation() * 2;
         if (foodIncrease > 0) // creating Citizens
         {
+            if(city.getCentralTerrain().getNonCombatUnit().getUnitType().equals(UnitTypes.SETTLER)) {
+                foodIncrease = 0;
+            }
+            if(city.getOwner().getHappiness()<0)
+            {
+                foodIncrease /= 3;
+            }
             city.setFood(city.getFood() + foodIncrease);
             if (city.getFood() > 20) {
                 Citizen newCitizen = new Citizen(city);
@@ -150,7 +157,7 @@ public class CityController {
         }
         city.setGold( city.getGold() + goldIncrease);
         city.setProduction(city.getProduction() + productionIncrease);
-        city.setScience( 5 + city.getCitizens().size());
+        city.setScience(city.getScience() + city.getCitizens().size());
 
         // update constructions
     }
@@ -224,7 +231,7 @@ public class CityController {
 
     public void destroyCity(Civilization destroyer, Civilization loser, City city) {
         loser.removeCity(city);
-        destroyer.setHappiness(destroyer.getHappiness() + 100);
+        destroyer.setHappiness(destroyer.getHappiness() + 25);
         // handle the tile itself
 
 
@@ -234,7 +241,7 @@ public class CityController {
     public void attachCity(Civilization civilization, City city) {
         civilization.addCity(city);
         city.setOwner(civilization);
-        civilization.setHappiness(civilization.getHappiness() - 10000);
+        civilization.setHappiness(civilization.getHappiness() - 20);
 
     }
 
