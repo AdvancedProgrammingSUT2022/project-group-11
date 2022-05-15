@@ -50,10 +50,7 @@ public class LoginMenu
                 System.out.println("You cannot change your username");
             }
             else if ((matcher = getCommandMatcher(input, MenuEnums.USERLOGOUT.getRegex())).matches()) {
-                if (this.user != null) {
-                    this.user = null;
-                    System.out.println("user logged out successfully!");
-                }
+                System.out.println(this.databaseController.logOut(this.user));
             } else System.out.println("invalid command");
 
         }

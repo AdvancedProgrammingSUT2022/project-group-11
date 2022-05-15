@@ -104,7 +104,17 @@ public class DatabaseController {
             return "please enter a new password";
         }
         user.setPassword(newPassword);
-        return "password changed successfully!";
+        return "password changed successfully! Please Login again with your new password";
+    }
+
+    public String logOut( User user)
+    {
+        if ( user != null)
+        {
+            user = null;
+            return "User logged out successfully!";
+        }
+        return "You have to log in first";
     }
 
     public String selectAndDeselectCombatUnit(User user, int x, int y) {

@@ -1047,8 +1047,6 @@ public class GameMenu {
 
             }
 
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ATTACK)) != null) {
-
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FOUND_CITY)) != null) {
             if ( this.databaseController.getSelectedNonCombatUnit() != null)
             {
@@ -1068,9 +1066,6 @@ public class GameMenu {
 
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
             System.out.println(this.databaseController.changingTheStateOfAUnit("delete"));
-
-        } else if ( (matcher = GameEnums.getMatcher(input, GameEnums.ATTACK_CITY)) != null)
-        {
 
         }
         else {
