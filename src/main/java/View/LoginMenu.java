@@ -44,7 +44,12 @@ public class LoginMenu
                         // play game
                     }
                 }
-            } else if ((matcher = getCommandMatcher(input, MenuEnums.USERLOGOUT.getRegex())).matches()) {
+            }
+            else if ( (matcher = getCommandMatcher(input, MenuEnums.CHANGE_USERNAME.getRegex())).matches())
+            {
+                System.out.println("You cannot change your username");
+            }
+            else if ((matcher = getCommandMatcher(input, MenuEnums.USERLOGOUT.getRegex())).matches()) {
                 if (this.user != null) {
                     this.user = null;
                     System.out.println("user logged out successfully!");

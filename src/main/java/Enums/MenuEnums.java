@@ -15,6 +15,8 @@ public enum MenuEnums {
     PLAYGAME("play game (--player1|-p1) (?<username>[A-Za-z0-9]+).*"),
     CHANGE_NICKNAME("profile change (--nickname|-n) (?<newNickname>[A-Za-z0-9]+)"),
     CHANGE_PASSWORD("profile change (--password|-p) (--current|-c) (?<currentPassword>[A-Za-z0-9]+) (--new|-n) (?<newPassword>[A-Za-z0-9]+)"),
+    CHANGE_USERNAME("profile change (--username|-u) (--current|-c) (?<currentUsername>[A-Za-z0-9]+) (--new|-n) (?<newUsername>[A-Za-z0-9]+)"),
+
     ;
 
     private String regex;
