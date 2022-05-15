@@ -393,6 +393,10 @@ public class DatabaseController {
                 break;
             }
 
+            if (containEnemyInNearTerrains(unit))
+            {
+                break;
+            }
         }
 
         ArrayList<Terrain> needToRemove = new ArrayList<>();
@@ -401,6 +405,15 @@ public class DatabaseController {
         }
         unit.getNextTerrain().removeAll(needToRemove);
 
+    }
+
+    public boolean containEnemyInNearTerrains(Unit unit) {
+        for (Terrain terrain : getNeighborTerrainsOfOneTerrain(getTerrainByCoordinates(unit.getX(), unit.getY()), getMap())) {
+            if (terrain.getCombatUnit() != null && !getContainerCivilization(terrain.getCombatUnit()).equals(getContainerCivilization(unit))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Terrain findingTheContainerTerrain(Unit unit) {
