@@ -335,7 +335,7 @@ public class DatabaseController {
         addingAllPath(0, combatUnit.getX(), combatUnit.getY(), x_final, y_final, map, path, allPaths);
         combatUnit.setNextTerrain(findingTheShortestPath(combatUnit, allPaths));
         for (Terrain terrain : combatUnit.getNextTerrain()) {
-            System.out.println(terrain.getX() + " Mani " + terrain.getY());
+            System.out.println(terrain.getX() + " " + terrain.getY());
         }
         if (combatUnit.getNextTerrain().isEmpty()) {
             return "You're unable to go to your destination";

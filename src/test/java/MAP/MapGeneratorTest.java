@@ -8871,13 +8871,31 @@ public void calculateMovementCostTestScout(){
    combatunit.setSpeed(9);
    combatunit.getSpeed();
    combatunit.isIsAsleep();
+   combatunit.setPassedTurns(4);
+  // combatunit.getUnitType().setTurn(5);
    civil.setName(null);
    civil.setAvailability();
    civil.setCities(null);
    city.setNonCombatUnit(null);
    city.setCombatUnit(null);
    city.getNonCombatUnit();
-   
+   combatunit.isIsGarrisoned();
+   combatunit.isAlert();
+   combatunit.isFortify();
+   combatunit.isFortifyUntilHeal();
+
+
+}
+
+@Test
+public void setavail(){
+    Civilization civil = new Civilization(100, 3, "A");
+    Technology tech = new Technology(false, 4, TechnologyTypes.AGRICULTURE, false);
+    ArrayList<Technology> techs = new ArrayList<>();
+    techs.add(tech);
+    civil.setTechnologies(techs);
+    civil.setAvailability();
+
 }
 
 }

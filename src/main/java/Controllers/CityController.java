@@ -125,7 +125,7 @@ public class CityController {
         foodIncrease -= city.getPopulation() * 2;
         if (foodIncrease > 0) // creating Citizens
         {
-            if(city.getCentralTerrain().getNonCombatUnit().getUnitType().equals(UnitTypes.SETTLER)) {
+            if(city.getCentralTerrain().getNonCombatUnit() != null && city.getCentralTerrain().getNonCombatUnit().getUnitType().equals(UnitTypes.SETTLER)) {
                 foodIncrease = 0;
             }
             if(city.getOwner().getHappiness()<0)
