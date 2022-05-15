@@ -998,8 +998,12 @@ public class GameMenu {
             cheatMoveCombatUnit(matcher);
         } else if (GameEnums.getMatcher(input, GameEnums.GARRISON_CITY) != null)
         {
-            this.cityController.garrisonCity(this.databaseController.getSelectedCombatUnit());
+            System.out.println(this.cityController.garrisonCity(this.databaseController.getSelectedCombatUnit()));
 
+        }
+        else if ( GameEnums.getMatcher(input, GameEnums.UNGARRISON_CITY) != null)
+        {
+            System.out.println(this.cityController.ungarrisonCity(this.databaseController.getSelectedCombatUnit()));
         }
         else if ((matcher = GameEnums.getMatcher(input, GameEnums.NON_COMBAT_UNIT_CHEAT_MOVE)) != null) {
             cheatMoveNonCombatUnit(matcher);

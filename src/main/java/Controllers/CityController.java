@@ -30,14 +30,14 @@ public class CityController {
     public String garrisonCity(CombatUnit combatUnit) {
         Terrain unitTerrain = this.databaseController.getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY());
         City city = unitTerrain.getCity();
-        if ( !city.getOwner().containsCombatUnit(combatUnit.getX(), combatUnit.getY()))
+        if( city == null || !city.getMainTerrains().contains(unitTerrain))
+        {
+            return "The unit has to enter a city first.";
+        }
+        else if ( !city.getOwner().containsCombatUnit(combatUnit.getX(), combatUnit.getY()))
         {
             return "This city doesn't belong to you. Go garrison your own cities.";
 
-        }
-        else if( city == null || !city.getMainTerrains().contains(unitTerrain))
-        {
-            return "The unit has to enter a city first.";
         }
         else if ( city.getGarrisoned())
         {
@@ -51,6 +51,33 @@ public class CityController {
             city.setGarrisoned(true);
             return "You successfully garrisoned your city";
         }
+    }
+
+    public String ungarrisonCity( CombatUnit combatUnit)
+    {
+        Terrain unitTerrain = this.databaseController.getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY());
+        City city = unitTerrain.getCity();
+        if( city == null || !city.getMainTerrains().contains(unitTerrain))
+        {
+            return "The unit is not in any cities";
+        }
+        else if ( !city.getOwner().containsCombatUnit(combatUnit.getX(), combatUnit.getY()))
+        {
+            return "This city doesn't belong to you.";
+
+        }
+        else if ( !city.getGarrisoned())
+        {
+            return "This city has never been garrisoned";
+        }
+        else
+        {
+            city.setGarrisoned(false);
+            city.setCombatUnit(null);
+            city.setCombatStrength( city.getCombatStrength() - combatUnit.getCombatStrength());
+            return "You successfully ungarrisoned your city";
+        }
+
 
     }
 
