@@ -1,4 +1,4 @@
-package VIEW;
+package View;
 
 import Controllers.DatabaseController;
 import Enums.MenuEnums;
@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+
 
 public class MainMenu
 {

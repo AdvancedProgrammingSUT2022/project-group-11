@@ -157,7 +157,7 @@ public class Civilization {
     public void setAvailablity() {
         for (Technology technology : this.technologies) {
             if (!technology.getIsAvailable()) {
-                technology.setCostsForResearch(technology.getCostsForResearch() + 10);
+                technology.setCostsForResearch(technology.getCostsForResearch() + this.science);
                 if (technology.getCostsForResearch() >= technology.getTechnologyType().getCost()) {
                     technology.setIsAvailable(true);
                 }

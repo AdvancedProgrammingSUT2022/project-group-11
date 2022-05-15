@@ -17,7 +17,7 @@ import Model.Technologies.TechnologyTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.*;
-import VIEW.GameMenu;
+import View.GameMenu;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -1437,13 +1437,19 @@ public class MapGeneratorTest {
         UnitTypes.SETTLER, true, false, false, false, false);
         Civilization civil = new Civilization(100, 3, "A");
         ArrayList<Technology> tech = new ArrayList<>();
+        Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
         Technology technology = new Technology(false, 0, UnitTypes.ARCHER.getTechnologyRequirements(),false);
         tech.add(technology);
         civil.setTechnologies(tech);
-  
-        City city = new City(null, civil,null , 3, null,0, 0);
+
+
+        Terrain central = new Terrain(3, 4, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, null,
+        improvement, resource,
+        new ArrayList<Revealed>());
+
+        City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(100);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT ARCHER";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -1455,6 +1461,8 @@ public class MapGeneratorTest {
     @Test
 
     public void createUserArcherNormal(){
+        CombatUnit combatunit1 = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+        UnitTypes.SETTLER, true, false, false, false, false);
         NonCombatUnit combatunit = new NonCombatUnit(3, 3, 0, 0, 0, 0, false, false,
         UnitTypes.SETTLER, true);
         Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
@@ -1470,6 +1478,7 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(100);
+        city.getCentralTerrain().setCombatUnit(null);
      
      
         String input = "CONSTRUCT UNIT ARCHER";
@@ -1562,7 +1571,7 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(100);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
       
         String input = "CONSTRUCT UNIT CHARIOT_ARCHER";
         Matcher matcher;
@@ -1591,6 +1600,7 @@ public class MapGeneratorTest {
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(100);
         city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
        
         String input = "CONSTRUCT UNIT CHARIOT_ARCHER";
         Matcher matcher;
@@ -1635,7 +1645,7 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(100);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
       
         String input = "CONSTRUCT UNIT SCOUT";
         Matcher matcher;
@@ -1665,7 +1675,7 @@ public class MapGeneratorTest {
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(100);
         city.setCombatUnit(null);
-      
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT SCOUT";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -1708,7 +1718,7 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(3000);
-        city.setNonCombatUnit(combatunit);
+        city.getCentralTerrain().setNonCombatUnit(combatunit);
       
         String input = "CONSTRUCT UNIT SETTLER";
         Matcher matcher;
@@ -1737,7 +1747,7 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(3000);
-        city.setNonCombatUnit(null);
+        city.getCentralTerrain().setNonCombatUnit(null);
 
       
         String input = "CONSTRUCT UNIT SETTLER";
@@ -1782,7 +1792,7 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(3000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
       
         String input = "CONSTRUCT UNIT SPEARMAN";
         Matcher matcher;
@@ -1812,7 +1822,7 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(3000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
       
         String input = "CONSTRUCT UNIT SPEARMAN";
         Matcher matcher;
@@ -1854,7 +1864,7 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(3000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
       
         String input = "CONSTRUCT UNIT WARRIOR";
         Matcher matcher;
@@ -1883,7 +1893,7 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(3000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
       
         String input = "CONSTRUCT UNIT WARRIOR";
         Matcher matcher;
@@ -1927,7 +1937,7 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(3000);
-        city.setNonCombatUnit(combatunit);
+        city.getCentralTerrain().setNonCombatUnit(combatunit);
       
         String input = "CONSTRUCT UNIT WORKER";
         Matcher matcher;
@@ -1957,8 +1967,8 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(3000);
-        city.setNonCombatUnit(null);
-      
+        city.getCentralTerrain().setNonCombatUnit(null);
+        
         String input = "CONSTRUCT UNIT WORKER";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2058,7 +2068,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT CATAPULT";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2086,7 +2096,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT CATAPULT";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2188,7 +2198,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT HORSESMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2216,7 +2226,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT HORSESMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2317,7 +2327,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT SWORDSMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2345,7 +2355,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT SWORDSMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2415,7 +2425,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT CROSSBOWMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2443,7 +2453,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT CROSSBOWMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2539,7 +2549,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT KNIGHT";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2567,7 +2577,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT KNIGHT";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2664,7 +2674,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT LONGSWORDSMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2691,7 +2701,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT LONGSWORDSMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2759,7 +2769,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT PIKEMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2787,7 +2797,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT PIKEMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2882,7 +2892,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT TREBUCHET";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2909,7 +2919,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT TREBUCHET";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -2976,7 +2986,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT CANNON";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3004,7 +3014,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT CANNON";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3100,7 +3110,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT CAVALRY";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3129,7 +3139,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT CAVALRY";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3225,7 +3235,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT LANCER";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3254,7 +3264,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT LANCER";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3323,7 +3333,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT MUSKETMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3352,7 +3362,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT MUSKETMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3421,7 +3431,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT RIFLEMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3450,7 +3460,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT RIFLEMAN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3518,7 +3528,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT ANTI_TANKGUN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3547,7 +3557,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT ANTI_TANKGUN";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3615,7 +3625,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT ARTILLERY";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3643,7 +3653,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT ARTILLERY";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3711,7 +3721,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT INFANTRY";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3739,7 +3749,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT INFANTRY";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3807,7 +3817,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT PANZER";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3836,7 +3846,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT PANZER";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3879,7 +3889,7 @@ public class MapGeneratorTest {
   
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(1000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT TANK";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3905,7 +3915,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(combatunit);
+        city.getCentralTerrain().setCombatUnit(combatunit);
         String input = "CONSTRUCT UNIT TANK";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3933,7 +3943,7 @@ public class MapGeneratorTest {
         civil.setTechnologies(tech);
         City city = new City(null, civil,central , 3, null,0, 0);
         city.setGold(10000);
-        city.setCombatUnit(null);
+        city.getCentralTerrain().setCombatUnit(null);
         String input = "CONSTRUCT UNIT TANK";
         Matcher matcher;
         CityController cityController = new CityController();
@@ -3978,6 +3988,7 @@ public class MapGeneratorTest {
        // city.setCombatUnit(null);
         CityController cityController = new CityController();
       cityController.foundCity(civil, combatunit, central);
+      cityController.foundCity(civil, null, central);
 
     }
 
@@ -5895,8 +5906,6 @@ public class MapGeneratorTest {
         if ((matcher = GameEnums.getMatcher(input, GameEnums.INCREASE_GOLD)) != null) {
             gamemenu.increaseGoldCheat(user, matcher);
         }
-
-
     }
 
    
@@ -7024,7 +7033,7 @@ public void RevealedMapTest(){
     civil.setTechnologies(tech);
     City city = new City(null, civil,central , 3, null,0, 0);
     city.setGold(10000);
-    city.setCombatUnit(null);
+    city.getCentralTerrain().setCombatUnit(null);
       String input = "CONSTRUCT UNIT ARCHER";
       Matcher matcher;
       if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
@@ -7051,7 +7060,7 @@ public void RevealedMapTest(){
     civil.setTechnologies(tech);
     City city = new City(null, civil,central , 3, null,0, 0);
     city.setGold(10000);
-    city.setCombatUnit(null);
+    city.getCentralTerrain().setCombatUnit(null);
       String input = "CONSTRUCT UNIT CHARIOT_ARCHER";
       Matcher matcher;
       if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
@@ -7078,7 +7087,7 @@ public void RevealedMapTest(){
     civil.setTechnologies(tech);
     City city = new City(null, civil,central , 3, null,0, 0);
     city.setGold(10000);
-    city.setCombatUnit(combatunit);
+    city.getCentralTerrain().setCombatUnit(combatunit);
       String input = "CONSTRUCT UNIT CHARIOT_ARCHER";
       Matcher matcher;
       if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
@@ -7105,7 +7114,7 @@ public void RevealedMapTest(){
     civil.setTechnologies(tech);
     City city = new City(null, civil,central , 3, null,0, 0);
     city.setGold(10000);
-    city.setCombatUnit(null);
+    city.getCentralTerrain().setCombatUnit(null);
       String input = "CONSTRUCT UNIT CHARIOT_ARCHER";
       Matcher matcher;
       if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
@@ -7132,7 +7141,7 @@ public void RevealedMapTest(){
     civil.setTechnologies(tech);
     City city = new City(null, civil,central , 3, null,0, 0);
     city.setGold(10000);
-    city.setCombatUnit(null);
+    city.getCentralTerrain().setCombatUnit(null);
       String input = "CONSTRUCT UNIT HORSESMAN";
       Matcher matcher;
       if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
@@ -7159,7 +7168,7 @@ public void RevealedMapTest(){
     civil.setTechnologies(tech);
     City city = new City(null, civil,central , 3, null,0, 0);
     city.setGold(10000);
-    city.setCombatUnit(combatunit);
+    city.getCentralTerrain().setCombatUnit(combatunit);
       String input = "CONSTRUCT UNIT HORSESMAN";
       Matcher matcher;
       if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
@@ -7186,7 +7195,7 @@ public void RevealedMapTest(){
     civil.setTechnologies(tech);
     City city = new City(null, civil,central , 3, null,0, 0);
     city.setGold(10000);
-    city.setCombatUnit(null);
+    city.getCentralTerrain().setCombatUnit(null);
       String input = "CONSTRUCT UNIT HORSESMAN";
       Matcher matcher;
       if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
@@ -7212,7 +7221,7 @@ public void RevealedMapTest(){
     civil.setTechnologies(tech);
     City city = new City(null, civil,central , 3, null,0, 0);
     city.setGold(10000);
-    city.setCombatUnit(null);
+    city.getCentralTerrain().setCombatUnit(null);
       String input = "CONSTRUCT UNIT HORSESMAN";
       Matcher matcher;
       if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
@@ -7239,7 +7248,7 @@ public void RevealedMapTest(){
     civil.setTechnologies(tech);
     City city = new City(null, civil,central , 3, null,0, 0);
     city.setGold(10000);
-    city.setNonCombatUnit(combatunit);
+    city.getCentralTerrain().setNonCombatUnit(combatunit);
       String input = "CONSTRUCT UNIT SETTLER";
       Matcher matcher;
       if((matcher = getMatcher(input, GameEnums.CREATE_UNIT)) != null){
@@ -7266,7 +7275,7 @@ public void RevealedMapTest(){
     civil.setTechnologies(tech);
     City city = new City(null, civil,central , 3, null,0, 0);
     city.setGold(10000);
-    city.setNonCombatUnit(null);
+    city.getCentralTerrain().setNonCombatUnit(null);
     civil.setBooleanSettlerBuy(true);
       String input = "CONSTRUCT UNIT SETTLER";
       Matcher matcher;
@@ -7294,7 +7303,7 @@ public void RevealedMapTest(){
     civil.setTechnologies(tech);
     City city = new City(null, civil,central , 3, null,0, 0);
     city.setGold(10000);
-    city.setNonCombatUnit(null);
+    city.getCentralTerrain().setNonCombatUnit(null);
     civil.setBooleanSettlerBuy(true);
       String input = "CONSTRUCT UNIT WORKER";
       Matcher matcher;
@@ -7358,6 +7367,23 @@ public void RevealedMapTest(){
   }
   @Test
   public void increaseTurnWithconstructUnitTest1(){
+    Map map = new Map();
+  
+   
+    terrains = new Terrain[map.getROW()][map.getCOL()];
+    for (int i = 0; i < map.getROW(); i++) {
+        for (int j = 0; j < map.getCOL(); j++) {
+            NonCombatUnit noncombatunit = new NonCombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.CHARIOT_ARCHER, true);
+            CombatUnit combatunit =  new CombatUnit(i, j, 0, 0, 0, 0, false, false, UnitTypes.CHARIOT_ARCHER, true, false, false, false, false);
+            Improvement improve = new Improvement(i, j, ImprovementTypes.FARM);
+            Resource res = new Resource(ResourceTypes.BANANAS);
+            terrains[i][j] = new Terrain(i, j, "visible", TerrainTypes.PLAINS, new ArrayList<>(), combatunit, noncombatunit, improve, res, new ArrayList<Revealed>());
+          
+
+        }
+    }
+    map.setTerrains(terrains);
+
     Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
     NonCombatUnit combatunit = new NonCombatUnit(3, 4, 0, 0, 0, 0, false, false,
     UnitTypes.SETTLER, true);
@@ -7376,6 +7402,7 @@ public void RevealedMapTest(){
     User user = new User(null, null, null, civil);
     Database database = new Database();
     database.addUser(user);
+    database.setMap(map);
     DatabaseController databaseController = new DatabaseController(database);
     databaseController.increaseTurnInConstructingUnit(database.getUsers());
   }
@@ -8743,7 +8770,7 @@ public void ungarrisonCitiesTest1(){
     Civilization civil = new Civilization(100, 3, "A");
     Civilization civil1 = new Civilization(100, 3, "B");
     City city = new City(null, civil1,central , 3, null,0, 0);
-    ArrayList<Terrain> mainTerrains = new ArrayList<>();
+   ArrayList<Terrain> mainTerrains = new ArrayList<>(); 
     mainTerrains.add(terrains[3][4]);
     city.setMainTerrains(mainTerrains);
     terrains[3][4].setCity(city);
@@ -8807,5 +8834,49 @@ public void garrisonCitiesTest3(){
 
 }
 
+
+@Test
+public void calculateMovementCostTestScout(){
+    Database database = new Database();
+    DatabaseController databaseController = new DatabaseController(database);
+    Resource resource = new Resource(UnitTypes.CHARIOT_ARCHER.getResourceRequirements());
+    CombatUnit combatunit = new CombatUnit(3, 4, 0, 0, 0, 0, false, false,
+    UnitTypes.WARRIOR, true, false, false, false, false);
+    Improvement improvement = new Improvement(3, 4,ImprovementTypes.FARM);
+    ArrayList<TerrainFeatureTypes> features = new ArrayList<>();
+    features.add(TerrainFeatureTypes.MARSH);
+    Terrain central = new Terrain(3, 4, "visible", TerrainTypes.HILLS, features, combatunit, null,
+            improvement, resource,
+            new ArrayList<Revealed>());
+
+    Civilization civil = new Civilization(100, 3, "A");
+    City city = new City(null, civil,central , 3, null,0, 0);
+   ArrayList<Terrain> mainTerrains = new ArrayList<>(); 
+    mainTerrains.add(central);
+    civil.addCity(city);
+    User user = new User(null, null, null, civil);
+    database.addUser(user);
+    databaseController.setScience(user);
+    databaseController.calculatingTheMovementCostForScout(mainTerrains);
+    combatunit.isIsFinished();
+    combatunit.setUnitType(null);
+    combatunit.setX(3);
+    combatunit.setY(4);
+    combatunit.setNumber(6);
+    combatunit.getNumber();
+   combatunit.setMilitaryPower(0);
+   combatunit.getMilitaryPower();
+   combatunit.setLife(9);
+   combatunit.getLife();
+   combatunit.setSpeed(9);
+   combatunit.getSpeed();
+   combatunit.isIsAsleep();
+   civil.setName(null);
+   civil.setAvailablity();
+   civil.setCities(null);
+   city.setNonCombatUnit(null);
+   city.setCombatUnit(null);
+   city.getNonCombatUnit();
+}
 
 }

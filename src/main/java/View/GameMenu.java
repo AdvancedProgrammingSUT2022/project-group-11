@@ -1,4 +1,4 @@
-package VIEW;
+package View;
 
 import Controllers.CityController;
 import Controllers.CombatController;
@@ -18,6 +18,7 @@ import Model.City.City;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
+
 
 
 public class GameMenu {
@@ -81,6 +82,13 @@ public class GameMenu {
                             {
                                 if ( this.databaseController.getSelectedCombatUnit() != null)
                                 {
+
+
+
+
+
+
+
                                     CombatUnit combatUnit = this.databaseController.getSelectedCombatUnit();
                                     String temp = combatController.rangedAttack(matcher, user);
                                     if ( temp.equals("You won. The city is yours. Please move a combat unit to the tile to win it"))
@@ -123,6 +131,7 @@ public class GameMenu {
                 this.databaseController.setTerrainsOfEachCivilization(user);
                 this.databaseController.setHappinessUser(user);
                 this.databaseController.setScience(user);
+                user.getCivilization().setAvailablity();
                 this.databaseController.setUnitsParametersAfterEachTurn(users);
             }
         }

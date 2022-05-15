@@ -332,12 +332,8 @@ public class CityController {
 
         for (UnitTypes unitTypes : nonCombat) {
             if (getUnitTypeByName(unitName).equals(unitTypes)) {
-                if (unitTypes.getTechnologyRequirements() != null && !containUnit(civilization.getTechnologies(), unitTypes.getTechnologyRequirements())) {
-                    return lackTechnology;
-                } else if (city.getCentralTerrain().getNonCombatUnit() != null) {
+                if (city.getCentralTerrain().getNonCombatUnit() != null) {
                     return unitAlreadyExists;
-                } else if (city.getCentralTerrain().getResource() != null && unitTypes.getResourceRequirements() != null && !city.getCentralTerrain().getResource().getResourceType().equals(unitTypes.getResourceRequirements())) {
-                    return lackResources;
                 }
                 if (unitTypes.equals(UnitTypes.SETTLER)) {
                     if (civilization.getBooleanSettlerBuy()) {

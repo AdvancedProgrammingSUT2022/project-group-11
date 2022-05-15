@@ -646,7 +646,7 @@ public class DatabaseController {
     }
 
     public void addGoldToUser(User user) {
-        /*
+
         for (Terrain allTerrains : user.getCivilization().getOwnedTerrains()) {
             int gold = allTerrains.getCity().getGold();
             if (allTerrains.getTerrainTypes() != null) {
@@ -669,7 +669,7 @@ public class DatabaseController {
             allTerrains.getCity().setGold(gold);
         }
 
-         */
+
 
         for (City city : user.getCivilization().getCities()) {
             int gold = city.getGold();
