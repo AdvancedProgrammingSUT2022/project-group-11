@@ -925,6 +925,11 @@ public class CityController {
                 modifier += terrainFeatureTypes.getCombatModifier();
             }
         }
+        if ( attacker.getUnitType().equals(UnitTypes.CATAPULT) || attacker.getUnitType().equals(UnitTypes.TREBUCHET)
+           || attacker.getUnitType().equals(UnitTypes.ARTILLERY) || attacker.getUnitType().equals(UnitTypes.CANNON))
+        {
+            modifier += 10;
+        }
         attackerCombatStrength = attackerCombatStrength * ( 1 + ( modifier / 100 ));
         city.setHP( city.getHP() - attackerCombatStrength + 1);
         attacker.setHP( attacker.getHP() - cityCombatStrength);
