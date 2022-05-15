@@ -47,6 +47,11 @@ public class GameMenu {
                     String input = scanner.nextLine();
                     // input.replaceFirst("^\\s*", "");
                     // input = input.trim().replaceAll("\\s+", " ");
+                    if(input.equals("EXIT")){
+                        saveData saveData = new saveData();
+                        saveData.saveUsers(this.databaseController.getDatabase());
+                        System.exit(0);
+                    }
                     if ((matcher = GameEnums.getMatcher(input, GameEnums.SELECT_UNIT)) != null) {
                         selectUnit(user, matcher);
                         while (this.databaseController.HasOneUnitBeenSelected()) {
@@ -80,7 +85,6 @@ public class GameMenu {
                                     if ( temp.equals("You won. The city is yours. Please move a combat unit to the tile to win it"))
                                     {
                                         System.out.println("You won. The city is yours. Please move a combat unit to the tile to win it");
-
 
                                     }
                                     else
