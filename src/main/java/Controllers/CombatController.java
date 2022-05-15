@@ -44,10 +44,16 @@ public class CombatController
         {
             if (cityController.oneCombatTurn(city, combatUnit))
             {
+                combatUnit.setIsSelected(false);
+                combatUnit.setIsFinished(true);
                 return "You won.The city is yours. Do you wish to destroy it or make it yours?";
             }
             else
+            {
+                combatUnit.setIsSelected(false);
+                combatUnit.setIsFinished(true);
                 return "You played one turn in combat. Please attack the city next turn again if you wish to continue.";
+            }
         }
         if ( combatUnit instanceof RangedCombatUnit)
         {

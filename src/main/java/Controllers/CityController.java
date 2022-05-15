@@ -49,6 +49,8 @@ public class CityController {
             city.getCentralTerrain().setCombatUnit(combatUnit); //not sure
             city.setCombatStrength( city.getCombatStrength() + combatUnit.getCombatStrength());
             city.setGarrisoned(true);
+            combatUnit.setIsFinished(true);
+            combatUnit.setIsSelected(false);
             return "You successfully garrisoned your city";
         }
     }
@@ -94,7 +96,7 @@ public class CityController {
                 System.out.println("error : city already exists");
                 return;
             }
-            City newCity = new City(civilization, civilization, tile, 20, "none", 0, 0);
+            City newCity = new City(civilization, civilization, tile, 20, "none", 20, 20);
             tile.setCity(newCity);
             civilization.addCity(newCity);
             civilization.removeUnit((Unit) unit);
