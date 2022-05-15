@@ -1533,6 +1533,7 @@ public class DatabaseController {
     public String economicOverview(User user) {
         StringBuilder stringBuilder = new StringBuilder();
         for (City city : user.getCivilization().getCities()) {
+            stringBuilder.append("City size ").append(city.getMainTerrains().size()).append("\n");
             stringBuilder.append("Population ").append(city.getCitizens().size()).append("\n");
             stringBuilder.append("HP ").append(city.getHP()).append("\n");
             stringBuilder.append("Gold ").append(city.getGold()).append("\n");
