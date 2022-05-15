@@ -53,8 +53,8 @@ public enum GameEnums {
     CREATE_UNIT("^CONSTRUCT UNIT (?<unitName>[A-Z_a-z]+)"),
     REMOVE_FROM_WORK("^CITY\\sREMOVE\\sCITIZEN\\sNUMBER\\s(?<CitizenIndex>\\d+)"),
     BUY_TILE("CITY\\sBUY\\sTILE\\s(?<X>\\d+)\\s(?<Y>\\d+)"),
-    ATTACK_CITY("UNIT\\sATTACK\\sCITY\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
-    RANGED_ATTACK_CITY("RANGED\\sUNIT\\sATTACK\\sCITY\\s(<?X>\\d+)\\s(<?Y>\\d+)"),
+    ATTACK_CITY("UNIT\\sATTACK\\sCITY\\s(?<X>\\d+)\\s(?<Y>\\d+)"),
+    RANGED_ATTACK_CITY("RANGED\\sUNIT\\sATTACK\\sCITY\\s(?<X>\\d+)\\s(?<Y>\\d+)"),
 
 
     INTEGER("^-?\\d+$");
