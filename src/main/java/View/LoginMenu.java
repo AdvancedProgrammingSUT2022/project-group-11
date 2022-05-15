@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 
 public class LoginMenu
 {
-    private DatabaseController databaseController;
+    private final DatabaseController databaseController;
     private User user;
 
     public LoginMenu(DatabaseController databaseController)
@@ -27,9 +27,12 @@ public class LoginMenu
         while (!(input = scanner.nextLine()).equals("menu exit")) {
             if ((matcher = getCommandMatcher(input, MenuEnums.ENTER.getRegex())).matches()) {
                 if (user != null) {
-
+                    if ( matcher.group("menuName").equals("Profile"))
+                    {
+                        System.out.println("Please enter main menu first");
+                    }
                 } else System.out.println("please login first");
-            } else if ((matcher = getCommandMatcher(input, MenuEnums.SHOWCURRENT.getRegex())).matches()) {
+            } else if ( getCommandMatcher(input, MenuEnums.SHOWCURRENT.getRegex()).matches()) {
                 System.out.println("Login Menu");
             } else if ((matcher = getCommandMatcher(input, MenuEnums.CREATEUSER.getRegex())).matches() || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER2.getRegex())).matches() || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER3.getRegex())).matches() || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER4.getRegex())).matches() || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER5.getRegex())).matches() || (matcher = getCommandMatcher(input, MenuEnums.CREATEUSER6.getRegex())).matches()) {
                 System.out.println(this.databaseController.createUser(matcher));
@@ -38,28 +41,27 @@ public class LoginMenu
                 if (this.user != null) {
                     MainMenu mainMenu = new MainMenu(this.databaseController, this.user);
                     ArrayList<User> players = mainMenu.run(scanner);
-                    if (players != null) {
+                    if (players != null && players.size() > 1) {
                         GameMenu gameMenu = new GameMenu(databaseController, players);
                         gameMenu.run(scanner);
-                        // play game
                     }
                 }
-            } else if ((matcher = getCommandMatcher(input, MenuEnums.USERLOGOUT.getRegex())).matches()) {
-                if (this.user != null) {
-                    this.user = null;
-                    System.out.println("user logged out successfully!");
-                }
+            }
+            else if ( getCommandMatcher(input, MenuEnums.CHANGE_USERNAME.getRegex()).matches())
+            {
+                System.out.println("You cannot change your username");
+            }
+            else if (getCommandMatcher(input, MenuEnums.USERLOGOUT.getRegex()).matches()) {
+                System.out.println(this.databaseController.logOut(this.user));
             } else System.out.println("invalid command");
 
         }
 
-        return;
     }
 
     private Matcher getCommandMatcher(String input, String regex) {
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(input);
-        return matcher;
+        return pattern.matcher(input);
     }
 
 

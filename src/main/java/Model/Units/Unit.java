@@ -209,16 +209,15 @@ public class Unit {
 
     @Override
     public String toString() {
-        return "{" +
-                " x='" + getX() + "'" +
-                ", y='" + getY() + "'" +
-                ", number='" + getNumber() + "'" +
-                ", militaryPower='" + getMilitaryPower() + "'" +
-                ", life='" + getLife() + "'" +
-                ", speed='" + getSpeed() + "'" +
-                ", isAsleep='" + isIsAsleep() + "'" +
-                ", unitType='" + getUnitType().name() + "'" +
-                "}";
+        return "Unit{" +
+                "x = " + x +
+                ", y = " + y +
+                ", combatStrength = " + combatStrength +
+                ", rangedCombatStrength = " + rangedCombatStrength +
+                ", HP = " + HP +
+                ", isAsleep = " + isAsleep +
+                ", unitType = " + unitType +
+                '}';
     }
 
     public int getPassedTurns() {

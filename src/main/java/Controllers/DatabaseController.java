@@ -1,7 +1,7 @@
 package Controllers;
 
 import Model.Buildings.BuildingTypes;
-import Model.CITY.City;
+import Model.City.City;
 import Model.*;
 import Model.Improvements.Improvement;
 import Model.Improvements.ImprovementTypes;
@@ -104,7 +104,17 @@ public class DatabaseController {
             return "please enter a new password";
         }
         user.setPassword(newPassword);
-        return "password changed successfully!";
+        return "password changed successfully! Please Login again with your new password";
+    }
+
+    public String logOut( User user)
+    {
+        if ( user != null)
+        {
+            user = null;
+            return "User logged out successfully!";
+        }
+        return "You have to log in first";
     }
 
     public String selectAndDeselectCombatUnit(User user, int x, int y) {
@@ -170,10 +180,10 @@ public class DatabaseController {
                 combatUnit = null;
                 break;
             case "setup ranged":
-                if (combatUnit instanceof RangedCombatUnit) {
+                if (combatUnit.getUnitType().getCombatTypes().equals(CombatTypes.SIEGE) ) {
                     ((RangedCombatUnit) combatUnit).setIsSetUpForRangedAttack(true);
                 } else {
-                    return "this unit is not a ranged combat unit!";
+                    return "This unit doesn't need to be set up";
                 }
                 break;
         }
@@ -530,14 +540,20 @@ public class DatabaseController {
     public void setTerrainsOfEachCivilization(User user) {
 
         ArrayList<Terrain> terrains = new ArrayList<>();
+        ArrayList<Terrain> ownedTerrains = new ArrayList<>();
 
         for (Unit unit : user.getCivilization().getUnits()) {
             terrains.add(getTerrainByCoordinates(unit.getX(), unit.getY()));
         }
 
-        // todo add cities tiles
+        for(City city : user.getCivilization().getCities())
+        {
+            terrains.addAll(city.getMainTerrains());
+            ownedTerrains.addAll(city.getMainTerrains());
+        }
 
-        user.getCivilization().setTerrains(terrains);
+        user.getCivilization().setTerrains(deleteExcessTerrain(terrains));
+        user.getCivilization().setOwnedTerrains(deleteExcessTerrain(ownedTerrains));
     }
 
     public void setCivilizations(ArrayList<User> users) {
@@ -1517,6 +1533,7 @@ public class DatabaseController {
     public String economicOverview(User user) {
         StringBuilder stringBuilder = new StringBuilder();
         for (City city : user.getCivilization().getCities()) {
+            stringBuilder.append("City size ").append(city.getMainTerrains().size()).append("\n");
             stringBuilder.append("Population ").append(city.getCitizens().size()).append("\n");
             stringBuilder.append("HP ").append(city.getHP()).append("\n");
             stringBuilder.append("Gold ").append(city.getGold()).append("\n");

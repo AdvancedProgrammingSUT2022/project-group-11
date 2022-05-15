@@ -1,9 +1,9 @@
 package Controllers;
 
+import Model.City.City;
 import Model.Terrain;
 import Model.Units.*;
 import Model.User;
-import Model.CITY.City;
 
 import java.util.regex.Matcher;
 

@@ -1,4 +1,4 @@
-package Model.CITY;
+package Model.City;
 
 import Model.Terrain;
 

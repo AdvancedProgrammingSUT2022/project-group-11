@@ -1,13 +1,13 @@
 package Controllers;
 
+import Model.City.Citizen;
+import Model.City.City;
 import Model.Civilization;
 import Model.Map;
 import Model.Resources.ResourceTypes;
 import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
 import Model.Terrain;
-import Model.CITY.Citizen;
-import Model.CITY.City;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Units.*;
 
@@ -27,14 +27,57 @@ public class CityController {
     public void setMap(Map map){
         this.map = map;
     }
-    public void garrison(City city, CombatUnit combatUnit) {
-        if (city.getCombatUnit() == null) {
-            city.setCombatUnit(combatUnit);
-            city.setCombatStrength(100); // adding combatStrength
-
-        } else {
-            // this city already contains a combat unit
+    public String garrisonCity(CombatUnit combatUnit) {
+        Terrain unitTerrain = this.databaseController.getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY());
+        City city = unitTerrain.getCity();
+        if( city == null || !city.getMainTerrains().contains(unitTerrain))
+        {
+            return "The unit has to enter a city first.";
         }
+        else if ( !city.getOwner().containsCombatUnit(combatUnit.getX(), combatUnit.getY()))
+        {
+            return "This city doesn't belong to you. Go garrison your own cities.";
+
+        }
+        else if ( city.getGarrisoned())
+        {
+            return "This city has already been garrisoned";
+        }
+        else
+        {
+            city.setCombatUnit(combatUnit);
+            city.getCentralTerrain().setCombatUnit(combatUnit); //not sure
+            city.setCombatStrength( city.getCombatStrength() + combatUnit.getCombatStrength());
+            city.setGarrisoned(true);
+            return "You successfully garrisoned your city";
+        }
+    }
+
+    public String ungarrisonCity( CombatUnit combatUnit)
+    {
+        Terrain unitTerrain = this.databaseController.getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY());
+        City city = unitTerrain.getCity();
+        if( city == null || !city.getMainTerrains().contains(unitTerrain))
+        {
+            return "The unit is not in any cities";
+        }
+        else if ( !city.getOwner().containsCombatUnit(combatUnit.getX(), combatUnit.getY()))
+        {
+            return "This city doesn't belong to you.";
+
+        }
+        else if ( !city.getGarrisoned())
+        {
+            return "This city has never been garrisoned";
+        }
+        else
+        {
+            city.setGarrisoned(false);
+            city.setCombatUnit(null);
+            city.setCombatStrength( city.getCombatStrength() - combatUnit.getCombatStrength());
+            return "You successfully ungarrisoned your city";
+        }
+
 
     }
 
@@ -746,14 +789,6 @@ public class CityController {
         }
         System.out.println("error");
 
-    }
-
-    public void garrisonACity(City city) {
-        if (city.getCombatUnit() != null) {
-            city.setGarrisoned(true);
-            city.setCombatStrength(city.getCombatStrength() + city.getCombatUnit().getCombatStrength());
-
-        }
     }
 
 

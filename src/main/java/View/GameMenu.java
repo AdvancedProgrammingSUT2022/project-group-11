@@ -13,7 +13,7 @@ import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
 import Model.Units.CombatUnit;
 import Model.User;
-import Model.CITY.City;
+import Model.City.City;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -85,7 +85,6 @@ public class GameMenu {
                                     if ( temp.equals("You won. The city is yours. Please move a combat unit to the tile to win it"))
                                     {
                                         System.out.println("You won. The city is yours. Please move a combat unit to the tile to win it");
-
 
                                     }
                                     else
@@ -997,7 +996,16 @@ public class GameMenu {
             this.databaseController.changingTheStateOfAUnit("sleep");
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.COMBAT_UNIT_CHEAT_MOVE)) != null) {
             cheatMoveCombatUnit(matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.NON_COMBAT_UNIT_CHEAT_MOVE)) != null) {
+        } else if (GameEnums.getMatcher(input, GameEnums.GARRISON_CITY) != null)
+        {
+            System.out.println(this.cityController.garrisonCity(this.databaseController.getSelectedCombatUnit()));
+
+        }
+        else if ( GameEnums.getMatcher(input, GameEnums.UNGARRISON_CITY) != null)
+        {
+            System.out.println(this.cityController.ungarrisonCity(this.databaseController.getSelectedCombatUnit()));
+        }
+        else if ((matcher = GameEnums.getMatcher(input, GameEnums.NON_COMBAT_UNIT_CHEAT_MOVE)) != null) {
             cheatMoveNonCombatUnit(matcher);
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
             if (this.databaseController.getSelectedCombatUnit() == null) {
@@ -1048,8 +1056,6 @@ public class GameMenu {
 
             }
 
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ATTACK)) != null) {
-
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_FOUND_CITY)) != null) {
             if ( this.databaseController.getSelectedNonCombatUnit() != null)
             {
@@ -1069,9 +1075,6 @@ public class GameMenu {
 
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_DELETE)) != null) {
             System.out.println(this.databaseController.changingTheStateOfAUnit("delete"));
-
-        } else if ( (matcher = GameEnums.getMatcher(input, GameEnums.ATTACK_CITY)) != null)
-        {
 
         }
         else {
