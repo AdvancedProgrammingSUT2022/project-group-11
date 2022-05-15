@@ -115,6 +115,9 @@ public class GameMapGenerator {
         int HowManySpaceRight = 0;
         if (Terrains[iTerrain][l].getType().equals("revealed")) {
             Civilization = "REV";
+            if(Terrains[iTerrain][l].getCity() != null){
+                Civilization += ".C";
+            }
             int HowManySpace = 5 - Civilization.length();
             HowManySpaceLeft = returnHowManySpaceInLeft(HowManySpace);
             HowManySpaceRight = returnHowManySpaceInRight(HowManySpace);
@@ -128,6 +131,9 @@ public class GameMapGenerator {
         } else if (Terrains[iTerrain][l].getType().equals("visible")) {
             if (database.getCivilizationUser(Terrains[iTerrain][l]) != null) {
                 Civilization += database.getCivilizationUser(Terrains[iTerrain][l]).getCivilization().getName();
+            }
+            if(Terrains[iTerrain][l].getCity() != null){
+                Civilization += ".C";
             }
             int HowManySpace = 5 - Civilization.length();
             HowManySpaceLeft = returnHowManySpaceInLeft(HowManySpace);
