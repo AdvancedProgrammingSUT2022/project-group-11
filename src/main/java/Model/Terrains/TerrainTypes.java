@@ -156,4 +156,9 @@ public enum TerrainTypes {
     {
         return product;
     }
+
+    public int getCombatModifier()
+    {
+        return combatModifier;
+    }
 }

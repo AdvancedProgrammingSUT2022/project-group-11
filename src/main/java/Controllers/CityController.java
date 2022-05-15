@@ -909,8 +909,18 @@ public class CityController {
 
     public Boolean oneCombatTurn (City city, CombatUnit attacker)
     {
-        int cityCombatStrength = city.getCombatStrength();
+        double cityCombatStrength = city.getCombatStrength();
         int attackerCombatStrength = attacker.getCombatStrength();
+        Terrain terrain = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
+        int modifier = terrain.getTerrainTypes().getCombatModifier();
+        if ( terrain.getTerrainFeatureTypes() != null)
+        {
+            for ( TerrainFeatureTypes terrainFeatureTypes : terrain.getTerrainFeatureTypes())
+            {
+                modifier += terrainFeatureTypes.getCombatModifier();
+            }
+        }
+        attackerCombatStrength = attackerCombatStrength * ( 1 + ( modifier / 100 ));
         city.setHP( city.getHP() - attackerCombatStrength + 1);
         attacker.setHP( attacker.getHP() - cityCombatStrength);
         if ( attacker.getHP() <= 0)

@@ -19,9 +19,9 @@ public class City {
     private boolean isPuppet;
     private ArrayList<Terrain> neighbors = new ArrayList<>();
     private int population;
-    private int HP;
+    private double HP;
     private String type;
-    private int combatStrength;
+    private double combatStrength;
     private boolean iConstructingUnit;
     private int rangedCombatStrength;
     private boolean garrisoned;
@@ -124,11 +124,11 @@ public class City {
     }
 
 
-    public int getHP() {
+    public double getHP() {
         return this.HP;
     }
 
-    public void setHP(int HP) {
+    public void setHP(double HP) {
         this.HP = HP;
     }
 
@@ -140,11 +140,11 @@ public class City {
         this.type = type;
     }
 
-    public int getCombatStrength() {
+    public double getCombatStrength() {
         return this.combatStrength;
     }
 
-    public void setCombatStrength(int combatStrength) {
+    public void setCombatStrength(double combatStrength) {
         this.combatStrength = combatStrength;
     }
 
