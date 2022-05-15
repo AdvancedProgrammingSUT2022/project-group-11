@@ -107,10 +107,8 @@ public class DatabaseController {
         return "password changed successfully! Please Login again with your new password";
     }
 
-    public String logOut( User user)
-    {
-        if ( user != null)
-        {
+    public String logOut(User user) {
+        if (user != null) {
             user = null;
             return "User logged out successfully!";
         }
@@ -180,7 +178,7 @@ public class DatabaseController {
                 combatUnit = null;
                 break;
             case "setup ranged":
-                if (combatUnit.getUnitType().getCombatTypes().equals(CombatTypes.SIEGE) ) {
+                if (combatUnit.getUnitType().getCombatTypes().equals(CombatTypes.SIEGE)) {
                     ((RangedCombatUnit) combatUnit).setIsSetUpForRangedAttack(true);
                 } else {
                     return "This unit doesn't need to be set up";
@@ -335,12 +333,11 @@ public class DatabaseController {
         ArrayList<Terrain> path = new ArrayList<>();
         ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
         addingAllPath(0, combatUnit.getX(), combatUnit.getY(), x_final, y_final, map, path, allPaths);
-        combatUnit.setNextTerrain(findingTheShortestPath(allPaths));
+        combatUnit.setNextTerrain(findingTheShortestPath(combatUnit, allPaths));
         for (Terrain terrain : combatUnit.getNextTerrain()) {
             System.out.println(terrain.getX() + " Mani " + terrain.getY());
         }
-        if ( combatUnit.getNextTerrain().isEmpty())
-        {
+        if (combatUnit.getNextTerrain().isEmpty()) {
             return "You're unable to go to your destination";
         }
         combatUnit.setIsSelected(false);
@@ -358,9 +355,8 @@ public class DatabaseController {
         ArrayList<Terrain> path = new ArrayList<>();
         ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
         addingAllPath(0, nonCombatUnit.getX(), nonCombatUnit.getY(), x_final, y_final, map, path, allPaths);
-        nonCombatUnit.setNextTerrain(findingTheShortestPath(allPaths));
-        if( nonCombatUnit.getNextTerrain().isEmpty())
-        {
+        nonCombatUnit.setNextTerrain(findingTheShortestPath(nonCombatUnit, allPaths));
+        if (nonCombatUnit.getNextTerrain().isEmpty()) {
             return "You're unable to go to your destination.";
         }
         nonCombatUnit.setIsSelected(false);
@@ -455,15 +451,25 @@ public class DatabaseController {
 
     }
 
-    public ArrayList<Terrain> findingTheShortestPath(ArrayList<ArrayList<Terrain>> allPaths) {
+    public ArrayList<Terrain> findingTheShortestPath(Unit unit, ArrayList<ArrayList<Terrain>> allPaths) {
         int movementCostOfTheShortestPath = 9999999;
         ArrayList<Terrain> shortestPath = new ArrayList<>();
-        for (ArrayList<Terrain> path : allPaths) {
-            if (calculatingTheMovementCost(path) < movementCostOfTheShortestPath) {
-                movementCostOfTheShortestPath = calculatingTheMovementCost(path);
-                shortestPath = path;
+        if (unit.getUnitType().equals(UnitTypes.SCOUT)) {
+            for (ArrayList<Terrain> path : allPaths) {
+                if (calculatingTheMovementCostForScout(path) < movementCostOfTheShortestPath) {
+                    movementCostOfTheShortestPath = calculatingTheMovementCostForScout(path);
+                    shortestPath = path;
+                }
+            }
+        } else {
+            for (ArrayList<Terrain> path : allPaths) {
+                if (calculatingTheMovementCost(path) < movementCostOfTheShortestPath) {
+                    movementCostOfTheShortestPath = calculatingTheMovementCost(path);
+                    shortestPath = path;
+                }
             }
         }
+
         for (Terrain terrain : shortestPath) {
             System.out.println("hello");
             System.out.println(terrain.getX() + " " + terrain.getY());
@@ -487,6 +493,16 @@ public class DatabaseController {
                     movementCost += terrain.getTerrainFeatureTypes().get(0).getMovementCost();
                 }
             }
+
+        }
+        return movementCost;
+    }
+
+    public int calculatingTheMovementCostForScout(ArrayList<Terrain> path) {
+        int movementCost = 0;
+        for (Terrain terrain : path) {
+
+            movementCost += 1;
 
         }
         return movementCost;
@@ -546,8 +562,7 @@ public class DatabaseController {
             terrains.add(getTerrainByCoordinates(unit.getX(), unit.getY()));
         }
 
-        for(City city : user.getCivilization().getCities())
-        {
+        for (City city : user.getCivilization().getCities()) {
             terrains.addAll(city.getMainTerrains());
             ownedTerrains.addAll(city.getMainTerrains());
         }
@@ -563,7 +578,7 @@ public class DatabaseController {
         int i = 0;
         for (User user : users) {
 
-            Civilization civilization = new Civilization(10000, 100, this.database.getCivilizationsName().get(indices.get(i)));
+            Civilization civilization = new Civilization(100, 100, this.database.getCivilizationsName().get(indices.get(i)));
             user.setCivilization(civilization);
             user.getCivilization().setBooleanSettlerBuy(true);
             createUnitForEachCivilization(user);
@@ -602,7 +617,7 @@ public class DatabaseController {
     public void createUnitForEachCivilization(User user) {
         ArrayList<Integer> unitsCoordinates = findingEmptyTiles();
         NonCombatUnit newSettler = new NonCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
-        NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) , 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
+        NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1), 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)].setCombatUnit(newWarrior);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1) + 1].setNonCombatUnit(newSettler);
         user.getCivilization().getUnits().add(newSettler);
@@ -631,6 +646,7 @@ public class DatabaseController {
     }
 
     public void addGoldToUser(User user) {
+        /*
         for (Terrain allTerrains : user.getCivilization().getOwnedTerrains()) {
             int gold = allTerrains.getCity().getGold();
             if (allTerrains.getTerrainTypes() != null) {
@@ -652,18 +668,31 @@ public class DatabaseController {
 
             allTerrains.getCity().setGold(gold);
         }
+
+         */
+
         for (City city : user.getCivilization().getCities()) {
             int gold = city.getGold();
             user.getCivilization().increaseGold(gold);
         }
-
-        int numberOfUnits = user.getCivilization().getUnits().size();
-        user.getCivilization().increaseGold(-numberOfUnits * database.getTurn());
-        for (City city : user.getCivilization().getCities()) {
-            for (BuildingTypes cityBuildings : city.getBuildings()) {
-                user.getCivilization().increaseGold(-cityBuildings.getMeintenance() * database.getTurn());
+        if (user.getCivilization().getGold() >= 0) {
+            int numberOfUnits = user.getCivilization().getUnits().size();
+            user.getCivilization().increaseGold(-numberOfUnits * database.getTurn());
+            for (City city : user.getCivilization().getCities()) {
+                for (BuildingTypes cityBuildings : city.getBuildings()) {
+                    user.getCivilization().increaseGold(-cityBuildings.getMeintenance() * database.getTurn());
+                }
+            }
+        } else {
+            int numberOfUnits = user.getCivilization().getUnits().size();
+            user.getCivilization().setScience(user.getCivilization().getScience() - numberOfUnits * database.getTurn());
+            for (City city : user.getCivilization().getCities()) {
+                for (BuildingTypes cityBuildings : city.getBuildings()) {
+                    user.getCivilization().setScience(user.getCivilization().getScience() - cityBuildings.getMeintenance() * database.getTurn());
+                }
             }
         }
+
 
         // gold == 0?
 
@@ -733,7 +762,7 @@ public class DatabaseController {
         for (Terrain allTerrains : user.getCivilization().getOwnedTerrains()) {
             if (allTerrains.getTerrainResource() != null && allTerrains.getBooleanResource()) {
                 for (ResourceTypes resourceTypes : luxuryResource) {
-                    if (resourceTypes == allTerrains.getTerrainResource().getResourceType()) {
+                    if (resourceTypes.equals(allTerrains.getTerrainResource().getResourceType())) {
                         if (!happinessLuxuryIncrease.contains(allTerrains.getTerrainResource().getResourceType())) {
                             happinessLuxuryIncrease.add(resourceTypes);
                         }
@@ -743,24 +772,34 @@ public class DatabaseController {
             }
         }
 
+        user.getCivilization().setHappiness(user.getCivilization().getHappiness() - 5 * user.getCivilization().getCities().size());
+
         user.getCivilization().setHappiness(user.getCivilization().getHappiness() + 4 * happinessLuxuryIncrease.size());
 
         if (user.getCivilization().getHappiness() < 0) {
             for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
                 if (allTerrain.getCombatUnit() != null) {
-                    allTerrain.getCombatUnit().setMilitaryPower(allTerrain.getCombatUnit().getMilitaryPower() - allTerrain.getCombatUnit().getMilitaryPower() / 4);
+                    allTerrain.getCombatUnit().setCombatStrength(allTerrain.getCombatUnit().getCombatStrength() - allTerrain.getCombatUnit().getCombatStrength() / 4);
                 }
             }
             user.getCivilization().setBooleanSettlerBuy(false);
         } else {
             for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
                 if (allTerrain.getCombatUnit() != null) {
-                    // militry power
+                    allTerrain.getCombatUnit().setCombatStrength(allTerrain.getCombatUnit().getCombatStrength() + allTerrain.getCombatUnit().getCombatStrength() / 4);
                 }
             }
             user.getCivilization().setBooleanSettlerBuy(true);
         }
 
+
+    }
+
+    public void setScience(User user) {
+        user.getCivilization().setScience(user.getCivilization().getScience() + 3);
+        for (City city : user.getCivilization().getCities()) {
+            user.getCivilization().setScience(user.getCivilization().getScience() + city.getScience());
+        }
     }
 
     public String choosingATechnologyToStudy(User user, TechnologyTypes technologyType) {
@@ -789,7 +828,7 @@ public class DatabaseController {
 
     public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType() != null && technology.getTechnologyType().equals(technologyType)) {
+            if (technology.getTechnologyType()!= null &&technology.getTechnologyType().equals(technologyType)) {
                 return true;
             }
         }
@@ -1058,7 +1097,12 @@ public class DatabaseController {
                     } else {
                         unit.setPassedTurns(0);
                         user.getCivilization().getUnits().add(unit);
-                        // TODO : set Unit in Tile and City
+                        Terrain terrain = getTerrainByCoordinates(unit.getX(), unit.getY());
+                        if (unit instanceof CombatUnit) {
+                            terrain.setCombatUnit((CombatUnit) unit);
+                        } else {
+                            terrain.setNonCombatUnit((NonCombatUnit) unit);
+                        }
                         needToRemove.add(unit);
 
                     }

@@ -9,10 +9,10 @@ public class Unit {
     private int passedTurns = 0;
     private int x, y;
     private int number;
-    private int combatStrength;
+    private double combatStrength;
     private int rangedCombatStrength;
     private int life;
-    private int HP;
+    private double HP;
 
 
     private int speed;
@@ -23,7 +23,7 @@ public class Unit {
     private boolean isSelected;
 
 
-    public Unit(int x, int y, int number, int combatStrength, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected) {
+    public Unit(int x, int y, int number, double combatStrength, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected) {
         this.x = x;
         this.y = y;
         this.number = number;
@@ -161,11 +161,11 @@ public class Unit {
         this.number = number;
     }
 
-    public int getMilitaryPower() {
+    public double getMilitaryPower() {
         return this.combatStrength;
     }
 
-    public void setMilitaryPower(int combatStrength) {
+    public void setMilitaryPower(double combatStrength) {
         this.combatStrength = combatStrength;
     }
 
@@ -197,12 +197,12 @@ public class Unit {
         this.isAsleep = isAsleep;
     }
 
-    public void setHP(int HP)
+    public void setHP(double HP)
     {
         this.HP = HP;
     }
 
-    public int getHP()
+    public double getHP()
     {
         return this.HP;
     }

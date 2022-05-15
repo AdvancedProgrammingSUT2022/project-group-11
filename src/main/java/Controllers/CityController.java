@@ -45,10 +45,12 @@ public class CityController {
         }
         else
         {
-            city.setCombatUnit(combatUnit);
+            city.getCentralTerrain().setCombatUnit(combatUnit);
             city.getCentralTerrain().setCombatUnit(combatUnit); //not sure
             city.setCombatStrength( city.getCombatStrength() + combatUnit.getCombatStrength());
             city.setGarrisoned(true);
+            combatUnit.setIsFinished(true);
+            combatUnit.setIsSelected(false);
             return "You successfully garrisoned your city";
         }
     }
@@ -73,7 +75,7 @@ public class CityController {
         else
         {
             city.setGarrisoned(false);
-            city.setCombatUnit(null);
+            city.getCentralTerrain().setCombatUnit(null);
             city.setCombatStrength( city.getCombatStrength() - combatUnit.getCombatStrength());
             return "You successfully ungarrisoned your city";
         }
@@ -94,7 +96,7 @@ public class CityController {
                 System.out.println("error : city already exists");
                 return;
             }
-            City newCity = new City(civilization, civilization, tile, 20, "none", 0, 0);
+            City newCity = new City(civilization, civilization, tile, 20, "none", 20, 20);
             tile.setCity(newCity);
             civilization.addCity(newCity);
             civilization.removeUnit((Unit) unit);
@@ -123,6 +125,13 @@ public class CityController {
         foodIncrease -= city.getPopulation() * 2;
         if (foodIncrease > 0) // creating Citizens
         {
+            if(city.getCentralTerrain().getNonCombatUnit().getUnitType().equals(UnitTypes.SETTLER)) {
+                foodIncrease = 0;
+            }
+            if(city.getOwner().getHappiness()<0)
+            {
+                foodIncrease /= 3;
+            }
             city.setFood(city.getFood() + foodIncrease);
             if (city.getFood() > 20) {
                 Citizen newCitizen = new Citizen(city);
@@ -148,7 +157,7 @@ public class CityController {
         }
         city.setGold( city.getGold() + goldIncrease);
         city.setProduction(city.getProduction() + productionIncrease);
-        city.setScience( 5 + city.getCitizens().size());
+        city.setScience(city.getScience() + city.getCitizens().size());
 
         // update constructions
     }
@@ -222,7 +231,7 @@ public class CityController {
 
     public void destroyCity(Civilization destroyer, Civilization loser, City city) {
         loser.removeCity(city);
-        destroyer.setHappiness(destroyer.getHappiness() + 100);
+        destroyer.setHappiness(destroyer.getHappiness() + 25);
         // handle the tile itself
 
 
@@ -232,7 +241,7 @@ public class CityController {
     public void attachCity(Civilization civilization, City city) {
         civilization.addCity(city);
         city.setOwner(civilization);
-        civilization.setHappiness(civilization.getHappiness() - 10000);
+        civilization.setHappiness(civilization.getHappiness() - 20);
 
     }
 
@@ -296,11 +305,12 @@ public class CityController {
                     return lackTechnology;
                 } else if (city.getCentralTerrain().getResource() != null && unitTypes.getResourceRequirements() != null && !city.getCentralTerrain().getResource().getResourceType().equals(unitTypes.getResourceRequirements())) {
                     return lackResources;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 }
                 RangedCombatUnit newUnit = new RangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, unitTypes, false, false, false, false, false, false);
                 city.getConstructionWaitList().add(newUnit);
+                return unitTypes.name() + " will be constructed in " + unitTypes.getTurn()+" turns";
             }
         }
 
@@ -308,13 +318,14 @@ public class CityController {
             if (getUnitTypeByName(unitName).equals(unitTypes)) {
                 if (unitTypes.getTechnologyRequirements() != null && !containUnit(civilization.getTechnologies(), unitTypes.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else if (city.getCentralTerrain().getResource() != null && unitTypes.getResourceRequirements() != null && !city.getCentralTerrain().getResource().getResourceType().equals(unitTypes.getResourceRequirements())) {
                     return lackResources;
                 }
                 NonRangedCombatUnit newUnit = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, unitTypes, false, false, false, false, false);
                 city.getConstructionWaitList().add(newUnit);
+                return unitTypes.name() + " will be constructed in " + unitTypes.getTurn()+" turns";
             }
 
         }
@@ -323,7 +334,7 @@ public class CityController {
             if (getUnitTypeByName(unitName).equals(unitTypes)) {
                 if (unitTypes.getTechnologyRequirements() != null && !containUnit(civilization.getTechnologies(), unitTypes.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getNonCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getNonCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else if (city.getCentralTerrain().getResource() != null && unitTypes.getResourceRequirements() != null && !city.getCentralTerrain().getResource().getResourceType().equals(unitTypes.getResourceRequirements())) {
                     return lackResources;
@@ -332,17 +343,18 @@ public class CityController {
                     if (civilization.getBooleanSettlerBuy()) {
                         NonCombatUnit newSettler = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
                         city.getConstructionWaitList().add(newSettler);
+                        return unitTypes.name() + " will be constructed in " + unitTypes.getTurn()+" turns";
                     }
 
                 } else {
                     NonCombatUnit newUnit = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, unitTypes, false);
                     city.getConstructionWaitList().add(newUnit);
+                    return unitTypes.name() + " will be constructed in " + unitTypes.getTurn()+" turns";
                 }
             }
 
 
         }
-
 
         return "invalid unit name";
     }
@@ -363,13 +375,13 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!containUnit(civilization.getTechnologies(),UnitTypes.ARCHER.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     RangedCombatUnit newArcher = new RangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.ARCHER, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.ARCHER.getCost());
                     civilization.addUnit(newArcher);
-                    city.setCombatUnit(newArcher);
+                    city.getCentralTerrain().setCombatUnit(newArcher);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -380,13 +392,13 @@ public class CityController {
                     return lackTechnology;
                 } else if (!city.getCentralTerrain().getResource().getResourceType().equals(ResourceTypes.HORSES)) {
                     return lackResources;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     RangedCombatUnit newChariotArcher = new RangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.CHARIOT_ARCHER, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.CHARIOT_ARCHER.getCost());
                     civilization.addUnit(newChariotArcher);
-                    city.setCombatUnit(newChariotArcher);
+                    city.getCentralTerrain().setCombatUnit(newChariotArcher);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -395,13 +407,13 @@ public class CityController {
             case "SCOUT":
                 if (money < UnitTypes.SCOUT.getCost()) {
                     return notEnoughMoney;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newScout = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.SCOUT, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.SCOUT.getCost());
                     civilization.addUnit(newScout);
-                    city.setCombatUnit(newScout);
+                    city.getCentralTerrain().setCombatUnit(newScout);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -409,14 +421,14 @@ public class CityController {
             case "SETTLER":
                 if (money < UnitTypes.SETTLER.getCost()) {
                     return notEnoughMoney;
-                } else if (city.getNonCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getNonCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     if (civilization.getBooleanSettlerBuy() == true) {
                         NonCombatUnit newSettler = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
                         civilization.setGold(money - UnitTypes.SETTLER.getCost());
                         civilization.addUnit(newSettler);
-                        city.setNonCombatUnit(newSettler);
+                        city.getCentralTerrain().setNonCombatUnit(newSettler);
                         return unitPurchasedSuccessfully;
                     }
 
@@ -426,13 +438,13 @@ public class CityController {
             case "SPEARMAN":
                 if (money < UnitTypes.SPEARMAN.getCost()) {
                     return notEnoughMoney;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newScout = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.SPEARMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.SPEARMAN.getCost());
                     civilization.addUnit(newScout);
-                    city.setCombatUnit(newScout);
+                    city.getCentralTerrain().setCombatUnit(newScout);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -440,13 +452,13 @@ public class CityController {
             case "WARRIOR":
                 if (money < UnitTypes.WARRIOR.getCost()) {
                     return notEnoughMoney;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.WARRIOR.getCost());
                     civilization.addUnit(newWarrior);
-                    city.setCombatUnit(newWarrior);
+                    city.getCentralTerrain().setCombatUnit(newWarrior);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -454,13 +466,13 @@ public class CityController {
             case "WORKER":
                 if (money < UnitTypes.WORKER.getCost()) {
                     return notEnoughMoney;
-                } else if (city.getNonCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getNonCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonCombatUnit newWorker = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.WORKER, false);
                     civilization.setGold(money - UnitTypes.WORKER.getCost());
                     civilization.addUnit(newWorker);
-                    city.setNonCombatUnit(newWorker);
+                    city.getCentralTerrain().setNonCombatUnit(newWorker);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -472,13 +484,13 @@ public class CityController {
                     return lackResources;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.CATAPULT.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     RangedCombatUnit newCatapult = new RangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.CATAPULT, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.CATAPULT.getCost());
                     civilization.addUnit(newCatapult);
-                    city.setCombatUnit(newCatapult);
+                    city.getCentralTerrain().setCombatUnit(newCatapult);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -490,13 +502,13 @@ public class CityController {
                     return lackResources;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.HORSESMAN.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newHorsesman = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.HORSESMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.HORSESMAN.getCost());
                     civilization.addUnit(newHorsesman);
-                    city.setCombatUnit(newHorsesman);
+                    city.getCentralTerrain().setCombatUnit(newHorsesman);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -508,13 +520,13 @@ public class CityController {
                     return lackResources;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.SWORDSMAN.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newSwordsman = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.SWORDSMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.SWORDSMAN.getCost());
                     civilization.addUnit(newSwordsman);
-                    city.setCombatUnit(newSwordsman);
+                    city.getCentralTerrain().setCombatUnit(newSwordsman);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -524,13 +536,13 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.CROSSBOWMAN.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     RangedCombatUnit newCrossbowman = new RangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.CROSSBOWMAN, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.CROSSBOWMAN.getCost());
                     civilization.addUnit(newCrossbowman);
-                    city.setCombatUnit(newCrossbowman);
+                    city.getCentralTerrain().setCombatUnit(newCrossbowman);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -542,13 +554,13 @@ public class CityController {
                     return lackResources;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.KNIGHT.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newKnight = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.KNIGHT, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.KNIGHT.getCost());
                     civilization.addUnit(newKnight);
-                    city.setCombatUnit(newKnight);
+                    city.getCentralTerrain().setCombatUnit(newKnight);
                     return unitPurchasedSuccessfully;
 
                 }
@@ -561,13 +573,13 @@ public class CityController {
                     return lackResources;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.LONGSWORDSMAN.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newLong = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.LONGSWORDSMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.LONGSWORDSMAN.getCost());
                     civilization.addUnit(newLong);
-                    city.setCombatUnit(newLong);
+                    city.getCentralTerrain().setCombatUnit(newLong);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -577,13 +589,13 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.PIKEMAN.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newPikeman = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.PIKEMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.PIKEMAN.getCost());
                     civilization.addUnit(newPikeman);
-                    city.setCombatUnit(newPikeman);
+                    city.getCentralTerrain().setCombatUnit(newPikeman);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -595,13 +607,13 @@ public class CityController {
                     return lackResources;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.TREBUCHET.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     RangedCombatUnit newTrebuchet = new RangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.TREBUCHET, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.TREBUCHET.getCost());
                     civilization.addUnit(newTrebuchet);
-                    city.setCombatUnit(newTrebuchet);
+                    city.getCentralTerrain().setCombatUnit(newTrebuchet);
                     return unitPurchasedSuccessfully;
 
                 }
@@ -612,13 +624,13 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.CANNON.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     RangedCombatUnit newCannon = new RangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.CANNON, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.CANNON.getCost());
                     civilization.addUnit(newCannon);
-                    city.setCombatUnit(newCannon);
+                    city.getCentralTerrain().setCombatUnit(newCannon);
                     return unitPurchasedSuccessfully;
 
                 }
@@ -631,13 +643,13 @@ public class CityController {
                     return lackResources;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.CAVALRY.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newUnit = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.CAVALRY, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.CAVALRY.getCost());
                     civilization.addUnit(newUnit);
-                    city.setCombatUnit(newUnit);
+                    city.getCentralTerrain().setCombatUnit(newUnit);
                     return unitPurchasedSuccessfully;
 
                 }
@@ -650,13 +662,13 @@ public class CityController {
                     return lackResources;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.LANCER.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newUnit = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.LANCER, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.LANCER.getCost());
                     civilization.addUnit(newUnit);
-                    city.setCombatUnit(newUnit);
+                    city.getCentralTerrain().setCombatUnit(newUnit);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -666,13 +678,13 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.MUSKETMAN.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newUnit = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.MUSKETMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.MUSKETMAN.getCost());
                     civilization.addUnit(newUnit);
-                    city.setCombatUnit(newUnit);
+                    city.getCentralTerrain().setCombatUnit(newUnit);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -682,13 +694,13 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.RIFLEMAN.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newUnit = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.RIFLEMAN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.RIFLEMAN.getCost());
                     civilization.addUnit(newUnit);
-                    city.setCombatUnit(newUnit);
+                    city.getCentralTerrain().setCombatUnit(newUnit);
                     return unitPurchasedSuccessfully;
 
                 }
@@ -699,13 +711,13 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.ANTI_TANKGUN.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newUnit = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.ANTI_TANKGUN, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.ANTI_TANKGUN.getCost());
                     civilization.addUnit(newUnit);
-                    city.setCombatUnit(newUnit);
+                    city.getCentralTerrain().setCombatUnit(newUnit);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -715,13 +727,13 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.ARTILLERY.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     RangedCombatUnit newUnit = new RangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.ARTILLERY, false, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.ARTILLERY.getCost());
                     civilization.addUnit(newUnit);
-                    city.setCombatUnit(newUnit);
+                    city.getCentralTerrain().setCombatUnit(newUnit);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -731,13 +743,13 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.INFANTRY.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newUnit = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.INFANTRY, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.INFANTRY.getCost());
                     civilization.addUnit(newUnit);
-                    city.setCombatUnit(newUnit);
+                    city.getCentralTerrain().setCombatUnit(newUnit);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -747,13 +759,13 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.PANZER.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newUnit = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.PANZER, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.PANZER.getCost());
                     civilization.addUnit(newUnit);
-                    city.setCombatUnit(newUnit);
+                    city.getCentralTerrain().setCombatUnit(newUnit);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -763,13 +775,13 @@ public class CityController {
                     return notEnoughMoney;
                 } else if (!containUnit(civilization.getTechnologies(), UnitTypes.TANK.getTechnologyRequirements())) {
                     return lackTechnology;
-                } else if (city.getCombatUnit() != null) {
+                } else if (city.getCentralTerrain().getCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
                     NonRangedCombatUnit newUnit = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.TANK, false, false, false, false, false);
                     civilization.setGold(money - UnitTypes.TANK.getCost());
                     civilization.addUnit(newUnit);
-                    city.setCombatUnit(newUnit);
+                    city.getCentralTerrain().setCombatUnit(newUnit);
                     return unitPurchasedSuccessfully;
                 }
 
@@ -909,8 +921,23 @@ public class CityController {
 
     public Boolean oneCombatTurn (City city, CombatUnit attacker)
     {
-        int cityCombatStrength = city.getCombatStrength();
+        double cityCombatStrength = city.getCombatStrength();
         int attackerCombatStrength = attacker.getCombatStrength();
+        Terrain terrain = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
+        int modifier = terrain.getTerrainTypes().getCombatModifier();
+        if ( terrain.getTerrainFeatureTypes() != null)
+        {
+            for ( TerrainFeatureTypes terrainFeatureTypes : terrain.getTerrainFeatureTypes())
+            {
+                modifier += terrainFeatureTypes.getCombatModifier();
+            }
+        }
+        if ( attacker.getUnitType().equals(UnitTypes.CATAPULT) || attacker.getUnitType().equals(UnitTypes.TREBUCHET)
+           || attacker.getUnitType().equals(UnitTypes.ARTILLERY) || attacker.getUnitType().equals(UnitTypes.CANNON))
+        {
+            modifier += 10;
+        }
+        attackerCombatStrength = attackerCombatStrength * ( 1 + ( modifier / 100 ));
         city.setHP( city.getHP() - attackerCombatStrength + 1);
         attacker.setHP( attacker.getHP() - cityCombatStrength);
         if ( attacker.getHP() <= 0)

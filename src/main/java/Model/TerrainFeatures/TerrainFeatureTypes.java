@@ -81,4 +81,9 @@ public enum TerrainFeatureTypes {
     {
         return product;
     }
+
+    public int getCombatModifier()
+    {
+        return combatModifier;
+    }
 }

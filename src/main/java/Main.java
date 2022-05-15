@@ -4,7 +4,7 @@ import java.util.Scanner;
 import Controllers.DatabaseController;
 
 import Model.Database;
-import View.LoginMenu;
+import VIEW.LoginMenu;
 
 public class Main {
   public static void main(String[] args) {

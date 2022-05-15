@@ -1,4 +1,4 @@
-package View;
+package VIEW;
 
 import Controllers.DatabaseController;
 import Enums.MenuEnums;

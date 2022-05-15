@@ -1,4 +1,4 @@
-package View;
+package VIEW;
 
 import Controllers.CityController;
 import Controllers.CombatController;
@@ -18,6 +18,7 @@ import Model.City.City;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
+
 
 public class GameMenu {
     private final DatabaseController databaseController;
@@ -120,6 +121,8 @@ public class GameMenu {
                 }
                 this.databaseController.movementOfAllUnits(user);
                 this.databaseController.setTerrainsOfEachCivilization(user);
+                this.databaseController.setHappinessUser(user);
+                this.databaseController.setScience(user);
                 this.databaseController.setUnitsParametersAfterEachTurn(users);
             }
         }
@@ -1104,10 +1107,10 @@ public class GameMenu {
                         this.databaseController.getTerrainByCoordinates(Integer.parseInt(matcher.group("X")),
                                 Integer.parseInt(matcher.group("Y"))));
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_UNIT)) != null) {
-                this.cityController.createUnit(matcher, city);
+                System.out.println(this.cityController.createUnit(matcher, city));
             } else if ( (matcher = GameEnums.getMatcher(input, GameEnums.CREATE_UNIT)) != null)
             {
-                this.cityController.createUnitWithTurn(matcher, city);
+                System.out.println(this.cityController.createUnitWithTurn(matcher, city));
             }
             else if ((matcher = GameEnums.getMatcher(input, GameEnums.REMOVE_FROM_WORK)) != null) {
                 this.cityController

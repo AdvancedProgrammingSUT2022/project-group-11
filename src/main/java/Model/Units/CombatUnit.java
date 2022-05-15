@@ -7,7 +7,7 @@ public class CombatUnit extends Unit {
     private boolean fortify;
     private boolean fortifyUntilHeal;
     private int CombatStrength;
-    public CombatUnit(int x, int y, int number, int militaryPower, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected, boolean isGarrisoned, boolean alert, boolean fortify, boolean fortifyUntilHeal) {
+    public CombatUnit(int x, int y, int number, double militaryPower, int life, int speed, boolean isAsleep, boolean isFinished, UnitTypes unitType, boolean isSelected, boolean isGarrisoned, boolean alert, boolean fortify, boolean fortifyUntilHeal) {
         super(x, y, number, militaryPower, life, speed, isAsleep, isFinished, unitType, isSelected);
         // TODO Auto-generated constructor stub
         this.isGarrisoned = isGarrisoned;

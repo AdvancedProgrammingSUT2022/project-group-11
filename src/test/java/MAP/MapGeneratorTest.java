@@ -1,34 +1,14 @@
 package MAP;
 
-import static org.mockito.Mockito.when;
-
-import java.util.ArrayList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import Controllers.CityController;
 import Controllers.CombatController;
 import Controllers.DatabaseController;
 import Controllers.saveData;
 import Enums.GameEnums;
 import Enums.MenuEnums;
-import Model.Civilization;
-import Model.Database;
-import Model.GameMapGenerator;
-import Model.Map;
-import Model.Resource;
-import Model.Revealed;
-import Model.River;
-import Model.Terrain;
-import Model.User;
 import Model.City.Citizen;
 import Model.City.City;
+import Model.*;
 import Model.Improvements.Improvement;
 import Model.Improvements.ImprovementTypes;
 import Model.Resources.ResourceTypes;
@@ -36,13 +16,20 @@ import Model.Technologies.Technology;
 import Model.Technologies.TechnologyTypes;
 import Model.TerrainFeatures.TerrainFeatureTypes;
 import Model.Terrains.TerrainTypes;
-import Model.Units.CombatUnit;
-import Model.Units.NonCombatUnit;
-import Model.Units.NonRangedCombatUnit;
-import Model.Units.RangedCombatUnit;
-import Model.Units.Unit;
-import Model.Units.UnitTypes;
-import View.GameMenu;
+import Model.Units.*;
+import VIEW.GameMenu;
+
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class MapGeneratorTest {
