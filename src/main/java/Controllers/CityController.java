@@ -99,7 +99,7 @@ public class CityController {
             City newCity = new City(civilization, civilization, tile, 20, "none", 20, 20);
             tile.setCity(newCity);
             civilization.addCity(newCity);
-            civilization.removeUnit((Unit) unit);
+            civilization.removeUnit(unit);
             tile.setNonCombatUnit(null);
         }
     }
@@ -145,14 +145,7 @@ public class CityController {
             for (int i = 0; i < numberOfDyingCitizens; i++) {
                 city.removeCitiZen(i);
             }
-            if ( city.getFood() - foodIncrease >= 0 )
-            {
-                city.setFood(city.getFood() - foodIncrease);
-            }
-            else
-            {
-                city.setFood(0);
-            }
+            city.setFood(Math.max(city.getFood() - foodIncrease, 0));
 
         }
         city.setGold( city.getGold() + goldIncrease);
@@ -291,7 +284,6 @@ public class CityController {
     public String createUnitWithTurn(Matcher matcher, City city) {
         Civilization civilization = city.getOwner();
         String unitName = matcher.group("unitName");
-        String notEnoughMoney = "You do not have enough gold to construct this unit";
         String lackTechnology = "You lack the required technology to construct this unit";
         String lackResources = "You lack the required resources to construct this unit";
         String unitAlreadyExists = "There is already a unit in this city";
@@ -424,7 +416,7 @@ public class CityController {
                 } else if (city.getCentralTerrain().getNonCombatUnit() != null) {
                     return unitAlreadyExists;
                 } else {
-                    if (civilization.getBooleanSettlerBuy() == true) {
+                    if (civilization.getBooleanSettlerBuy()) {
                         NonCombatUnit newSettler = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
                         civilization.setGold(money - UnitTypes.SETTLER.getCost());
                         civilization.addUnit(newSettler);
@@ -942,8 +934,8 @@ public class CityController {
         attacker.setHP( attacker.getHP() - cityCombatStrength);
         if ( attacker.getHP() <= 0)
         {
-            Civilization unitOwner = this.databaseController.getContainerCivilization((Unit) attacker);
-            unitOwner.removeUnit( (Unit) attacker);
+            Civilization unitOwner = this.databaseController.getContainerCivilization(attacker);
+            unitOwner.removeUnit(attacker);
             Terrain tile = this.databaseController.getTerrainByCoordinates(attacker.getX(), attacker.getY());
             tile.setCombatUnit(null);
             System.out.println( "The city won.");
@@ -964,7 +956,7 @@ public class CityController {
 
     public void whatToDoWithTheCity( String input, City city, Civilization civilization)
     {
-        if ( civilization.getUnits().contains( (Unit) city.getCentralTerrain().getCombatUnit()) && city.getHP() <= 0)
+        if ( civilization.getUnits().contains(city.getCentralTerrain().getCombatUnit()) && city.getHP() <= 0)
         {
             if (input.equals("ATTACH CITY"))
             {
@@ -978,14 +970,10 @@ public class CityController {
 
     public boolean rangedAttackToCityForOneTurn( RangedCombatUnit attacker, City city)
     {
-        int combatStrengh = attacker.getUnitType().getRangedCombatStrengh();
+        int combatStrength = attacker.getUnitType().getRangedCombatStrengh();
         int combatRange = attacker.getUnitType().getRange();
-        city.setHP( city.getHP() - combatStrengh + 1);
-        if ( city.getHP() <= 0)
-        {
-            return true;
-        }
-        return false;
+        city.setHP( city.getHP() - combatStrength + 1);
+        return city.getHP() <= 0;
 
     }
 

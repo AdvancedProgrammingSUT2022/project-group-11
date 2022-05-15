@@ -392,6 +392,10 @@ public class DatabaseController {
             if (movementCost > unit.getUnitType().getMovement()) {
                 break;
             }
+            if (containEnemyInNearTerrains(unit))
+            {
+                break;
+            }
 
         }
 
@@ -401,6 +405,15 @@ public class DatabaseController {
         }
         unit.getNextTerrain().removeAll(needToRemove);
 
+    }
+
+    public boolean containEnemyInNearTerrains(Unit unit) {
+        for (Terrain terrain : getNeighborTerrainsOfOneTerrain(getTerrainByCoordinates(unit.getX(), unit.getY()), getMap())) {
+            if (terrain.getCombatUnit() != null && !getContainerCivilization(terrain.getCombatUnit()).equals(getContainerCivilization(unit))) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Terrain findingTheContainerTerrain(Unit unit) {
@@ -471,7 +484,6 @@ public class DatabaseController {
         }
 
         for (Terrain terrain : shortestPath) {
-            System.out.println("hello");
             System.out.println(terrain.getX() + " " + terrain.getY());
         }
         return shortestPath;
@@ -828,7 +840,7 @@ public class DatabaseController {
 
     public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
-            if (technology.getTechnologyType().equals(technologyType)) {
+            if (technology.getTechnologyType() != null && technology.getTechnologyType().equals(technologyType)) {
                 return true;
             }
         }

@@ -51,7 +51,7 @@ public class City {
         this.HP = HP;
         this.type = type;
         this.combatStrength = combatStrength;
-        if ( this.centralTerrain.getTerrainTypes().equals(TerrainTypes.HILLS))
+        if (this.centralTerrain != null && this.centralTerrain.getTerrainTypes().equals(TerrainTypes.HILLS))
         {
             this.combatStrength += 20;
             this.HP += 7;

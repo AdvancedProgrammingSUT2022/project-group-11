@@ -122,6 +122,7 @@ public class GameMenu {
                 this.databaseController.setTerrainsOfEachCivilization(user);
                 this.databaseController.setHappinessUser(user);
                 this.databaseController.setScience(user);
+                user.getCivilization().setAvailability();
                 this.databaseController.setUnitsParametersAfterEachTurn(users);
             }
         }
@@ -1143,4 +1144,7 @@ public class GameMenu {
 
     }
 
+    public void setCityController(CityController cityController) {
+        this.cityController = cityController;
+    }
 }
