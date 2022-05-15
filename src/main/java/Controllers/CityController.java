@@ -14,7 +14,6 @@ import Model.Units.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Matcher;
 
 public class CityController {
@@ -28,13 +27,29 @@ public class CityController {
     public void setMap(Map map){
         this.map = map;
     }
-    public void garrison(City city, CombatUnit combatUnit) {
-        if (city.getCombatUnit() == null) {
-            city.setCombatUnit(combatUnit);
-            city.setCombatStrength(100); // adding combatStrength
+    public String garrisonCity(CombatUnit combatUnit) {
+        Terrain unitTerrain = this.databaseController.getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY());
+        City city = unitTerrain.getCity();
+        if ( !city.getOwner().containsCombatUnit(combatUnit.getX(), combatUnit.getY()))
+        {
+            return "This city doesn't belong to you. Go garrison your own cities.";
 
-        } else {
-            // this city already contains a combat unit
+        }
+        else if( city == null || !city.getMainTerrains().contains(unitTerrain))
+        {
+            return "The unit has to enter a city first.";
+        }
+        else if ( city.getGarrisoned())
+        {
+            return "This city has already been garrisoned";
+        }
+        else
+        {
+            city.setCombatUnit(combatUnit);
+            city.getCentralTerrain().setCombatUnit(combatUnit); //not sure
+            city.setCombatStrength( city.getCombatStrength() + combatUnit.getCombatStrength());
+            city.setGarrisoned(true);
+            return "You successfully garrisoned your city";
         }
 
     }
@@ -747,14 +762,6 @@ public class CityController {
         }
         System.out.println("error");
 
-    }
-
-    public void garrisonACity(City city) {
-        if (city.getCombatUnit() != null) {
-            city.setGarrisoned(true);
-            city.setCombatStrength(city.getCombatStrength() + city.getCombatUnit().getCombatStrength());
-
-        }
     }
 
 

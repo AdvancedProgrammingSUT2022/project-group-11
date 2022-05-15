@@ -540,14 +540,20 @@ public class DatabaseController {
     public void setTerrainsOfEachCivilization(User user) {
 
         ArrayList<Terrain> terrains = new ArrayList<>();
+        ArrayList<Terrain> ownedTerrains = new ArrayList<>();
 
         for (Unit unit : user.getCivilization().getUnits()) {
             terrains.add(getTerrainByCoordinates(unit.getX(), unit.getY()));
         }
 
-        // todo add cities tiles
+        for(City city : user.getCivilization().getCities())
+        {
+            terrains.addAll(city.getMainTerrains());
+            ownedTerrains.addAll(city.getMainTerrains());
+        }
 
-        user.getCivilization().setTerrains(terrains);
+        user.getCivilization().setTerrains(deleteExcessTerrain(terrains));
+        user.getCivilization().setOwnedTerrains(deleteExcessTerrain(ownedTerrains));
     }
 
     public void setCivilizations(ArrayList<User> users) {

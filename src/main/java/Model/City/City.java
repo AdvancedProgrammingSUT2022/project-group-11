@@ -168,9 +168,6 @@ public class City {
         this.rangedCombatStrength = rangedCombatStrength;
     }
 
-    public boolean isGarrisoned() {
-        return this.garrisoned;
-    }
 
     public boolean getGarrisoned() {
         return this.garrisoned;

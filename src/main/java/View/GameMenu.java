@@ -996,7 +996,12 @@ public class GameMenu {
             this.databaseController.changingTheStateOfAUnit("sleep");
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.COMBAT_UNIT_CHEAT_MOVE)) != null) {
             cheatMoveCombatUnit(matcher);
-        } else if ((matcher = GameEnums.getMatcher(input, GameEnums.NON_COMBAT_UNIT_CHEAT_MOVE)) != null) {
+        } else if (GameEnums.getMatcher(input, GameEnums.GARRISON_CITY) != null)
+        {
+            this.cityController.garrisonCity(this.databaseController.getSelectedCombatUnit());
+
+        }
+        else if ((matcher = GameEnums.getMatcher(input, GameEnums.NON_COMBAT_UNIT_CHEAT_MOVE)) != null) {
             cheatMoveNonCombatUnit(matcher);
         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.UNIT_ALERT)) != null) {
             if (this.databaseController.getSelectedCombatUnit() == null) {
