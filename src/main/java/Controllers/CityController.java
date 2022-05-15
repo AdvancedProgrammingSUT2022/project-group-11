@@ -303,6 +303,7 @@ public class CityController {
                 }
                 RangedCombatUnit newUnit = new RangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, unitTypes, false, false, false, false, false, false);
                 city.getConstructionWaitList().add(newUnit);
+                return unitTypes.name() + " will be constructed in " + unitTypes.getTurn()+" turns";
             }
         }
 
@@ -317,6 +318,7 @@ public class CityController {
                 }
                 NonRangedCombatUnit newUnit = new NonRangedCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, unitTypes, false, false, false, false, false);
                 city.getConstructionWaitList().add(newUnit);
+                return unitTypes.name() + " will be constructed in " + unitTypes.getTurn()+" turns";
             }
 
         }
@@ -334,17 +336,18 @@ public class CityController {
                     if (civilization.getBooleanSettlerBuy()) {
                         NonCombatUnit newSettler = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
                         city.getConstructionWaitList().add(newSettler);
+                        return unitTypes.name() + " will be constructed in " + unitTypes.getTurn()+" turns";
                     }
 
                 } else {
                     NonCombatUnit newUnit = new NonCombatUnit(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), 0, 0, 0, 0, false, false, unitTypes, false);
                     city.getConstructionWaitList().add(newUnit);
+                    return unitTypes.name() + " will be constructed in " + unitTypes.getTurn()+" turns";
                 }
             }
 
 
         }
-
 
         return "invalid unit name";
     }

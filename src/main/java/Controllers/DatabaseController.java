@@ -1080,7 +1080,15 @@ public class DatabaseController {
                     } else {
                         unit.setPassedTurns(0);
                         user.getCivilization().getUnits().add(unit);
-                        // TODO : set Unit in Tile and City
+                        Terrain terrain = getTerrainByCoordinates(unit.getX(), unit.getY());
+                        if( unit instanceof CombatUnit)
+                        {
+                            terrain.setCombatUnit((CombatUnit) unit);
+                        }
+                        else
+                        {
+                            terrain.setNonCombatUnit((NonCombatUnit) unit);
+                        }
                         needToRemove.add(unit);
 
                     }

@@ -1104,10 +1104,10 @@ public class GameMenu {
                         this.databaseController.getTerrainByCoordinates(Integer.parseInt(matcher.group("X")),
                                 Integer.parseInt(matcher.group("Y"))));
             } else if ((matcher = GameEnums.getMatcher(input, GameEnums.BUY_UNIT)) != null) {
-                this.cityController.createUnit(matcher, city);
+                System.out.println(this.cityController.createUnit(matcher, city));
             } else if ( (matcher = GameEnums.getMatcher(input, GameEnums.CREATE_UNIT)) != null)
             {
-                this.cityController.createUnitWithTurn(matcher, city);
+                System.out.println(this.cityController.createUnitWithTurn(matcher, city));
             }
             else if ((matcher = GameEnums.getMatcher(input, GameEnums.REMOVE_FROM_WORK)) != null) {
                 this.cityController
