@@ -41,7 +41,7 @@ public class LoginMenu
                 if (this.user != null) {
                     MainMenu mainMenu = new MainMenu(this.databaseController, this.user);
                     ArrayList<User> players = mainMenu.run(scanner);
-                    if (players != null) {
+                    if (players != null && players.size() > 1) {
                         GameMenu gameMenu = new GameMenu(databaseController, players);
                         gameMenu.run(scanner);
                     }
