@@ -335,7 +335,7 @@ public class DatabaseController {
         ArrayList<Terrain> path = new ArrayList<>();
         ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
         addingAllPath(0, combatUnit.getX(), combatUnit.getY(), x_final, y_final, map, path, allPaths);
-        combatUnit.setNextTerrain(findingTheShortestPath(allPaths));
+        combatUnit.setNextTerrain(findingTheShortestPath(combatUnit, allPaths));
         for (Terrain terrain : combatUnit.getNextTerrain()) {
             System.out.println(terrain.getX() + " Mani " + terrain.getY());
         }
@@ -358,7 +358,7 @@ public class DatabaseController {
         ArrayList<Terrain> path = new ArrayList<>();
         ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
         addingAllPath(0, nonCombatUnit.getX(), nonCombatUnit.getY(), x_final, y_final, map, path, allPaths);
-        nonCombatUnit.setNextTerrain(findingTheShortestPath(allPaths));
+        nonCombatUnit.setNextTerrain(findingTheShortestPath(nonCombatUnit, allPaths));
         if( nonCombatUnit.getNextTerrain().isEmpty())
         {
             return "You're unable to go to your destination.";
@@ -455,15 +455,27 @@ public class DatabaseController {
 
     }
 
-    public ArrayList<Terrain> findingTheShortestPath(ArrayList<ArrayList<Terrain>> allPaths) {
+    public ArrayList<Terrain> findingTheShortestPath(Unit unit, ArrayList<ArrayList<Terrain>> allPaths) {
         int movementCostOfTheShortestPath = 9999999;
         ArrayList<Terrain> shortestPath = new ArrayList<>();
-        for (ArrayList<Terrain> path : allPaths) {
-            if (calculatingTheMovementCost(path) < movementCostOfTheShortestPath) {
-                movementCostOfTheShortestPath = calculatingTheMovementCost(path);
-                shortestPath = path;
+        if(unit.getUnitType().equals(UnitTypes.SCOUT))
+        {
+            for (ArrayList<Terrain> path : allPaths) {
+                if (calculatingTheMovementCostForScout(path) < movementCostOfTheShortestPath) {
+                    movementCostOfTheShortestPath = calculatingTheMovementCostForScout(path);
+                    shortestPath = path;
+                }
             }
         }
+        else{
+            for (ArrayList<Terrain> path : allPaths) {
+                if (calculatingTheMovementCost(path) < movementCostOfTheShortestPath) {
+                    movementCostOfTheShortestPath = calculatingTheMovementCost(path);
+                    shortestPath = path;
+                }
+            }
+        }
+
         for (Terrain terrain : shortestPath) {
             System.out.println("hello");
             System.out.println(terrain.getX() + " " + terrain.getY());
@@ -487,6 +499,16 @@ public class DatabaseController {
                     movementCost += terrain.getTerrainFeatureTypes().get(0).getMovementCost();
                 }
             }
+
+        }
+        return movementCost;
+    }
+
+    public int calculatingTheMovementCostForScout(ArrayList<Terrain> path) {
+        int movementCost = 0;
+        for (Terrain terrain : path) {
+
+            movementCost+=1;
 
         }
         return movementCost;
