@@ -180,10 +180,10 @@ public class DatabaseController {
                 combatUnit = null;
                 break;
             case "setup ranged":
-                if (combatUnit instanceof RangedCombatUnit) {
+                if (combatUnit.getUnitType().getCombatTypes().equals(CombatTypes.SIEGE) ) {
                     ((RangedCombatUnit) combatUnit).setIsSetUpForRangedAttack(true);
                 } else {
-                    return "this unit is not a ranged combat unit!";
+                    return "This unit doesn't need to be set up";
                 }
                 break;
         }
