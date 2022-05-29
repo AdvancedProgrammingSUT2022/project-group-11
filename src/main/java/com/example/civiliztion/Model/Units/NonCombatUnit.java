@@ -1,4 +1,4 @@
-package Model.Units;
+package com.example.civiliztion.Model.Units;
 
 public class NonCombatUnit extends Unit {
 

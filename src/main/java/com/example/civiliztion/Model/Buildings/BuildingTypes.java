@@ -1,6 +1,6 @@
-package Model.Buildings;
+package com.example.civiliztion.Model.Buildings;
 
-import Model.Technologies.TechnologyTypes;
+import com.example.civiliztion.Model.Technologies.TechnologyTypes;;
 
 public enum BuildingTypes {
     BARRACKS(80, 1, TechnologyTypes.BRONZE_WORKING) {

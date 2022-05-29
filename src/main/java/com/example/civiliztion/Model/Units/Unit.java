@@ -1,6 +1,6 @@
-package Model.Units;
+package com.example.civiliztion.Model.Units;
 
-import Model.Terrain;
+import com.example.civiliztion.Model.Terrain;
 
 import java.util.ArrayList;
 

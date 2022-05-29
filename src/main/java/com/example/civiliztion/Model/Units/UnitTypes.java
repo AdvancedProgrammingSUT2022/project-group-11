@@ -1,7 +1,7 @@
-package Model.Units;
+package com.example.civiliztion.Model.Units;
 
-import Model.Resources.ResourceTypes;
-import Model.Technologies.TechnologyTypes;
+import com.example.civiliztion.Model.Resources.ResourceTypes;
+import com.example.civiliztion.Model.Technologies.TechnologyTypes;
 
 public enum UnitTypes {
     ARCHER(4, 70, CombatTypes.ARCHERY, 4, 6, 2, 2, null, TechnologyTypes.ARCHERY,"A"),

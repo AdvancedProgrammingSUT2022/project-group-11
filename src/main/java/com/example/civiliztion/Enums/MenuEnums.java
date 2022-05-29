@@ -1,4 +1,4 @@
-package Enums;
+package com.example.civiliztion.Enums;
 
 public enum MenuEnums {
     ENTER("menu enter (?<menuName>Login|Main|PlayGame|Profile)"),

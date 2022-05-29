@@ -1,9 +1,9 @@
-package Controllers;
+package com.example.civiliztion.Controllers;
 
-import Model.City.City;
-import Model.Terrain;
-import Model.Units.*;
-import Model.User;
+import com.example.civiliztion.Model.City.City;
+import com.example.civiliztion.Model.Terrain;
+import com.example.civiliztion.Model.Units.*;
+import com.example.civiliztion.Model.User;
 
 import java.util.regex.Matcher;
 

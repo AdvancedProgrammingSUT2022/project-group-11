@@ -1,7 +1,7 @@
-package Controllers;
+package com.example.civiliztion.Controllers;
 
-import Model.Database;
-import Model.User;
+import com.example.civiliztion.Model.Database;
+import com.example.civiliztion.Model.User;
 
 import java.io.FileWriter;
 import java.nio.file.Files;

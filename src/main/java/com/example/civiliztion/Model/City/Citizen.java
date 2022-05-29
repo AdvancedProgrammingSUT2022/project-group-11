@@ -1,6 +1,6 @@
-package Model.City;
+package com.example.civiliztion.Model.City;
 
-import Model.Terrain;
+import com.example.civiliztion.Model.Terrain;
 
 public class Citizen {
     private City city;

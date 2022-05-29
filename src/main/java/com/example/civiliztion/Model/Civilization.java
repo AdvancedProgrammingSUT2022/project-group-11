@@ -1,11 +1,11 @@
-package Model;
+package com.example.civiliztion.Model;
 
-import Model.City.City;
-import Model.Technologies.Technology;
-import Model.Technologies.TechnologyTypes;
-import Model.Units.CombatUnit;
-import Model.Units.NonCombatUnit;
-import Model.Units.Unit;
+import com.example.civiliztion.Model.City.City;
+import com.example.civiliztion.Model.Technologies.Technology;
+import com.example.civiliztion.Model.Technologies.TechnologyTypes;
+import com.example.civiliztion.Model.Units.CombatUnit;
+import com.example.civiliztion.Model.Units.NonCombatUnit;
+import com.example.civiliztion.Model.Units.Unit;
 
 import java.util.ArrayList;
 

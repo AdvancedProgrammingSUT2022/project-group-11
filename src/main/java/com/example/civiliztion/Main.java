@@ -2,10 +2,10 @@ package com.example.civiliztion;
 
 import java.util.Scanner;
 
-import Controllers.DatabaseController;
+import com.example.civiliztion.Controllers.DatabaseController;
 
-import Model.Database;
-import View.LoginMenu;
+import com.example.civiliztion.Model.Database;
+import com.example.civiliztion.View.LoginMenu;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

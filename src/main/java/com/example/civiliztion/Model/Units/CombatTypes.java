@@ -1,4 +1,4 @@
-package Model.Units;
+package com.example.civiliztion.Model.Units;
 
 public enum  CombatTypes {
     ARCHERY,

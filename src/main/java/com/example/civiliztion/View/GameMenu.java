@@ -1,19 +1,19 @@
-package View;
+package com.example.civiliztion.View;
 
-import Controllers.CityController;
-import Controllers.CombatController;
-import Controllers.DatabaseController;
-import Controllers.saveData;
-import Enums.GameEnums;
-import Model.Improvements.ImprovementTypes;
-import Model.Resources.ResourceTypes;
-import Model.Technologies.TechnologyTypes;
-import Model.Terrain;
-import Model.TerrainFeatures.TerrainFeatureTypes;
-import Model.Terrains.TerrainTypes;
-import Model.Units.CombatUnit;
-import Model.User;
-import Model.City.City;
+import com.example.civiliztion.Controllers.CityController;
+import com.example.civiliztion.Controllers.CombatController;
+import com.example.civiliztion.Controllers.DatabaseController;
+import com.example.civiliztion.Controllers.saveData;
+import com.example.civiliztion.Enums.GameEnums;
+import com.example.civiliztion.Model.Improvements.ImprovementTypes;
+import com.example.civiliztion.Model.Resources.ResourceTypes;
+import com.example.civiliztion.Model.Technologies.TechnologyTypes;
+import com.example.civiliztion.Model.Terrain;
+import com.example.civiliztion.Model.TerrainFeatures.TerrainFeatureTypes;
+import com.example.civiliztion.Model.Terrains.TerrainTypes;
+import com.example.civiliztion.Model.Units.CombatUnit;
+import com.example.civiliztion.Model.User;
+import com.example.civiliztion.Model.City.City;
 
 import java.util.ArrayList;
 import java.util.Scanner;

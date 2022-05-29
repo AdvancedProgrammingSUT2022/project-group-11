@@ -1,12 +1,12 @@
-package Model;
+package com.example.civiliztion.Model;
 
 import java.util.ArrayList;
 
-import Model.Improvements.Improvement;
-import Model.TerrainFeatures.TerrainFeatureTypes;
-import Model.Terrains.TerrainTypes;
-import Model.Units.CombatUnit;
-import Model.Units.NonCombatUnit;
+import com.example.civiliztion.Model.Improvements.Improvement;
+import com.example.civiliztion.Model.TerrainFeatures.TerrainFeatureTypes;
+import com.example.civiliztion.Model.Terrains.TerrainTypes;
+import com.example.civiliztion.Model.Units.CombatUnit;
+import com.example.civiliztion.Model.Units.NonCombatUnit;
 
 public class Revealed{
 

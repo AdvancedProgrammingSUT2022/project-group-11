@@ -1,4 +1,4 @@
-package Model;
+package com.example.civiliztion.Model;
 
 import java.util.ArrayList;
 

@@ -1,9 +1,9 @@
-package Model.Resources;
+package com.example.civiliztion.Model.Resources;
 
-import Model.Improvements.ImprovementTypes;
-import Model.Technologies.TechnologyTypes;
-import Model.TerrainFeatures.TerrainFeatureTypes;
-import Model.Terrains.TerrainTypes;
+import com.example.civiliztion.Model.Improvements.ImprovementTypes;
+import com.example.civiliztion.Model.Technologies.TechnologyTypes;
+import com.example.civiliztion.Model.TerrainFeatures.TerrainFeatureTypes;
+import com.example.civiliztion.Model.Terrains.TerrainTypes;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,8 @@
-package View;
+package com.example.civiliztion.View;
 
-import Controllers.DatabaseController;
-import Enums.MenuEnums;
-import Model.User;
+import com.example.civiliztion.Controllers.DatabaseController;
+import com.example.civiliztion.Enums.MenuEnums;
+import com.example.civiliztion.Model.User;
 
 import java.util.ArrayList;
 import java.util.Scanner;

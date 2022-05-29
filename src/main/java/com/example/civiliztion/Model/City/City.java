@@ -1,13 +1,13 @@
-package Model.City;
+package com.example.civiliztion.Model.City;
 
-import Controllers.CityController;
-import Model.Buildings.BuildingTypes;
-import Model.Terrains.TerrainTypes;
-import Model.Civilization;
-import Model.Terrain;
-import Model.Units.CombatUnit;
-import Model.Units.NonCombatUnit;
-import Model.Units.Unit;
+import com.example.civiliztion.Controllers.CityController;
+import com.example.civiliztion.Model.Buildings.BuildingTypes;
+import com.example.civiliztion.Model.Terrains.TerrainTypes;
+import com.example.civiliztion.Model.Civilization;
+import com.example.civiliztion.Model.Terrain;
+import com.example.civiliztion.Model.Units.CombatUnit;
+import com.example.civiliztion.Model.Units.NonCombatUnit;
+import com.example.civiliztion.Model.Units.Unit;
 
 import java.util.ArrayList;
 

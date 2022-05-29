@@ -1,16 +1,16 @@
-package Controllers;
+package com.example.civiliztion.Controllers;
 
-import Model.Buildings.BuildingTypes;
-import Model.City.City;
-import Model.*;
-import Model.Improvements.Improvement;
-import Model.Improvements.ImprovementTypes;
-import Model.Resources.ResourceTypes;
-import Model.Technologies.Technology;
-import Model.Technologies.TechnologyTypes;
-import Model.TerrainFeatures.TerrainFeatureTypes;
-import Model.Terrains.TerrainTypes;
-import Model.Units.*;
+import com.example.civiliztion.Model.Buildings.BuildingTypes;
+import com.example.civiliztion.Model.City.City;
+import com.example.civiliztion.Model.*;
+import com.example.civiliztion.Model.Improvements.Improvement;
+import com.example.civiliztion.Model.Improvements.ImprovementTypes;
+import com.example.civiliztion.Model.Resources.ResourceTypes;
+import com.example.civiliztion.Model.Technologies.Technology;
+import com.example.civiliztion.Model.Technologies.TechnologyTypes;
+import com.example.civiliztion.Model.TerrainFeatures.TerrainFeatureTypes;
+import com.example.civiliztion.Model.Terrains.TerrainTypes;
+import com.example.civiliztion.Model.Units.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;

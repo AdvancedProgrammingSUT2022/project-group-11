@@ -1,6 +1,6 @@
-package Model;
+package com.example.civiliztion.Model;
 
-import Model.Resources.ResourceTypes;
+import com.example.civiliztion.Model.Resources.ResourceTypes;
 
 public class Resource {
 

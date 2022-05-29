@@ -1,4 +1,4 @@
-package Model.Technologies;
+package com.example.civiliztion.Model.Technologies;
 
 public class Technology {
 

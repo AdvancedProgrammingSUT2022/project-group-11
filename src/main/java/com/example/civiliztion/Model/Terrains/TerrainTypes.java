@@ -1,8 +1,8 @@
-package Model.Terrains;
+package com.example.civiliztion.Model.Terrains;
 
-import Model.Color;
-import Model.Resources.ResourceTypes;
-import Model.TerrainFeatures.TerrainFeatureTypes;
+import com.example.civiliztion.Model.Color;
+import com.example.civiliztion.Model.Resources.ResourceTypes;
+import com.example.civiliztion.Model.TerrainFeatures.TerrainFeatureTypes;
 
 import java.util.ArrayList;
 

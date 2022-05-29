@@ -1,4 +1,4 @@
-package Model.Improvements;
+package com.example.civiliztion.Model.Improvements;
 
 
 public class Improvement {

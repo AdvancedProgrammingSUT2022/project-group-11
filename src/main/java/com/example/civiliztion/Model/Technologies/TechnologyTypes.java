@@ -1,9 +1,9 @@
-package Model.Technologies;
+package com.example.civiliztion.Model.Technologies;
 
-import Model.Buildings.BuildingTypes;
-import Model.Improvements.ImprovementTypes;
-import Model.Resources.ResourceTypes;
-import Model.Units.UnitTypes;
+import com.example.civiliztion.Model.Buildings.BuildingTypes;
+import com.example.civiliztion.Model.Improvements.ImprovementTypes;
+import com.example.civiliztion.Model.Resources.ResourceTypes;
+import com.example.civiliztion.Model.Units.UnitTypes;
 
 import java.util.ArrayList;
 
