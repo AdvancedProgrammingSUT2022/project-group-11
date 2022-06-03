@@ -1,0 +1,29 @@
+VBox {
+    -fx-border-radius: 30 30 30 30;
+    -fx-background-radius: 30 30 30 30;
+    -fx-background-color: rgba(0, 36, 128, 0.79);
+}
+
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+    -fx-background-color: #00062b;
+    -fx-border-radius: 30 30 30 30;
+    -fx-background-radius: 30 30 30 30;
+}
+
+.globalChatVbox {
+    -fx-background-color: #00062b;
+    -fx-border-radius: 30 30 30 30;
+    -fx-background-radius: 30 30 30 30;
+}
+
+.secondPane {
+    -fx-font-family: "Matrix II Regular";
+    -fx-font-size: 15;
+    -fx-background-image: url(images/mainBackground.png);
+    -fx-background-size: cover;
+}
