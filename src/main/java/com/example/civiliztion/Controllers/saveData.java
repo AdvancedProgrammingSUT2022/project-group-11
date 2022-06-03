@@ -24,7 +24,7 @@ public class saveData{
     }
     public void loadUsers(Database database){
         try {
-            String Users = new String(Files.readAllBytes(Paths.get("src/main/resources/Users.json")));
+            String Users = new String(Files.readAllBytes(Paths.get("src/main/resources/com/example/civiliztion/Users.json")));
             database.setUsers(new Gson().fromJson(Users,new TypeToken<List<User>>() {
             }.getType()));
         } catch (Exception e) {

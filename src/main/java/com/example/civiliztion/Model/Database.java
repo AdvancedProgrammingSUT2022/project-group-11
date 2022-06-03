@@ -3,6 +3,8 @@ package com.example.civiliztion.Model;
 import java.util.ArrayList;
 
 public class Database {
+
+    private User activeUser;
     private ArrayList<User> Users;
     private ArrayList<String> civilizationsName = new ArrayList<>();
 
@@ -84,5 +86,13 @@ public class Database {
 
         }
         return null;
+    }
+
+    public User getActiveUser() {
+        return activeUser;
+    }
+
+    public void setActiveUser(User activeUser) {
+        this.activeUser = activeUser;
     }
 }
