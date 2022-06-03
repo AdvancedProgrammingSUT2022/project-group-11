@@ -39,6 +39,15 @@
         </children>
 
     </VBox>
+    <TextField fx:id="textToSend" layoutX="132.0" layoutY="745.0" onKeyReleased="#enter" prefHeight="39.0"
+               prefWidth="564.0"/>
+    <ImageView fitHeight="32.0" fitWidth="38.0" layoutX="707.0" layoutY="749.0" onMouseClicked="#send"
+               pickOnBounds="true" preserveRatio="true">
+        <Image url="@images/send.png"/>
+        <cursor>
+            <Cursor fx:constant="HAND"/>
+        </cursor>
+    </ImageView>
 
 
 </Pane>
