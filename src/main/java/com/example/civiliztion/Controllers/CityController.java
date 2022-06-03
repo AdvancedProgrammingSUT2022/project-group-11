@@ -1,5 +1,7 @@
 package com.example.civiliztion.Controllers;
 
+import com.example.civiliztion.Model.Buildings.Building;
+import com.example.civiliztion.Model.Buildings.BuildingTypes;
 import com.example.civiliztion.Model.City.Citizen;
 import com.example.civiliztion.Model.City.City;
 import com.example.civiliztion.Model.Civilization;
@@ -10,8 +12,10 @@ import com.example.civiliztion.Model.Technologies.TechnologyTypes;
 import com.example.civiliztion.Model.Terrain;
 import com.example.civiliztion.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civiliztion.Model.Units.*;
+import javafx.css.Match;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -260,6 +264,17 @@ public class CityController {
         return false;
     }
 
+    public boolean containBuilding(City city, BuildingTypes buildingTypes)
+    {
+        for(Building building : city.getBuildings()){
+            if(building.getBuildingType().equals(buildingTypes)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 
     public HashMap<String, ArrayList<String>> cityMenu(City city)
     {
@@ -349,6 +364,78 @@ public class CityController {
         }
 
         return "invalid unit name";
+    }
+
+
+    public String createBuildingWithTurn(Matcher matcher,City city)
+    {
+        Civilization civilization = city.getOwner();
+        String buildingName = matcher.group("buildingName");
+        String lackBuilding = "You lack the required buildings to construct this building";
+        String lackResources = "You lack the required resources to construct this building";
+        String buildingAlreadyExists = "You have constructed this building before";
+        ArrayList<BuildingTypes> allBuildingTypes = new ArrayList<>(Arrays.asList(BuildingTypes.values()));
+        ArrayList<BuildingTypes> allBuildingTypesOfCity = new ArrayList<>();
+        for(Building building : city.getBuildings()){
+            allBuildingTypesOfCity.add(building.getBuildingType());
+        }
+
+        for(BuildingTypes buildingType : allBuildingTypes){
+            if (buildingType.name().equals(buildingName)) {
+                if (buildingType.getBuildingRequirements() != null && allBuildingTypes.containsAll(buildingType.getBuildingRequirements())) {
+                    return lackBuilding;
+                } else if (city.getCentralTerrain().getResource() != null && buildingType.getResourceRequirements() != null && !city.getCentralTerrain().getResource().getResourceType().equals(buildingType.getResourceRequirements().get(0))) {
+                    return lackResources;
+                } else if (allBuildingTypes.contains(buildingType)) {
+                    return buildingAlreadyExists;
+                }
+                Building building = new Building(city.getCentralTerrain().getX(),city.getCentralTerrain().getY(),buildingType);
+                city.getBuildingWaitlist().add(building);
+                return buildingType.name() + " will be constructed in " + buildingType.getTurn()+" turns";
+            }
+
+        }
+
+        return "invalid building name";
+
+    }
+
+    public String createBuildingWithGold(Matcher matcher, City city){
+        Civilization civilization = city.getOwner();
+        int money = city.getGold();
+        String notEnoughMoney = "You do not have enough gold to construct this unit";
+        String buildingName = matcher.group("buildingName");
+        String lackBuilding = "You lack the required buildings to construct this building";
+        String lackResources = "You lack the required resources to construct this building";
+        String buildingAlreadyExists = "You have constructed this building before";
+        String unitPurchasedSuccessfully = "Unit purchase was successful";
+        ArrayList<BuildingTypes> allBuildingTypes = new ArrayList<>(Arrays.asList(BuildingTypes.values()));
+        ArrayList<BuildingTypes> allBuildingTypesOfCity = new ArrayList<>();
+        for(Building building : city.getBuildings()){
+            allBuildingTypesOfCity.add(building.getBuildingType());
+        }
+
+        for(BuildingTypes buildingType : allBuildingTypes){
+            if (buildingType.name().equals(buildingName)) {
+                if (money < buildingType.getCost()) {
+                    return notEnoughMoney;
+                }
+                else if (buildingType.getBuildingRequirements() != null && allBuildingTypes.containsAll(buildingType.getBuildingRequirements())) {
+                    return lackBuilding;
+                } else if (city.getCentralTerrain().getResource() != null && buildingType.getResourceRequirements() != null && !city.getCentralTerrain().getResource().getResourceType().equals(buildingType.getResourceRequirements().get(0))) {
+                    return lackResources;
+                } else if (allBuildingTypes.contains(buildingType)) {
+                    return buildingAlreadyExists;
+                }
+                Building building = new Building(city.getCentralTerrain().getX(),city.getCentralTerrain().getY(),buildingType);
+                city.getBuildings().add(building);
+                return unitPurchasedSuccessfully;
+            }
+
+        }
+
+        return "invalid building name";
+
     }
 
     public String createUnit(Matcher matcher, City city) {

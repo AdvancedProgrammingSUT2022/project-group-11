@@ -1,6 +1,7 @@
 package com.example.civiliztion.Model.City;
 
 import com.example.civiliztion.Controllers.CityController;
+import com.example.civiliztion.Model.Buildings.Building;
 import com.example.civiliztion.Model.Buildings.BuildingTypes;
 import com.example.civiliztion.Model.Terrains.TerrainTypes;
 import com.example.civiliztion.Model.Civilization;
@@ -15,6 +16,10 @@ public class City {
     private final Civilization founder;
     private final Terrain centralTerrain;
     private ArrayList<Unit> constructionWaitList = new ArrayList<>();
+
+    private ArrayList<Building> buildingWaitlist = new ArrayList<>();
+
+    private ArrayList<Building> buildings = new ArrayList<>();
     private Civilization owner;
     private boolean isPuppet;
     private ArrayList<Terrain> neighbors = new ArrayList<>();
@@ -35,7 +40,6 @@ public class City {
     private int turnsRemainingUntilPopulationIncrease;
     private int foodStorage;
     private boolean isUnderAttack;
-    private ArrayList<BuildingTypes> buildings = new ArrayList<>();
     private ArrayList<Terrain> mainTerrains = new ArrayList<>();
     private CityController cityController = new CityController();
 
@@ -83,13 +87,11 @@ public class City {
         this.food = food;
     }
 
-    public ArrayList<BuildingTypes> getBuildings() {
+    public ArrayList<Building> getBuildings() {
         return this.buildings;
     }
 
-    public void setBuildings(ArrayList<BuildingTypes> buildings) {
-        this.buildings = buildings;
-    }
+
 
     public int getScience() {
         return science;
@@ -343,4 +345,17 @@ public class City {
     public void setConstructionWaitList(ArrayList<Unit> constructionWaitList) {
         this.constructionWaitList = constructionWaitList;
     }
+
+    public ArrayList<Building> getBuildingWaitlist() {
+        return buildingWaitlist;
+    }
+
+    public void setBuildingWaitlist(ArrayList<Building> buildingWaitlist) {
+        this.buildingWaitlist = buildingWaitlist;
+    }
+
+    public void setBuildings(ArrayList<Building> buildings) {
+        this.buildings = buildings;
+    }
+
 }

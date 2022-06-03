@@ -25,10 +25,6 @@ public class LeaderboardController {
     @FXML
     ArrayList<TextField> playersLastLogin = new ArrayList<>();
 
-    @FXML
-    protected void onCancelButtonClick(ActionEvent event) throws IOException {
-        switchToProfileMenu(event);
-    }
 
         @FXML
         public void initialize() throws FileNotFoundException {
@@ -55,13 +51,14 @@ public class LeaderboardController {
 
         }
 
-    public void switchToProfileMenu(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("profileMenu.fxml")));
+    public void backToMainMenu(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(Main.class.getResource("MainMenu.fxml")));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         Scene scene = new Scene(root);
         stage.setScene(scene);
         stage.show();
     }
+
 
 
 }

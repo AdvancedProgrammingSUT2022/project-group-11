@@ -1,5 +1,6 @@
 package com.example.civiliztion.Controllers;
 
+import com.example.civiliztion.Model.Buildings.Building;
 import com.example.civiliztion.Model.Buildings.BuildingTypes;
 import com.example.civiliztion.Model.City.City;
 import com.example.civiliztion.Model.*;
@@ -691,16 +692,16 @@ public class DatabaseController {
             int numberOfUnits = user.getCivilization().getUnits().size();
             user.getCivilization().increaseGold(-numberOfUnits * database.getTurn());
             for (City city : user.getCivilization().getCities()) {
-                for (BuildingTypes cityBuildings : city.getBuildings()) {
-                    user.getCivilization().increaseGold(-cityBuildings.getMeintenance() * database.getTurn());
+                for (Building cityBuildings : city.getBuildings()) {
+                    user.getCivilization().increaseGold(-cityBuildings.getBuildingType().getMeintenance() * database.getTurn());
                 }
             }
         } else {
             int numberOfUnits = user.getCivilization().getUnits().size();
             user.getCivilization().setScience(user.getCivilization().getScience() - numberOfUnits * database.getTurn());
             for (City city : user.getCivilization().getCities()) {
-                for (BuildingTypes cityBuildings : city.getBuildings()) {
-                    user.getCivilization().setScience(user.getCivilization().getScience() - cityBuildings.getMeintenance() * database.getTurn());
+                for (Building cityBuildings : city.getBuildings()) {
+                    user.getCivilization().setScience(user.getCivilization().getScience() - cityBuildings.getBuildingType().getMeintenance() * database.getTurn());
                 }
             }
         }
@@ -1103,6 +1104,7 @@ public class DatabaseController {
         for (User user : users) {
             for (City city : user.getCivilization().getCities()) {
                 ArrayList<Unit> needToRemove = new ArrayList<>();
+                ArrayList<Building> needToRemoveBuildings = new ArrayList<>();
                 for (Unit unit : city.getConstructionWaitList()) {
                     if (unit.getPassedTurns() < unit.getUnitType().getTurn()) {
                         unit.setPassedTurns(unit.getPassedTurns() + 1);
@@ -1119,7 +1121,18 @@ public class DatabaseController {
 
                     }
                 }
+                for (Building building : city.getBuildingWaitlist()) {
+                    if (building.getPassedTurns() < building.getBuildingType().getTurn()) {
+                        building.setPassedTurns(building.getPassedTurns() + 1);
+                    } else {
+                        building.setPassedTurns(0);
+                        city.getBuildings().add(building);
+                        needToRemoveBuildings.add(building);
+
+                    }
+                }
                 city.getConstructionWaitList().removeAll(needToRemove);
+                city.getBuildingWaitlist().removeAll(needToRemoveBuildings);
             }
         }
     }
