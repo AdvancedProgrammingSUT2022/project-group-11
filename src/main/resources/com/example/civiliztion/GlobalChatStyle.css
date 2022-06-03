@@ -61,12 +61,12 @@ Button {
 }
 
 #firstBox {
-    -fx-background-color: #00062b;
+    -fx-background-color: cyan;
     -fx-background-radius: 30;
 }
 
 #secondBox {
-    -fx-background-color: #103188;
+    -fx-background-color: cyan;
     -fx-background-radius: 15;
 }
 
