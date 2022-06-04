@@ -31,13 +31,13 @@ public class GlobalChatMenu {
     @FXML
     private TextField editTextField;
     @FXML
-    private VBox editMessage;
+    private Pane editMessage;
     @FXML
     private Button deleteForMe;
     @FXML
     private Button deleteForEveryone;
     @FXML
-    private VBox deleteMessage;
+    private Pane deleteMessage;
     @FXML
     private ScrollPane scrollPane;
     @FXML
@@ -54,7 +54,7 @@ public class GlobalChatMenu {
 
 
 
-    private User user;
+    private User user = new User("ehsan",null,null,null);
 
     public User getUser(){
         return this.user;

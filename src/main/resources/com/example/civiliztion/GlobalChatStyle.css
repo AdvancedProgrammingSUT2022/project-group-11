@@ -10,13 +10,13 @@ VBox {
 }
 
 .scroll-pane {
-    -fx-background-color: #103188;
+    -fx-background-color: cyan;
     -fx-border-radius: 30 30 30 30;
     -fx-background-radius: 30 30 30 30;
 }
 
 .globalChatVbox {
-    -fx-background-color: #103188;
+    -fx-background-color: cyan;
     -fx-border-radius: 30 30 30 30;
     -fx-background-radius: 30 30 30 30;
 }
@@ -24,12 +24,12 @@ VBox {
 .secondPane {
     -fx-font-family: "Matrix II Regular";
     -fx-font-size: 15;
-    -fx-background-image: url(images/mainBackground.png);
+    -fx-background-image: url(images/Civ-VI-7.jpeg);
     -fx-background-size: cover;
 }
 
 Button {
-    -fx-background-color: #d4d7dc;
+    -fx-background-color: cyan;
     -fx-border-radius: 30 30 30 30;
     -fx-background-radius: 30 30 30 30;
 }
@@ -56,17 +56,17 @@ Button {
 #secondPane {
     -fx-font-family: "Matrix II Regular";
     -fx-font-size: 20;
-    -fx-background-image: url(images/mainBackground.png);
+    -fx-background-image: url(images/Civ-VI-7.jpeg);
     -fx-background-size: cover;
 }
 
 #firstBox {
-    -fx-background-color: cyan;
+    -fx-background-color: #00ff6f;
     -fx-background-radius: 30;
 }
 
 #secondBox {
-    -fx-background-color: cyan;
+    -fx-background-color: #00ff80;
     -fx-background-radius: 15;
 }
 
