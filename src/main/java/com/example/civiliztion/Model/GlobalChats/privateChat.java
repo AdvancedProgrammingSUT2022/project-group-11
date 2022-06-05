@@ -37,5 +37,11 @@ public class privateChat {
         this.allPrivateMessage = allPrivateMessage;
     }
 
+    public void addMessage(Message mess){
+        this.allPrivateMessage.add(mess);
+    }
+
+
+
 
 }

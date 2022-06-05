@@ -3,6 +3,13 @@ package com.example.civiliztion.Model;
 import java.util.ArrayList;
 
 public class Database {
+    private static Database instance;
+    public static Database getInstance(){
+        if(instance == null){
+            instance = new Database();
+        }
+        return instance;
+    }
     private ArrayList<User> Users;
     private ArrayList<String> civilizationsName = new ArrayList<>();
 

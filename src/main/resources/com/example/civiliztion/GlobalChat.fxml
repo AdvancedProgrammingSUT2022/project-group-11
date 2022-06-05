@@ -14,10 +14,8 @@
       xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.civiliztion.View.GlobalChatMenu"
       prefHeight="800.0" prefWidth="1530.0">
-    <VBox  layoutX="382.0" layoutY="33.0" id="firstBox" fx:id="firstBox" alignment="CENTER" prefHeight="800.0"
-          prefWidth="750.0" spacing="10.0">
-        <HBox alignment="CENTER_LEFT">
-            <Button alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#back"
+
+            <Button layoutX="182.0" layoutY="33.0" alignment="CENTER" contentDisplay="CENTER" onMouseClicked="#back"
                     prefHeight="38.0" prefWidth="48.0" textAlignment="CENTER">
                 <graphic>
                     <ImageView fitHeight="50.0" fitWidth="45.0" onMouseClicked="#back" pickOnBounds="true"
@@ -26,7 +24,7 @@
                     </ImageView>
                 </graphic>
             </Button>
-            <HBox id="menuBar" alignment="CENTER" prefHeight="62.0" prefWidth="439.0" spacing="10.0">
+            <HBox layoutX="382.0" layoutY="33.0" id="menuBar" alignment="CENTER" prefHeight="62.0" prefWidth="439.0" spacing="10.0">
                 <Label id="menuTitle" text="Global Chat">
                     <font>
                         <Font size="34.0"/>
@@ -36,11 +34,28 @@
                     <Insets bottom="10.0" left="10.0" right="5.0" top="10.0"/>
                 </padding>
             </HBox>
-            <ImageView fitHeight="47.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@images/chat.png"/>
+
+
+
+
+    <HBox  layoutX="350"  layoutY="300" visible="false" fx:id="searchPanel" prefHeight="50.0" prefWidth="650.0" spacing="20.0">
+        <children>
+            <TextField  onKeyReleased="#checkSecondUserForPrivate" fx:id="searchTextField" prefHeight="46.0" prefWidth="550.0">
+                <HBox.margin>
+                    <Insets left="20.0" top="2.0" />
+                </HBox.margin></TextField>
+            <ImageView onMouseClicked="#findSecondUser" fx:id="searchButton" fitHeight="41.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@images/search.png" />
             </ImageView>
-        </HBox>
-        <VBox prefHeight="635.0" prefWidth="722.0">
+        </children>
+    </HBox>
+
+
+
+
+
+
+        <VBox fx:id="VboxPublic" visible = "true"  layoutX="382.0" layoutY="103.0" prefHeight="635.0" prefWidth="722.0">
             <children>
                 <ScrollPane fx:id="scrollPane" prefHeight="635.0" prefWidth="759.0">
                     <content>
@@ -49,7 +64,19 @@
                 </ScrollPane>
             </children>
         </VBox>
-        <HBox prefHeight="100.0" prefWidth="611.0">
+
+
+    <VBox fx:id="VboxPrivate" visible = "false"  layoutX="382.0" layoutY="103.0" prefHeight="635.0" prefWidth="722.0">
+        <children>
+            <ScrollPane fx:id="scrollPanePrivate" prefHeight="635.0" prefWidth="759.0" styleClass="privateScrollPane">
+                <content>
+                    <VBox fx:id="allMessagePrivate" prefWidth="332.0" />
+                </content>
+            </ScrollPane>
+        </children>
+    </VBox>
+
+        <HBox layoutX="382.0" layoutY="733.0" prefHeight="100.0" prefWidth="611.0">
             <children>
                 <TextField fx:id="text" onKeyReleased="#enter" prefHeight="46.0" prefWidth="582.0">
                 </TextField>
@@ -62,9 +89,9 @@
         <padding>
             <Insets bottom="50.0" left="50.0" right="50.0" top="25.0"/>
         </padding>
-    </VBox>
 
-            <Pane fx:id="deleteMessage" layoutX="1197.0" layoutY="286.0" prefHeight="103.0" prefWidth="183.0">
+
+            <Pane visible="false" fx:id="deleteMessage" layoutX="1197.0" layoutY="286.0" prefHeight="103.0" prefWidth="183.0">
                 <children>
                     <Button fx:id="deleteForEveryone" layoutX="30.0" layoutY="14.0" mnemonicParsing="false"
                             prefHeight="31.0" prefWidth="123.0" text="Delete for everyone" textFill="#00062b">
@@ -76,7 +103,7 @@
                 </children>
             </Pane>
 
-            <Pane layoutX="1197.0" layoutY="418.0" fx:id="editMessage" prefHeight="200.0" prefWidth="200.0">
+            <Pane visible="false" layoutX="1197.0" layoutY="418.0" fx:id="editMessage" prefHeight="200.0" prefWidth="200.0">
                 <children>
                     <TextField fx:id="editTextField" layoutX="16.0" layoutY="14.0" prefHeight="31.0" prefWidth="170.0"
                                styleClass="changeTextField"/>
@@ -85,17 +112,19 @@
                     </Button>
                 </children>
             </Pane>
-            <Pane layoutX="1068.0" layoutY="33.0" prefHeight="802.0" prefWidth="76.0">
+            <Pane fx:id="rightBarPane" layoutX="78.0" layoutY="33.0" prefHeight="802.0" prefWidth="76.0">
                 <children>
-                    <Button layoutX="-87.0" layoutY="123.0" prefHeight="32.0" prefWidth="250.0"
-                            rotate="90.0" text="public chat">
+                    <Button onMouseClicked="#Public" fx:id="changeToPublicChatButton"  layoutX="-87.0" layoutY="123.0" prefHeight="32.0" prefWidth="250.0"
+                            rotate="0" text="public chat">
                     </Button>
-                    <Button layoutX="-87.0" layoutY="384.0" prefHeight="32.0" prefWidth="250.0"
-                            rotate="90.0" text="private chat">
+                    <Button onMouseClicked="#Private" fx:id="changeToPrivateChatButton" layoutX="-87.0" layoutY="384.0" prefHeight="32.0" prefWidth="250.0"
+                            rotate="0" text="private chat">
                     </Button>
-                    <Button layoutX="-87.0" layoutY="646.0"  prefHeight="32.0" prefWidth="250.0"
-                            rotate="90.0" text="rooms">
+                    <Button onMouseClicked="#Room" fx:id="changeToRoomChatButton" layoutX="-87.0" layoutY="646.0"  prefHeight="32.0" prefWidth="250.0"
+                            rotate="0" text="rooms">
                     </Button>
                 </children>
             </Pane>
+
+
 </Pane>

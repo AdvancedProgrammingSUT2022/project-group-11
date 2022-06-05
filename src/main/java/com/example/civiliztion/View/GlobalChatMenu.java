@@ -2,7 +2,9 @@ package com.example.civiliztion.View;
 
 import com.example.civiliztion.Main;
 import com.example.civiliztion.Model.Clock;
+import com.example.civiliztion.Model.Database;
 import com.example.civiliztion.Model.GlobalChats.Message;
+import com.example.civiliztion.Model.GlobalChats.privateChat;
 import com.example.civiliztion.Model.GlobalChats.publicChat;
 import com.example.civiliztion.Model.User;
 import javafx.fxml.FXML;
@@ -13,12 +15,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
@@ -26,6 +30,17 @@ public class GlobalChatMenu {
 
     private static GlobalChatMenu instance;
     public VBox firstBox;
+    public Button changeToPublicChatButton;
+    
+    public Button changeToPrivateChatButton;
+    public Button changeToRoomChatButton;
+    public VBox allMessagePrivate;
+    public VBox VboxPublic;
+    public VBox VboxPrivate;
+    public HBox searchPanel;
+    public TextField searchTextField;
+    public ImageView searchButton;
+
     @FXML
     private Button changeMessageButton;
     @FXML
@@ -55,6 +70,8 @@ public class GlobalChatMenu {
 
 
     private User user = new User("ehsan",null,null,null);
+    private int chatNumber = 0;
+    private privateChat privatechat;
 
     public User getUser(){
         return this.user;
@@ -65,8 +82,12 @@ public class GlobalChatMenu {
 
 
     public void initialize() throws MalformedURLException {
-        scrollPane.vvalueProperty().bind(allMessages.heightProperty());
         allMessages.setSpacing(5);
+        allMessagePrivate.setSpacing(5);
+      showPublicMessage();
+    }
+
+    public void showPublicMessage() throws MalformedURLException {
         for (int i = 0; i < publicChat.getInstance().getAllPublicMessage().size(); i++) {
             Message message = publicChat.getInstance().getAllPublicMessage().get(i);
             if (!(message.getUser() == user && message.getHasDelete()))
@@ -75,6 +96,9 @@ public class GlobalChatMenu {
                 message.setHasSeen(true);
         }
     }
+
+
+
     public void enter(KeyEvent keyEvent) throws MalformedURLException {
         if(keyEvent.getCode() == KeyCode.ENTER){
             keyEvent.consume();
@@ -96,16 +120,27 @@ public class GlobalChatMenu {
             alert.setContentText("long message");
             alert.show();
         }else{
-           Message message = new Message(user,text.getText(), Clock.getTime());
-           publicChat.getInstance().addMessage(message);
-           sendNewMessage(message);
-           text.clear();
+            Message message = new Message(user,text.getText(), Clock.getTime());
+            if(chatNumber == 0){
+                publicChat.getInstance().addMessage(message);
+                sendNewMessage(message);
+                text.clear();
+            }else if(chatNumber == 1){
+                this.privatechat.addMessage(message);
+                sendNewMessage(message);
+                text.clear();
+            }
+
         }
     }
 
     private void sendNewMessage(Message message) throws MalformedURLException {
         Pane pane = getMessageBox(message);
-        allMessages.getChildren().add(pane);
+        if(chatNumber == 0) {
+            allMessages.getChildren().add(pane);
+        }else if(chatNumber == 1){
+            allMessagePrivate.getChildren().add(pane);
+        }
     }
     private Pane getMessageBox(Message message) throws MalformedURLException {
         Pane pane = new Pane();
@@ -127,7 +162,6 @@ public class GlobalChatMenu {
         if (message.getUser() == user) {
             addButtonToEdit(pane,message);
         }
-
         return pane;
     }
 
@@ -143,7 +177,7 @@ public class GlobalChatMenu {
         text.setPrefHeight(60);
         text.setLayoutX(40);
         text.setLayoutY(15);
-        text.setFont(Font.font(18));
+        text.setFont(Font.font(20));
         pane.getChildren().add(text);
     }
 
@@ -155,7 +189,6 @@ public class GlobalChatMenu {
         label.setLayoutX(40);
         label.setLayoutY(10);
         label.setFont(Font.font(12));
-        label.setStyle("-fx-font-family: \"High Tower Text\"");
         pane.getChildren().add(label);
     }
 
@@ -260,16 +293,10 @@ public class GlobalChatMenu {
         imageView.setFitWidth(15);
         imageView.setLayoutX(310);
         imageView.setLayoutY(15);
-        imageView.setCursor(Cursor.HAND);
         AtomicBoolean isSelectedForDelete = new AtomicBoolean(true);
         imageView.setOnMouseClicked(mouseEvent -> {
             if (isSelectedForDelete.get()) {
-                isSelectedForDelete.set(false);
-                pane.getChildren().add(deleteMessage);
-                deleteMessage.setLayoutX(330);
-                deleteMessage.setLayoutY(0);
-                deleteMessageClicked(pane, isSelectedForDelete, message);
-                deleteMessage.setVisible(true);
+               deleteTRUE(pane,isSelectedForDelete,message);
             } else {
                 isSelectedForDelete.set(true);
                 pane.getChildren().remove(deleteMessage);
@@ -278,22 +305,120 @@ public class GlobalChatMenu {
         pane.getChildren().add(imageView);
     }
 
-    public void deleteMessageClicked(Pane pane, AtomicBoolean isSelectedForDelete, Message message) {
+    public void deleteTRUE(Pane pane, AtomicBoolean isSelectedForDelete, Message message) {
+        isSelectedForDelete.set(false);
+        pane.getChildren().add(deleteMessage);
+        deleteMessage.setLayoutX(330);
+        deleteMessage.setLayoutY(0);
+
+
         deleteForEveryone.setOnMouseClicked(mouseEvent -> {
             isSelectedForDelete.set(true);
             pane.getChildren().remove(deleteMessage);
-            allMessages.getChildren().remove(pane);
+            if(chatNumber == 0) {
+                allMessages.getChildren().remove(pane);
+            }else if(chatNumber == 1){
+                allMessagePrivate.getChildren().remove(pane);
+            }
             publicChat.getInstance().getAllPublicMessage().remove(message);
         });
         deleteForMe.setOnMouseClicked(mouseEvent -> {
             isSelectedForDelete.set(true);
             pane.getChildren().remove(deleteMessage);
-            allMessages.getChildren().remove(pane);
+            if(chatNumber == 0){
+            allMessages.getChildren().remove(pane);}
+            else if(chatNumber == 1){
+                allMessagePrivate.getChildren().remove(pane);
+            }
             message.setHasDelete(true);
         });
+        deleteMessage.setVisible(true);
+    }
+
+
+   
+    public void Public(MouseEvent mouseEvent) throws MalformedURLException {
+        chatNumber = 0;
+        VboxPublic.setVisible(true);
+        VboxPrivate.setVisible(false);
+        searchPanel.setVisible(false);
+        showPublicMessage();
+    }
+
+    public void Private(MouseEvent mouseEvent) {
+        chatNumber = 1;
+      VboxPublic.setVisible(false);
+      searchPanel.setVisible(true);
+    }
+
+    public void Room(MouseEvent mouseEvent) {
+        chatNumber = -1;
     }
 
 
 
+    public User findUser(String username){
+        ArrayList<User> users = Database.getInstance().getUsers();
+        for(int i = 0;i< users.size();i++){
+            if(users.get(i).getUsername().equals(username)){
+                return users.get(i);
+            }
+        }
+        return null;
+    }
 
+    public privateChat containSecondUser(User userSecond){
+        ArrayList<privateChat> userPrivateChats = user.getPrivateChats();
+       for(int i = 0; i < userPrivateChats.size();i++){
+           if(userPrivateChats.get(i).getUserTwo() == userSecond){
+               return userPrivateChats.get(i);
+           }
+       }
+        return null;
+    }
+
+
+    public void checkSecondUserForPrivate(KeyEvent keyEvent) throws MalformedURLException {
+        if(keyEvent.getCode() == KeyCode.ENTER){
+            keyEvent.consume();
+            findSecondUser(null);
+        }
+    }
+
+
+    public void findSecondUser(MouseEvent mouseEvent) throws MalformedURLException {
+        String username = searchTextField.getText();
+        if(username.length() == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("emptyUsername");
+            alert.show();
+        }else if(findUser(username) == null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("noUser");
+            alert.show();
+        }else{
+
+            User userSecond = findUser(username);
+            if(containSecondUser(userSecond) == null){
+               privateChat newprivateChate = new privateChat(user,userSecond);
+               this.privatechat = newprivateChate;
+               user.addPrivateChats(newprivateChate);
+            }else{
+                this.privatechat = containSecondUser(userSecond);
+            }
+            searchPanel.setVisible(false);
+            VboxPrivate.setVisible(true);
+            showPrivateMessage();
+        }
+    }
+    public void showPrivateMessage() throws MalformedURLException {
+        for(int i =0; i < this.privatechat.getAllPrivateMessage().size();i++){
+            Message message = this.privatechat.getAllPrivateMessage().get(i);
+            if (!(message.getUser() == user && message.getHasDelete()))
+                sendNewMessage(message);
+            if (message.getUser() != user)
+                message.setHasSeen(true);
+        }
+    }
 }
+

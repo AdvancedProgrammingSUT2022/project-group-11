@@ -29,7 +29,7 @@ VBox {
 }
 
 Button {
-    -fx-background-color: cyan;
+    -fx-background-color: #807e00;
     -fx-border-radius: 30 30 30 30;
     -fx-background-radius: 30 30 30 30;
 }
@@ -60,22 +60,22 @@ Button {
     -fx-background-size: cover;
 }
 
-#firstBox {
-    -fx-background-color: #00ff6f;
-    -fx-background-radius: 30;
-}
+
 
 #secondBox {
     -fx-background-color: #00ff80;
     -fx-background-radius: 15;
 }
 
-#menuBar {
-    -fx-border-color: #ffd500;
-    -fx-border-radius: 20;
-}
+
 
 #menuTitle {
     -fx-font-size: 36;
-    -fx-text-fill: #ffd500;
+    -fx-text-fill: cyan;
+}
+
+.privateScrollPane {
+    -fx-background-color: #d0ff00;
+    -fx-border-radius: 30 30 30 30;
+    -fx-background-radius: 30 30 30 30;
 }
