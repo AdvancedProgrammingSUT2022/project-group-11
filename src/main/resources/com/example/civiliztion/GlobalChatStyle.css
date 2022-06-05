@@ -79,3 +79,10 @@ Button {
     -fx-border-radius: 30 30 30 30;
     -fx-background-radius: 30 30 30 30;
 }
+
+.RoomScrollPane {
+
+    -fx-background-color: #ff00fb;
+    -fx-border-radius: 30 30 30 30;
+    -fx-background-radius: 30 30 30 30;
+}

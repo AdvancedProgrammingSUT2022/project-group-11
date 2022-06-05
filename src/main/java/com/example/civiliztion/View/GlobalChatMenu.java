@@ -4,6 +4,7 @@ import com.example.civiliztion.Main;
 import com.example.civiliztion.Model.Clock;
 import com.example.civiliztion.Model.Database;
 import com.example.civiliztion.Model.GlobalChats.Message;
+import com.example.civiliztion.Model.GlobalChats.Room;
 import com.example.civiliztion.Model.GlobalChats.privateChat;
 import com.example.civiliztion.Model.GlobalChats.publicChat;
 import com.example.civiliztion.Model.User;
@@ -40,6 +41,14 @@ public class GlobalChatMenu {
     public HBox searchPanel;
     public TextField searchTextField;
     public ImageView searchButton;
+    public VBox VboxRoom;
+    public ScrollPane scrollPaneRoom;
+    public VBox allMessageRoom;
+    public ScrollPane scrollPanePrivate;
+    public TextField searchTextFieldRoom;
+    public Button roomButton;
+    public HBox searchPanelRoom;
+    public ImageView searchButtonRoom;
 
     @FXML
     private Button changeMessageButton;
@@ -72,6 +81,8 @@ public class GlobalChatMenu {
     private User user = new User("ehsan",null,null,null);
     private int chatNumber = 0;
     private privateChat privatechat;
+    private Room room;
+    private ArrayList<String> usersNames = new ArrayList<>();
 
     public User getUser(){
         return this.user;
@@ -84,6 +95,7 @@ public class GlobalChatMenu {
     public void initialize() throws MalformedURLException {
         allMessages.setSpacing(5);
         allMessagePrivate.setSpacing(5);
+        allMessageRoom.setSpacing(5);
       showPublicMessage();
     }
 
@@ -129,6 +141,10 @@ public class GlobalChatMenu {
                 this.privatechat.addMessage(message);
                 sendNewMessage(message);
                 text.clear();
+            }else if(chatNumber == -1){
+                this.room.addMessage(message);
+                sendNewMessage(message);
+                text.clear();
             }
 
         }
@@ -140,6 +156,8 @@ public class GlobalChatMenu {
             allMessages.getChildren().add(pane);
         }else if(chatNumber == 1){
             allMessagePrivate.getChildren().add(pane);
+        }else if(chatNumber == -1){
+            allMessageRoom.getChildren().add(pane);
         }
     }
     private Pane getMessageBox(Message message) throws MalformedURLException {
@@ -317,10 +335,15 @@ public class GlobalChatMenu {
             pane.getChildren().remove(deleteMessage);
             if(chatNumber == 0) {
                 allMessages.getChildren().remove(pane);
+                publicChat.getInstance().getAllPublicMessage().remove(message);
             }else if(chatNumber == 1){
                 allMessagePrivate.getChildren().remove(pane);
+                privatechat.getAllPrivateMessage().remove(message);
+            }else if(chatNumber == -1){
+                allMessageRoom.getChildren().remove(pane);
+                room.getMessages().remove(message);
             }
-            publicChat.getInstance().getAllPublicMessage().remove(message);
+
         });
         deleteForMe.setOnMouseClicked(mouseEvent -> {
             isSelectedForDelete.set(true);
@@ -329,6 +352,8 @@ public class GlobalChatMenu {
             allMessages.getChildren().remove(pane);}
             else if(chatNumber == 1){
                 allMessagePrivate.getChildren().remove(pane);
+            }else if(chatNumber  == -1){
+               allMessageRoom.getChildren().remove(pane);
             }
             message.setHasDelete(true);
         });
@@ -338,21 +363,43 @@ public class GlobalChatMenu {
 
    
     public void Public(MouseEvent mouseEvent) throws MalformedURLException {
-        chatNumber = 0;
-        VboxPublic.setVisible(true);
-        VboxPrivate.setVisible(false);
-        searchPanel.setVisible(false);
-        showPublicMessage();
+        if(chatNumber != 0) {
+            chatNumber = 0;
+            VboxPublic.setVisible(true);
+            VboxPrivate.setVisible(false);
+            searchPanel.setVisible(false);
+            roomButton.setVisible(false);
+            searchPanelRoom.setVisible(false);
+            showPublicMessage();
+        }
     }
 
-    public void Private(MouseEvent mouseEvent) {
-        chatNumber = 1;
-      VboxPublic.setVisible(false);
-      searchPanel.setVisible(true);
+    public void Private(MouseEvent mouseEvent) throws MalformedURLException {
+        if(chatNumber != 1) {
+            chatNumber = 1;
+            VboxPublic.setVisible(false);
+            VboxRoom.setVisible(false);
+            VboxPrivate.setVisible(false);
+            searchPanel.setVisible(true);
+            roomButton.setVisible(false);
+            searchPanelRoom.setVisible(false);
+            showPrivateMessage();
+        }
     }
 
-    public void Room(MouseEvent mouseEvent) {
-        chatNumber = -1;
+    public void Room(MouseEvent mouseEvent) throws MalformedURLException {
+        if(chatNumber != -1) {
+            chatNumber = -1;
+            VboxPublic.setVisible(false);
+            VboxPrivate.setVisible(false);
+            VboxRoom.setVisible(true);
+            roomButton.setVisible(true);
+            searchPanel.setVisible(false);
+            searchPanelRoom.setVisible(true);
+            showRoomMessage();
+
+
+        }
     }
 
 
@@ -419,6 +466,81 @@ public class GlobalChatMenu {
             if (message.getUser() != user)
                 message.setHasSeen(true);
         }
+    }
+
+    public void showRoomMessage() throws MalformedURLException {
+        for(int i = 0; i < this.room.getMessages().size();i++){
+            Message message = this.room.getMessages().get(i);
+            if (!(message.getUser() == user && message.getHasDelete()))
+                sendNewMessage(message);
+            if (message.getUser() != user)
+                message.setHasSeen(true);
+
+        }
+    }
+
+    public void findUserForroom(MouseEvent mouseEvent) {
+        String usernames = searchTextFieldRoom.getText();
+        if(usernames.length() == 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("empty username");
+            alert.show();
+        }else{
+            if(findUser(usernames) != null){
+                usersNames.add(usernames);
+            }else{
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setContentText("we dont have this username");
+                alert.show();
+            }
+
+        }
+    }
+
+    public void checkUserRoom(KeyEvent keyEvent) {
+        if(keyEvent.getCode() == KeyCode.ENTER){
+            findUserForroom(null);
+            keyEvent.consume();
+        }
+
+    }
+
+
+    public boolean haveThisUsersInRooms(ArrayList<String> roomUsername,ArrayList<String> username){
+        for(int i = 0; i < username.size();i++){
+            if(roomUsername.indexOf(username.get(i)) ==-1){
+                return false;
+            }
+        }
+        return true;
+    }
+
+   public Room containsThisUsers(ArrayList<String> names){
+        ArrayList<Room> myRooms = user.getRooms();
+        for(int i = 0; i < myRooms.size();i++){
+            ArrayList<User> user = myRooms.get(i).getUsers();
+            ArrayList<String> username = new ArrayList<>();
+            for(int j = 0; j < user.size();j++){
+                 username.add(user.get(i).getUsername());
+            }
+            if(haveThisUsersInRooms(username,names) == true){
+                return myRooms.get(i);
+            }
+        }
+        return null;
+
+    }
+    public void goToRoom(MouseEvent mouseEvent) {
+          if(containsThisUsers(usersNames) != null){
+              this.room = containsThisUsers(usersNames);
+          }else{
+              ArrayList<User> myUser = new ArrayList<>();
+              for(int i = 0; i < usersNames.size();i++){
+                  myUser.add(Database.getInstance().getUserByUsername(usersNames.get(i)));
+              }
+              Room room = new Room(myUser);
+              this.room = room;
+          }
     }
 }
 
