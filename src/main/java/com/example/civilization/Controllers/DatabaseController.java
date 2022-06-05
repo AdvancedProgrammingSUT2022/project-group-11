@@ -5,6 +5,7 @@ import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.*;
 import com.example.civilization.Model.Improvements.Improvement;
 import com.example.civilization.Model.Improvements.ImprovementTypes;
+import com.example.civilization.Model.Resources.Resource;
 import com.example.civilization.Model.Resources.ResourceTypes;
 import com.example.civilization.Model.Technologies.Technology;
 import com.example.civilization.Model.Technologies.TechnologyTypes;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.regex.Matcher;
 
 public class DatabaseController {
     public HashMap<User, String> notificationHistory = new HashMap<>();

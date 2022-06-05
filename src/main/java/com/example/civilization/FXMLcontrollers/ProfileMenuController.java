@@ -2,25 +2,24 @@ package com.example.civilization.FXMLcontrollers;
 
 import com.example.civilization.Controllers.DatabaseController;
 import com.example.civilization.Main;
-import com.example.civilization.Model.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 
-public class ProfileMenuController
-{
+public class ProfileMenuController {
     public static DatabaseController databaseController;
     @FXML
     private Label username;
@@ -54,8 +53,8 @@ public class ProfileMenuController
     private Label nicknameWarning;
     @FXML
     private Label passwordWarning;
-    
-    private int number = Main.database.getActiveUser().photoNumber;
+
+
 
 
     public void setTexts() throws FileNotFoundException {
@@ -68,8 +67,7 @@ public class ProfileMenuController
 
     }
 
-    public void setUpEditPage()
-    {
+    public void setUpEditPage() {
         editNickname.setPromptText(Main.database.getActiveUser().getNickname());
         editPassword.setPromptText(Main.database.getActiveUser().getPassword());
         Image image = null;
@@ -84,97 +82,78 @@ public class ProfileMenuController
 
     }
 
-    public void changePicTo1()
-    {
+    public void changePicTo1() {
         profilePic.setImage(pic1.getImage());
-        number = 1;
+        Main.database.getActiveUser().setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof1.png");
     }
 
-    public void changePicTo2()
-    {
+    public void changePicTo2() {
         profilePic.setImage(pic2.getImage());
-        number = 2;
+        Main.database.getActiveUser().setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof2.png");
     }
 
-    public void changePicTo3()
-    {
+    public void changePicTo3() {
         profilePic.setImage(pic3.getImage());
-        number = 3;
+        Main.database.getActiveUser().setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof3.png");
 
     }
 
-    public void changePicTo4()
-    {
+    public void changePicTo4() {
         profilePic.setImage(pic4.getImage());
-        number = 4;
+        Main.database.getActiveUser().setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof4.png");
     }
 
-    public void changePicTo5()
-    {
+    public void changePicTo5() {
         profilePic.setImage(pic5.getImage());
-        number = 5;
+        Main.database.getActiveUser().setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof5.png");
+
     }
 
-    public void changePicTo6()
-    {
+    public void changePicTo6() {
         profilePic.setImage(pic6.getImage());
-        number = 6;
+        Main.database.getActiveUser().setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof6.png");
     }
 
-    public void changePicTo7()
-    {
+    public void changePicTo7() {
         profilePic.setImage(pic7.getImage());
-        number = 7;
+        Main.database.getActiveUser().setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof7.png");
     }
 
-    public void changePicTo8()
-    {
+    public void changePicTo8() {
         profilePic.setImage(pic8.getImage());
-        number = 8;
+        Main.database.getActiveUser().setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof8.png");
     }
 
-    public void saveChanges()
-    {
+    public void saveChanges() {
         String newNickname = editNickname.getText();
         String newPassword = editPassword.getText();
-        if ( !newNickname.equals(""))
-        {
+        if (!newNickname.equals("")) {
             String temp = databaseController.changeUserNickname(newNickname, Main.database.getActiveUser());
-            if ( temp.startsWith("user"))
-            {
+            if (temp.startsWith("user")) {
                 nicknameWarning.setText(temp);
                 nicknameWarning.setVisible(true);
-            }
-            else
-            {
+            } else {
                 nicknameWarning.setVisible(false);
             }
         }
-        if ( !newPassword.equals(""))
-        {
+        if (!newPassword.equals("")) {
             String passTemp = databaseController.changePassword(newPassword, Main.database.getActiveUser());
-            if ( passTemp.startsWith("please"))
-            {
+            if (passTemp.startsWith("please")) {
                 passwordWarning.setText(passTemp);
                 passwordWarning.setVisible(true);
 
-            }
-            else
-            {
+            } else {
                 passwordWarning.setVisible(false);
             }
 
         }
-        if ( !passwordWarning.isVisible() && !nicknameWarning.isVisible() )
-        {
-            Main.database.getActiveUser().photoNumber = number;
+        if (!passwordWarning.isVisible() && !nicknameWarning.isVisible()) {
             Main.changeMenu("ProfileMenu");
 
         }
     }
 
-    public void changeToEdit()
-    {
+    public void changeToEdit() {
         Main.changeMenu("EditProfile");
     }
 
@@ -188,7 +167,7 @@ public class ProfileMenuController
             FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("Image Files", "*.jpg", "*.jpeg", "*.png");
 
             fil_chooser.getExtensionFilters().add(fileExtensions);
-            File file = fil_chooser.showOpenDialog((Stage) ((Node) event.getSource()).getScene().getWindow());
+            File file = fil_chooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
 
             if (file != null) {
 
@@ -203,5 +182,33 @@ public class ProfileMenuController
         }
     }
 
+    @FXML
+    public void logOutButton(ActionEvent event) throws IOException {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("LogOut");
+        alert.setHeaderText("You're about to logout your account!");
+        alert.setContentText("Are you sure you want to logout your account?");
+
+        if (alert.showAndWait().get() == ButtonType.OK) {
+            Main.changeMenu("LoginMenu");
+
+        }
+    }
+
+    @FXML
+    public void goToLeaderboard(ActionEvent event) throws IOException {
+        Main.changeMenu("leaderboard");
+    }
+
+    @FXML
+    public void goToGameMenu(ActionEvent event) throws IOException {
+        Main.changeMenu("gameMap");
+    }
+
+    @FXML
+    public void goToChatMenu(ActionEvent event) throws IOException {
+        Main.changeMenu("GlobalChat");
+    }
 
 }

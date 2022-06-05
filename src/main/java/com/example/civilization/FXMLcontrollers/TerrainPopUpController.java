@@ -1,4 +1,4 @@
-package com.example.civilization.View.MenuControllers;
+package com.example.civilization.FXMLcontrollers;
 
 import com.example.civilization.Model.Terrain;
 import javafx.fxml.FXML;

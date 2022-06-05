@@ -1,6 +1,4 @@
-package com.example.civilization.Model;
-
-import com.example.civilization.Model.Resources.ResourceTypes;
+package com.example.civilization.Model.Resources;
 
 public class Resource {
 

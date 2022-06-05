@@ -1,4 +1,4 @@
-package com.example.civilization.View.MenuControllers;
+package com.example.civilization.FXMLcontrollers;
 
 
 import com.example.civilization.Controllers.DatabaseController;
@@ -7,17 +7,14 @@ import com.example.civilization.Model.Database;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
 import com.example.civilization.Model.Units.UnitTypes;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Polygon;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 
 import java.io.FileInputStream;
@@ -145,7 +142,7 @@ public class GameMapController {
 
     public void showingPopUp(ArrayList<Polygon> polygons, int i, int j){
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("terrainsPopUp.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXML/terrainsPopUp.fxml"));
             Parent root = loader.load();
             TerrainPopUpController secController = loader.getController();
             secController.setData(databaseController.getTerrainByCoordinates(i, j));

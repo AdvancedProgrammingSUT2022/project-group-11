@@ -2,6 +2,7 @@ package com.example.civilization.Model;
 
 import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.Improvements.Improvement;
+import com.example.civilization.Model.Resources.Resource;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
 import com.example.civilization.Model.Units.CombatUnit;

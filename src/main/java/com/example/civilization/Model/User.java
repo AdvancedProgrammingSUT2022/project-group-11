@@ -1,6 +1,11 @@
 package com.example.civilization.Model;
 
 
+import com.example.civilization.Model.GlobalChats.Room;
+import com.example.civilization.Model.GlobalChats.privateChat;
+
+import java.util.ArrayList;
+
 public class User {
     private String username;
     private String password;
@@ -13,12 +18,18 @@ public class User {
     public int photoNumber;
     private String profilePicture;
 
+    private boolean online = false;
+
+    private ArrayList<privateChat> privatechat = new ArrayList<>();
+    private ArrayList<Room> rooms = new ArrayList<>();
+
+
     public User(String username, String password, String nickname, Civilization civil) {
         this.username = username;
         this.password = password;
         this.nickname = nickname;
         this.civilization = civil;
-        profilePicture = "src/main/resources/com/example/civilization/PNG/prof"  +(username.length() % 8 + 1)  +".png";
+        profilePicture = "src/main/resources/com/example/civilization/PNG/images/prof"  +(username.length() % 8 + 1)  +".png";
     }
 
     public Civilization getCivilization() {
@@ -82,6 +93,30 @@ public class User {
     }
     public String getProfilePicture() {
         return profilePicture;
+    }
+
+    public boolean isOnline() {
+        return online;
+    }
+
+    public void setOnline(boolean online) {
+        this.online = online;
+    }
+
+    public ArrayList<privateChat> getPrivateChats() {
+        return privatechat;
+    }
+
+    public void addPrivateChats(privateChat privateChats) {
+        this.privatechat.add(privateChats);
+    }
+
+    public ArrayList<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(ArrayList<Room> rooms) {
+        this.rooms = rooms;
     }
 
 

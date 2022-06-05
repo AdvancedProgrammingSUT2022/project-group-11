@@ -33,17 +33,16 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
 
+
         Parent root = loadFXML("LoginMenu");
         Scene scene = new Scene(root);
         Main.scene = scene;
-        Main.stage = stage;
-        Main.stage.setScene(scene);
         stage.setScene(scene);
         stage.show();
 
     }
 
-    private static Parent loadFXML(String name){
+    public static Parent loadFXML(String name){
         try {
             URL address = new URL(Main.class.getResource( "/com/example/civilization/FXML/" + name + ".fxml").toString());
             return FXMLLoader.load(address);
@@ -60,5 +59,14 @@ public class Main extends Application {
 
         Main.scene.setRoot(root);
 
+    }
+    private static Parent getFxml(String name){
+        try {
+            URL addressMain = new URL(Main.class.getResource(name).toExternalForm());
+            return FXMLLoader.load(addressMain);
+        }  catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

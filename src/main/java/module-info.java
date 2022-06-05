@@ -7,7 +7,6 @@ module com.example.civilization {
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
 
-    opens com.example.civilization.View.MenuControllers to javafx.fxml;
     opens com.example.civilization.FXMLcontrollers to javafx.fxml;
     opens com.example.civilization.Model to com.google.gson;
     opens com.example.civilization.Model.Technologies to com.google.gson;
@@ -19,7 +18,8 @@ module com.example.civilization {
     opens com.example.civilization.Model.City to com.google.gson;
     opens com.example.civilization.Model.Buildings to com.google.gson;
     opens com.example.civilization.Controllers to com.google.gson;
-    exports com.example.civilization.View.MenuControllers to javafx.fxml;
     exports com.example.civilization to javafx.graphics;
     exports com.example.civilization.FXMLcontrollers to javafx.fxml;
+    exports com.example.civilization.View to javafx.fxml;
+    opens com.example.civilization.View to javafx.fxml;
 }

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@CSS/Game.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.civilization.View.MenuControllers.TerrainPopUpController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" stylesheets="@../CSS/Game.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.civilization.FXMLcontrollers.TerrainPopUpController">
    <children>
       <Label alignment="CENTER" layoutX="102.0" layoutY="33.0" prefHeight="31.0" prefWidth="79.0" text="Type :" textFill="RED">
          <font>
