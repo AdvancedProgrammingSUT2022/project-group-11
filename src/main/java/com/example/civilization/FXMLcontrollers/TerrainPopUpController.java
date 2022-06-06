@@ -59,6 +59,7 @@ public class TerrainPopUpController {
 
         x.setText("x : " + terrain.getX());
         y.setText("y : " + terrain.getY());
+        System.out.println(x.getText() + " njfsdjjks");
         TerrainType.setText(terrain.getTerrainTypes().name());
         TypeFood.setText(Integer.toString(terrain.getTerrainTypes().getFood()));
         TypeProduction.setText(Integer.toString(terrain.getTerrainTypes().getProduct()));

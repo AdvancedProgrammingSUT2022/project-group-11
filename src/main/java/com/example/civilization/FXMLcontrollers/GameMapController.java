@@ -42,10 +42,10 @@ public class GameMapController {
         this.databaseController.getMap().generateMap();
 
 
-        pane.setMaxSize(1000, 700);
+        pane.setMaxSize(1530, 800);
 
 //Adding coordinates to the polygon
-        setHexagons(0, 0, 90, 100, 50);
+        setHexagons(0, 0, 90, 100, 65);
 
         for (Polygon polygon : terrainHexagons) {
             pane.getChildren().add(polygon);
