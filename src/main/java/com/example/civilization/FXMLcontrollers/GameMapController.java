@@ -3,7 +3,6 @@ package com.example.civilization.FXMLcontrollers;
 
 import com.example.civilization.Controllers.DatabaseController;
 import com.example.civilization.Main;
-import com.example.civilization.Model.Database;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
 import com.example.civilization.Model.Units.UnitTypes;
@@ -42,7 +41,7 @@ public class GameMapController {
         this.databaseController.getMap().generateMap();
 
 
-        pane.setMaxSize(1300,700 );
+        pane.setMaxSize(1300, 700);
 
 //Adding coordinates to the polygon
         setHexagons(0, 0, 280, 130, 50);
@@ -60,7 +59,7 @@ public class GameMapController {
     }
 
     public void setHexagons(int start_x, int start_y, double x0, double y0, int radius) throws FileNotFoundException {
-     //   System.out.println(pane.getMaxWidth());
+        //   System.out.println(pane.getMaxWidth());
         int i = start_x, j = start_y;
         // System.out.println(databaseController.getTerrainByCoordinates(1, 3).getTerrainTypes().name());
         for (double x = x0; x < pane.getMaxWidth() - radius; x += 3 * radius) {
@@ -95,16 +94,15 @@ public class GameMapController {
         polygonTerrainFeatureType.getPoints().addAll(drawingPolygonWithCenterAndRadius(x, y, radius));
         polygonCombatUnit.getPoints().addAll(drawingPolygonWithCenterAndRadius(x, y, radius));
         polygonNonCombatUnit.getPoints().addAll(drawingPolygonWithCenterAndRadius(x, y, radius));
-       // System.out.println(i + " " + j + " " + databaseController.getTerrainByCoordinates(i, j).getTerrainTypes().name());
+        // System.out.println(i + " " + j + " " + databaseController.getTerrainByCoordinates(i, j).getTerrainTypes().name());
         polygonTerrainType.setFill(new ImagePattern(new Image(new FileInputStream(getImagePatternOfTiles(databaseController.getTerrainByCoordinates(i, j).getTerrainTypes().name())))));
         terrainHexagons.add(polygonTerrainType);
         if (!databaseController.getTerrainByCoordinates(i, j).getTerrainFeatureTypes().isEmpty() && databaseController.getTerrainByCoordinates(i, j).getTerrainFeatureTypes().get(0) != null) {
-          //  System.out.println("fdf");
-          //  System.out.println(i + " " + j + " " + databaseController.getTerrainByCoordinates(i, j).getTerrainFeatureTypes().get(0).name());
-           // System.out.println("hello");
-
+            //  System.out.println("fdf");
+            //  System.out.println(i + " " + j + " " + databaseController.getTerrainByCoordinates(i, j).getTerrainFeatureTypes().get(0).name());// System.out.println("hello");
             polygonTerrainFeatureType.setFill(new ImagePattern(new Image(new FileInputStream(getImagePatternOfTiles(databaseController.getTerrainByCoordinates(i, j).getTerrainFeatureTypes().get(0).name())))));
             terrainHexagons.add(polygonTerrainFeatureType);
+
         }
         if (databaseController.getTerrainByCoordinates(i, j).getCombatUnit() != null) {
 
@@ -132,15 +130,14 @@ public class GameMapController {
 
 */
 
-        showingPopUp(new ArrayList<>(Arrays.asList(rivers,polygonTerrainType,polygonTerrainFeatureType)),i ,j);
-
+        showingPopUp(new ArrayList<>(Arrays.asList(rivers, polygonTerrainType, polygonTerrainFeatureType)), i, j);
 
 
         i++;
         return i;
     }
 
-    public void showingPopUp(ArrayList<Polygon> polygons, int i, int j){
+    public void showingPopUp(ArrayList<Polygon> polygons, int i, int j) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXML/terrainsPopUp.fxml"));
             Parent root = loader.load();
@@ -148,9 +145,8 @@ public class GameMapController {
             secController.setData(databaseController.getTerrainByCoordinates(i, j));
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
-            for (Polygon polygon : polygons){
-                
-                polygon.setOnMousePressed(e -> stage.show());
+            for (Polygon polygon : polygons) {
+                polygon.setOnMousePressed(e ->{stage.show();});
                 polygon.setOnMouseReleased(e -> stage.close());
             }
 
@@ -168,7 +164,7 @@ public class GameMapController {
                     if (databaseController.getMap().hasRiver(databaseController.getMap().getTerrain()[i + a][j + b], databaseController.getMap().getTerrain()[i][j]) != null) {
 
                         if (a == 1 && b == 0) {
-                     //       System.out.println(i + " " + j + " " + a + " " + b);
+                            //       System.out.println(i + " " + j + " " + a + " " + b);
                             rivers.getPoints().addAll(drawingPolygonWithCenterAndRadius(x, y, radius));
                             rivers.setFill(new ImagePattern(new Image(new FileInputStream("src/main/resources/com/example/civilization/PNG/civAsset/map/Tiles/River-Bottom.png"))));
                         } else {

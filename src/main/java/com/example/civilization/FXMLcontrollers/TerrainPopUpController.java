@@ -8,58 +8,57 @@ import javafx.scene.image.ImageView;
 public class TerrainPopUpController {
 
     @FXML
-    private final Label x = new Label();
+    private Label x = new Label();
     @FXML
-    private final Label y = new Label();
+    private Label y = new Label();
 
     @FXML
-    private final Label Type = new Label();
+    private Label Type = new Label();
     @FXML
-    private final Label TerrainType = new Label();
+    private Label TerrainType = new Label();
     @FXML
-    private final Label FeatureType = new Label();
+    private Label FeatureType = new Label();
     @FXML
-    private final Label ResourceType = new Label();
+    private Label ResourceType = new Label();
     @FXML
-    private final Label ImprovementType = new Label();
+    private Label ImprovementType = new Label();
     @FXML
-    private final Label TypeFood = new Label();
+    private Label TypeFood = new Label();
     @FXML
-    private final Label TypeProduction = new Label();
+    private Label TypeProduction = new Label();
     @FXML
-    private final Label TypeGold = new Label();
+    private Label TypeGold = new Label();
     @FXML
-    private final Label FeatureFood = new Label();
+    private Label FeatureFood = new Label();
     @FXML
-    private final Label FeatureProduction = new Label();
+    private Label FeatureProduction = new Label();
     @FXML
-    private final Label FeatureGold = new Label();
+    private Label FeatureGold = new Label();
     @FXML
-    private final Label ResourceFood = new Label();
+    private  Label ResourceFood = new Label();
     @FXML
-    private final Label ResourceProduction = new Label();
+    private  Label ResourceProduction = new Label();
     @FXML
-    private final Label ResourceGold = new Label();
+    private  Label ResourceGold = new Label();
     @FXML
-    private final Label ImprovementFood = new Label();
+    private  Label ImprovementFood = new Label();
     @FXML
-    private final Label ImprovementProduction = new Label();
+    private  Label ImprovementProduction = new Label();
     @FXML
-    private final Label ImprovementGold = new Label();
+    private  Label ImprovementGold = new Label();
     @FXML
-    private final ImageView TerrainImage = new ImageView();
+    private  ImageView TerrainImage = new ImageView();
     @FXML
-    private final ImageView FeatureImage = new ImageView();
+    private  ImageView FeatureImage = new ImageView();
     @FXML
-    private final ImageView ResourceImage = new ImageView();
+    private  ImageView ResourceImage = new ImageView();
     @FXML
-    private final ImageView ImprovementImage = new ImageView();
+    private  ImageView ImprovementImage = new ImageView();
 
     public void setData(Terrain terrain) {
 
         x.setText("x : " + terrain.getX());
         y.setText("y : " + terrain.getY());
-        System.out.println(terrain.getX() + " " + terrain.getY() + "ehsan" + terrain.getTerrainTypes().name());
         TerrainType.setText(terrain.getTerrainTypes().name());
         TypeFood.setText(Integer.toString(terrain.getTerrainTypes().getFood()));
         TypeProduction.setText(Integer.toString(terrain.getTerrainTypes().getProduct()));
@@ -88,6 +87,8 @@ public class TerrainPopUpController {
 
 
     }
+
+
 
 
 }
