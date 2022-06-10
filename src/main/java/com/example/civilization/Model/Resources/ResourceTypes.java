@@ -164,8 +164,7 @@ public enum ResourceTypes {
     TechnologyTypes requiredTechnology;
     String ShowResourceMap;
 
-    ResourceTypes(int food, int production, int gold, ArrayList<Object> canBeFoundOn, ImprovementTypes requiredImprovement,
-                  TechnologyTypes requiredTechnology, String ShowResourceMap) {
+    ResourceTypes(int food, int production, int gold, ArrayList<Object> canBeFoundOn, ImprovementTypes requiredImprovement, TechnologyTypes requiredTechnology, String ShowResourceMap) {
         this.food = food;
         this.production = production;
         this.gold = gold;

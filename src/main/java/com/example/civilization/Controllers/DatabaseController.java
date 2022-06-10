@@ -592,7 +592,7 @@ public class DatabaseController {
 
     public void setCivilizations(ArrayList<User> users) {
 
-        this.database.setCivilizationsName(new ArrayList<>(List.of("I", "A", "R", "An", "C", "M", "Anc", "I", "Me", "Pe")));
+        this.database.setCivilizationsName(new ArrayList<>(List.of("Incan", "Aztec", "Roman", "Ancient Greek", "Chinese", "Maya", "Ancient Egyptian", "Indus Valley", "Mesopotamian", "Persian")));
         ArrayList<Integer> indices = setIndices(users);
         int i = 0;
         for (User user : users) {

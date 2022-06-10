@@ -26,8 +26,7 @@ public enum ImprovementTypes {
             add(TerrainFeatureTypes.RIVER);
 
         }
-    }, "RO"),
-    RAILROAD(3, 0, 0, 0, new ArrayList<>() {
+    }, "RO"), RAILROAD(3, 0, 0, 0, new ArrayList<>() {
     }, TechnologyTypes.RAILROAD, new ArrayList<>() {
         {
             add(TerrainTypes.TUNDRA);
@@ -186,8 +185,7 @@ public enum ImprovementTypes {
         return this.food;
     }
 
-    public int getProduction()
-    {
+    public int getProduction() {
         return production;
     }
 
