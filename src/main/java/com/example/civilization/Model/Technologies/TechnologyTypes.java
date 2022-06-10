@@ -367,6 +367,7 @@ public enum TechnologyTypes {
     }, new ArrayList<>() {
         {
             add(TechnologyTypes.SCIENTIFIC_THEORY);
+            add(TechnologyTypes.ARCHAEOLOGY);
         }
     }, new ArrayList<>() {
     }), ARCHAEOLOGY(1300, new ArrayList<>() {
@@ -602,6 +603,7 @@ public enum TechnologyTypes {
         {
             add(TechnologyTypes.ELECTRICITY);
             add(TechnologyTypes.REPLACEABLE_PARTS);
+            add(TechnologyTypes.RAILROAD);
         }
     }, new ArrayList<>() {
         {
