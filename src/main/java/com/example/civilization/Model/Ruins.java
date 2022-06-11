@@ -1,11 +1,13 @@
 package com.example.civilization.Model;
 
+import com.example.civilization.Controllers.DatabaseController;
 import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.Technologies.Technology;
 import com.example.civilization.Model.Technologies.TechnologyTypes;
 import com.example.civilization.Model.Units.NonCombatUnit;
 import com.example.civilization.Model.Units.UnitTypes;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Ruins {
@@ -31,7 +33,7 @@ public class Ruins {
                 nonCombatUnit = settler;
                 civilization.getUnits().add(settler);
                 map.getTerrain()[x][y].setNonCombatUnit(settler);
-                System.out.println("settler added " + x + " "+ y);
+                System.out.println("settler added " + x + " " + y);
             }
 
         } else {
@@ -40,11 +42,11 @@ public class Ruins {
                 nonCombatUnit = worker;
                 civilization.getUnits().add(worker);
                 map.getTerrain()[x][y].setNonCombatUnit(worker);
-                System.out.println("worker added" + x +" "+ y);
+                System.out.println("worker added" + x + " " + y);
             }
         }
 
-        if(civilization.getCities().size()>0){
+        if (civilization.getCities().size() > 0) {
             nxt = ran.nextInt(civilization.getCities().size());
             this.city = civilization.getCities().get(nxt);
             int gold = ran.nextInt(200);
@@ -52,20 +54,24 @@ public class Ruins {
             civilization.getCities().get(nxt).setGold(civilization.getCities().get(nxt).getGold() + gold);
         }
 
-        TechnologyTypes value = TechnologyTypes.values()[new Random().nextInt(TechnologyTypes.values().length)];
-        boolean isNew = true;
-        for (Technology technology : civilization.getTechnologies()) {
-            if (technology.getTechnologyType().equals(value)) {
-                System.out.println("you have this tech");
-                isNew = false;
-                break;
+        ArrayList<TechnologyTypes> values = DatabaseController.getInstance().unlockableTechnologies(DatabaseController.getInstance().getUserByCivilization(civilization));
+        if (!values.isEmpty()) {
+            TechnologyTypes value = values.get(new Random().nextInt(values.size()));
+            boolean isNew = true;
+            for (Technology technology : civilization.getTechnologies()) {
+                if (technology.getTechnologyType().equals(value)) {
+                    System.out.println("you have this tech");
+                    isNew = false;
+                    break;
+                }
             }
-        }
-        if (isNew) {
-            Technology technology = new Technology(false, 0, value, true);
-            technologyRuins = technology;
-            civilization.getTechnologies().add(technology);
-            System.out.println("Tech added "+ x + " " +y);
+            if (isNew) {
+                Technology technology = new Technology(false, 0, value, true);
+                technologyRuins = technology;
+                civilization.getTechnologies().add(technology);
+                System.out.println("Tech added " + x + " " + y);
+            }
+
         }
 
 

@@ -5,6 +5,7 @@ import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.*;
 import com.example.civilization.Model.Improvements.Improvement;
 import com.example.civilization.Model.Improvements.ImprovementTypes;
+import com.example.civilization.Model.Map;
 import com.example.civilization.Model.Resources.Resource;
 import com.example.civilization.Model.Resources.ResourceTypes;
 import com.example.civilization.Model.Technologies.Technology;
@@ -13,24 +14,23 @@ import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
 import com.example.civilization.Model.Units.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
+import static java.util.Comparator.naturalOrder;
 
 public class DatabaseController {
     private static DatabaseController instance;
-    public static DatabaseController getInstance(){
-        if(instance == null){
-             instance = new DatabaseController();
-        }
-        return instance;
-    }
     public HashMap<User, String> notificationHistory = new HashMap<>();
     private Database database;
-
     public DatabaseController() {
         this.database = Database.getInstance();
+    }
+
+    public static DatabaseController getInstance() {
+        if (instance == null) {
+            instance = new DatabaseController();
+        }
+        return instance;
     }
 
     public void addUser(User user) {
@@ -847,6 +847,15 @@ public class DatabaseController {
 
     public boolean isContainTechnology(User user, TechnologyTypes technologyType) {
         for (Technology technology : user.getCivilization().getTechnologies()) {
+            if (technology.getTechnologyType() != null && technology.getTechnologyType().equals(technologyType) && technology.getIsAvailable()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean isContainTechnologyType(User user, TechnologyTypes technologyType) {
+        for (Technology technology : user.getCivilization().getTechnologies()) {
             if (technology.getTechnologyType() != null && technology.getTechnologyType().equals(technologyType)) {
                 return true;
             }
@@ -1640,6 +1649,107 @@ public class DatabaseController {
         for (City city : user.getCivilization().getCities()) {
             if (x == city.getCentralTerrain().getX() && y == city.getCentralTerrain().getY()) {
                 return city;
+            }
+        }
+        return null;
+    }
+
+
+    public void choosingATechnologyToStudyForGraphic(User user, TechnologyTypes technologyType) {
+
+        for (Technology technology : user.getCivilization().getTechnologies()) {
+            technology.setUnderResearch(false);
+        }
+        if (isContainTechnologyType(user, getFirstRequiredTechnology(user,technologyType)) && !getTechnologyByTechnologyType(user, getFirstRequiredTechnology(user,technologyType)).getIsAvailable()) {
+            getTechnologyByTechnologyType(user, getFirstRequiredTechnology(user,technologyType)).setUnderResearch(true);
+           // System.out.println("Technology is under research again " + getFirstRequiredTechnology(user,technologyType).name());
+        } else if (!isContainTechnologyType(user, getFirstRequiredTechnology(user,technologyType))){
+            user.getCivilization().getTechnologies().add(new Technology(true, 0, getFirstRequiredTechnology(user,technologyType), false));
+        }
+
+       // System.out.println("Technology is under research " + getFirstRequiredTechnology(user,technologyType).name());
+    }
+
+    public void getNeededTechnologies(HashMap<TechnologyTypes, Integer> requiredTechnologies, int depth, User user, TechnologyTypes technologyTypes) {
+        for (TechnologyTypes technologyTypes1 : technologyTypes.getRequirements()) {
+            if (!isContainTechnology(user, technologyTypes1)) {
+                requiredTechnologies.put(technologyTypes1, depth);
+                getNeededTechnologies(requiredTechnologies, depth + 1, user, technologyTypes1);
+            }
+        }
+
+    }
+
+    public TechnologyTypes getFirstRequiredTechnology(User user, TechnologyTypes technologyTypes) {
+        
+        HashMap<TechnologyTypes, Integer> neededTechs = new HashMap<>();
+        getNeededTechnologies(neededTechs, 1, user, technologyTypes);
+        if(neededTechs.isEmpty()){
+            return technologyTypes;
+        }
+        List<Integer> list = new ArrayList<>(neededTechs.values());
+        list.sort(naturalOrder());
+        int max = list.get(list.size()-1);
+        List<TechnologyTypes> techs = neededTechs.entrySet().stream()
+                .filter(e -> e.getValue() == max)
+                .map(e -> e.getKey()).toList()
+                ;
+        return techs.get(0);
+
+    }
+
+
+    public ArrayList<TechnologyTypes> unlockableTechnologies(User user){
+        ArrayList<TechnologyTypes> technologyTypes = new ArrayList<>();
+        for(TechnologyTypes technologyTypes1 : TechnologyTypes.values()){
+            if(haveAllPrerequisiteTechnologies(user,technologyTypes1) && !isContainTechnology(user,technologyTypes1)){
+                technologyTypes.add(technologyTypes1);
+            }
+
+        }
+        return technologyTypes;
+    }
+
+    public boolean haveAllPrerequisiteTechnologies(User user,TechnologyTypes technologyTypes){
+        for(TechnologyTypes technologyTypes1 : technologyTypes.getRequirements()){
+            if(!isContainTechnology(user,technologyTypes1)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public User getUserByCivilization(Civilization civilization){
+        for(User user : database.getUsers()){
+            if(user.getCivilization().equals(civilization)){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<Object> removeExcessObjects(ArrayList<Object> objects){
+        ArrayList<Object> finalArrayList = new ArrayList<>();
+        for (Object object : objects) {
+            boolean isNew = true;
+            for (Object object1 : finalArrayList) {
+                if (object.equals(object1)) {
+                    isNew = false;
+                    break;
+                }
+            }
+            if (isNew) {
+               finalArrayList.add(object);
+            }
+        }
+
+        return finalArrayList;
+    }
+
+    public TechnologyTypes getTechnologyTypeByName(String name){
+        for(TechnologyTypes technologyTypes : TechnologyTypes.values()){
+            if(technologyTypes.name().equalsIgnoreCase(name)){
+                return technologyTypes;
             }
         }
         return null;

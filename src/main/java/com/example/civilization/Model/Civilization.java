@@ -1,5 +1,6 @@
 package com.example.civilization.Model;
 
+import com.example.civilization.Model.Buildings.BuildingTypes;
 import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.Technologies.Technology;
 import com.example.civilization.Model.Technologies.TechnologyTypes;
@@ -8,6 +9,7 @@ import com.example.civilization.Model.Units.NonCombatUnit;
 import com.example.civilization.Model.Units.Unit;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Civilization {
 
@@ -26,6 +28,14 @@ public class Civilization {
     private boolean canBuySettler;
 
     public Civilization(int gold, int happiness, String name) {
+        Technology technology = new Technology(false, 0, TechnologyTypes.AGRICULTURE, true);
+        Technology technology1 = new Technology(true, 0, TechnologyTypes.ANIMAL_HUSBANDRY, false);
+        Technology technology2 = new Technology(false, 0, TechnologyTypes.POTTERY, true);
+        technologies.add(technology);
+        technologies.add(technology1);
+        technologies.add(technology2);
+
+
 
         this.gold = gold;
         this.happiness = happiness;

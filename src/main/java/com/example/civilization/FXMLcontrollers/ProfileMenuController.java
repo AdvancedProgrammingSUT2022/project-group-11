@@ -204,7 +204,7 @@ public class ProfileMenuController {
 
     @FXML
     public void goToGameMenu(ActionEvent event) throws IOException {
-        Main.changeMenu("gameMap");
+        Main.changeMenu("TechnologyTree");
     }
 
     @FXML
