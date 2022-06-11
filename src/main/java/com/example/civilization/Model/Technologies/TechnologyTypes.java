@@ -640,6 +640,10 @@ public enum TechnologyTypes {
         return technologyUnlocks;
     }
 
+    public ArrayList<Object> getUnlocks() {
+        return unlocks;
+    }
+
     public int getCost() {
         return cost;
     }

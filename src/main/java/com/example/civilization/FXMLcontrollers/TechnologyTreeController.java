@@ -1,10 +1,14 @@
 package com.example.civilization.FXMLcontrollers;
 
 import com.example.civilization.Controllers.DatabaseController;
+import com.example.civilization.Main;
 import com.example.civilization.Model.Technologies.TechnologyTypes;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -17,6 +21,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,6 +78,8 @@ public class TechnologyTreeController {
                             }
                         }
                     });
+
+                    showingPopUp(DatabaseController.getInstance().getTechnologyTypeByName(((Text) ((StackPane) children).getChildren().get(1)).getText()), (StackPane) children);
 
                 }
 
@@ -152,5 +159,23 @@ public class TechnologyTreeController {
 
             }
         }
+    }
+
+    public void showingPopUp(TechnologyTypes technologyTypes, StackPane stackPane) {
+        try {
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXML/TechnologyPopUp.fxml"));
+            Parent root = loader.load();
+            TechnologyPopUpController secController = loader.getController();
+            secController.setData(technologyTypes);
+            Stage stage = new Stage();
+            stage.setScene(new Scene(root));
+
+            stackPane.setOnMousePressed(e ->{stage.show();});
+            stackPane.setOnMouseReleased(e -> stage.close());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
