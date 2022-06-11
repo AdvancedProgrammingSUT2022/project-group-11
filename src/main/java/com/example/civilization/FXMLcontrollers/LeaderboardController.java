@@ -8,9 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 
@@ -28,7 +25,7 @@ public class LeaderboardController {
 
 
     @FXML
-    public void initialize() throws FileNotFoundException {
+    public void initialize() {
 
 
         ArrayList<User> users = Database.getInstance().getUsers();
@@ -50,7 +47,7 @@ public class LeaderboardController {
 
     }
 
-    public void backToMainMenu(ActionEvent event) throws IOException {
+    public void backToMainMenu() {
         Main.changeMenu("ProfileMenu");
     }
 

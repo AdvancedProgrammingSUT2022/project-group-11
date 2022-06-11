@@ -1667,7 +1667,7 @@ public class DatabaseController {
             user.getCivilization().getTechnologies().add(new Technology(true, 0, getFirstRequiredTechnology(user,technologyType), false));
         }
 
-       // System.out.println("Technology is under research " + getFirstRequiredTechnology(user,technologyType).name());
+    //    System.out.println("Technology is under research " + getFirstRequiredTechnology(user,technologyType).name());
     }
 
     public void getNeededTechnologies(HashMap<TechnologyTypes, Integer> requiredTechnologies, int depth, User user, TechnologyTypes technologyTypes) {
@@ -1750,6 +1750,25 @@ public class DatabaseController {
         for(TechnologyTypes technologyTypes : TechnologyTypes.values()){
             if(technologyTypes.name().equalsIgnoreCase(name)){
                 return technologyTypes;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<TechnologyTypes> unlockTechnologies(TechnologyTypes technologyTypes){
+        ArrayList<TechnologyTypes> unlockTechnologies = new ArrayList<>();
+        for(TechnologyTypes technologyTypes1 : TechnologyTypes.values()){
+            if(technologyTypes1.getRequirements().contains(technologyTypes)){
+                unlockTechnologies.add(technologyTypes1);
+            }
+        }
+        return unlockTechnologies;
+    }
+
+    public TechnologyTypes lastUnlockedTechnology(){
+        for(int i = getDatabase().getActiveUser().getCivilization().getTechnologies().size() -1 ; i>=0;i--){
+            if(getDatabase().getActiveUser().getCivilization().getTechnologies().get(i).getIsAvailable()){
+                return getDatabase().getActiveUser().getCivilization().getTechnologies().get(i).getTechnologyType();
             }
         }
         return null;

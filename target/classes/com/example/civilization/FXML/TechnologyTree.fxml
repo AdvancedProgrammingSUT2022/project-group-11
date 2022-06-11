@@ -2,6 +2,8 @@
 
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Line?>
@@ -393,7 +395,12 @@
                   <Font name="Copperplate" size="18.0" />
                </font>
             </Text>
-            <TextField alignment="CENTER" layoutX="67.0" layoutY="74.0" prefHeight="28.0" prefWidth="177.0" promptText="Search By Name" />
+            <TextField fx:id="searchBar" alignment="CENTER" layoutX="154.0" layoutY="28.0" prefHeight="28.0" prefWidth="177.0" promptText="Search By Name" />
+            <ImageView fitHeight="50.0" fitWidth="68.0" layoutX="33.0" layoutY="19.0" onMouseClicked="#backToChooseResearch" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../PNG/images/back.png" />
+               </image>
+            </ImageView>
          </children></AnchorPane>
   </content>
 </ScrollPane>

@@ -11,6 +11,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
@@ -232,6 +233,8 @@ public class GameMapController {
 
     }
 
+
+
     public Polygon addingRivers(int radius, int i, int j, double x, double y) throws FileNotFoundException {
         Polygon rivers = new Polygon();
         for (int a = -1; a < 2; a++) {
@@ -298,6 +301,12 @@ public class GameMapController {
             }
         }
         return false;
+    }
+
+    public void goToChooseResearch() {
+        System.out.println("hello");
+        Main.loadFXML("ChooseResearch");
+
     }
 
 

@@ -644,6 +644,7 @@ public enum TechnologyTypes {
         return unlocks;
     }
 
+
     public int getCost() {
         return cost;
     }

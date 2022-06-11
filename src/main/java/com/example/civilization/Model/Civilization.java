@@ -28,6 +28,7 @@ public class Civilization {
     private boolean canBuySettler;
 
     public Civilization(int gold, int happiness, String name) {
+
         Technology technology = new Technology(false, 0, TechnologyTypes.AGRICULTURE, true);
         Technology technology1 = new Technology(true, 0, TechnologyTypes.ANIMAL_HUSBANDRY, false);
         Technology technology2 = new Technology(false, 0, TechnologyTypes.POTTERY, true);

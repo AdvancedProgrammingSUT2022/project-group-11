@@ -20,11 +20,11 @@
             <Font name="Century Gothic Bold" size="55.0" />
          </font>
       </Label>
-      <Button fx:id="login" layoutX="653.0" layoutY="335.0" mnemonicParsing="false" onMouseClicked="#moveToLogin" prefHeight="25.0" prefWidth="218.0" styleClass="Button" stylesheets="@../CSS/LoginMenu.css" text="Login">
+      <Button fx:id="login" layoutX="656.0" layoutY="337.0" mnemonicParsing="false" onMouseClicked="#moveToLogin" prefHeight="25.0" prefWidth="218.0" styleClass="Button" stylesheets="@../CSS/LoginMenu.css" text="Login">
          <cursor>
             <Cursor fx:constant="CROSSHAIR" />
          </cursor></Button>
-      <Button fx:id="SignUp" layoutX="656.0" layoutY="381.0" mnemonicParsing="false" onMouseClicked="#moveToSignUp" prefHeight="25.0" prefWidth="218.0" styleClass="Button" stylesheets="@../CSS/LoginMenu.css" text="Sign Up">
+      <Button fx:id="SignUp" layoutX="656.0" layoutY="388.0" mnemonicParsing="false" onMouseClicked="#moveToSignUp" prefHeight="25.0" prefWidth="218.0" styleClass="Button" stylesheets="@../CSS/LoginMenu.css" text="Sign Up">
          <cursor>
             <Cursor fx:constant="CROSSHAIR" />
          </cursor>

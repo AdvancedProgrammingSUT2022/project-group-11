@@ -1,5 +1,6 @@
 package com.example.civilization.FXMLcontrollers;
 
+import com.example.civilization.Controllers.DatabaseController;
 import com.example.civilization.Model.Buildings.BuildingTypes;
 import com.example.civilization.Model.Improvements.ImprovementTypes;
 import com.example.civilization.Model.Resources.ResourceTypes;
@@ -28,7 +29,7 @@ public class TechnologyPopUpController {
 
     public void setData(TechnologyTypes technologyTypes) throws FileNotFoundException {
         int i = 0;
-        for (TechnologyTypes technologyTypes1 : technologyTypes.getRequirements()) {
+        for (TechnologyTypes technologyTypes1 : DatabaseController.getInstance().unlockTechnologies(technologyTypes)) {
             unlocks.add(new Label());
             unlocks.get(i).setFont(Font.font("Copperplate", 15));
             unlocks.get(i).setTextFill(Color.RED);
@@ -38,8 +39,6 @@ public class TechnologyPopUpController {
             unlocks.get(i).setVisible(true);
             unlocks.get(i).setLayoutX(unlockLabel.getLayoutX());
             unlocks.get(i).setLayoutY(unlockLabel.getLayoutY() +50*(i+1));
-            String name = unlocks.get(i).getText();
-            System.out.println(name + " mani");
             anchorPane.getChildren().add(unlocks.get(i));
             i++;
         }
