@@ -32,17 +32,8 @@ public class DatabaseController {
         }
         return instance;
     }
-
-    public void addUser(User user) {
-        this.database.addUser(user);
-    }
-
     public Database getDatabase() {
         return this.database;
-    }
-
-    public void setDatabase(Database database) {
-        this.database = database;
     }
 
     public Map getMap() {
@@ -51,74 +42,48 @@ public class DatabaseController {
     }
 
     public String createUser(String u, String p, String n) {
-        String username = u;
-        String password = p;
-        String nickname = n;
 
         ArrayList<User> users = this.database.getUsers();
 
         for (User user : users) {
-            if (user.getUsername().equals(username)) {
-                return "user with username " + username + " already exists";
+            if (user.getUsername().equals(u)) {
+                return "user with username " + u + " already exists";
             }
-            if (user.getNickname().equals(nickname)) {
+            if (user.getNickname().equals(n)) {
                 System.out.println();
-                return "user with nickname " + nickname + " already exists";
+                return "user with nickname " + n + " already exists";
             }
         }
 
-        User newUser = new User(username, password, nickname, null);
+        User newUser = new User(u, p, n, null);
         this.database.addUser(newUser);
         return "user created successfully!";
     }
 
     public User userLogin(String u, String p) {
-        String username = u;
-        String password = p;
-        User user = this.database.getUserByUsernameAndPassword(username, password);
-        if (user != null) {
-
-            return user;
-        }
-
-        return null;
-    }
-
-    public User getUserByUsername(String username) {
-        return this.database.getUserByUsername(username);
+        return this.database.getUserByUsernameAndPassword(u, p);
     }
 
     public String changeUserNickname(String n, User player) {
-        String newNickname = n;
 
-        User user = database.getUserByNickname(newNickname);
+        User user = database.getUserByNickname(n);
         if (user != null) {
-            return "user with nickname " + newNickname + " already exists";
+            return "user with nickname " + n + " already exists";
         }
-        player.setNickname(newNickname);
+        player.setNickname(n);
         return "nickname changed successfully!";
     }
 
     public String changePassword(String p, User user) {
         String currentPassword = user.getPassword();
-        String newPassword = p;
 
 
-        if (currentPassword.equals(newPassword)) {
+        if (currentPassword.equals(p)) {
             return "please enter a new password";
         }
-        user.setPassword(newPassword);
+        user.setPassword(p);
         return "password changed successfully! Please Login again with your new password";
     }
-
-    public String logOut(User user) {
-        if (user != null) {
-            user = null;
-            return "User logged out successfully!";
-        }
-        return "You have to log in first";
-    }
-
     public String selectAndDeselectCombatUnit(User user, int x, int y) {
         Map map = this.getMap();
         int mapRows = map.getROW();
@@ -200,12 +165,10 @@ public class DatabaseController {
 
     public String changingTheStateOfANonCombatUnit(NonCombatUnit nonCombatUnit, String action) {
         setAllParametersFalse(nonCombatUnit);
-        if (action.equals("sleep")) {
-            nonCombatUnit.setIsAsleep(true);
-        } else if (action.equals("wake")) {
-            nonCombatUnit.setIsAsleep(false);
-        } else if (action.equals("delete")) {
-            nonCombatUnit = null;
+        switch (action) {
+            case "sleep" -> nonCombatUnit.setIsAsleep(true);
+            case "wake" -> nonCombatUnit.setIsAsleep(false);
+            case "delete" -> nonCombatUnit = null;
         }
         if (!action.equals("delete")) {
             nonCombatUnit.setIsFinished(true);
@@ -451,11 +414,7 @@ public class DatabaseController {
         }
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
-                if (x_beginning + i < 0 || x_beginning + i >= map.getROW() || y_beginning + j < 0 || y_beginning + j >= map.getCOL()) {
-
-                } else if (y_beginning % 2 == 0 && ((i == 0 && j == 0) || (i == 1 && j == -1) || (i == 1 && j == 1))) {
-
-                } else if (y_beginning % 2 == 1 && ((i == 0 && j == 0) || (i == -1 && j == 1) || (i == -1 && j == -1))) {
+                if (x_beginning + i < 0 || x_beginning + i >= map.getROW() || y_beginning + j < 0 || y_beginning + j >= map.getCOL() || y_beginning % 2 == 0 && ((i == 0 && j == 0) || (i == 1 && j == -1) || (i == 1 && j == 1)) || y_beginning % 2 == 1 && ((i == 0 && j == 0) || (i == -1 && j == 1) || (i == -1 && j == -1))) {
 
                 } else {
                     ArrayList<Terrain> path_copy = new ArrayList<>(path);
@@ -694,8 +653,8 @@ public class DatabaseController {
             int gold = city.getGold();
             user.getCivilization().increaseGold(gold);
         }
+        int numberOfUnits = user.getCivilization().getUnits().size();
         if (user.getCivilization().getGold() >= 0) {
-            int numberOfUnits = user.getCivilization().getUnits().size();
             user.getCivilization().increaseGold(-numberOfUnits * database.getTurn());
             for (City city : user.getCivilization().getCities()) {
                 for (Building cityBuildings : city.getBuildings()) {
@@ -703,7 +662,6 @@ public class DatabaseController {
                 }
             }
         } else {
-            int numberOfUnits = user.getCivilization().getUnits().size();
             user.getCivilization().setScience(user.getCivilization().getScience() - numberOfUnits * database.getTurn());
             for (City city : user.getCivilization().getCities()) {
                 for (Building cityBuildings : city.getBuildings()) {
@@ -887,11 +845,7 @@ public class DatabaseController {
         int y_beginning = terrain.getY();
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
-                if (x_beginning + i < 0 || x_beginning + i >= map.getROW() || y_beginning + j < 0 || y_beginning + j >= map.getCOL()) {
-
-                } else if (y_beginning % 2 == 0 && ((i == 0 && j == 0) || (i == 1 && j == -1) || (i == 1 && j == 1))) {
-
-                } else if (y_beginning % 2 == 1 && ((i == 0 && j == 0) || (i == -1 && j == 1) || (i == -1 && j == -1))) {
+                if (x_beginning + i < 0 || x_beginning + i >= map.getROW() || y_beginning + j < 0 || y_beginning + j >= map.getCOL() || y_beginning % 2 == 0 && ((i == 0 && j == 0) || (i == 1 && j == -1) || (i == 1 && j == 1)) || y_beginning % 2 == 1 && ((i == 0 && j == 0) || (i == -1 && j == 1) || (i == -1 && j == -1))) {
 
                 } else {
                     neighbors.add(copy_map[x_beginning + i][y_beginning + j]);

@@ -13,8 +13,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -71,7 +69,7 @@ public class ProfileMenuController {
     public void setUpEditPage() {
         editNickname.setPromptText(Database.getInstance().getActiveUser().getNickname());
         editPassword.setPromptText(Database.getInstance().getActiveUser().getPassword());
-        Image image = null;
+        Image image;
         try {
             image = new Image(new FileInputStream(Database.getInstance().getActiveUser().getProfilePicture()));
         } catch (FileNotFoundException e) {

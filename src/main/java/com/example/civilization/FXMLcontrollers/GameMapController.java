@@ -11,7 +11,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.ImagePattern;
@@ -28,7 +27,7 @@ public class GameMapController {
 
     @FXML
     private final ArrayList<Polygon> terrainHexagons = new ArrayList<>();
-    private final TerrainPopUpController terrainPopUpController = new TerrainPopUpController();
+
 
 
     DatabaseController databaseController = DatabaseController.getInstance();
@@ -223,7 +222,7 @@ public class GameMapController {
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             for (Polygon polygon : polygons) {
-                polygon.setOnMousePressed(e ->{stage.show();});
+                polygon.setOnMousePressed(e -> stage.show());
                 polygon.setOnMouseReleased(e -> stage.close());
             }
 
@@ -276,7 +275,7 @@ public class GameMapController {
         return rivers;
     }
 
-    public String getImagePatternOfTiles(String name) throws FileNotFoundException {
+    public String getImagePatternOfTiles(String name) {
         if (terrainTypeAndFeatureAddress(name))
             return "src/main/resources/com/example/civilization/PNG/civAsset/map/Tiles/" + name + ".png";
 

@@ -12,7 +12,6 @@ import com.example.civilization.Model.Technologies.TechnologyTypes;
 import com.example.civilization.Model.Terrain;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Units.*;
-import javafx.css.Match;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -265,24 +264,7 @@ public class CityController {
     }
 
 
-    public HashMap<String, ArrayList<String>> cityMenu(City city)
-    {
-        HashMap<String, ArrayList<String>> ans = new HashMap<>();
-        Civilization civilization = city.getOwner();
-        ArrayList<String > units = new ArrayList<>();
-        this.databaseController.setTechnologyTypes(civilization);
-        ArrayList<TechnologyTypes> technologyTypes = civilization.getTechnologyTypes();
-        for ( UnitTypes unitType : UnitTypes.values() )
-        {
-            if (technologyTypes.contains( unitType.getTechnologyRequirements() ))
-            {
-                units.add("name: " + unitType.name() + " turn: " + unitType.getTurn());
-            }
-        }
-        ans.put("Units ", units);
 
-        return ans;
-    }
 
 
     public String createUnitWithTurn(Matcher matcher, City city) {
@@ -902,12 +884,7 @@ public class CityController {
         int y_beginning = terrain.getY();
         for (int i = -1; i < 2; i++) {
             for (int j = -1; j < 2; j++) {
-                if (x_beginning + i < 0 || x_beginning + i >= map.getROW() || y_beginning + j < 0 || y_beginning + j >= map.getCOL()) {
-
-                } else if (y_beginning % 2 == 0 && ((i == 0 && j == 0) || (i == 1 && j == 1))) {
-
-                } else if (y_beginning % 2 == 1 && ((i == 0 && j == 0) || (i == -1 && j == -1))) {
-
+                if (x_beginning + i < 0 || x_beginning + i >= map.getROW() || y_beginning + j < 0 || y_beginning + j >= map.getCOL() || y_beginning % 2 == 0 && ((i == 0 && j == 0) || (i == 1 && j == 1)) || y_beginning % 2 == 1 && ((i == 0 && j == 0) || (i == -1 && j == -1))) {
 
                 } else {
                     neighbors.add(copy_map[x_beginning + i][y_beginning + j]);

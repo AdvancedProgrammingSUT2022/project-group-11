@@ -4,7 +4,6 @@ import com.example.civilization.Controllers.DatabaseController;
 import com.example.civilization.Main;
 import com.example.civilization.Model.Database;
 import com.example.civilization.Model.User;
-import com.example.civilization.View.ProfileMenu;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
