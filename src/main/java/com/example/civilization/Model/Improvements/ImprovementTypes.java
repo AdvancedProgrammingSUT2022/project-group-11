@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public enum ImprovementTypes {
     ROAD(3, 0, 0, 0, new ArrayList<>() {
-    }, TechnologyTypes.THE_WHEEL, new ArrayList<>() {
+    }, new ArrayList<>() {
         {
 
             add(TerrainTypes.TUNDRA);
@@ -27,7 +27,7 @@ public enum ImprovementTypes {
 
         }
     }, "RO"), RAILROAD(3, 0, 0, 0, new ArrayList<>() {
-    }, TechnologyTypes.RAILROAD, new ArrayList<>() {
+    }, new ArrayList<>() {
         {
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.PLAINS);
@@ -49,7 +49,7 @@ public enum ImprovementTypes {
             add(ResourceTypes.IVORY);
             add(ResourceTypes.DEER);
         }
-    }, TechnologyTypes.AGRICULTURE, new ArrayList<>() {
+    }, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
             add(TerrainTypes.TUNDRA);
@@ -62,13 +62,13 @@ public enum ImprovementTypes {
         {
             add(ResourceTypes.WHEAT);
         }
-    }, TechnologyTypes.AGRICULTURE, new ArrayList<>() {
+    }, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLAND);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
         }
-    }, "FAR"), LUMBERMILL(6, 0, 1, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<>() {
+    }, "FAR"), LUMBERMILL(6, 0, 1, 0, null, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
         }
@@ -81,7 +81,7 @@ public enum ImprovementTypes {
             add(ResourceTypes.GOLD);
             add(ResourceTypes.SILVER);
         }
-    }, TechnologyTypes.MINING, new ArrayList<>() {
+    }, new ArrayList<>() {
         {
             add(TerrainFeatureTypes.FOREST);
             add(TerrainTypes.PLAINS);
@@ -96,8 +96,9 @@ public enum ImprovementTypes {
             add(ResourceTypes.HORSES);
             add(ResourceTypes.CATTLE);
             add(ResourceTypes.SHEEP);
+            add(ResourceTypes.BANANAS);
         }
-    }, TechnologyTypes.ANIMAL_HUSBANDRY, new ArrayList<>() {
+    }, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLAND);
             add(TerrainTypes.PLAINS);
@@ -114,7 +115,7 @@ public enum ImprovementTypes {
             add(ResourceTypes.COTTON);
             add(ResourceTypes.INCENSE);
         }
-    }, TechnologyTypes.CALENDAR, new ArrayList<>() {
+    }, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLAND);
             add(TerrainTypes.PLAINS);
@@ -128,7 +129,7 @@ public enum ImprovementTypes {
         {
             add(ResourceTypes.MARBLE);
         }
-    }, TechnologyTypes.MASONRY, new ArrayList<>() {
+    }, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLAND);
             add(TerrainTypes.PLAINS);
@@ -136,14 +137,14 @@ public enum ImprovementTypes {
             add(TerrainTypes.TUNDRA);
             add(TerrainTypes.HILLS);
         }
-    }, "QUA"), TRADINGPOST(8, 0, 0, 1, null, TechnologyTypes.TRAPPING, new ArrayList<>() {
+    }, "QUA"), TRADINGPOST(8, 0, 0, 1, null, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLAND);
             add(TerrainTypes.PLAINS);
             add(TerrainTypes.DESERT);
             add(TerrainTypes.TUNDRA);
         }
-    }, "TRA"), MANUFACTORY(4, 0, 2, 0, null, TechnologyTypes.ENGINEERING, new ArrayList<>() {
+    }, "TRA"), MANUFACTORY(4, 0, 2, 0, null, new ArrayList<>() {
         {
             add(TerrainTypes.GRASSLAND);
             add(TerrainTypes.PLAINS);
@@ -158,18 +159,16 @@ public enum ImprovementTypes {
     int gold;
     int turn;
     ArrayList<ResourceTypes> resourcesAccessed;
-    TechnologyTypes requiredTechnology;
     ArrayList<Object> canBeBuiltON;
     String ShowImprovement;
 
 
-    ImprovementTypes(int turn, int food, int production, int gold, ArrayList<ResourceTypes> resourcesAccessed, TechnologyTypes requiredTechnology, ArrayList<Object> canBeBuiltOn, String ShowImprovement) {
-        System.out.println(this.name());
+    ImprovementTypes(int turn, int food, int production, int gold, ArrayList<ResourceTypes> resourcesAccessed, ArrayList<Object> canBeBuiltOn, String ShowImprovement) {
+        this.turn = turn;
         this.food = food;
         this.production = production;
         this.gold = gold;
         this.resourcesAccessed = resourcesAccessed;
-        this.requiredTechnology = requiredTechnology;
         this.canBeBuiltON = canBeBuiltOn;
         this.ShowImprovement = ShowImprovement;
     }
@@ -207,11 +206,12 @@ public enum ImprovementTypes {
     }
 
     public TechnologyTypes getRequiredTechnology() {
-        return requiredTechnology;
-    }
-
-    public void setRequiredTechnology(TechnologyTypes requiredTechnology) {
-        this.requiredTechnology = requiredTechnology;
+        for(TechnologyTypes technologyTypes : TechnologyTypes.values()){
+            if(technologyTypes.getUnlocks().contains(this)){
+                return technologyTypes;
+            }
+        }
+        return null;
     }
 
     public int getTurn() {

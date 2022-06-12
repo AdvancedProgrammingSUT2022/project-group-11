@@ -1738,17 +1738,11 @@ public class DatabaseController {
             Terrain workersTerrain = getTerrainByCoordinates(workers.getX(), workers.getY());
 
             if (DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getOwnedTerrains().contains(workersTerrain)) {
-                System.out.println("fddfd");
                 for (ImprovementTypes improvementTypes : ImprovementTypes.values()) {
-                    System.out.println(improvementTypes.getCanBeBuiltON().contains(workersTerrain.getTerrainTypes()));
-                    System.out.println(workersTerrain.getTerrainTypes());
-                    if(improvementTypes.getCanBeBuiltON().get(0) instanceof TerrainTypes || improvementTypes.getCanBeBuiltON().get(0) instanceof TerrainFeatureTypes){
-                        System.out.println("hello");
-                    }
-                    System.out.println(improvementTypes.getCanBeBuiltON());
-
                     if (workersTerrain.getTerrainImprovement() == null && isContainTechnology(DatabaseController.getInstance().getDatabase().getActiveUser(), improvementTypes.getRequiredTechnology()) && (improvementTypes.getCanBeBuiltON().contains(workersTerrain.getTerrainTypes()) || improvementTypes.getCanBeBuiltON().contains(workersTerrain.getTerrainFeatureTypes()))) {
-                        System.out.println(improvementTypes.name());
+                        improvementTypesList.add(improvementTypes);
+                    }
+                    if (workersTerrain.getTerrainImprovement() != null && workersTerrain.getTerrainImprovement().getImprovementType().equals(improvementTypes) && !workersTerrain.getTerrainImprovement().isBeingWorkedOn()) {
                         improvementTypesList.add(improvementTypes);
                     }
 
@@ -1766,8 +1760,7 @@ public class DatabaseController {
         NonCombatUnit workers = getSelectedNonCombatUnit();
         if (workers.getUnitType().equals(UnitTypes.WORKER)) {
             Terrain workersTerrain = getTerrainByCoordinates(workers.getX(), workers.getY());
-            if (workersTerrain.getTerrainImprovement() != null && (workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) || workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD))) {
-                System.out.println(workersTerrain.getTerrainImprovement().getImprovementType().name());
+            if (workersTerrain.getTerrainImprovement().isAvailable() && workersTerrain.getTerrainImprovement() != null && (workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) || workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD))) {
                 return workersTerrain.getTerrainImprovement().getImprovementType();
             }
         }

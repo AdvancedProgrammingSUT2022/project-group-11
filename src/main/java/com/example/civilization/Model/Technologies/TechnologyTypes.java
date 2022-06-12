@@ -133,6 +133,7 @@ public enum TechnologyTypes {
         {
             add(UnitTypes.CHARIOT_ARCHER);
             add(BuildingTypes.WATERMILL);
+            add(ImprovementTypes.ROAD);
             // TODO build a road
         }
     }), TRAPPING(55, new ArrayList<>() {
@@ -183,6 +184,7 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
+            add(UnitTypes.HORSESMAN);
             add(BuildingTypes.STABLE);
             add(BuildingTypes.CIRCUS);
         }
@@ -196,6 +198,7 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
+            add(ResourceTypes.IRON);
             add(UnitTypes.SWORDSMAN);
             add(BuildingTypes.ARMORY);
         }
@@ -266,6 +269,7 @@ public enum TechnologyTypes {
     }, new ArrayList<>() {
         {
             add(BuildingTypes.MARKET);
+            add(BuildingTypes.MINT);
         }
     }), ENGINEERING(250, new ArrayList<>() {
         {
@@ -279,6 +283,10 @@ public enum TechnologyTypes {
             add(TechnologyTypes.PHYSICS);
         }
     }, new ArrayList<>() {
+        {
+            add(ImprovementTypes.MANUFACTORY);
+            add(ImprovementTypes.LUMBERMILL);
+        }
     }),METAL_CASTING(240, new ArrayList<>() {
         {
             add(TechnologyTypes.IRON_WORKING);
@@ -423,6 +431,7 @@ public enum TechnologyTypes {
     }, new ArrayList<>() {
         {
             add(BuildingTypes.MUSEUM);
+            add(BuildingTypes.OPERA_HOUSE);
         }
     }), SCIENTIFIC_THEORY(1300, new ArrayList<>() {
         {
@@ -448,6 +457,11 @@ public enum TechnologyTypes {
             add(TechnologyTypes.FERTILIZER);
         }
     }, new ArrayList<>() {
+        {
+            add(UnitTypes.CANNON);
+        }
+
+
     }), METALLURGY(900, new ArrayList<>() {
         {
             add(TechnologyTypes.GUNPOWDER);
@@ -521,6 +535,9 @@ public enum TechnologyTypes {
             add(TechnologyTypes.ELECTRICITY);
         }
     }, new ArrayList<>() {
+        {
+        add(BuildingTypes.HOSPITAL);
+        }
     }), STEAM_POWER(1680, new ArrayList<>() {
         {
             add(TechnologyTypes.SCIENTIFIC_THEORY);
@@ -574,6 +591,7 @@ public enum TechnologyTypes {
     }, new ArrayList<>() {
         {
             add(BuildingTypes.ARSENAL);
+            add(ImprovementTypes.RAILROAD);
         }
     }), REPLACEABLE_PARTS(1900, new ArrayList<>() {
         {
@@ -626,7 +644,6 @@ public enum TechnologyTypes {
     ArrayList<Object> unlocks;
     TechnologyTypes(int cost, ArrayList<TechnologyTypes> requirement, ArrayList<TechnologyTypes> technologyUnlocks,
                     ArrayList<Object> unlocks) {
-        System.out.println(this.name());
         this.cost = cost;
         this.requirement = requirement;
         this.technologyUnlocks = technologyUnlocks;

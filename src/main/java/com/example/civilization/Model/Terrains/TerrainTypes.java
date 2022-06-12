@@ -41,6 +41,7 @@ public enum TerrainTypes {
             add(ResourceTypes.MARBLE);
             add(ResourceTypes.COTTON);
             add(ResourceTypes.SHEEP);
+            add(ResourceTypes.WHEAT);
         }
     }, Color.GREEN_BACKGROUND_BRIGHT),
     HILLS(0, 2, 0, 25, 2, new ArrayList<TerrainFeatureTypes>() {
@@ -121,7 +122,6 @@ public enum TerrainTypes {
     Color color;
     TerrainTypes(int food, int product, int gold, int combatModifier, int movementCost,
                  ArrayList<TerrainFeatureTypes> possibleFeatures, ArrayList<ResourceTypes> possibleResources, Color color) {
-        System.out.println(this.name());
         this.food = food;
         this.product = product;
         this.gold = gold;
@@ -161,5 +161,9 @@ public enum TerrainTypes {
     public int getCombatModifier()
     {
         return combatModifier;
+    }
+
+    public ArrayList<ResourceTypes> getPossibleResources() {
+        return possibleResources;
     }
 }

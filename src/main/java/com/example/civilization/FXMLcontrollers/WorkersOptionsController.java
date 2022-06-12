@@ -78,7 +78,7 @@ public class WorkersOptionsController {
             });
 
              */
-          //  showingPopUp(DatabaseController.getInstance().getTechnologyTypeByName(button.getText()), button);
+          showingPopUp(button);
 
             anchorPane.getChildren().add(unlockable.get(i));
             i++;
@@ -184,12 +184,12 @@ public class WorkersOptionsController {
 
     }
 
-    public void showingPopUp(TechnologyTypes technologyTypes, Button button) {
+    public void showingPopUp(Button button) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXML/TechnologyPopUp.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXML/WorkersOptionsPopUp.fxml"));
             Parent root = loader.load();
-            TechnologyPopUpController secController = loader.getController();
-            secController.setData(technologyTypes);
+            WorkersOptionsPopUpController secController = loader.getController();
+            secController.setData(button.getText());
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
 

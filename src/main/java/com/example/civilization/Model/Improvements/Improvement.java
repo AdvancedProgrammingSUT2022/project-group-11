@@ -8,6 +8,7 @@ public class Improvement {
 
     private boolean isAvailable = false;
 
+    private boolean isBeingWorkedOn = true;
     private boolean isPillaged = false;
     private boolean hasToBeDeleted = false;
     private boolean isBeingRepaired = false;
@@ -85,5 +86,13 @@ public class Improvement {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public boolean isBeingWorkedOn() {
+        return isBeingWorkedOn;
+    }
+
+    public void setBeingWorkedOn(boolean beingWorkedOn) {
+        isBeingWorkedOn = beingWorkedOn;
     }
 }
