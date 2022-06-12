@@ -44,6 +44,7 @@ public enum TerrainFeatureTypes {
     String ShowFeatures;
     TerrainFeatureTypes(int food, int product, int gold, int combatModifier, int movementCost,
                         ArrayList<ResourceTypes> possibleResourcesFound, String ShowFeatures) {
+        System.out.println(this.name());
         this.food = food;
         this.product = product;
         this.gold = gold;

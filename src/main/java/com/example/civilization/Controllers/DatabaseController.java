@@ -5,7 +5,6 @@ import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.*;
 import com.example.civilization.Model.Improvements.Improvement;
 import com.example.civilization.Model.Improvements.ImprovementTypes;
-import com.example.civilization.Model.Map;
 import com.example.civilization.Model.Resources.Resource;
 import com.example.civilization.Model.Resources.ResourceTypes;
 import com.example.civilization.Model.Technologies.Technology;
@@ -14,7 +13,10 @@ import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
 import com.example.civilization.Model.Units.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
 
 import static java.util.Comparator.naturalOrder;
 
@@ -22,6 +24,7 @@ public class DatabaseController {
     private static DatabaseController instance;
     public HashMap<User, String> notificationHistory = new HashMap<>();
     private Database database;
+
     public DatabaseController() {
         this.database = Database.getInstance();
     }
@@ -32,6 +35,7 @@ public class DatabaseController {
         }
         return instance;
     }
+
     public Database getDatabase() {
         return this.database;
     }
@@ -84,6 +88,7 @@ public class DatabaseController {
         user.setPassword(p);
         return "password changed successfully! Please Login again with your new password";
     }
+
     public String selectAndDeselectCombatUnit(User user, int x, int y) {
         Map map = this.getMap();
         int mapRows = map.getROW();
@@ -594,10 +599,10 @@ public class DatabaseController {
 
     public void createUnitForEachCivilization(User user) {
         ArrayList<Integer> unitsCoordinates = findingEmptyTiles();
-        NonCombatUnit newSettler = new NonCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
+        NonCombatUnit newSettler = new NonCombatUnit(10, 10, 0, 0, 0, 0, false, false, UnitTypes.WORKER, true);
         NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1), 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)].setCombatUnit(newWarrior);
-        getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1) + 1].setNonCombatUnit(newSettler);
+        getMap().getTerrain()[10][10].setNonCombatUnit(newSettler);
         user.getCivilization().getUnits().add(newSettler);
         user.getCivilization().getUnits().add(newWarrior);
 
@@ -904,169 +909,6 @@ public class DatabaseController {
         }
 
         return finalTerrains;
-    }
-
-    public String buildingAnImprovement(User user, ImprovementTypes improvementType) {
-        NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
-        if (nonCombatUnit != null) {
-            if (nonCombatUnit.getUnitType().equals(UnitTypes.SETTLER)) {
-                Terrain settlersTerrain = getTerrainByCoordinates(nonCombatUnit.getX(), nonCombatUnit.getY());
-                if (buildingAnImprovementInATerrain(user, improvementType, settlersTerrain).equals("improvement was built successfully")) {
-                    nonCombatUnit.setIsSelected(false);
-                    nonCombatUnit.setIsFinished(true);
-                }
-                return buildingAnImprovementInATerrain(user, improvementType, settlersTerrain);
-
-            } else {
-                return "you have to select a settler group first";
-            }
-        } else {
-            return "you have to select a settler group first";
-        }
-    }
-
-    public String buildingAnImprovementInATerrain(User user, ImprovementTypes improvementType, Terrain settlersTerrain) {
-        if (!user.getCivilization().getOwnedTerrains().contains(settlersTerrain)) {
-            return "you are not in your owned tiles";
-        }
-
-        if (settlersTerrain.getTerrainImprovement() != null) {
-            return "you have created another improvement in this terrain";
-        } else {
-            if (!isContainTechnology(user, improvementType.getRequiredTechnology())) {
-                return "you lack prerequisite technologies";
-            } else if (!improvementType.getCanBeBuiltON().contains(settlersTerrain.getTerrainTypes()) && !improvementType.getCanBeBuiltON().contains(settlersTerrain.getTerrainFeatureTypes())) {
-                return "you can not create this improvement in this type of terrain";
-            } else {
-                Improvement improvement = new Improvement(settlersTerrain.getX(), settlersTerrain.getY(), improvementType);
-                settlersTerrain.setTerrainImprovement(improvement);
-            }
-
-        }
-        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " improvement will be built successfully" + "\n");
-        return "improvement will be built successfully";
-    }
-
-    public String deleteFeatures(String hasToBeDeleted) {
-        NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
-        if (nonCombatUnit != null) {
-            if (nonCombatUnit.getUnitType().equals(UnitTypes.SETTLER)) {
-                Terrain settlersTerrain = getTerrainByCoordinates(nonCombatUnit.getX(), nonCombatUnit.getY());
-                if (hasToBeDeleted.equals("ROUTE")) {
-                    if (settlersTerrain.getTerrainImprovement() == null) {
-                        return "you have no road or railroad in this tile";
-                    } else if (!settlersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) && !settlersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD)) {
-                        return "you have no road or railroad in this tile";
-                    } else {
-                        settlersTerrain.getTerrainImprovement().setHasToBeDeleted(true);
-                        nonCombatUnit.setIsSelected(false);
-                        nonCombatUnit.setIsFinished(true);
-                        return "route will be deleted";
-                    }
-
-                } else if (hasToBeDeleted.equals("JUNGLE") || hasToBeDeleted.equals("FOREST") || hasToBeDeleted.equals("MARSH")) {
-                    if (settlersTerrain.getTerrainFeatureTypes().get(0) == null) {
-                        return "you have no Jungle or Forest or Marsh in this tile";
-                    } else if (!settlersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.FOREST) && !settlersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.JUNGLE) && !settlersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.MARSH)) {
-                        return "you have no Jungle or Forest or Marsh in this tile";
-                    } else {
-                        settlersTerrain.setHasToBeDeleted(true);
-                        nonCombatUnit.setIsSelected(false);
-                        nonCombatUnit.setIsFinished(true);
-
-                        return "feature will be deleted";
-
-                    }
-
-                } else {
-                    return "There is nothing to delete";
-                }
-
-            } else {
-                return "you have to select a settler group first";
-            }
-        } else {
-            return "you have to select a settler group first";
-        }
-
-    }
-
-    public String repairImprovement() {
-        NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
-        if (nonCombatUnit != null) {
-            if (nonCombatUnit.getUnitType().equals(UnitTypes.SETTLER)) {
-                Terrain settlersTerrain = getTerrainByCoordinates(nonCombatUnit.getX(), nonCombatUnit.getY());
-                if (settlersTerrain.getTerrainImprovement() == null) {
-                    return "you have no improvement in this tile";
-                } else if (settlersTerrain.getTerrainImprovement().isBeingRepaired()) {
-                    return "your workers are repairing this improvement";
-                } else if (settlersTerrain.getTerrainImprovement().isAvailable()) {
-                    return "there is no problem with this improvement";
-                } else if (settlersTerrain.getTerrainImprovement().isPillaged()) {
-                    settlersTerrain.getTerrainImprovement().setBeingRepaired(true);
-                    settlersTerrain.getTerrainImprovement().setPillaged(false);
-                    return "improvement will be repaired";
-                } else {
-                    return "improvement is not available yet";
-                }
-
-            } else {
-                return "you have to select a settler group first";
-            }
-        } else {
-            return "you have to select a settler group first";
-        }
-    }
-
-    public void increasingTurnInWorkersActions() {
-        for (int i = 0; i < getMap().getROW(); i++) {
-            for (int j = 0; j < getMap().getCOL(); j++) {
-                Terrain terrain = getMap().getTerrain()[i][j];
-                if (terrain.getTerrainImprovement() != null) {
-                    if (terrain.getTerrainImprovement().isBeingRepaired()) {
-
-                        if (terrain.getTerrainImprovement().getPassedTurns() < terrain.getTerrainImprovement().getImprovementType().getTurn()) {
-                            int passedTurns = terrain.getTerrainImprovement().getPassedTurns() + 1;
-                            terrain.getTerrainImprovement().setPassedTurns(passedTurns);
-                        } else {
-                            terrain.getTerrainImprovement().setAvailable(true);
-                            terrain.getTerrainImprovement().setBeingRepaired(false);
-                            terrain.getTerrainImprovement().setPassedTurns(0);
-
-                        }
-
-                    } else if (terrain.getTerrainImprovement().isHasToBeDeleted()) {
-
-                        if (terrain.getTerrainImprovement().getPassedTurns() < terrain.getTerrainImprovement().getImprovementType().getTurn()) {
-                            int passedTurns = terrain.getTerrainImprovement().getPassedTurns() + 1;
-                            terrain.getTerrainImprovement().setPassedTurns(passedTurns);
-                        } else {
-                            terrain.setTerrainImprovement(null);
-
-                        }
-                    } else if (!terrain.getTerrainImprovement().isAvailable() && !terrain.getTerrainImprovement().isPillaged()) {
-
-                        if (terrain.getTerrainImprovement().getPassedTurns() < terrain.getTerrainImprovement().getImprovementType().getTurn()) {
-                            int passedTurns = terrain.getTerrainImprovement().getPassedTurns() + 1;
-                            terrain.getTerrainImprovement().setPassedTurns(passedTurns);
-                        } else {
-                            terrain.getTerrainImprovement().setAvailable(true);
-                            terrain.getTerrainImprovement().setPassedTurns(0);
-                        }
-                    }
-                } else if (!terrain.getTerrainFeatureTypes().isEmpty()) {
-                    if (terrain.isHasToBeDeleted()) {
-                        if (terrain.getPassedTurns() < 6) {
-                            int turn = terrain.getPassedTurns() + 1;
-                            terrain.setPassedTurns(turn);
-                        } else {
-                            terrain.getTerrainFeatureTypes().clear();
-                        }
-                    }
-
-                }
-            }
-        }
     }
 
     public void increaseTurnInConstructingUnit(ArrayList<User> users) {
@@ -1614,14 +1456,14 @@ public class DatabaseController {
         for (Technology technology : user.getCivilization().getTechnologies()) {
             technology.setUnderResearch(false);
         }
-        if (isContainTechnologyType(user, getFirstRequiredTechnology(user,technologyType)) && !getTechnologyByTechnologyType(user, getFirstRequiredTechnology(user,technologyType)).getIsAvailable()) {
-            getTechnologyByTechnologyType(user, getFirstRequiredTechnology(user,technologyType)).setUnderResearch(true);
-           // System.out.println("Technology is under research again " + getFirstRequiredTechnology(user,technologyType).name());
-        } else if (!isContainTechnologyType(user, getFirstRequiredTechnology(user,technologyType))){
-            user.getCivilization().getTechnologies().add(new Technology(true, 0, getFirstRequiredTechnology(user,technologyType), false));
+        if (isContainTechnologyType(user, getFirstRequiredTechnology(user, technologyType)) && !getTechnologyByTechnologyType(user, getFirstRequiredTechnology(user, technologyType)).getIsAvailable()) {
+            getTechnologyByTechnologyType(user, getFirstRequiredTechnology(user, technologyType)).setUnderResearch(true);
+            // System.out.println("Technology is under research again " + getFirstRequiredTechnology(user,technologyType).name());
+        } else if (!isContainTechnologyType(user, getFirstRequiredTechnology(user, technologyType))) {
+            user.getCivilization().getTechnologies().add(new Technology(true, 0, getFirstRequiredTechnology(user, technologyType), false));
         }
 
-    //    System.out.println("Technology is under research " + getFirstRequiredTechnology(user,technologyType).name());
+        //    System.out.println("Technology is under research " + getFirstRequiredTechnology(user,technologyType).name());
     }
 
     public void getNeededTechnologies(HashMap<TechnologyTypes, Integer> requiredTechnologies, int depth, User user, TechnologyTypes technologyTypes) {
@@ -1635,28 +1477,25 @@ public class DatabaseController {
     }
 
     public TechnologyTypes getFirstRequiredTechnology(User user, TechnologyTypes technologyTypes) {
-        
+
         HashMap<TechnologyTypes, Integer> neededTechs = new HashMap<>();
         getNeededTechnologies(neededTechs, 1, user, technologyTypes);
-        if(neededTechs.isEmpty()){
+        if (neededTechs.isEmpty()) {
             return technologyTypes;
         }
         List<Integer> list = new ArrayList<>(neededTechs.values());
         list.sort(naturalOrder());
-        int max = list.get(list.size()-1);
-        List<TechnologyTypes> techs = neededTechs.entrySet().stream()
-                .filter(e -> e.getValue() == max)
-                .map(e -> e.getKey()).toList()
-                ;
+        int max = list.get(list.size() - 1);
+        List<TechnologyTypes> techs = neededTechs.entrySet().stream().filter(e -> e.getValue() == max).map(e -> e.getKey()).toList();
         return techs.get(0);
 
     }
 
 
-    public ArrayList<TechnologyTypes> unlockableTechnologies(User user){
+    public ArrayList<TechnologyTypes> unlockableTechnologies(User user) {
         ArrayList<TechnologyTypes> technologyTypes = new ArrayList<>();
-        for(TechnologyTypes technologyTypes1 : TechnologyTypes.values()){
-            if(haveAllPrerequisiteTechnologies(user,technologyTypes1) && !isContainTechnology(user,technologyTypes1)){
+        for (TechnologyTypes technologyTypes1 : TechnologyTypes.values()) {
+            if (haveAllPrerequisiteTechnologies(user, technologyTypes1) && !isContainTechnology(user, technologyTypes1)) {
                 technologyTypes.add(technologyTypes1);
             }
 
@@ -1664,25 +1503,25 @@ public class DatabaseController {
         return technologyTypes;
     }
 
-    public boolean haveAllPrerequisiteTechnologies(User user,TechnologyTypes technologyTypes){
-        for(TechnologyTypes technologyTypes1 : technologyTypes.getRequirements()){
-            if(!isContainTechnology(user,technologyTypes1)){
+    public boolean haveAllPrerequisiteTechnologies(User user, TechnologyTypes technologyTypes) {
+        for (TechnologyTypes technologyTypes1 : technologyTypes.getRequirements()) {
+            if (!isContainTechnology(user, technologyTypes1)) {
                 return false;
             }
         }
         return true;
     }
 
-    public User getUserByCivilization(Civilization civilization){
-        for(User user : database.getUsers()){
-            if(user.getCivilization().equals(civilization)){
+    public User getUserByCivilization(Civilization civilization) {
+        for (User user : database.getUsers()) {
+            if (user.getCivilization().equals(civilization)) {
                 return user;
             }
         }
         return null;
     }
 
-    public ArrayList<Object> removeExcessObjects(ArrayList<Object> objects){
+    public ArrayList<Object> removeExcessObjects(ArrayList<Object> objects) {
         ArrayList<Object> finalArrayList = new ArrayList<>();
         for (Object object : objects) {
             boolean isNew = true;
@@ -1693,38 +1532,278 @@ public class DatabaseController {
                 }
             }
             if (isNew) {
-               finalArrayList.add(object);
+                finalArrayList.add(object);
             }
         }
 
         return finalArrayList;
     }
 
-    public TechnologyTypes getTechnologyTypeByName(String name){
-        for(TechnologyTypes technologyTypes : TechnologyTypes.values()){
-            if(technologyTypes.name().equalsIgnoreCase(name)){
+    public TechnologyTypes getTechnologyTypeByName(String name) {
+        for (TechnologyTypes technologyTypes : TechnologyTypes.values()) {
+            if (technologyTypes.name().equalsIgnoreCase(name)) {
                 return technologyTypes;
             }
         }
         return null;
     }
 
-    public ArrayList<TechnologyTypes> unlockTechnologies(TechnologyTypes technologyTypes){
+    public ArrayList<TechnologyTypes> unlockTechnologies(TechnologyTypes technologyTypes) {
         ArrayList<TechnologyTypes> unlockTechnologies = new ArrayList<>();
-        for(TechnologyTypes technologyTypes1 : TechnologyTypes.values()){
-            if(technologyTypes1.getRequirements().contains(technologyTypes)){
+        for (TechnologyTypes technologyTypes1 : TechnologyTypes.values()) {
+            if (technologyTypes1.getRequirements().contains(technologyTypes)) {
                 unlockTechnologies.add(technologyTypes1);
             }
         }
         return unlockTechnologies;
     }
 
-    public TechnologyTypes lastUnlockedTechnology(){
-        for(int i = getDatabase().getActiveUser().getCivilization().getTechnologies().size() -1 ; i>=0;i--){
-            if(getDatabase().getActiveUser().getCivilization().getTechnologies().get(i).getIsAvailable()){
+    public TechnologyTypes lastUnlockedTechnology() {
+        for (int i = getDatabase().getActiveUser().getCivilization().getTechnologies().size() - 1; i >= 0; i--) {
+            if (getDatabase().getActiveUser().getCivilization().getTechnologies().get(i).getIsAvailable()) {
                 return getDatabase().getActiveUser().getCivilization().getTechnologies().get(i).getTechnologyType();
             }
         }
         return null;
     }
+
+    public String buildingAnImprovement(User user, ImprovementTypes improvementType) {
+        NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
+        if (nonCombatUnit != null) {
+            if (nonCombatUnit.getUnitType().equals(UnitTypes.WORKER)) {
+                Terrain workersTerrain = getTerrainByCoordinates(nonCombatUnit.getX(), nonCombatUnit.getY());
+                if (buildingAnImprovementInATerrain(user, improvementType, workersTerrain).equals("improvement was built successfully")) {
+                    nonCombatUnit.setIsSelected(false);
+                    nonCombatUnit.setIsFinished(true);
+                }
+                return buildingAnImprovementInATerrain(user, improvementType, workersTerrain);
+
+            } else {
+                return "you have to select a worker group first";
+            }
+        } else {
+            return "you have to select a worker group first";
+        }
+    }
+
+    public String buildingAnImprovementInATerrain(User user, ImprovementTypes improvementType, Terrain workersTerrain) {
+        if (!user.getCivilization().getOwnedTerrains().contains(workersTerrain)) {
+            return "you are not in your owned tiles";
+        }
+
+        if (workersTerrain.getTerrainImprovement() != null) {
+            return "you have created another improvement in this terrain";
+        } else {
+            if (!isContainTechnology(user, improvementType.getRequiredTechnology())) {
+                return "you lack prerequisite technologies";
+            } else if (!improvementType.getCanBeBuiltON().contains(workersTerrain.getTerrainTypes()) && !improvementType.getCanBeBuiltON().contains(workersTerrain.getTerrainFeatureTypes())) {
+                return "you can not create this improvement in this type of terrain";
+            } else {
+                Improvement improvement = new Improvement(workersTerrain.getX(), workersTerrain.getY(), improvementType);
+                workersTerrain.setTerrainImprovement(improvement);
+            }
+
+        }
+        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " improvement will be built successfully" + "\n");
+        return "improvement will be built successfully";
+    }
+
+    public String deleteFeatures(String hasToBeDeleted) {
+        NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
+        if (nonCombatUnit != null) {
+            if (nonCombatUnit.getUnitType().equals(UnitTypes.WORKER)) {
+                Terrain workersTerrain = getTerrainByCoordinates(nonCombatUnit.getX(), nonCombatUnit.getY());
+                if (hasToBeDeleted.equals("ROUTE")) {
+                    if (workersTerrain.getTerrainImprovement() == null) {
+                        return "you have no road or railroad in this tile";
+                    } else if (!workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) && !workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD)) {
+                        return "you have no road or railroad in this tile";
+                    } else {
+                        workersTerrain.getTerrainImprovement().setHasToBeDeleted(true);
+                        nonCombatUnit.setIsSelected(false);
+                        nonCombatUnit.setIsFinished(true);
+                        return "route will be deleted";
+                    }
+
+                } else if (hasToBeDeleted.equals("JUNGLE") || hasToBeDeleted.equals("FOREST") || hasToBeDeleted.equals("MARSH")) {
+                    if (workersTerrain.getTerrainFeatureTypes().get(0) == null) {
+                        return "you have no Jungle or Forest or Marsh in this tile";
+                    } else if (!workersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.FOREST) && !workersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.JUNGLE) && !workersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.MARSH)) {
+                        return "you have no Jungle or Forest or Marsh in this tile";
+                    } else {
+                        workersTerrain.setHasToBeDeleted(true);
+                        nonCombatUnit.setIsSelected(false);
+                        nonCombatUnit.setIsFinished(true);
+
+                        return "feature will be deleted";
+
+                    }
+
+                } else {
+                    return "There is nothing to delete";
+                }
+
+            } else {
+                return "you have to select a settler group first";
+            }
+        } else {
+            return "you have to select a settler group first";
+        }
+
+    }
+
+    public String repairImprovement() {
+        NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
+        if (nonCombatUnit != null) {
+            if (nonCombatUnit.getUnitType().equals(UnitTypes.WORKER)) {
+                Terrain workersTerrain = getTerrainByCoordinates(nonCombatUnit.getX(), nonCombatUnit.getY());
+                if (workersTerrain.getTerrainImprovement() == null) {
+                    return "you have no improvement in this tile";
+                } else if (workersTerrain.getTerrainImprovement().isBeingRepaired()) {
+                    return "your workers are repairing this improvement";
+                } else if (workersTerrain.getTerrainImprovement().isAvailable()) {
+                    return "there is no problem with this improvement";
+                } else if (workersTerrain.getTerrainImprovement().isPillaged()) {
+                    workersTerrain.getTerrainImprovement().setBeingRepaired(true);
+                    workersTerrain.getTerrainImprovement().setPillaged(false);
+                    return "improvement will be repaired";
+                } else {
+                    return "improvement is not available yet";
+                }
+
+            } else {
+                return "you have to select a worker group first";
+            }
+        } else {
+            return "you have to select a worker group first";
+        }
+    }
+
+    public void increasingTurnInWorkersActions() {
+        for (int i = 0; i < getMap().getROW(); i++) {
+            for (int j = 0; j < getMap().getCOL(); j++) {
+                Terrain terrain = getMap().getTerrain()[i][j];
+                if (terrain.getTerrainImprovement() != null) {
+                    if (terrain.getTerrainImprovement().isBeingRepaired()) {
+
+                        if (terrain.getTerrainImprovement().getPassedTurns() < terrain.getTerrainImprovement().getImprovementType().getTurn()) {
+                            int passedTurns = terrain.getTerrainImprovement().getPassedTurns() + 1;
+                            terrain.getTerrainImprovement().setPassedTurns(passedTurns);
+                        } else {
+                            terrain.getTerrainImprovement().setAvailable(true);
+                            terrain.getTerrainImprovement().setBeingRepaired(false);
+                            terrain.getTerrainImprovement().setPassedTurns(0);
+
+                        }
+
+                    } else if (terrain.getTerrainImprovement().isHasToBeDeleted()) {
+
+                        if (terrain.getTerrainImprovement().getPassedTurns() < terrain.getTerrainImprovement().getImprovementType().getTurn()) {
+                            int passedTurns = terrain.getTerrainImprovement().getPassedTurns() + 1;
+                            terrain.getTerrainImprovement().setPassedTurns(passedTurns);
+                        } else {
+                            terrain.setTerrainImprovement(null);
+
+                        }
+                    } else if (!terrain.getTerrainImprovement().isAvailable() && !terrain.getTerrainImprovement().isPillaged()) {
+
+                        if (terrain.getTerrainImprovement().getPassedTurns() < terrain.getTerrainImprovement().getImprovementType().getTurn()) {
+                            int passedTurns = terrain.getTerrainImprovement().getPassedTurns() + 1;
+                            terrain.getTerrainImprovement().setPassedTurns(passedTurns);
+                        } else {
+                            terrain.getTerrainImprovement().setAvailable(true);
+                            terrain.getTerrainImprovement().setPassedTurns(0);
+                        }
+                    }
+                } else if (!terrain.getTerrainFeatureTypes().isEmpty()) {
+                    if (terrain.isHasToBeDeleted()) {
+                        if (terrain.getPassedTurns() < 6) {
+                            int turn = terrain.getPassedTurns() + 1;
+                            terrain.setPassedTurns(turn);
+                        } else {
+                            terrain.getTerrainFeatureTypes().clear();
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+
+    public ArrayList<ImprovementTypes> improvementsThatCanBeBuiltInThisTerrain() {
+        NonCombatUnit workers = getSelectedNonCombatUnit();
+        ArrayList<ImprovementTypes> improvementTypesList = new ArrayList<>();
+        if (workers.getUnitType().equals(UnitTypes.WORKER)) {
+            Terrain workersTerrain = getTerrainByCoordinates(workers.getX(), workers.getY());
+
+            if (DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getOwnedTerrains().contains(workersTerrain)) {
+                System.out.println("fddfd");
+                for (ImprovementTypes improvementTypes : ImprovementTypes.values()) {
+                    System.out.println(improvementTypes.getCanBeBuiltON().contains(workersTerrain.getTerrainTypes()));
+                    System.out.println(workersTerrain.getTerrainTypes());
+                    if(improvementTypes.getCanBeBuiltON().get(0) instanceof TerrainTypes || improvementTypes.getCanBeBuiltON().get(0) instanceof TerrainFeatureTypes){
+                        System.out.println("hello");
+                    }
+                    System.out.println(improvementTypes.getCanBeBuiltON());
+
+                    if (workersTerrain.getTerrainImprovement() == null && isContainTechnology(DatabaseController.getInstance().getDatabase().getActiveUser(), improvementTypes.getRequiredTechnology()) && (improvementTypes.getCanBeBuiltON().contains(workersTerrain.getTerrainTypes()) || improvementTypes.getCanBeBuiltON().contains(workersTerrain.getTerrainFeatureTypes()))) {
+                        System.out.println(improvementTypes.name());
+                        improvementTypesList.add(improvementTypes);
+                    }
+
+                }
+            }
+
+        }
+
+        return improvementTypesList;
+
+
+    }
+
+    public ImprovementTypes routsThatCanBeDeletedInThisTerrain() {
+        NonCombatUnit workers = getSelectedNonCombatUnit();
+        if (workers.getUnitType().equals(UnitTypes.WORKER)) {
+            Terrain workersTerrain = getTerrainByCoordinates(workers.getX(), workers.getY());
+            if (workersTerrain.getTerrainImprovement() != null && (workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) || workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD))) {
+                System.out.println(workersTerrain.getTerrainImprovement().getImprovementType().name());
+                return workersTerrain.getTerrainImprovement().getImprovementType();
+            }
+        }
+
+        return null;
+
+    }
+
+    public TerrainFeatureTypes featuresThatCanBeDeletedInThisTerrain() {
+        NonCombatUnit workers = getSelectedNonCombatUnit();
+        if (workers.getUnitType().equals(UnitTypes.WORKER)) {
+            Terrain workersTerrain = getTerrainByCoordinates(workers.getX(), workers.getY());
+            if (!workersTerrain.getTerrainFeatureTypes().isEmpty() && workersTerrain.getTerrainFeatureTypes().get(0) != null && (workersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.FOREST) || workersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.JUNGLE) || workersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.MARSH))) {
+                return workersTerrain.getTerrainFeatureTypes().get(0);
+            }
+        }
+
+        return null;
+
+    }
+
+    public ImprovementTypes improvementsThatCanBeRepairedInThisTerrain() {
+        NonCombatUnit workers = getSelectedNonCombatUnit();
+        if (workers.getUnitType().equals(UnitTypes.WORKER)) {
+            Terrain workersTerrain = getTerrainByCoordinates(workers.getX(), workers.getY());
+            if (workersTerrain.getTerrainImprovement() != null && !workersTerrain.getTerrainImprovement().isBeingRepaired() && !workersTerrain.getTerrainImprovement().isAvailable() && workersTerrain.getTerrainImprovement().isPillaged()) {
+                return workersTerrain.getTerrainImprovement().getImprovementType();
+            }
+        }
+
+        return null;
+
+    }
+
+
+
+
+
 }

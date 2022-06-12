@@ -626,6 +626,7 @@ public enum TechnologyTypes {
     ArrayList<Object> unlocks;
     TechnologyTypes(int cost, ArrayList<TechnologyTypes> requirement, ArrayList<TechnologyTypes> technologyUnlocks,
                     ArrayList<Object> unlocks) {
+        System.out.println(this.name());
         this.cost = cost;
         this.requirement = requirement;
         this.technologyUnlocks = technologyUnlocks;

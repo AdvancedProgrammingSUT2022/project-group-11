@@ -56,6 +56,7 @@ public enum BuildingTypes {
     final TechnologyTypes requirement;
 
     BuildingTypes(int turn ,int cost, int maintenance, TechnologyTypes requirement, ArrayList<BuildingTypes> buildingRequirements, ArrayList<ResourceTypes> resourceRequirements) {
+        System.out.println(this.name());
         this.turn = turn;
         this.cost = cost;
         this.maintenance = maintenance;

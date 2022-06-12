@@ -164,6 +164,7 @@ public enum ImprovementTypes {
 
 
     ImprovementTypes(int turn, int food, int production, int gold, ArrayList<ResourceTypes> resourcesAccessed, TechnologyTypes requiredTechnology, ArrayList<Object> canBeBuiltOn, String ShowImprovement) {
+        System.out.println(this.name());
         this.food = food;
         this.production = production;
         this.gold = gold;

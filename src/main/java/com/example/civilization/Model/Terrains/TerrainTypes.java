@@ -121,6 +121,7 @@ public enum TerrainTypes {
     Color color;
     TerrainTypes(int food, int product, int gold, int combatModifier, int movementCost,
                  ArrayList<TerrainFeatureTypes> possibleFeatures, ArrayList<ResourceTypes> possibleResources, Color color) {
+        System.out.println(this.name());
         this.food = food;
         this.product = product;
         this.gold = gold;

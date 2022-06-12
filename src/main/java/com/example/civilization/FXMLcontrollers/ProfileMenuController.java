@@ -202,7 +202,7 @@ public class ProfileMenuController {
 
     @FXML
     public void goToGameMenu(ActionEvent event) throws IOException {
-        Main.changeMenu("ChooseResearch");
+        Main.changeMenu("WorkersOptions");
     }
 
     @FXML

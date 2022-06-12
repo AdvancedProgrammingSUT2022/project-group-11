@@ -165,6 +165,7 @@ public enum ResourceTypes {
     String ShowResourceMap;
 
     ResourceTypes(int food, int production, int gold, ArrayList<Object> canBeFoundOn, ImprovementTypes requiredImprovement, TechnologyTypes requiredTechnology, String ShowResourceMap) {
+        System.out.println(this.name());
         this.food = food;
         this.production = production;
         this.gold = gold;
