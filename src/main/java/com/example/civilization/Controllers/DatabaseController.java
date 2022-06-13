@@ -599,10 +599,10 @@ public class DatabaseController {
 
     public void createUnitForEachCivilization(User user) {
         ArrayList<Integer> unitsCoordinates = findingEmptyTiles();
-        NonCombatUnit newSettler = new NonCombatUnit(10, 10, 0, 0, 0, 0, false, false, UnitTypes.WORKER, true);
+        NonCombatUnit newSettler = new NonCombatUnit(unitsCoordinates.get(0),unitsCoordinates.get(1)+1 , 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
         NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1), 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)].setCombatUnit(newWarrior);
-        getMap().getTerrain()[10][10].setNonCombatUnit(newSettler);
+        getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)+1].setNonCombatUnit(newSettler);
         user.getCivilization().getUnits().add(newSettler);
         user.getCivilization().getUnits().add(newWarrior);
 
@@ -1760,7 +1760,7 @@ public class DatabaseController {
         NonCombatUnit workers = getSelectedNonCombatUnit();
         if (workers.getUnitType().equals(UnitTypes.WORKER)) {
             Terrain workersTerrain = getTerrainByCoordinates(workers.getX(), workers.getY());
-            if (workersTerrain.getTerrainImprovement().isAvailable() && workersTerrain.getTerrainImprovement() != null && (workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) || workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD))) {
+            if (workersTerrain.getTerrainImprovement() != null && workersTerrain.getTerrainImprovement().isAvailable() &&  (workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) || workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD))) {
                 return workersTerrain.getTerrainImprovement().getImprovementType();
             }
         }

@@ -2,7 +2,7 @@ package com.example.civilization.Model.Improvements;
 
 
 public class Improvement {
-    private int passedTurns = 0;
+    private int passedTurns = 2;
     private int x;
     private int y;
 
