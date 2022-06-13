@@ -3,7 +3,6 @@ package com.example.civilization.Model.Buildings;
 
 import com.example.civilization.Model.Resources.ResourceTypes;
 import com.example.civilization.Model.Technologies.TechnologyTypes;
-import com.example.civilization.Model.Units.UnitTypes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,7 +90,7 @@ public enum BuildingTypes {
     public TechnologyTypes getRequirement() {
 
         for(TechnologyTypes technologyTypes : TechnologyTypes.values()){
-            if(technologyTypes.getTechnologyUnlocks().contains(this)){
+            if(technologyTypes.getUnlocks().contains(this)){
                 return technologyTypes;
             }
         }

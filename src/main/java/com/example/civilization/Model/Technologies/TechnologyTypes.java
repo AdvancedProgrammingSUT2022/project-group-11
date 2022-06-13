@@ -1,5 +1,6 @@
 package com.example.civilization.Model.Technologies;
 
+import com.example.civilization.Controllers.DatabaseController;
 import com.example.civilization.Model.Buildings.BuildingTypes;
 import com.example.civilization.Model.Improvements.ImprovementTypes;
 import com.example.civilization.Model.Resources.ResourceTypes;
@@ -11,13 +12,6 @@ public enum TechnologyTypes {
     AGRICULTURE(20, new ArrayList<>() {
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.POTTERY);
-            add(TechnologyTypes.ANIMAL_HUSBANDRY);
-            add(TechnologyTypes.ARCHERY);
-            add(TechnologyTypes.MINING);
-        }
-    }, new ArrayList<>() {
-        {
             add(ImprovementTypes.FARM);
         }
     }),POTTERY(35, new ArrayList<>() {
@@ -27,22 +21,12 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.CALENDAR);
-            add(TechnologyTypes.WRITING);
-        }
-    }, new ArrayList<>() {
-        {
             add(BuildingTypes.GRANARY);
         }
     }), ANIMAL_HUSBANDRY(35, new ArrayList<>() {
         {
             add(TechnologyTypes.AGRICULTURE);
 
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.TRAPPING);
-            add(TechnologyTypes.THE_WHEEL);
         }
     }, new ArrayList<>() {
         {
@@ -56,20 +40,11 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.MATHEMATICS);
-        }
-    }, new ArrayList<>() {
-        {
             add(UnitTypes.ARCHER);
         }
     }), MINING(35, new ArrayList<>() {
         {
             add(TechnologyTypes.AGRICULTURE);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.MASONRY);
-            add(TechnologyTypes.BRONZE_WORKING);
         }
     }, new ArrayList<>() {
         {
@@ -79,11 +54,6 @@ public enum TechnologyTypes {
     }), BRONZE_WORKING(55, new ArrayList<>() {
         {
             add(TechnologyTypes.MINING);
-
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.IRON_WORKING);
 
         }
     }, new ArrayList<>() {
@@ -99,20 +69,12 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.THEOLOGY);
-        }
-    }, new ArrayList<>() {
-        {
             add(ImprovementTypes.PLANTATION);
         }
     }), MASONRY(55, new ArrayList<>() {
         {
             add(TechnologyTypes.MINING);
 
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.CONSTRUCTION);
         }
     }, new ArrayList<>() {
         {
@@ -123,11 +85,6 @@ public enum TechnologyTypes {
     }), THE_WHEEL(55, new ArrayList<>() {
         {
             add(TechnologyTypes.ANIMAL_HUSBANDRY);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.HORSEBACK_RIDING);
-            add(TechnologyTypes.MATHEMATICS);
         }
     }, new ArrayList<>() {
         {
@@ -142,10 +99,6 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.CIVIL_SERVICE);
-        }
-    }, new ArrayList<>() {
-        {
             add(ImprovementTypes.TRADINGPOST);
             add(ImprovementTypes.CAMP);
         }
@@ -155,19 +108,11 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.PHILOSOPHY);
-        }
-    }, new ArrayList<>() {
-        {
             add(BuildingTypes.LIBRARY);
         }
     }), CONSTRUCTION(100, new ArrayList<>() {
         {
             add(TechnologyTypes.MASONRY);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.ENGINEERING);
         }
     }, new ArrayList<>() {
         {
@@ -180,10 +125,6 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.CHIVALRY);
-        }
-    }, new ArrayList<>() {
-        {
             add(UnitTypes.HORSESMAN);
             add(BuildingTypes.STABLE);
             add(BuildingTypes.CIRCUS);
@@ -191,10 +132,6 @@ public enum TechnologyTypes {
     }), IRON_WORKING(150, new ArrayList<>() {
         {
             add(TechnologyTypes.BRONZE_WORKING);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.METAL_CASTING);
         }
     }, new ArrayList<>() {
         {
@@ -209,22 +146,12 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.CURRENCY);
-            add(TechnologyTypes.ENGINEERING);
-        }
-    }, new ArrayList<>() {
-        {
             add(UnitTypes.CATAPULT);
             add(BuildingTypes.COURTHOUSE);
         }
     }), PHILOSOPHY(100, new ArrayList<>() {
         {
             add(TechnologyTypes.WRITING);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.THEOLOGY);
-            add(TechnologyTypes.CIVIL_SERVICE);
         }
     }, new ArrayList<>() {
         {
@@ -238,10 +165,6 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.EDUCATION);
-        }
-    }, new ArrayList<>() {
-        {
             add(BuildingTypes.MONASTERY);
             add(BuildingTypes.GARDEN);
         }
@@ -252,19 +175,11 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.CHIVALRY);
-        }
-    }, new ArrayList<>() {
-        {
             add(UnitTypes.PIKEMAN);
         }
     }), CURRENCY(250, new ArrayList<>() {
         {
             add(TechnologyTypes.MATHEMATICS);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.CHIVALRY);
         }
     }, new ArrayList<>() {
         {
@@ -279,22 +194,12 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.MACHINERY);
-            add(TechnologyTypes.PHYSICS);
-        }
-    }, new ArrayList<>() {
-        {
             add(ImprovementTypes.MANUFACTORY);
             add(ImprovementTypes.LUMBERMILL);
         }
     }),METAL_CASTING(240, new ArrayList<>() {
         {
             add(TechnologyTypes.IRON_WORKING);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.PHYSICS);
-            add(TechnologyTypes.STEEL);
         }
     }, new ArrayList<>() {
         {
@@ -309,10 +214,6 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.BANKING);
-        }
-    }, new ArrayList<>() {
-        {
             add(UnitTypes.KNIGHT);
             add(BuildingTypes.CASTLE);
         }
@@ -322,20 +223,11 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.ACOUSTICS);
-            add(TechnologyTypes.BANKING);
-        }
-    }, new ArrayList<>() {
-        {
             add(BuildingTypes.UNIVERSITY);
         }
     }), MACHINERY(440, new ArrayList<>() {
         {
             add(TechnologyTypes.ENGINEERING);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.PRINTING_PRESS);
         }
     }, new ArrayList<>() {
         {
@@ -349,20 +241,11 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.PRINTING_PRESS);
-            add(TechnologyTypes.GUNPOWDER);
-        }
-    }, new ArrayList<>() {
-        {
             add(UnitTypes.TREBUCHET);
         }
     }), STEEL(440, new ArrayList<>() {
         {
             add(TechnologyTypes.METAL_CASTING);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.GUNPOWDER);
         }
     }, new ArrayList<>() {
         {
@@ -373,19 +256,10 @@ public enum TechnologyTypes {
             add(TechnologyTypes.EDUCATION);
         }
     }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.SCIENTIFIC_THEORY);
-            add(TechnologyTypes.ARCHAEOLOGY);
-        }
-    }, new ArrayList<>() {
     }),BANKING(650, new ArrayList<>() {
         {
             add(TechnologyTypes.EDUCATION);
             add(TechnologyTypes.CHIVALRY);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.ECONOMICS);
         }
     }, new ArrayList<>() {
         {
@@ -400,10 +274,6 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.ECONOMICS);
-        }
-    }, new ArrayList<>() {
-        {
             add(BuildingTypes.THEATER);
         }
     }), GUNPOWDER(680, new ArrayList<>() {
@@ -413,20 +283,11 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.CHEMISTRY);
-            add(TechnologyTypes.METALLURGY);
-        }
-    }, new ArrayList<>() {
-        {
             add(UnitTypes.MUSKETMAN);
         }
     }), ARCHAEOLOGY(1300, new ArrayList<>() {
         {
             add(TechnologyTypes.ACOUSTICS);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.BIOLOGY);
         }
     }, new ArrayList<>() {
         {
@@ -439,22 +300,12 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.BIOLOGY);
-            add(TechnologyTypes.STEAM_POWER);
-        }
-    }, new ArrayList<>() {
-        {
             add(BuildingTypes.PUBLIC_SCHOOL);
             add(ResourceTypes.COAL);
         }
     }),CHEMISTRY(900, new ArrayList<>() {
         {
             add(TechnologyTypes.GUNPOWDER);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.MILITARY_SCIENCE);
-            add(TechnologyTypes.FERTILIZER);
         }
     }, new ArrayList<>() {
         {
@@ -468,10 +319,6 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.RIFLING);
-        }
-    }, new ArrayList<>() {
-        {
             add(UnitTypes.LANCER);
         }
     }),  ECONOMICS(900, new ArrayList<>() {
@@ -481,19 +328,11 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.MILITARY_SCIENCE);
-        }
-    }, new ArrayList<>() {
-        {
             add(BuildingTypes.WINDMILL);
         }
     }), FERTILIZER(1300, new ArrayList<>() {
         {
             add(TechnologyTypes.CHEMISTRY);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.DYNAMITE);
         }
     }, new ArrayList<>() {
         {
@@ -506,20 +345,12 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.STEAM_POWER);
-        }
-    }, new ArrayList<>() {
-        {
             add(UnitTypes.CAVALRY);
             add(BuildingTypes.MILITARY_ACADEMY);
         }
     }), RIFLING(1425, new ArrayList<>() {
         {
             add(TechnologyTypes.METALLURGY);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.DYNAMITE);
         }
     }, new ArrayList<>() {
         {
@@ -532,22 +363,12 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.ELECTRICITY);
-        }
-    }, new ArrayList<>() {
-        {
         add(BuildingTypes.HOSPITAL);
         }
     }), STEAM_POWER(1680, new ArrayList<>() {
         {
             add(TechnologyTypes.SCIENTIFIC_THEORY);
             add(TechnologyTypes.MILITARY_SCIENCE);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.ELECTRICITY);
-            add(TechnologyTypes.REPLACEABLE_PARTS);
-            add(TechnologyTypes.RAILROAD);
         }
     }, new ArrayList<>() {
         {
@@ -560,21 +381,12 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.COMBUSTION);
-        }
-    }, new ArrayList<>() {
-        {
             add(UnitTypes.ARTILLERY);
         }
     }), ELECTRICITY(1900, new ArrayList<>() {
         {
             add(TechnologyTypes.BIOLOGY);
             add(TechnologyTypes.STEAM_POWER);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.TELEGRAPH);
-            add(TechnologyTypes.RADIO);
         }
     }, new ArrayList<>() {
         {
@@ -586,20 +398,12 @@ public enum TechnologyTypes {
         }
     }, new ArrayList<>() {
         {
-            add(TechnologyTypes.COMBUSTION);
-        }
-    }, new ArrayList<>() {
-        {
             add(BuildingTypes.ARSENAL);
             add(ImprovementTypes.RAILROAD);
         }
     }), REPLACEABLE_PARTS(1900, new ArrayList<>() {
         {
             add(TechnologyTypes.STEAM_POWER);
-        }
-    }, new ArrayList<>() {
-        {
-            add(TechnologyTypes.COMBUSTION);
         }
     }, new ArrayList<>() {
         {
@@ -613,7 +417,6 @@ public enum TechnologyTypes {
             add(TechnologyTypes.DYNAMITE);
         }
     }, new ArrayList<>() {
-    }, new ArrayList<>() {
         {
             add(UnitTypes.TANK);
             add(UnitTypes.PANZER);
@@ -623,7 +426,6 @@ public enum TechnologyTypes {
             add(TechnologyTypes.ELECTRICITY);
         }
     }, new ArrayList<>() {
-    }, new ArrayList<>() {
         {
             add(BuildingTypes.BROADCAST_TOWER);
         }
@@ -632,7 +434,6 @@ public enum TechnologyTypes {
             add(TechnologyTypes.ELECTRICITY);
         }
     }, new ArrayList<>() {
-    }, new ArrayList<>() {
         {
             add(BuildingTypes.MILITARY_BASE);
         }
@@ -640,13 +441,12 @@ public enum TechnologyTypes {
 
     int cost;
     ArrayList<TechnologyTypes> requirement;
-    ArrayList<TechnologyTypes> technologyUnlocks;
+
     ArrayList<Object> unlocks;
-    TechnologyTypes(int cost, ArrayList<TechnologyTypes> requirement, ArrayList<TechnologyTypes> technologyUnlocks,
+    TechnologyTypes(int cost, ArrayList<TechnologyTypes> requirement,
                     ArrayList<Object> unlocks) {
         this.cost = cost;
         this.requirement = requirement;
-        this.technologyUnlocks = technologyUnlocks;
         this.unlocks = unlocks;
     }
 
@@ -655,7 +455,7 @@ public enum TechnologyTypes {
     }
 
     public ArrayList<TechnologyTypes> getTechnologyUnlocks() {
-        return technologyUnlocks;
+        return DatabaseController.getInstance().unlockTechnologies(this);
     }
 
     public ArrayList<Object> getUnlocks() {
