@@ -26,7 +26,7 @@ import java.util.Arrays;
 public class GameMapController {
 
     @FXML
-    private final ArrayList<Polygon> terrainHexagons = new ArrayList<>();
+    private ArrayList<Polygon> terrainHexagons = new ArrayList<>();
 
 
 
@@ -48,8 +48,7 @@ public class GameMapController {
 
     @FXML
     public void initialize() throws IOException {
-        this.databaseController.getMap().generateMap();
-        this.databaseController.setCivilizations(this.databaseController.getDatabase().getUsers());
+
         this.databaseController.getMap().initializeMapUser(DatabaseController.getInstance().getDatabase().getActiveUser());
 
 
@@ -77,7 +76,7 @@ public class GameMapController {
 
     @FXML
     private void changingDirection() throws IOException {
-        this.databaseController.getMap().initializeMapUser(DatabaseController.getInstance().getDatabase().getActiveUser());
+       this.databaseController.getMap().initializeMapUser(DatabaseController.getInstance().getDatabase().getActiveUser());
         pane.getScene().setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case UP -> {
@@ -303,8 +302,7 @@ public class GameMapController {
     }
 
     public void goToChooseResearch() {
-        System.out.println("hello");
-        Main.loadFXML("ChooseResearch");
+        Main.changeMenu("ChooseResearch");
 
     }
 

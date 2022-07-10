@@ -34,8 +34,7 @@ public class ChooseResearchController {
 
     @FXML
     public void initialize() {
-        DatabaseController.getInstance().getMap().generateMap();
-        DatabaseController.getInstance().setCivilizations(DatabaseController.getInstance().getDatabase().getUsers());
+
         Platform.runLater(this::setTexts);
 
 
