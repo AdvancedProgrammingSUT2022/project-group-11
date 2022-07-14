@@ -1,6 +1,8 @@
 package com.example.civilization.Response;
 
 import com.example.civilization.Model.GlobalChats.Message;
+import com.example.civilization.Model.GlobalChats.Room;
+import com.example.civilization.Model.GlobalChats.privateChat;
 import com.example.civilization.Model.Map;
 import com.example.civilization.Model.Resources.Resource;
 import com.example.civilization.Model.River;
@@ -23,6 +25,44 @@ public class ResponseUser {
     private TerrainTypes typeTile;
     private ArrayList<TerrainFeatureTypes> feature;
     private Resource resource;
+    private privateChat privateChat;
+    private ArrayList<Room> rooms = new ArrayList<>();
+    private ArrayList<privateChat> privateChats = new ArrayList<>();
+
+    public ArrayList<Room> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(ArrayList<Room> rooms) {
+        this.rooms = rooms;
+    }
+
+    public ArrayList<privateChat> getPrivateChats() {
+        return privateChats;
+    }
+
+    public void setPrivateChats(ArrayList<privateChat> privateChats) {
+        this.privateChats = privateChats;
+    }
+
+
+    public privateChat getPrivateChat() {
+        return privateChat;
+    }
+
+    public void setPrivateChat(com.example.civilization.Model.GlobalChats.privateChat privateChat) {
+        this.privateChat = privateChat;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    private Room room;
 
     public Message getMessage() {
         return message;

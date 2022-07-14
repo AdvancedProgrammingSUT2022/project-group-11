@@ -91,7 +91,7 @@ public class GlobalChatMenuController {
 
 
 
-    private User user = new User("ehsan",null,null,null);
+    public static User user = new User("ehsan",null,null,null);
     private int chatNumber = 0;
     private privateChat privatechat;
     private Room room;
@@ -178,8 +178,9 @@ public class GlobalChatMenuController {
             }else if(chatNumber == 1){
                 try{
                     RequestUser requestUser = new RequestUser();
-                    requestUser.addRequest("addPrivateMessage",null);
+                    requestUser.addRequest("addPrivateMessage",user);
                     requestUser.setMessage(message);
+                    requestUser.setPrivateChat(this.privatechat);
                     Gson gson = new Gson();
                     dataOutputStream.writeUTF(gson.toJson(requestUser));
                 }catch (IOException E){
@@ -191,8 +192,9 @@ public class GlobalChatMenuController {
             }else if(chatNumber == -1){
                 try{
                     RequestUser requestUser = new RequestUser();
-                    requestUser.addRequest("addRoomMessage",null);
+                    requestUser.addRequest("addRoomMessage",user);
                     requestUser.setMessage(message);
+                    requestUser.setRoom(this.room);
                     Gson gson = new Gson();
                     dataOutputStream.writeUTF(gson.toJson(requestUser));
                 }catch (IOException E){
@@ -407,8 +409,9 @@ public class GlobalChatMenuController {
                 try{
                     RequestUser requestUser = new RequestUser();
                     Gson gson = new Gson();
-                    requestUser.addRequest("removePrivateMessage",null);
+                    requestUser.addRequest("removePrivateMessage",user);
                     requestUser.setMessage(message);
+                    requestUser.setPrivateChat(privatechat);
                     dataOutputStream.writeUTF(gson.toJson(requestUser));
                     dataOutputStream.flush();
                 }catch (IOException E){
@@ -420,8 +423,9 @@ public class GlobalChatMenuController {
                 try{
                     RequestUser requestUser = new RequestUser();
                     Gson gson = new Gson();
-                    requestUser.addRequest("removeRoomMessage",null);
+                    requestUser.addRequest("removeRoomMessage",user);
                     requestUser.setMessage(message);
+                    requestUser.setRoom(room);
                     dataOutputStream.writeUTF(gson.toJson(requestUser));
                     dataOutputStream.flush();
                 }catch (IOException E){
@@ -516,7 +520,21 @@ public class GlobalChatMenuController {
     }
 
     public privateChat containSecondUser(User userSecond){
-        ArrayList<privateChat> userPrivateChats = user.getPrivateChats();
+        ArrayList<privateChat> userPrivateChats = new ArrayList<>();
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("getAllPrivateChats",user);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            userPrivateChats = responseUser.getPrivateChats();
+
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+
         for(int i = 0; i < userPrivateChats.size();i++){
             if(userPrivateChats.get(i).getUserTwo() == userSecond){
                 return userPrivateChats.get(i);
@@ -550,9 +568,30 @@ public class GlobalChatMenuController {
             if(containSecondUser(userSecond) == null){
                 privateChat newprivateChate = new privateChat(user,userSecond);
                 this.privatechat = newprivateChate;
-                user.addPrivateChats(newprivateChate);
+                try{
+                    RequestUser requestUser = new RequestUser();
+                    requestUser.addRequest("newPrivateChat",user);
+                    requestUser.setPrivateChat(newprivateChate);
+                    Gson gson = new Gson();
+                    dataOutputStream.writeUTF(gson.toJson(requestUser));
+                    dataOutputStream.flush();
+                }catch(IOException E){
+                    E.printStackTrace();
+                }
+
             }else{
                 this.privatechat = containSecondUser(userSecond);
+                try{
+                    RequestUser requestUser = new RequestUser();
+                    requestUser.addRequest("newPrivateChat",null);
+                    requestUser.setPrivateChat(containSecondUser(userSecond));
+                    Gson gson = new Gson();
+                    dataOutputStream.writeUTF(gson.toJson(requestUser));
+                    dataOutputStream.flush();
+                }catch(IOException E){
+                    E.printStackTrace();
+                }
+
             }
             searchPanel.setVisible(false);
             VboxPrivate.setVisible(true);
@@ -617,7 +656,20 @@ public class GlobalChatMenuController {
     }
 
     public Room containsThisUsers(ArrayList<String> names){
-        ArrayList<Room> myRooms = user.getRooms();
+        ArrayList<Room> myRooms = new ArrayList<>();
+        try{
+           RequestUser requestUser = new RequestUser();
+           requestUser.addRequest("getAllRooms",user);
+           Gson gson = new Gson();
+           dataOutputStream.writeUTF(gson.toJson(requestUser));
+           dataOutputStream.flush();
+           String res = dataInputStream.readUTF();
+           ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+           myRooms = responseUser.getRooms();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+
         for(int i = 0; i < myRooms.size();i++){
             ArrayList<User> user = myRooms.get(i).getUsers();
             ArrayList<String> username = new ArrayList<>();
@@ -632,15 +684,39 @@ public class GlobalChatMenuController {
 
     }
     public void goToRoom(MouseEvent mouseEvent) {
+
         if(containsThisUsers(usersNames) != null){
             this.room = containsThisUsers(usersNames);
+            try{
+              RequestUser requestUser = new RequestUser();
+              requestUser.addRequest("newRoomChat",null);
+              requestUser.setRoom(room);
+              Gson gson = new Gson();
+              dataOutputStream.writeUTF(gson.toJson(requestUser));
+              dataOutputStream.flush();
+            }catch (IOException E){
+                E.printStackTrace();
+            }
         }else{
             ArrayList<User> myUser = new ArrayList<>();
             for(int i = 0; i < usersNames.size();i++){
                 myUser.add(Database.getInstance().getUserByUsername(usersNames.get(i)));
             }
+
             Room room = new Room(myUser);
+            myUser.add(user);
             this.room = room;
+            try{
+                RequestUser requestUser = new RequestUser();
+                requestUser.addRequest("newRoomChat",user);
+                requestUser.setRoom(room);
+                Gson gson = new Gson();
+                dataOutputStream.writeUTF(gson.toJson(requestUser));
+                dataOutputStream.flush();
+            }catch (IOException E){
+                E.printStackTrace();
+            }
+
         }
     }
 }
