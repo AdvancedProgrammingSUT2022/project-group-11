@@ -31,8 +31,6 @@ public class ScannerMenu {
     public void run(){
         while(true){
             new Thread(() ->{
-
-
                 try {
                     while (true) {
                         String input = dataInputStream.readUTF();
@@ -75,6 +73,15 @@ public class ScannerMenu {
                             databaseController.removeMessagePrivateChat(requestUser);
                         }else if(action.equals("removeRoomMessage")){
                             databaseController.removeMessageRoomChat(requestUser);
+                        }else if(action.equals("newPrivateChat")){
+                            databaseController.addPrivateChatForUser(requestUser);
+                        }else if(action.equals("getAllRooms")){
+                           databaseController.getAllRoom(requestUser);
+                        }else if(action.equals("getAllPrivateChats")){
+                            databaseController.getAllPrivateChats(requestUser);
+                        }else if(action.equals("newRoomChat")){
+                            databaseController.newRoomChat(requestUser);
+
                         }
 
                     }

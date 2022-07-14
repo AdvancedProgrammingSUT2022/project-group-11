@@ -20,24 +20,6 @@ public class Database {
 
     private Map map = new Map();
     private int turn;
-    private privateChat privateChat;
-    private Room room;
-
-    public privateChat getPrivateChat() {
-        return privateChat;
-    }
-
-    public void setPrivateChat(privateChat privateChat) {
-        this.privateChat = privateChat;
-    }
-
-    public Room getRoom() {
-        return room;
-    }
-
-    public void setRoom(Room room) {
-        this.room = room;
-    }
 
     public Database() {
         this.Users = new ArrayList<>();
@@ -97,6 +79,14 @@ public class Database {
         return null;
     }
 
+    public User getUserByUsernameAndPasswordAndNickname(String username, String password,String nickname) {
+        for (User user : this.Users) {
+            if (user.getUsername().equals(username) && user.getPassword().equals(password) && user.getNickname().equals(nickname)) {
+                return user;
+            }
+        }
+        return null;
+    }
     public User getUserByUsername(String username) {
         for (User user : this.Users) {
             if (user.getUsername().equals(username)) {

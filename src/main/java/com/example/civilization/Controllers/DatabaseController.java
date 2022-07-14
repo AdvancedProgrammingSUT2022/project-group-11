@@ -4,6 +4,7 @@ import com.example.civilization.Model.Buildings.Building;
 import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.*;
 import com.example.civilization.Model.GlobalChats.Message;
+import com.example.civilization.Model.GlobalChats.Room;
 import com.example.civilization.Model.GlobalChats.privateChat;
 import com.example.civilization.Model.GlobalChats.publicChat;
 import com.example.civilization.Model.Improvements.Improvement;
@@ -129,8 +130,8 @@ public class DatabaseController {
                 dataOutputStream.writeUTF(gson.toJson(responseUser));
                 dataOutputStream.flush();
             } else {
-                user.setNickname(n);
-                responseUser.addResponse("nickname changed successfully!", user);
+                database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname()).setNickname(n);
+                responseUser.addResponse("nickname changed successfully!",   database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname()));
                 dataOutputStream.writeUTF(gson.toJson(responseUser));
                 dataOutputStream.flush();
             }
@@ -151,8 +152,9 @@ public class DatabaseController {
                 dataOutputStream.writeUTF(gson.toJson(responseUser));
                 dataOutputStream.flush();
             }else{
-                requestUser.getUser().setPassword(p);
-                responseUser.addResponse("password changed successfully! Please Login again with your new password",requestUser.getUser());
+                User user = requestUser.getUser();
+                database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname()).setPassword(p);
+                responseUser.addResponse("password changed successfully! Please Login again with your new password",  database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname()));
                 dataOutputStream.writeUTF(gson.toJson(responseUser));
                 dataOutputStream.flush();
             }
@@ -234,28 +236,72 @@ public class DatabaseController {
     }
 
     public void addPublicMessage(RequestUser requestUser){
+
         Message message = requestUser.getMessage();
         publicChat.getInstance().addMessage(message);
     }
     public void addPrivateMessage(RequestUser requestUser){
+        User user = requestUser.getUser();
         Message message = requestUser.getMessage();
-        database.getPrivateChat().addMessage(message);
+        user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname());
+       int index  =  user.getPrivateChats().indexOf(requestUser.getPrivateChat());
+        user.getPrivateChats().get(index).getAllPrivateMessage().add(message);
     }
     public void addRoomMessage(RequestUser requestUser){
+        User user = requestUser.getUser();
         Message message = requestUser.getMessage();
-        database.getRoom().addMessage(message);
+        user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname());
+        int index  =  user.getRooms().indexOf(requestUser.getRoom());
+        user.getRooms().get(index).getMessages().add(message);
     }
     public void removeMessagePublicChat(RequestUser requestUser){
+
        Message message = requestUser.getMessage();
        publicChat.getInstance().getAllPublicMessage().remove(message);
     }
     public void removeMessagePrivateChat(RequestUser requestUser){
+        User user = requestUser.getUser();
         Message message = requestUser.getMessage();
-        database.getPrivateChat().getAllPrivateMessage().remove(message);
+        user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname());
+        int index  =  user.getRooms().indexOf(requestUser.getRoom());
+        user.getRooms().get(index).getMessages().remove(message);
     }
     public void removeMessageRoomChat(RequestUser requestUser){
+        User user = requestUser.getUser();
         Message message = requestUser.getMessage();
-        database.getRoom().getMessages().remove(message);
+        user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname());
+        int index  =  user.getRooms().indexOf(requestUser.getRoom());
+        user.getRooms().get(index).getMessages().remove(message);
+    }
+
+    public void addPrivateChatForUser(RequestUser requestUser){
+        User user = requestUser.getUser();
+        if(user != null){
+            user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname());
+            privateChat privateChat = requestUser.getPrivateChat();
+            user.addPrivateChats(privateChat);
+        }
+
+    }
+
+    public void getAllRoom(RequestUser requestUser){
+       User user = requestUser.getUser();
+       user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname());
+
+    }
+    public void getAllPrivateChats(RequestUser requestUser){
+        User user = requestUser.getUser();
+        user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname());
+
+    }
+
+    public void newRoomChat(RequestUser requestUser){
+        User user = requestUser.getUser();
+        if(user != null){
+             user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname());
+             Room room = requestUser.getRoom();
+             user.getRooms().add(room);
+        }
     }
     public String selectAndDeselectCombatUnit(User user, int x, int y) {
         Map map = this.getMap();
