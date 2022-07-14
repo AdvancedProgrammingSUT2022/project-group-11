@@ -1,6 +1,7 @@
 package com.example.civilization.FXMLcontrollers;
 
 
+import com.example.civilization.Controllers.DatabaseController;
 import com.example.civilization.Main;
 import com.example.civilization.Model.Database;
 import com.example.civilization.Model.User;
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 public class LeaderboardController {
+    private DatabaseController databaseController = DatabaseController.getInstance();
     @FXML
     ArrayList<TextField> playersTime = new ArrayList<>();
     @FXML
@@ -27,7 +29,7 @@ public class LeaderboardController {
     public void initialize() {
 
 
-        ArrayList<User> users = Database.getInstance().getUsers();
+        ArrayList<User> users = databaseController.getAllUsers();
         users.sort(Comparator.comparing(User::getScore).reversed().thenComparing(User::getLastWin).thenComparing(User::getUsername));
         for (int i = 0; i < users.size(); i++) {
             if (users.get(i).equals(Database.getInstance().getActiveUser())) {

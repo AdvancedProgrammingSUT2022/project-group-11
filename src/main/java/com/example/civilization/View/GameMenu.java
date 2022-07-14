@@ -36,7 +36,7 @@ public class GameMenu {
     public void run(Scanner scanner) {
 
         this.databaseController.getMap().generateMap();
-        this.databaseController.setCivilizations(users);
+       // this.databaseController.setCivilizations(users);
 
         while (true) {
             for (User user : users) {

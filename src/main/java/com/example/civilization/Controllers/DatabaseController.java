@@ -12,7 +12,14 @@ import com.example.civilization.Model.Technologies.TechnologyTypes;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
 import com.example.civilization.Model.Units.*;
+import com.example.civilization.Requests.RequestUser;
+import com.example.civilization.Response.ResponseUser;
+import com.google.gson.Gson;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,9 +31,27 @@ public class DatabaseController {
     private static DatabaseController instance;
     public HashMap<User, String> notificationHistory = new HashMap<>();
     private Database database;
+    private Socket socket;
+    private DataInputStream dataInputStream;
+    private DataOutputStream dataOutputStream;
 
+
+    public DataInputStream getDataInputStream(){
+        return dataInputStream;
+    }
+    public DataOutputStream getDataOutputStream(){
+        return dataOutputStream;
+    }
     public DatabaseController() {
         this.database = Database.getInstance();
+        try {
+            this.socket = new Socket("localhost", 7777);
+            dataInputStream = new DataInputStream(socket.getInputStream());
+            dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+
     }
 
     public static DatabaseController getInstance() {
@@ -46,47 +71,133 @@ public class DatabaseController {
     }
 
     public String createUser(String u, String p, String n) {
+        String result = "user created successfully!";
+        try {
+            User user = new User(u, p, n, null);
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("createUser", user);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String userResponse = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(userResponse,ResponseUser.class);
+            result = responseUser.getAction();
 
-        ArrayList<User> users = this.database.getUsers();
-
-        for (User user : users) {
-            if (user.getUsername().equals(u)) {
-                return "user with username " + u + " already exists";
-            }
-            if (user.getNickname().equals(n)) {
-                System.out.println();
-                return "user with nickname " + n + " already exists";
-            }
+        }catch(IOException E){
+            E.printStackTrace();
         }
 
-        User newUser = new User(u, p, n, null);
-        this.database.addUser(newUser);
-        return "user created successfully!";
+        return result;
     }
 
-    public User userLogin(String u, String p) {
-        return this.database.getUserByUsernameAndPassword(u, p);
+    public User userLogin(String u, String p)  {
+        User user = null;
+        try {
+           user = new User(u, p, null, null);
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("getUserByUsernameAndPassword",user);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String userResponse = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(userResponse, ResponseUser.class);
+            user = responseUser.getUser();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+        return user;
+    }
+    public User activeUser(){
+        User user = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("activeUser",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String userString = dataInputStream.readUTF();
+            ResponseUser responseUser  = gson.fromJson(userString,ResponseUser.class);
+            user = responseUser.getUser();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+        return user;
     }
 
     public String changeUserNickname(String n, User player) {
+        String result = "nickname changed successfully!";
+        try {
 
-        User user = database.getUserByNickname(n);
-        if (user != null) {
-            return "user with nickname " + n + " already exists";
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("changeUserNickname", player);
+            requestUser.setNickname(n);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            result = responseUser.getAction();
+        }catch(IOException E){
+            E.printStackTrace();
         }
-        player.setNickname(n);
-        return "nickname changed successfully!";
+
+        return result;
     }
 
     public String changePassword(String p, User user) {
-        String currentPassword = user.getPassword();
-
-
-        if (currentPassword.equals(p)) {
-            return "please enter a new password";
+        String result = "password changed successfully! Please Login again with your new password";
+        try {
+            RequestUser requestUser = new RequestUser();
+            Gson gson = new Gson();
+            requestUser.addRequest("changePassword",user);
+            requestUser.setPassword(p);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            result = responseUser.getAction();
+        }catch (IOException E){
+            E.printStackTrace();
         }
-        user.setPassword(p);
-        return "password changed successfully! Please Login again with your new password";
+        return result;
+    }
+
+
+    public Map generateMapFromServer(){
+        Map map = null;
+       try{
+           RequestUser requestUser = new RequestUser();
+           requestUser.addRequest("generateMap",null);
+           Gson gson = new Gson();
+           dataOutputStream.writeUTF(gson.toJson(requestUser));
+           dataOutputStream.flush();
+           String res = dataInputStream.readUTF();
+           ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+           map = responseUser.getMap();
+       }catch(IOException E){
+           E.printStackTrace();
+       }
+       return map;
+    }
+
+    public ArrayList<User> getAllUsers(){
+        ArrayList<User> users = new ArrayList<>();
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("getAllUser",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            users = responseUser.getUsers();
+
+
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+        return users;
     }
 
     public String selectAndDeselectCombatUnit(User user, int x, int y) {
@@ -554,20 +665,17 @@ public class DatabaseController {
         user.getCivilization().setOwnedTerrains(deleteExcessTerrain(ownedTerrains));
     }
 
-    public void setCivilizations(ArrayList<User> users) {
-
-        this.database.setCivilizationsName(new ArrayList<>(List.of("Incan", "Aztec", "Roman", "Ancient Greek", "Chinese", "Maya", "Ancient Egyptian", "Indus Valley", "Mesopotamian", "Persian")));
-        ArrayList<Integer> indices = setIndices(users);
-        int i = 0;
-        for (User user : users) {
-
-            Civilization civilization = new Civilization(100, 100, this.database.getCivilizationsName().get(indices.get(i)));
-            user.setCivilization(civilization);
-            user.getCivilization().setBooleanSettlerBuy(true);
-            createUnitForEachCivilization(user);
-            setTerrainsOfEachCivilization(user);
-            i++;
+    public void setCivilizations() {
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("setCivilizations",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
         }
+
     }
 
     public ArrayList<Integer> setIndices(ArrayList<User> users) {
@@ -1731,7 +1839,7 @@ public class DatabaseController {
     }
 
 
-    public ArrayList<ImprovementTypes> improvementsThatCanBeBuiltInThisTerrain() {
+    public ArrayList<ImprovementTypes> improvementsThatCanBeBuiltInThisTerrain()  {
         NonCombatUnit workers = getSelectedNonCombatUnit();
         ArrayList<ImprovementTypes> improvementTypesList = new ArrayList<>();
         if (workers.getUnitType().equals(UnitTypes.WORKER)) {

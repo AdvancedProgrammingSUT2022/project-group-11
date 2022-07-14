@@ -1,5 +1,6 @@
 package com.example.civilization.FXMLcontrollers;
 
+import com.example.civilization.Controllers.DatabaseController;
 import com.example.civilization.Main;
 import com.example.civilization.Model.Clock;
 import com.example.civilization.Model.Database;
@@ -8,6 +9,9 @@ import com.example.civilization.Model.GlobalChats.Room;
 import com.example.civilization.Model.GlobalChats.privateChat;
 import com.example.civilization.Model.GlobalChats.publicChat;
 import com.example.civilization.Model.User;
+import com.example.civilization.Requests.RequestUser;
+import com.example.civilization.Response.ResponseUser;
+import com.google.gson.Gson;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.*;
@@ -21,6 +25,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -70,9 +76,15 @@ public class GlobalChatMenuController {
     @FXML
     private VBox allMessages;
 
+
+    private static DataInputStream dataInputStream;
+    private static DataOutputStream dataOutputStream;
+
     public static GlobalChatMenuController getInstance(){
         if(instance == null){
             instance = new GlobalChatMenuController();
+            dataInputStream = DatabaseController.getInstance().getDataInputStream();
+            dataOutputStream = DatabaseController.getInstance().getDataOutputStream();
         }
         return instance;
     }
@@ -101,8 +113,23 @@ public class GlobalChatMenuController {
     }
 
     public void showPublicMessage() throws MalformedURLException {
-        for (int i = 0; i < publicChat.getInstance().getAllPublicMessage().size(); i++) {
-            Message message = publicChat.getInstance().getAllPublicMessage().get(i);
+        ArrayList<Message> allMessages = new ArrayList<>();
+        try{
+            Gson gson = new Gson();
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("allPublicMessage",null);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            allMessages = responseUser.getAllMessagePublic();
+        } catch (IOException E){
+            E.printStackTrace();
+        }
+
+
+        for (int i = 0; i < allMessages.size(); i++) {
+            Message message = allMessages.get(i);
             if (!(message.getUser() == user && message.getHasDelete()))
                 sendNewMessage(message);
             if (message.getUser() != user)
@@ -137,15 +164,41 @@ public class GlobalChatMenuController {
         }else{
             Message message = new Message(user,text.getText(), Clock.getTime());
             if(chatNumber == 0){
-                publicChat.getInstance().addMessage(message);
+                try{
+                    RequestUser requestUser = new RequestUser();
+                    requestUser.addRequest("addPublicMessage",null);
+                    requestUser.setMessage(message);
+                    Gson gson = new Gson();
+                    dataOutputStream.writeUTF(gson.toJson(requestUser));
+                }catch (IOException E){
+                    E.printStackTrace();
+                }
                 sendNewMessage(message);
                 text.clear();
             }else if(chatNumber == 1){
-                this.privatechat.addMessage(message);
+                try{
+                    RequestUser requestUser = new RequestUser();
+                    requestUser.addRequest("addPrivateMessage",null);
+                    requestUser.setMessage(message);
+                    Gson gson = new Gson();
+                    dataOutputStream.writeUTF(gson.toJson(requestUser));
+                }catch (IOException E){
+                    E.printStackTrace();
+                }
+
                 sendNewMessage(message);
                 text.clear();
             }else if(chatNumber == -1){
-                this.room.addMessage(message);
+                try{
+                    RequestUser requestUser = new RequestUser();
+                    requestUser.addRequest("addRoomMessage",null);
+                    requestUser.setMessage(message);
+                    Gson gson = new Gson();
+                    dataOutputStream.writeUTF(gson.toJson(requestUser));
+                }catch (IOException E){
+                    E.printStackTrace();
+                }
+
                 sendNewMessage(message);
                 text.clear();
             }
@@ -338,12 +391,42 @@ public class GlobalChatMenuController {
             pane.getChildren().remove(deleteMessage);
             if(chatNumber == 0) {
                 allMessages.getChildren().remove(pane);
+                try{
+                    RequestUser requestUser = new RequestUser();
+                    Gson gson = new Gson();
+                    requestUser.addRequest("removePublicMessage",null);
+                    requestUser.setMessage(message);
+                    dataOutputStream.writeUTF(gson.toJson(requestUser));
+                    dataOutputStream.flush();
+                }catch (IOException E){
+                    E.printStackTrace();
+                }
                 publicChat.getInstance().getAllPublicMessage().remove(message);
             }else if(chatNumber == 1){
                 allMessagePrivate.getChildren().remove(pane);
+                try{
+                    RequestUser requestUser = new RequestUser();
+                    Gson gson = new Gson();
+                    requestUser.addRequest("removePrivateMessage",null);
+                    requestUser.setMessage(message);
+                    dataOutputStream.writeUTF(gson.toJson(requestUser));
+                    dataOutputStream.flush();
+                }catch (IOException E){
+                    E.printStackTrace();
+                }
                 privatechat.getAllPrivateMessage().remove(message);
             }else if(chatNumber == -1){
                 allMessageRoom.getChildren().remove(pane);
+                try{
+                    RequestUser requestUser = new RequestUser();
+                    Gson gson = new Gson();
+                    requestUser.addRequest("removeRoomMessage",null);
+                    requestUser.setMessage(message);
+                    dataOutputStream.writeUTF(gson.toJson(requestUser));
+                    dataOutputStream.flush();
+                }catch (IOException E){
+                    E.printStackTrace();
+                }
                 room.getMessages().remove(message);
             }
 
@@ -409,7 +492,21 @@ public class GlobalChatMenuController {
 
 
     public User findUser(String username){
-        ArrayList<User> users = Database.getInstance().getUsers();
+        ArrayList<User> users = new ArrayList<>();
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("getAllUser",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            users = responseUser.getUsers();
+
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+
         for(int i = 0;i< users.size();i++){
             if(users.get(i).getUsername().equals(username)){
                 return users.get(i);

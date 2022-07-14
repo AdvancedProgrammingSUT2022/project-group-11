@@ -8,20 +8,31 @@ import com.example.civilization.Model.River;
 import com.example.civilization.Model.Terrain;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
+import com.example.civilization.Requests.RequestUser;
+import com.example.civilization.Response.ResponseUser;
+import com.google.gson.Gson;
 import javafx.scene.control.CheckBox;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class EditMapController {
     private static EditMapController instance;
-    private static Map map;
+   // private static Map map;
+    private static DataOutputStream dataOutputStream;
+    private static DataInputStream dataInputStream;
     public static EditMapController getInstance(){
         if(instance == null){
             instance = new EditMapController();
-            map = Database.getInstance().getMap();
+     //       map = DatabaseController.getInstance().getMapFromServer();
+            dataInputStream = DatabaseController.getInstance().getDataInputStream();
+            dataOutputStream = DatabaseController.getInstance().getDataOutputStream();
         }
         return instance;
     }
+
     private boolean up_up;
     private boolean up_left;
     private boolean up_right;
@@ -42,82 +53,220 @@ public class EditMapController {
         if(j % 2 == 1){
             if(up_up){
                if(i - 1 >= 0){
-                   River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i - 1][j]);
-                   Database.getInstance().getMap().addRiver(river);
+                   try{
+                       River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i - 1][j]);
+                       RequestUser requestUser = new RequestUser();
+                       requestUser.addRequest("addRiverManually",null);
+                       requestUser.setRiver(river);
+                       Gson gson = new Gson();
+                       dataOutputStream.writeUTF(gson.toJson(requestUser));
+                       dataOutputStream.flush();
+
+                   }catch (IOException E){
+                       E.printStackTrace();
+                   }
+
                }
             }
             if(up_left){
                 if(i - 1 >= 0 && j - 1 >= 0){
-                    River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i - 1][j - 1]);
-                    Database.getInstance().getMap().addRiver(river);
+                    try{
+                        River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i - 1][j - 1]);
+                        RequestUser requestUser = new RequestUser();
+                        requestUser.addRequest("addRiverManually",null);
+                        requestUser.setRiver(river);
+                        Gson gson = new Gson();
+                        dataOutputStream.writeUTF(gson.toJson(requestUser));
+                        dataOutputStream.flush();
+                    }catch (IOException E){
+                        E.printStackTrace();
+                    }
+
                 }
             }
             if(up_right){
-                if(i - 1 >= 0 && j + 1 < Database.getInstance().getMap().getCOL()){
-                    River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i - 1][j + 1]);
-                    Database.getInstance().getMap().addRiver(river);
+                if(i - 1 >= 0 && j + 1 < 16){
+                    try{
+                        River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i - 1][j + 1]);
+                        RequestUser requestUser = new RequestUser();
+                        requestUser.addRequest("addRiverManually",null);
+                        requestUser.setRiver(river);
+                        Gson gson = new Gson();
+                        dataOutputStream.writeUTF(gson.toJson(requestUser));
+                        dataOutputStream.flush();
+                    }catch (IOException E){
+                        E.printStackTrace();
+                    }
+
                 }
 
             }
             if(down_down){
-                if(i + 1 < Database.getInstance().getMap().getROW()){
-                    River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i + 1][j]);
-                    Database.getInstance().getMap().addRiver(river);
+                if(i + 1 < 32){
+                    try{
+                        River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i + 1][j]);
+                        RequestUser requestUser = new RequestUser();
+                        requestUser.addRequest("addRiverManually",null);
+                        requestUser.setRiver(river);
+                        Gson gson = new Gson();
+                        dataOutputStream.writeUTF(gson.toJson(requestUser));
+                        dataOutputStream.flush();
+                    }catch (IOException E){
+                        E.printStackTrace();
+                    }
+
                 }
 
             }
             if(down_left){
                 if(j - 1 >= 0){
-                    River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i][j - 1]);
-                    Database.getInstance().getMap().addRiver(river);
+                    try{
+                        River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i][j - 1]);
+                        RequestUser requestUser = new RequestUser();
+                        requestUser.addRequest("addRiverManually",null);
+                        requestUser.setRiver(river);
+                        Gson gson = new Gson();
+                        dataOutputStream.writeUTF(gson.toJson(requestUser));
+                        dataOutputStream.flush();
+                    }catch (IOException E){
+                        E.printStackTrace();
+                    }
+
                 }
 
             }
             if(down_right){
-               if(j + 1 < Database.getInstance().getMap().getCOL()){
-                   River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i][j + 1]);
-                   Database.getInstance().getMap().addRiver(river);
+               if(j + 1 < 16){
+                   try{
+                       River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i][j + 1]);
+                       RequestUser requestUser = new RequestUser();
+                       requestUser.addRequest("addRiverManually",null);
+                       requestUser.setRiver(river);
+                       Gson gson = new Gson();
+                       dataOutputStream.writeUTF(gson.toJson(requestUser));
+                       dataOutputStream.flush();
+                   }catch (IOException E){
+                       E.printStackTrace();
+                   }
+
                }
             }
         }
+    }
+
+    public Terrain findTerrain(int i,int j){
+        Terrain terrain = null;
+        try{
+           RequestUser requestUser = new RequestUser();
+           requestUser.addRequest("findTerrain",null);
+           requestUser.setIJ(i + " " + j);
+           Gson gson = new Gson();
+           dataOutputStream.writeUTF(gson.toJson(requestUser));
+           dataOutputStream.flush();
+           String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            terrain = responseUser.getTerrain();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+        return terrain;
     }
 
     public void setRiverEven(int i ,int j){
         if(j % 2== 0){
             if(up_up){
                 if(i - 1 >= 0){
-                    River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i - 1][j]);
-                    Database.getInstance().getMap().addRiver(river);
+                    try {
+                        River river = new River(findTerrain(i,j), findTerrain(i - 1,j));
+                        RequestUser requestUser = new RequestUser();
+                        requestUser.addRequest("addRiverManually",null);
+                        requestUser.setRiver(river);
+                        Gson gson = new Gson();
+                        dataOutputStream.writeUTF(gson.toJson(requestUser));
+                        dataOutputStream.flush();
+                    }catch(IOException E){
+                        E.printStackTrace();
+                    }
+
                 }
             }
             if(up_left){
                 if(j - 1 >= 0){
-                    River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i][j - 1]);
-                    Database.getInstance().getMap().addRiver(river);
+                    try {
+                        River river = new River(findTerrain(i,j), findTerrain(i,j - 1));
+                        RequestUser requestUser = new RequestUser();
+                        requestUser.addRequest("addRiverManually",null);
+                        requestUser.setRiver(river);
+                        Gson gson = new Gson();
+                        dataOutputStream.writeUTF(gson.toJson(requestUser));
+                        dataOutputStream.flush();
+                    }catch (IOException E){
+                        E.printStackTrace();
+                    }
+
                 }
             }
             if(up_right){
-                if(j + 1 < Database.getInstance().getMap().getCOL()){
-                    River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i][j + 1]);
-                    Database.getInstance().getMap().addRiver(river);
+                if(j + 1 < 16){
+                    try {
+                        River river = new River(findTerrain(i,j), findTerrain(i,j + 1));
+                        RequestUser requestUser = new RequestUser();
+                        requestUser.addRequest("addRiverManually",null);
+                        requestUser.setRiver(river);
+                        Gson gson = new Gson();
+                        dataOutputStream.writeUTF(gson.toJson(requestUser));
+                        dataOutputStream.flush();
+                    }catch (IOException E){
+                        E.printStackTrace();
+                    }
+
                 }
             }
             if(down_down){
-                if(i + 1 < Database.getInstance().getMap().getROW()){
-                    River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i + 1][j]);
-                    Database.getInstance().getMap().addRiver(river);
+                if(i + 1 < 32){
+                    try {
+                        River river = new River(findTerrain(i,j), findTerrain(i + 1,j));
+                        RequestUser requestUser = new RequestUser();
+                        requestUser.addRequest("addRiverManually",null);
+                        requestUser.setRiver(river);
+                        Gson gson = new Gson();
+                        dataOutputStream.writeUTF(gson.toJson(requestUser));
+                        dataOutputStream.flush();
+                    }catch(IOException E){
+                        E.printStackTrace();
+                    }
+
                 }
             }
             if(down_left){
-                if( i + 1 < Database.getInstance().getMap().getROW() && j - 1 >= 0){
-                    River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i + 1][j - 1]);
-                    Database.getInstance().getMap().addRiver(river);
+                if( i + 1 < 32 && j - 1 >= 0){
+                    try {
+                        River river = new River(findTerrain(i,j), findTerrain(i + 1,j - 1));
+                        RequestUser requestUser = new RequestUser();
+                        requestUser.addRequest("addRiverManually",null);
+                        requestUser.setRiver(river);
+                        Gson gson = new Gson();
+                        dataOutputStream.writeUTF(gson.toJson(requestUser));
+                        dataOutputStream.flush();
+                    }catch (IOException E){
+                        E.printStackTrace();
+                    }
+
                 }
             }
             if(down_right){
-                if(i + 1 < Database.getInstance().getMap().getROW() && j + 1 < Database.getInstance().getMap().getCOL()){
-                    River river = new River(Database.getInstance().getMap().getTerrain()[i][j],Database.getInstance().getMap().getTerrain()[i + 1][j + 1]);
-                    Database.getInstance().getMap().addRiver(river);
+                if(i + 1 < 32 && j + 1 < 16){
+                    try {
+                        River river = new River(findTerrain(i,j),findTerrain(i + 1,j + 1));
+                        RequestUser requestUser = new RequestUser();
+                        requestUser.addRequest("addRiverManually",null);
+                        requestUser.setRiver(river);
+                        Gson gson = new Gson();
+                        dataOutputStream.writeUTF(gson.toJson(requestUser));
+                        dataOutputStream.flush();
+                    }catch (IOException E){
+                        E.printStackTrace();
+                    }
                 }
             }
 
@@ -149,11 +298,28 @@ public class EditMapController {
                 break;
             }
         }
-        map.getTerrain()[i][j].setTerrainTypes(typeTile);
-        map.getTerrain()[i][j].setTerrainFeatureTypesArray(feature);
-        map.getTerrain()[i][j].setTerrainResource(resource);
+       // map.getTerrain()[i][j].setTerrainTypes(typeTile);
+       // map.getTerrain()[i][j].setTerrainFeatureTypesArray(feature);
+       // map.getTerrain()[i][j].setTerrainResource(resource);
+        sendDataFeatures(typeTile,feature,resource,i,j);
         setRiverOdd(i,j);
         setRiverEven(i,j);
+    }
+
+    public void sendDataFeatures(TerrainTypes typeTile,ArrayList<TerrainFeatureTypes> feature,Resource resource,int i , int j){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("sendDataManuallyTerrain",null);
+            requestUser.setResource(resource);
+            requestUser.setType(typeTile);
+            requestUser.setFeatures(feature);
+            requestUser.setIJ(i + " " + j);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
     }
 
     public void changeCheckBoxState(CheckBox up_up,CheckBox up_left,CheckBox up_right,CheckBox down_down,CheckBox down_left,CheckBox down_right){

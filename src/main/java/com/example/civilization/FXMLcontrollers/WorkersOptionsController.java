@@ -40,11 +40,9 @@ public class WorkersOptionsController {
     @FXML
     public void initialize() {
         Platform.runLater(this::setTexts);
-
-
     }
 
-    public void setTexts() {
+    public void setTexts()  {
         for (TechnologyTypes technologyTypes : TechnologyTypes.values()) {
             DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getTechnologies().add(new Technology(false, 0, technologyTypes, true));
         }
