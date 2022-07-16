@@ -1,8 +1,5 @@
 package com.example.civilization.Model;
 
-import com.example.civilization.Model.GlobalChats.Room;
-import com.example.civilization.Model.GlobalChats.privateChat;
-
 import java.util.ArrayList;
 
 public class Database {
@@ -18,8 +15,19 @@ public class Database {
     private ArrayList<User> Users;
     private ArrayList<String> civilizationsName = new ArrayList<>();
 
+
     private Map map = new Map();
     private int turn;
+
+    private ArrayList<User> palyesrUser = new ArrayList<>();
+
+    public ArrayList<User> getPalyersUsers() {
+        return palyesrUser;
+    }
+
+    public void setPalyersUsers(ArrayList<User> palyerUsers) {
+        this.palyesrUser = palyerUsers;
+    }
 
     public Database() {
         this.Users = new ArrayList<>();

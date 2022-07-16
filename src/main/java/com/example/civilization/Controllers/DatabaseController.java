@@ -64,6 +64,43 @@ public class DatabaseController {
 
 
 
+    public void updateGame(){
+        ArrayList<User> onlineUsers = database.getPalyersUsers();
+        if(onlineUsers.size() > 0) {
+            for (User user : onlineUsers) {
+                if (database.getActiveUser().equals(user)) {
+
+                } else {
+
+                }
+            }
+        }
+    }
+
+
+
+    public void initializeMapForUser(User user){
+       database.getMap().initializeMapUser(user);
+
+    }
+
+
+
+    public void getMapServer(){
+         ResponseUser responseUser = new ResponseUser();
+         responseUser.setMap(database.getMap());
+         Gson gson = new Gson();
+        try {
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
 
     public void createUser(RequestUser requestUser) {
         try {
@@ -164,10 +201,17 @@ public class DatabaseController {
 
     }
 
-    public void generateMapFromServer(){
+    public void generateMapFromServer(RequestUser requestUser){
         try{
            ResponseUser responseUser = new ResponseUser();
-           database.getMap().generateMap();
+           if(database.getPalyersUsers().size() == 0){
+               database.getMap().generateMap();
+
+           }
+            User user = requestUser.getUser();
+            if(database.getPalyersUsers().indexOf(database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname())) == -1){
+                database.getPalyersUsers().add(database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname()));
+            }
            responseUser.setMap(database.getMap());
            Gson gson = new Gson();
             dataOutputStream.writeUTF(gson.toJson(responseUser));
@@ -769,7 +813,7 @@ public class DatabaseController {
     }
 
     public void setCivilizations() {
-        ArrayList<User> users = database.getUsers();
+        ArrayList<User> users = database.getPalyersUsers();
         this.database.setCivilizationsName(new ArrayList<>(List.of("Incan", "Aztec", "Roman", "Ancient Greek", "Chinese", "Maya", "Ancient Egyptian", "Indus Valley", "Mesopotamian", "Persian")));
         ArrayList<Integer> indices = setIndices(users);
         int i = 0;

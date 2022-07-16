@@ -48,7 +48,7 @@ public class ScannerMenu {
                         }else if(action.equals("changePassword")){
                             databaseController.changePassword(requestUser);
                         }else if(action.equals("generateMap")){
-                            databaseController.generateMapFromServer();
+                            databaseController.generateMapFromServer(requestUser);
                         }else if(action.equals("setCivilizations")){
                             databaseController.setCivilizations();
                         }else if(action.equals("getAllUser")){
@@ -81,9 +81,10 @@ public class ScannerMenu {
                             databaseController.getAllPrivateChats(requestUser);
                         }else if(action.equals("newRoomChat")){
                             databaseController.newRoomChat(requestUser);
-
+                        }else if(action.equals("getMap")){
+                            databaseController.getMapServer();
                         }
-
+                      databaseController.updateGame();
                     }
                 }catch(IOException E){
                     E.printStackTrace();
