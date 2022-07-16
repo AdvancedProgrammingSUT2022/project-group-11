@@ -4,9 +4,12 @@ package com.example.civilization.FXMLcontrollers;
 import com.example.civilization.Controllers.DatabaseController;
 import com.example.civilization.Controllers.SaveGame;
 import com.example.civilization.Main;
+import com.example.civilization.Model.Terrain;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
 import com.example.civilization.Model.Units.UnitTypes;
+import com.example.civilization.Requests.RequestUser;
+import com.google.gson.Gson;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -50,10 +53,12 @@ public class GameMapController {
 
 
 
+
+
     @FXML
     public void initialize() throws IOException {
 
-        this.databaseController.getMap().initializeMapUser(DatabaseController.getInstance().getDatabase().getActiveUser());
+       // this.databaseController.getMap().initializeMapUser(DatabaseController.getInstance().getDatabase().getActiveUser());
 
 
         pane.setMaxSize(1300, 700);
@@ -80,7 +85,7 @@ public class GameMapController {
 
     @FXML
     private void changingDirection() throws IOException {
-       this.databaseController.getMap().initializeMapUser(DatabaseController.getInstance().getDatabase().getActiveUser());
+       //this.databaseController.getMap().initializeMapUser(DatabaseController.getInstance().getDatabase().getActiveUser());
         pane.getScene().setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case UP -> {
@@ -90,7 +95,7 @@ public class GameMapController {
                     }
                 }
                 case DOWN -> {
-                    if(start_X_InShowMap + 6 < databaseController.getMap().getROW() -1){
+                    if(start_X_InShowMap + 6 < databaseController.getMapFromServer().getROW() -1){
                         start_X_InShowMap++;
                         mapForNewCoordinates();
                     }
@@ -103,7 +108,7 @@ public class GameMapController {
 
                 }
                 case RIGHT -> {
-                    if(start_Y_InShowMap + 12 < databaseController.getMap().getCOL() -1){
+                    if(start_Y_InShowMap + 12 < databaseController.getMapFromServer().getCOL() -1){
                         start_Y_InShowMap++;
                         mapForNewCoordinates();
                     }
@@ -180,25 +185,25 @@ public class GameMapController {
 
         polygonTerrainType.setFill(new ImagePattern(new Image(new FileInputStream(getImagePatternOfTiles(databaseController.getTerrainByCoordinates(i, j).getTerrainTypes().name())))));
         terrainHexagons.add(polygonTerrainType);
-        if (!databaseController.getTerrainByCoordinates(i, j).getTerrainFeatureTypes().isEmpty() && databaseController.getTerrainByCoordinates(i, j).getTerrainFeatureTypes().get(0) != null) {
+        if (!databaseController.getTerrain(i,j).getTerrainFeatureTypes().isEmpty() && databaseController.getTerrain(i,j).getTerrainFeatureTypes().get(0) != null) {
 
-            polygonTerrainFeatureType.setFill(new ImagePattern(new Image(new FileInputStream(getImagePatternOfTiles(databaseController.getTerrainByCoordinates(i, j).getTerrainFeatureTypes().get(0).name())))));
+            polygonTerrainFeatureType.setFill(new ImagePattern(new Image(new FileInputStream(getImagePatternOfTiles(databaseController.getTerrain(i,j).getTerrainFeatureTypes().get(0).name())))));
             terrainHexagons.add(polygonTerrainFeatureType);
 
         }
-        if (databaseController.getTerrainByCoordinates(i, j).getCombatUnit() != null) {
+        if (databaseController.getTerrain(i,j).getCombatUnit() != null) {
 
         }
-        if (databaseController.getTerrainByCoordinates(i, j).getNonCombatUnit() != null) {
+        if (databaseController.getTerrain(i,j).getNonCombatUnit() != null) {
 
         }
         Polygon rivers = addingRivers(radius, i, j, x, y);
         terrainHexagons.add(rivers);
-        if(databaseController.getTerrainByCoordinates(i, j).getType().equals("revealed")){
+        if(databaseController.getTerrain(i,j).getType().equals("revealed")){
             polygonTerrainType.setOpacity(0.2);
             polygonTerrainFeatureType.setOpacity(0.2);
         }
-        else if(databaseController.getTerrainByCoordinates(i, j).getType().equals("fog of war")){
+        else if(databaseController.getTerrain(i,j).getType().equals("fog of war")){
             polygonTerrainFeatureType.setFill(new ImagePattern(new Image(new FileInputStream("src/main/resources/com/example/civilization/PNG/civAsset/map/CrosshatchHexagon.png"))));
             polygonTerrainType.setFill(new ImagePattern(new Image(new FileInputStream("src/main/resources/com/example/civilization/PNG/civAsset/map/CrosshatchHexagon.png"))));
             rivers.setFill(new ImagePattern(new Image(new FileInputStream("src/main/resources/com/example/civilization/PNG/civAsset/map/CrosshatchHexagon.png"))));
@@ -221,7 +226,7 @@ public class GameMapController {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXML/terrainsPopUp.fxml"));
             Parent root = loader.load();
             TerrainPopUpController secController = loader.getController();
-            secController.setData(databaseController.getTerrainByCoordinates(i, j));
+            secController.setData(databaseController.getTerrain(i,j));
             Stage stage = new Stage();
             stage.setScene(new Scene(root));
             for (Polygon polygon : polygons) {
@@ -241,8 +246,8 @@ public class GameMapController {
         Polygon rivers = new Polygon();
         for (int a = -1; a < 2; a++) {
             for (int b = -1; b < 2; b++) {
-                if (i + a >= 0 && i + a < databaseController.getMap().getROW() && j + b >= 0 && j + b < databaseController.getMap().getCOL()) {
-                    if (databaseController.getMap().hasRiver(databaseController.getMap().getTerrain()[i + a][j + b], databaseController.getMap().getTerrain()[i][j]) != null) {
+                if (i + a >= 0 && i + a < databaseController.getMapFromServer().getROW() && j + b >= 0 && j + b < databaseController.getMapFromServer().getCOL()) {
+                    if (databaseController.getMapFromServer().hasRiver(databaseController.getMapFromServer().getTerrain()[i + a][j + b], databaseController.getMapFromServer().getTerrain()[i][j]) != null) {
 
                         if (a == 1 && b == 0) {
                             //       System.out.println(i + " " + j + " " + a + " " + b);

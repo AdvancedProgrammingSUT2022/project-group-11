@@ -70,6 +70,47 @@ public class DatabaseController {
         return this.database.getMap();
     }
 
+
+    public Terrain getTerrain(int i,int j){
+        String IJ = i + " " + j;
+        Terrain terrain = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.setIJ(IJ);
+            requestUser.addRequest("findTerrain",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            terrain = responseUser.getTerrain();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+        return terrain;
+    }
+
+    public Map getMapFromServer(){
+        Map map;
+        RequestUser requestUser = new RequestUser();
+        requestUser.addRequest("getMap",null);
+        Gson gson = new Gson();
+
+        try {
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            map = responseUser.getMap();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        return map;
+    }
+
+
     public String createUser(String u, String p, String n) {
         String result = "user created successfully!";
         try {
@@ -163,7 +204,7 @@ public class DatabaseController {
     }
 
 
-    public Map generateMapFromServer(){
+    public Map generateMapFromServer(User user){
         Map map = null;
        try{
            RequestUser requestUser = new RequestUser();

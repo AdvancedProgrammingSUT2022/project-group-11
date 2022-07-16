@@ -218,8 +218,8 @@ public class ProfileMenuController {
 
     @FXML
     public void goToGameMenu(ActionEvent event) throws IOException {
-        Map map = databaseController.generateMapFromServer();
-        databaseController.setCivilizations();
+        Map map = databaseController.generateMapFromServer(databaseController.activeUser());
+    //    databaseController.setCivilizations();
         Main.changeMenu("gameMap");
     }
 
@@ -228,7 +228,7 @@ public class ProfileMenuController {
         Main.changeMenu("GlobalChat");
     }
     public void EditMap(MouseEvent mouseEvent) {
-        Map map = databaseController.generateMapFromServer();
+        Map map = databaseController.generateMapFromServer(databaseController.activeUser());
         Main.changeMenu("EditMap");
 
     }
