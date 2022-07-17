@@ -41,13 +41,13 @@ public class ChooseResearchController {
     }
 
     public void setTexts() {
-        if (DatabaseController.getInstance().lastUnlockedTechnology() == null) {
+        if (DatabaseController.getInstance().getUnlockTechnologyType()== null) {
             justCompleted.setText("You have not unlocked any technology yet!");
         } else {
-            justCompleted.setText("Just Completed : " + DatabaseController.getInstance().lastUnlockedTechnology().name());
+            justCompleted.setText("Just Completed : " + DatabaseController.getInstance().getUnlockTechnologyType().name());
         }
         int i = 0;
-        for (TechnologyTypes technologyTypes1 : DatabaseController.getInstance().unlockableTechnologies(DatabaseController.getInstance().getDatabase().getActiveUser())) {
+        for (TechnologyTypes technologyTypes1 : DatabaseController.getInstance().unlockableTechnologies()) {
             unlockable.add(new Button());
             unlockable.get(i).setFont(Font.font("Copperplate", 15));
             unlockable.get(i).setTextFill(Color.RED);
@@ -61,7 +61,7 @@ public class ChooseResearchController {
             unlockable.get(i).setOnMouseClicked(mouseEvent -> {
                 if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                     if (mouseEvent.getClickCount() == 2) {
-                        DatabaseController.getInstance().choosingATechnologyToStudyForGraphic(DatabaseController.getInstance().getDatabase().getActiveUser(), DatabaseController.getInstance().getTechnologyTypeByName(name));
+                        DatabaseController.getInstance().choosingATechnologyToStudyForGraphic( DatabaseController.getInstance().getTechnologyTypeByName(name));
                         setColor(unlockable);
                     }
                 }
@@ -85,9 +85,9 @@ public class ChooseResearchController {
 
     private void setColor(ArrayList<Button> buttons) {
         for (Button children : buttons) {
-            if (DatabaseController.getInstance().getTechnologyByTechnologyType(DatabaseController.getInstance().getDatabase().getActiveUser(), DatabaseController.getInstance().getTechnologyTypeByName(children.getText())) != null && !DatabaseController.getInstance().getTechnologyByTechnologyType(DatabaseController.getInstance().getDatabase().getActiveUser(), DatabaseController.getInstance().getTechnologyTypeByName(children.getText())).getUnderResearch()) {
+            if (DatabaseController.getInstance().getTechnologyByTechnologyType(DatabaseController.getInstance().activeUser(), DatabaseController.getInstance().getTechnologyTypeByName(children.getText())) != null && !DatabaseController.getInstance().getTechnologyByTechnologyType(DatabaseController.getInstance().getDatabase().getActiveUser(), DatabaseController.getInstance().getTechnologyTypeByName(children.getText())).getUnderResearch()) {
                 children.setTextFill(Color.RED);
-            } else if (DatabaseController.getInstance().getTechnologyByTechnologyType(DatabaseController.getInstance().getDatabase().getActiveUser(), DatabaseController.getInstance().getTechnologyTypeByName(children.getText())) != null && DatabaseController.getInstance().getTechnologyByTechnologyType(DatabaseController.getInstance().getDatabase().getActiveUser(), DatabaseController.getInstance().getTechnologyTypeByName(children.getText())).getUnderResearch()) {
+            } else if (DatabaseController.getInstance().getTechnologyByTechnologyType(DatabaseController.getInstance().activeUser(), DatabaseController.getInstance().getTechnologyTypeByName(children.getText())) != null && DatabaseController.getInstance().getTechnologyByTechnologyType(DatabaseController.getInstance().getDatabase().getActiveUser(), DatabaseController.getInstance().getTechnologyTypeByName(children.getText())).getUnderResearch()) {
                 children.setTextFill(Color.BLUE);
             }
         }

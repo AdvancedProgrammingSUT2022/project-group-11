@@ -56,7 +56,7 @@ public class TechnologyTreeController {
                     children.setOnMouseClicked(mouseEvent -> {
                         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                             if (mouseEvent.getClickCount() == 2) {
-                                DatabaseController.getInstance().choosingATechnologyToStudyForGraphic(DatabaseController.getInstance().getDatabase().getActiveUser(), DatabaseController.getInstance().getTechnologyTypeByName(((Text) ((StackPane) children).getChildren().get(1)).getText()));
+                                DatabaseController.getInstance().choosingATechnologyToStudyForGraphic( DatabaseController.getInstance().getTechnologyTypeByName(((Text) ((StackPane) children).getChildren().get(1)).getText()));
                                 setIcons();
                             }
                         }
@@ -89,7 +89,7 @@ public class TechnologyTreeController {
                                 suggestions.get(i).setOnMouseClicked(mouseEvent -> {
                                     if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                                         if (mouseEvent.getClickCount() == 2) {
-                                            DatabaseController.getInstance().choosingATechnologyToStudyForGraphic(DatabaseController.getInstance().getDatabase().getActiveUser(), DatabaseController.getInstance().getTechnologyTypeByName(name));
+                                            DatabaseController.getInstance().choosingATechnologyToStudyForGraphic( DatabaseController.getInstance().getTechnologyTypeByName(name));
                                             setIcons();
                                         }
                                     }

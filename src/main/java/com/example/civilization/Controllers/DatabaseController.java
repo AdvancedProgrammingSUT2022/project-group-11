@@ -71,6 +71,24 @@ public class DatabaseController {
     }
 
 
+    public TechnologyTypes getUnlockTechnologyType(){
+        TechnologyTypes technologyTypes = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("lastUnlockTechnology",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            technologyTypes = responseUser.getTechnologyTypes();
+
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+        return technologyTypes;
+    }
+
     public Terrain getTerrain(int i,int j){
         String IJ = i + " " + j;
         Terrain terrain = null;
@@ -1600,19 +1618,19 @@ public class DatabaseController {
     }
 
 
-    public void choosingATechnologyToStudyForGraphic(User user, TechnologyTypes technologyType) {
+    public void choosingATechnologyToStudyForGraphic(TechnologyTypes technologyType) {
+        try{
+            Gson gson = new Gson();
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("choosingATechnologyToStudy",null);
+            requestUser.setTechnologyTypes(technologyType);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
 
-        for (Technology technology : user.getCivilization().getTechnologies()) {
-            technology.setUnderResearch(false);
-        }
-        if (isContainTechnologyType(user, getFirstRequiredTechnology(user, technologyType)) && !getTechnologyByTechnologyType(user, getFirstRequiredTechnology(user, technologyType)).getIsAvailable()) {
-            getTechnologyByTechnologyType(user, getFirstRequiredTechnology(user, technologyType)).setUnderResearch(true);
-            // System.out.println("Technology is under research again " + getFirstRequiredTechnology(user,technologyType).name());
-        } else if (!isContainTechnologyType(user, getFirstRequiredTechnology(user, technologyType))) {
-            user.getCivilization().getTechnologies().add(new Technology(true, 0, getFirstRequiredTechnology(user, technologyType), false));
+        }catch(IOException E){
+            E.printStackTrace();
         }
 
-        //    System.out.println("Technology is under research " + getFirstRequiredTechnology(user,technologyType).name());
     }
 
     public void getNeededTechnologies(HashMap<TechnologyTypes, Integer> requiredTechnologies, int depth, User user, TechnologyTypes technologyTypes) {
@@ -1641,14 +1659,21 @@ public class DatabaseController {
     }
 
 
-    public ArrayList<TechnologyTypes> unlockableTechnologies(User user) {
+    public ArrayList<TechnologyTypes> unlockableTechnologies() {
         ArrayList<TechnologyTypes> technologyTypes = new ArrayList<>();
-        for (TechnologyTypes technologyTypes1 : TechnologyTypes.values()) {
-            if (haveAllPrerequisiteTechnologies(user, technologyTypes1) && !isContainTechnology(user, technologyTypes1)) {
-                technologyTypes.add(technologyTypes1);
-            }
-
+        RequestUser requestUser = new RequestUser();
+        requestUser.addRequest("unlockableTechnologies",null);
+        Gson gson = new Gson();
+        try {
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            technologyTypes = responseUser.getTechnologyTypesArrayList();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
+
         return technologyTypes;
     }
 
