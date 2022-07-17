@@ -83,6 +83,12 @@ public class ScannerMenu {
                             databaseController.newRoomChat(requestUser);
                         }else if(action.equals("getMap")){
                             databaseController.getMapServer();
+                        }else if(action.equals("lastUnlockTechnology")){
+                            databaseController.getLastUnlockTechnology();
+                        }else if(action.equals("unlockableTechnologies")){
+                            databaseController.unlockTechnology();
+                        }else if(action.equals("choosingATechnologyToStudy")){
+                            databaseController.choosingATechnologyToStudy(requestUser);
                         }
                       databaseController.updateGame();
                     }

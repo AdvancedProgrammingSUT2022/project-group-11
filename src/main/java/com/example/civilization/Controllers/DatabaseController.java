@@ -102,6 +102,39 @@ public class DatabaseController {
 
 
 
+    public void getLastUnlockTechnology(){
+        ResponseUser responseUser = new ResponseUser();
+        responseUser.setTechnologyTypes(lastUnlockedTechnology());
+        Gson gson = new Gson();
+        try {
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void unlockTechnology(){
+        try{
+           Gson gson = new Gson();
+           ResponseUser responseUser = new ResponseUser();
+           responseUser.setTechnologyTypesArrayList(unlockableTechnologies(database.getActiveUser()));
+           dataOutputStream.writeUTF(gson.toJson(responseUser));
+           dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+
+    public void choosingATechnologyToStudy(RequestUser requestUser){
+         choosingATechnologyToStudyForGraphic(database.getActiveUser(),requestUser.getTechnologyTypes());
+    }
+
+
+
+
     public void createUser(RequestUser requestUser) {
         try {
             User userRequest = requestUser.getUser();

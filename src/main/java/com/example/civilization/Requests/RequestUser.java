@@ -6,6 +6,7 @@ import com.example.civilization.Model.GlobalChats.privateChat;
 import com.example.civilization.Model.Map;
 import com.example.civilization.Model.Resources.Resource;
 import com.example.civilization.Model.River;
+import com.example.civilization.Model.Technologies.TechnologyTypes;
 import com.example.civilization.Model.Terrain;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
@@ -35,6 +36,24 @@ public class RequestUser {
 
     public ArrayList<Room> getRooms() {
         return rooms;
+    }
+    private TechnologyTypes technologyTypes;
+    private ArrayList<TechnologyTypes> technologyTypesArrayList;
+
+    public ArrayList<TechnologyTypes> getTechnologyTypesArrayList() {
+        return technologyTypesArrayList;
+    }
+
+    public void setTechnologyTypesArrayList(ArrayList<TechnologyTypes> technologyTypesArrayList) {
+        this.technologyTypesArrayList = technologyTypesArrayList;
+    }
+
+    public TechnologyTypes getTechnologyTypes() {
+        return technologyTypes;
+    }
+
+    public void setTechnologyTypes(TechnologyTypes technologyTypes) {
+        this.technologyTypes = technologyTypes;
     }
 
     public void setRooms(ArrayList<Room> rooms) {
