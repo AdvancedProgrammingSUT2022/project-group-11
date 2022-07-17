@@ -71,6 +71,19 @@ public class DatabaseController {
     }
 
 
+    public void addTechnology(TechnologyTypes technologyTypes){
+        Gson gson = new Gson();
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("addNewTechnology",null);
+            requestUser.setTechnologyTypes(technologyTypes);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
     public TechnologyTypes getUnlockTechnologyType(){
         TechnologyTypes technologyTypes = null;
         try{
@@ -396,29 +409,40 @@ public class DatabaseController {
     }
 
     public CombatUnit getSelectedCombatUnit() {
-        int row = this.database.getMap().getROW();
-        int column = this.database.getMap().getCOL();
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                if (this.database.getMap().getTerrain()[i][j].getCombatUnit() != null && this.database.getMap().getTerrain()[i][j].getCombatUnit().isIsSelected()) {
-                    return this.database.getMap().getTerrain()[i][j].getCombatUnit();
-                }
-            }
+        CombatUnit combatUnit = null;
+        try{
+            Gson gson = new Gson();
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("getSelectedCombatUnit",null);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            combatUnit = responseUser.getCombatUnit();
+        }catch(IOException E){
+            E.printStackTrace();
         }
-        return null;
+
+        return combatUnit;
     }
 
     public NonCombatUnit getSelectedNonCombatUnit() {
-        int row = this.database.getMap().getROW();
-        int column = this.database.getMap().getCOL();
-        for (int i = 0; i < row; i++) {
-            for (int j = 0; j < column; j++) {
-                if (this.database.getMap().getTerrain()[i][j].getNonCombatUnit() != null && this.database.getMap().getTerrain()[i][j].getNonCombatUnit().isIsSelected()) {
-                    return this.database.getMap().getTerrain()[i][j].getNonCombatUnit();
-                }
-            }
+        NonCombatUnit nonCombatUnit = null;
+        try{
+            Gson gson = new Gson();
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("getSelectedNonCombatUnit",null);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            nonCombatUnit = responseUser.getNonCombatUnit();
+
+        }catch(IOException E){
+            E.printStackTrace();
         }
-        return null;
+
+        return nonCombatUnit;
     }
 
     public boolean isAllTasksFinished(User user) {
@@ -1906,66 +1930,73 @@ public class DatabaseController {
 
 
     public ArrayList<ImprovementTypes> improvementsThatCanBeBuiltInThisTerrain()  {
-        NonCombatUnit workers = getSelectedNonCombatUnit();
         ArrayList<ImprovementTypes> improvementTypesList = new ArrayList<>();
-        if (workers.getUnitType().equals(UnitTypes.WORKER)) {
-            Terrain workersTerrain = getTerrainByCoordinates(workers.getX(), workers.getY());
-
-            if (DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getOwnedTerrains().contains(workersTerrain)) {
-                for (ImprovementTypes improvementTypes : ImprovementTypes.values()) {
-                    if (workersTerrain.getTerrainImprovement() == null && isContainTechnology(DatabaseController.getInstance().getDatabase().getActiveUser(), improvementTypes.getRequiredTechnology()) && (improvementTypes.getCanBeBuiltON().contains(workersTerrain.getTerrainTypes()) || improvementTypes.getCanBeBuiltON().contains(workersTerrain.getTerrainFeatureTypes()))) {
-                        improvementTypesList.add(improvementTypes);
-                    }
-                    if (workersTerrain.getTerrainImprovement() != null && workersTerrain.getTerrainImprovement().getImprovementType().equals(improvementTypes) && !workersTerrain.getTerrainImprovement().isBeingWorkedOn()) {
-                        improvementTypesList.add(improvementTypes);
-                    }
-
-                }
-            }
-
+        try{
+            Gson gson = new Gson();
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("improvementsThatCanBeBuiltInThisTerrain",null);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            improvementTypesList = responseUser.getImprovementTypes();
+        }catch(IOException E){
+            E.printStackTrace();
         }
-
         return improvementTypesList;
 
 
     }
 
     public ImprovementTypes routsThatCanBeDeletedInThisTerrain() {
-        NonCombatUnit workers = getSelectedNonCombatUnit();
-        if (workers.getUnitType().equals(UnitTypes.WORKER)) {
-            Terrain workersTerrain = getTerrainByCoordinates(workers.getX(), workers.getY());
-            if (workersTerrain.getTerrainImprovement() != null && workersTerrain.getTerrainImprovement().isAvailable() &&  (workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.ROAD) || workersTerrain.getTerrainImprovement().getImprovementType().equals(ImprovementTypes.RAILROAD))) {
-                return workersTerrain.getTerrainImprovement().getImprovementType();
-            }
+        ImprovementTypes improvementTypes = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("routsThatCanBeDeletedInThisTerrain",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            improvementTypes = responseUser.getImprovementType();
+        }catch(IOException E){
+            E.printStackTrace();
         }
-
-        return null;
-
+        return improvementTypes;
     }
 
     public TerrainFeatureTypes featuresThatCanBeDeletedInThisTerrain() {
-        NonCombatUnit workers = getSelectedNonCombatUnit();
-        if (workers.getUnitType().equals(UnitTypes.WORKER)) {
-            Terrain workersTerrain = getTerrainByCoordinates(workers.getX(), workers.getY());
-            if (!workersTerrain.getTerrainFeatureTypes().isEmpty() && workersTerrain.getTerrainFeatureTypes().get(0) != null && (workersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.FOREST) || workersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.JUNGLE) || workersTerrain.getTerrainFeatureTypes().get(0).equals(TerrainFeatureTypes.MARSH))) {
-                return workersTerrain.getTerrainFeatureTypes().get(0);
-            }
+        TerrainFeatureTypes terrainFeatureTypes = null;
+        try{
+            Gson gson = new Gson();
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("featuresThatCanBeDeletedInThisTerrain",null);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            terrainFeatureTypes = responseUser.getFeature().get(0);
+        }catch(IOException E){
+            E.printStackTrace();
         }
-
-        return null;
-
+        return terrainFeatureTypes;
     }
 
     public ImprovementTypes improvementsThatCanBeRepairedInThisTerrain() {
-        NonCombatUnit workers = getSelectedNonCombatUnit();
-        if (workers.getUnitType().equals(UnitTypes.WORKER)) {
-            Terrain workersTerrain = getTerrainByCoordinates(workers.getX(), workers.getY());
-            if (workersTerrain.getTerrainImprovement() != null && !workersTerrain.getTerrainImprovement().isBeingRepaired() && !workersTerrain.getTerrainImprovement().isAvailable() && workersTerrain.getTerrainImprovement().isPillaged()) {
-                return workersTerrain.getTerrainImprovement().getImprovementType();
-            }
+        ImprovementTypes improvement = null;
+        try{
+            Gson gson = new Gson();
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("improvementsThatCanBeRepairedInThisTerrain",null);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            String res = dataInputStream.readUTF();
+            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
+            improvement = responseUser.getImprovementType();
+        }catch(IOException E){
+            E.printStackTrace();
         }
-
-        return null;
+       return improvement;
 
     }
 

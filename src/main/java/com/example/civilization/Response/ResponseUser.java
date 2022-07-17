@@ -3,6 +3,7 @@ package com.example.civilization.Response;
 import com.example.civilization.Model.GlobalChats.Message;
 import com.example.civilization.Model.GlobalChats.Room;
 import com.example.civilization.Model.GlobalChats.privateChat;
+import com.example.civilization.Model.Improvements.ImprovementTypes;
 import com.example.civilization.Model.Map;
 import com.example.civilization.Model.Resources.Resource;
 import com.example.civilization.Model.River;
@@ -10,6 +11,8 @@ import com.example.civilization.Model.Technologies.TechnologyTypes;
 import com.example.civilization.Model.Terrain;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
+import com.example.civilization.Model.Units.CombatUnit;
+import com.example.civilization.Model.Units.NonCombatUnit;
 import com.example.civilization.Model.User;
 
 import java.util.ArrayList;
@@ -31,6 +34,43 @@ public class ResponseUser {
     private ArrayList<privateChat> privateChats = new ArrayList<>();
     private TechnologyTypes technologyTypes;
     private ArrayList<TechnologyTypes> technologyTypesArrayList;
+    private NonCombatUnit nonCombatUnit;
+    private CombatUnit combatUnit;
+    private ArrayList<ImprovementTypes> improvementTypes;
+    private ImprovementTypes improvementType;
+
+    public ImprovementTypes getImprovementType() {
+        return improvementType;
+    }
+
+    public void setImprovementType(ImprovementTypes improvementType) {
+        this.improvementType = improvementType;
+    }
+
+    public ArrayList<ImprovementTypes> getImprovementTypes() {
+        return improvementTypes;
+    }
+
+    public void setImprovementTypes(ArrayList<ImprovementTypes> improvementTypes) {
+        this.improvementTypes = improvementTypes;
+    }
+
+    public NonCombatUnit getNonCombatUnit() {
+        return nonCombatUnit;
+    }
+
+    public void setNonCombatUnit(NonCombatUnit nonCombatUnit) {
+        this.nonCombatUnit = nonCombatUnit;
+    }
+
+    public CombatUnit getCombatUnit() {
+        return combatUnit;
+    }
+
+    public void setCombatUnit(CombatUnit combatUnit) {
+        this.combatUnit = combatUnit;
+    }
+
 
     public ArrayList<TechnologyTypes> getTechnologyTypesArrayList() {
         return technologyTypesArrayList;

@@ -44,12 +44,12 @@ public class WorkersOptionsController {
 
     public void setTexts()  {
         for (TechnologyTypes technologyTypes : TechnologyTypes.values()) {
-            DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getTechnologies().add(new Technology(false, 0, technologyTypes, true));
+            DatabaseController.getInstance().addTechnology(technologyTypes);
         }
 
         int x = DatabaseController.getInstance().getSelectedNonCombatUnit().getX();
         int y = DatabaseController.getInstance().getSelectedNonCombatUnit().getY();
-        Terrain workersTerrain = DatabaseController.getInstance().getTerrainByCoordinates(x, y);
+        Terrain workersTerrain = DatabaseController.getInstance().getTerrain(x,y);
 
 
         workersCoordinates.setText("Worker's Coordinates    :   X : " + x + "   Y : " + y);
