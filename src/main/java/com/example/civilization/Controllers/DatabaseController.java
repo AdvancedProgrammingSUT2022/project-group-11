@@ -79,12 +79,79 @@ public class DatabaseController {
 
 
 
-    public void initializeMapForUser(User user){
-       database.getMap().initializeMapUser(user);
-
+    public void improvementsThatCanBeRepaired(){
+        try{
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.setImprovementType(improvementsThatCanBeRepairedInThisTerrain());
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
     }
 
 
+    public void featuresThatCanBeDeleted(){
+        try{
+            ResponseUser responseUser = new ResponseUser();
+            ArrayList<TerrainFeatureTypes> features = new ArrayList<>();
+            features.add(featuresThatCanBeDeletedInThisTerrain());
+            responseUser.setFeatures(features);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void routsThatCanBeDeleted(){
+        try{
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.setImprovementType(routsThatCanBeDeletedInThisTerrain());
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void improvementsThatCanBeBuilt(){
+        try{
+            Gson gson = new Gson();
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.setImprovementTypes(improvementsThatCanBeBuiltInThisTerrain());
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void getNoncombatUnit(){
+        try{
+            Gson gson = new Gson();
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.setNonCombatUnit(getSelectedNonCombatUnit());
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+    public void getCombatUnit(){
+        try{
+            Gson gson = new Gson();
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.setCombatUnit(getSelectedCombatUnit());
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
 
     public void getMapServer(){
          ResponseUser responseUser = new ResponseUser();
@@ -132,6 +199,13 @@ public class DatabaseController {
          choosingATechnologyToStudyForGraphic(database.getActiveUser(),requestUser.getTechnologyTypes());
     }
 
+
+
+    public void addNewTechnology(RequestUser requestUser){
+         TechnologyTypes technologyTypes = requestUser.getTechnologyTypes();
+         Technology technology = new Technology(false, 0, technologyTypes, true);
+         database.getActiveUser().getCivilization().getTechnologies().add(technology);
+    }
 
 
 

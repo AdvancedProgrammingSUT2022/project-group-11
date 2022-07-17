@@ -89,6 +89,20 @@ public class ScannerMenu {
                             databaseController.unlockTechnology();
                         }else if(action.equals("choosingATechnologyToStudy")){
                             databaseController.choosingATechnologyToStudy(requestUser);
+                        }else if(action.equals("addNewTechnology")){
+                            databaseController.addNewTechnology(requestUser);
+                        }else if(action.equals("getSelectedNonCombatUnit")){
+                            databaseController.getNoncombatUnit();
+                        }else if(action.equals("getSelectedCombatUnit")){
+                            databaseController.getCombatUnit();
+                        }else if(action.equals("improvementsThatCanBeBuiltInThisTerrain")){
+                            databaseController.improvementsThatCanBeBuilt();
+                        }else if(action.equals("routsThatCanBeDeletedInThisTerrain")){
+                            databaseController.routsThatCanBeDeleted();
+                        }else if(action.equals("featuresThatCanBeDeletedInThisTerrain")){
+                            databaseController.featuresThatCanBeDeleted();
+                        }else if(action.equals("improvementsThatCanBeRepairedInThisTerrain")){
+                            databaseController.improvementsThatCanBeRepaired();
                         }
                       databaseController.updateGame();
                     }
