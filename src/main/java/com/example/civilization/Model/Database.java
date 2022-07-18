@@ -13,6 +13,16 @@ public class Database {
     }
     private User activeUser;
     private ArrayList<User> Users;
+    private ArrayList<User> allUsers = new ArrayList<>();
+
+    public ArrayList<User> getAllUsers() {
+        return allUsers;
+    }
+
+    public void setAllUsers(ArrayList<User> allUsers) {
+        this.allUsers = allUsers;
+    }
+
     private ArrayList<String> civilizationsName = new ArrayList<>();
 
     private Map map = new Map();

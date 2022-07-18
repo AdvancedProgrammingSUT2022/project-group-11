@@ -1150,282 +1150,156 @@ public class DatabaseController {
     }
 
     public String increaseTurnCheat(int amount) {
-        this.database.setTurn(database.getTurn() + amount);
+        String result = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("increaseTurnCheat",null);
+            requestUser.setIJ(Integer.toString(amount));
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
 
-        return "number of turns increased";
+
+        return result;
     }
 
     public String increaseGoldCheat(User user, int amount) {
-        user.getCivilization().setGold(user.getCivilization().getGold() + amount);
-        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " user's gold increased" + "\n");
-        return "user's gold increased";
+        String result = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("increaseGoldCheat",user);
+            requestUser.setIJ(Integer.toString(amount));
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+        return result;
     }
 
 
     public String increaseHappinessCheat(User user, int amount) {
-        user.getCivilization().setHappiness(user.getCivilization().getHappiness() + amount);
-        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " user's happiness increased" + "\n");
-        return "user's happiness increased";
+        String result = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("increaseHappinessCheat",user);
+            requestUser.setIJ(Integer.toString(amount));
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+        return result;
     }
 
     public String increaseScienceCheat(User user, int amount) {
-        user.getCivilization().setScience(user.getCivilization().getScience() + amount);
-        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " user's sceince increased" + "\n");
-        return "user's science increased";
+        String result = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("increaseScienceCheat",user);
+            requestUser.setIJ(Integer.toString(amount));
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+       return result;
     }
 
     public String buyTechnologyCheat(User user, TechnologyTypes technologyType) {
-        if (isContainTechnology(user, technologyType)) {
-            return "you already have this technology";
-        } else {
-            user.getCivilization().getTechnologies().add(new Technology(false, 0, technologyType, true));
+        String result = null;
+        try{
+            Gson gson = new Gson();
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("buyTechnologyCheat",user);
+            requestUser.setTechnologyTypes(technologyType);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+        }catch(IOException E){
+            E.printStackTrace();
         }
-        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " Technology was added illegally!" + "\n");
-        return "Technology was added illegally!";
+      return result;
     }
 
     public String cheatMoveCombatUnit(int x, int y) {
-        CombatUnit combatUnit = getSelectedCombatUnit();
-        if (combatUnit == null) {
-            return "you have not selected a combat unit";
-        }
-        Terrain terrain = findingTheContainerTerrain(combatUnit);
-
-        terrain.setCombatUnit(null);
-        this.getMap().getTerrain()[x][y].setCombatUnit(combatUnit);
-
-        combatUnit.setXAndY(x, y);
-
-        if (combatUnit.getNextTerrain() != null) {
-            combatUnit.getNextTerrain().clear();
+        String result = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("cheatMoveCombatUnit",null);
+            requestUser.setIJ(x + " " + y);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+        }catch(IOException E){
+            E.printStackTrace();
         }
 
-        combatUnit.setIsSelected(false);
-        combatUnit.setIsFinished(true);
-
-        return "Combat unit moved illegally!";
+        return result;
 
     }
 
     public String cheatMoveNonCombatUnit(int x, int y) {
-        NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
-        if (nonCombatUnit == null) {
-            return "you have non selected a nonCombat unit";
-        }
-        Terrain terrain = findingTheContainerTerrain(nonCombatUnit);
-
-        terrain.setCombatUnit(null);
-        this.getMap().getTerrain()[x][y].setNonCombatUnit(nonCombatUnit);
-
-        nonCombatUnit.setXAndY(x, y);
-
-        if (nonCombatUnit.getNextTerrain() != null) {
-            nonCombatUnit.getNextTerrain().clear();
+        String result = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("cheatMoveNonCombatUnit",null);
+            requestUser.setIJ(x + " " + y);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+        }catch(IOException E){
+            E.printStackTrace();
         }
 
-        nonCombatUnit.setIsSelected(false);
-        nonCombatUnit.setIsFinished(true);
+        return result;
 
-        return "Combat unit moved illegally!";
 
     }
 
     public String buyCheatTile(User user, int x, int y) {
-        if (user.getCivilization().getOwnedTerrains().contains(this.getMap().getTerrain()[x][y])) {
-            return "you already own this tile";
+        String result = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("buyCheatTile",user);
+            requestUser.setIJ(x + " " + y);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+        }catch(IOException E){
+            E.printStackTrace();
         }
-        user.getCivilization().getOwnedTerrains().add(this.getMap().getTerrain()[x][y]);
-        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " you bought tile illegally!" + "\n");
-        return "you bought tile illegally!";
-
+       return result;
     }
 
     public String setCheatUnit(User user, String name, int x, int y) {
-
-        Civilization civilization = user.getCivilization();
-        Terrain terrain = this.getMap().getTerrain()[x][y];
-
-        switch (name) {
-            case "ARCHER":
-
-                RangedCombatUnit newArcher = new RangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.ARCHER, false, false, false, false, false, false);
-                civilization.addUnit(newArcher);
-                terrain.setCombatUnit(newArcher);
-
-                break;
-            case "CHARIOT_ARCHER":
-
-                RangedCombatUnit newChariotArcher = new RangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.CHARIOT_ARCHER, false, false, false, false, false, false);
-                civilization.addUnit(newChariotArcher);
-                terrain.setCombatUnit(newChariotArcher);
-
-                break;
-            case "SCOUT":
-
-                NonRangedCombatUnit newScout = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.SCOUT, false, false, false, false, false);
-                civilization.addUnit(newScout);
-                terrain.setCombatUnit(newScout);
-
-                break;
-            case "SETTLER":
-
-                NonCombatUnit newSettler = new NonCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
-                civilization.addUnit(newSettler);
-                terrain.setNonCombatUnit(newSettler);
-
-                break;
-            case "SPEARMAN":
-
-                NonRangedCombatUnit newSpearman = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.SPEARMAN, false, false, false, false, false);
-                civilization.addUnit(newSpearman);
-                terrain.setCombatUnit(newSpearman);
-
-                break;
-            case "WARRIOR":
-
-                NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
-                civilization.addUnit(newWarrior);
-                terrain.setCombatUnit(newWarrior);
-
-                break;
-            case "WORKER":
-
-                NonCombatUnit newWorker = new NonCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.WORKER, false);
-                civilization.addUnit(newWorker);
-                terrain.setNonCombatUnit(newWorker);
-
-                break;
-            case "CATAPULT":
-
-                RangedCombatUnit newCatapult = new RangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.CATAPULT, false, false, false, false, false, false);
-                civilization.addUnit(newCatapult);
-                terrain.setCombatUnit(newCatapult);
-
-                break;
-            case "HORSESMAN":
-
-                NonRangedCombatUnit newHorsesman = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.HORSESMAN, false, false, false, false, false);
-                civilization.addUnit(newHorsesman);
-                terrain.setCombatUnit(newHorsesman);
-
-                break;
-            case "SWORDSMAN":
-
-                NonRangedCombatUnit newSwordsman = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.SWORDSMAN, false, false, false, false, false);
-
-                civilization.addUnit(newSwordsman);
-                terrain.setCombatUnit(newSwordsman);
-
-                break;
-            case "CROSSBOWMAN":
-
-                RangedCombatUnit newCrossbowman = new RangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.CROSSBOWMAN, false, false, false, false, false, false);
-                civilization.addUnit(newCrossbowman);
-                terrain.setCombatUnit(newCrossbowman);
-
-                break;
-            case "KNIGHT":
-
-                NonRangedCombatUnit newKnight = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.KNIGHT, false, false, false, false, false);
-                civilization.addUnit(newKnight);
-                terrain.setCombatUnit(newKnight);
-
-                break;
-            case "LONGSWORDSMAN":
-
-                NonRangedCombatUnit newLong = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.LONGSWORDSMAN, false, false, false, false, false);
-
-                civilization.addUnit(newLong);
-                terrain.setCombatUnit(newLong);
-
-                break;
-            case "PIKEMAN":
-
-                NonRangedCombatUnit newPikeman = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.PIKEMAN, false, false, false, false, false);
-                civilization.addUnit(newPikeman);
-                terrain.setCombatUnit(newPikeman);
-
-                break;
-            case "TREBUCHET":
-
-                RangedCombatUnit newTrebuchet = new RangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.TREBUCHET, false, false, false, false, false, false);
-                civilization.addUnit(newTrebuchet);
-                terrain.setCombatUnit(newTrebuchet);
-
-                break;
-            case "CANNON":
-
-                RangedCombatUnit newCannon = new RangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.CANNON, false, false, false, false, false, false);
-                civilization.addUnit(newCannon);
-                terrain.setCombatUnit(newCannon);
-
-                break;
-            case "CAVALRY":
-
-                NonRangedCombatUnit newUnit = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.CAVALRY, false, false, false, false, false);
-                civilization.addUnit(newUnit);
-                terrain.setCombatUnit(newUnit);
-
-                break;
-            case "LANCER":
-
-                NonRangedCombatUnit newLancer = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.LANCER, false, false, false, false, false);
-                civilization.addUnit(newLancer);
-                terrain.setCombatUnit(newLancer);
-
-                break;
-            case "MUSKETMAN":
-
-                NonRangedCombatUnit newMusketman = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.MUSKETMAN, false, false, false, false, false);
-                civilization.addUnit(newMusketman);
-                terrain.setCombatUnit(newMusketman);
-
-                break;
-            case "RIFLEMAN":
-
-                NonRangedCombatUnit newRifleman = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.RIFLEMAN, false, false, false, false, false);
-                civilization.addUnit(newRifleman);
-                terrain.setCombatUnit(newRifleman);
-
-                break;
-            case "ANTI_TANKGUN":
-
-                NonRangedCombatUnit newAntiTank = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.ANTI_TANKGUN, false, false, false, false, false);
-                civilization.addUnit(newAntiTank);
-                terrain.setCombatUnit(newAntiTank);
-
-                break;
-            case "ARTILLERY":
-
-                RangedCombatUnit newArtillery = new RangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.ARTILLERY, false, false, false, false, false, false);
-                civilization.addUnit(newArtillery);
-                terrain.setCombatUnit(newArtillery);
-
-            case "INFANTRY":
-
-                NonRangedCombatUnit newInfantry = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.INFANTRY, false, false, false, false, false);
-                civilization.addUnit(newInfantry);
-                terrain.setCombatUnit(newInfantry);
-
-                break;
-            case "PANZER":
-
-                NonRangedCombatUnit newPanzer = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.PANZER, false, false, false, false, false);
-                civilization.addUnit(newPanzer);
-                terrain.setCombatUnit(newPanzer);
-
-                break;
-            case "TANK":
-
-                NonRangedCombatUnit newTank = new NonRangedCombatUnit(terrain.getX(), terrain.getY(), 0, 0, 0, 0, false, false, UnitTypes.TANK, false, false, false, false, false);
-                civilization.addUnit(newTank);
-                terrain.setCombatUnit(newTank);
-
-                break;
-            default:
-                return "invalid unit name";
+        String result = null;
+        try{
+               RequestUser requestUser = new RequestUser();
+               requestUser.addRequest("setCheatUnit",user);
+               requestUser.setNickname(name);
+               requestUser.setIJ(x + " " + y);
+               Gson gson = new Gson();
+               dataOutputStream.writeUTF(gson.toJson(requestUser));
+               dataOutputStream.flush();
+               result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+        }catch(IOException E){
+            E.printStackTrace();
         }
-        return "unit was added illegally!";
+        return result;
+
 
     }
 
@@ -1454,20 +1328,35 @@ public class DatabaseController {
     }
 
     public String deleteCheatImprovement(int x, int y) {
-        getMap().getTerrain()[x][y].setTerrainImprovement(null);
-        return "Improvement was deleted illegally!";
+        String result = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("deleteCheatImprovement",null);
+            requestUser.setIJ(x + " " + y);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+        return result;
     }
 
     public String repairCheatImprovement(int x, int y) {
-        if (getMap().getTerrain()[x][y].getTerrainImprovement() != null) {
-            getMap().getTerrain()[x][y].getTerrainImprovement().setAvailable(true);
-            getMap().getTerrain()[x][y].getTerrainImprovement().setPillaged(false);
-            getMap().getTerrain()[x][y].getTerrainImprovement().setBeingRepaired(false);
-            getMap().getTerrain()[x][y].getTerrainImprovement().setHasToBeDeleted(false);
-            getMap().getTerrain()[x][y].getTerrainImprovement().setPassedTurns(0);
-            return "Improvement was removed illegally!";
+        String result = null;
+        try{
+           RequestUser requestUser =  new RequestUser();
+           requestUser.addRequest("repairCheatImprovement",null);
+           requestUser.setIJ(x + " " + y);
+           Gson gson = new Gson();
+           dataOutputStream.writeUTF(gson.toJson(requestUser));
+           dataOutputStream.flush();
+           result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+        }catch(IOException E){
+            E.printStackTrace();
         }
-        return "There is no improvement to delete!";
+       return result;
     }
 
     public void setTechnologyTypes(Civilization civilization) {

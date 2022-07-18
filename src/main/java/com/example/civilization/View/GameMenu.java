@@ -14,7 +14,10 @@ import com.example.civilization.Model.Terrains.TerrainTypes;
 import com.example.civilization.Model.Units.CombatUnit;
 import com.example.civilization.Model.User;
 import com.example.civilization.Model.City.City;
+import com.example.civilization.Requests.RequestUser;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -506,7 +509,7 @@ public class GameMenu {
 
     }
 
-    public void increaseTurnCheat(Matcher matcher) {
+    public  void increaseTurnCheat(Matcher matcher) {
 
         int amount = Integer.parseInt(matcher.group("amount"));
         System.out.println(this.databaseController.increaseTurnCheat(amount));
@@ -526,12 +529,14 @@ public class GameMenu {
     }
 
     public void increaseScienceCheat(User user, Matcher matcher) {
+
         int amount = Integer.parseInt(matcher.group("amount"));
         System.out.println(this.databaseController.increaseScienceCheat(user, amount));
 
     }
 
     public void buyTechnologyCheat(Matcher matcher, User user) {
+
         String name = matcher.group("name");
         switch (name) {
             case "AGRICULTURE":
@@ -870,6 +875,7 @@ public class GameMenu {
         int x = Integer.parseInt(matcher.group("x"));
         int y = Integer.parseInt(matcher.group("y"));
         String name = matcher.group("name");
+
         switch (name) {
             case "CAMP":
                 System.out.println(this.databaseController.setCheatImprovement(ImprovementTypes.CAMP, x, y));
