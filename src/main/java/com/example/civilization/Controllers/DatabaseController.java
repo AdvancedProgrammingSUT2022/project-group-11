@@ -78,6 +78,172 @@ public class DatabaseController {
     }
 
 
+    public void increaseTurn(RequestUser requestUser){
+        try{
+            int amount = Integer.parseInt(requestUser.getIJ());
+            String result = increaseTurnCheat(amount);
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void increaseGold(RequestUser requestUser){
+        try{
+            int amount = Integer.parseInt(requestUser.getIJ());
+            User user = requestUser.getUser();
+            user = database.getActiveUser();
+            String result = increaseGoldCheat(user,amount);
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void increaseCombatUnit(RequestUser requestUser){
+        try{
+            int index = requestUser.getIJ().indexOf(" ");
+            int x = Integer.parseInt(requestUser.getIJ().substring(0,index));
+            int y = Integer.parseInt(requestUser.getIJ().substring(index + 1));
+            String result = cheatMoveCombatUnit(x,y);
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+    public void increaseNonCombatUnit(RequestUser requestUser){
+        try{
+            int index = requestUser.getIJ().indexOf(" ");
+            int x = Integer.parseInt(requestUser.getIJ().substring(0,index));
+            int y = Integer.parseInt(requestUser.getIJ().substring(index + 1));
+            String result = cheatMoveNonCombatUnit(x,y);
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void increaseHappiness(RequestUser requestUser){
+        try{
+            int amount = Integer.parseInt(requestUser.getIJ());
+            String result = increaseHappinessCheat(database.getActiveUser(),amount);
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void increaseScience(RequestUser requestUser){
+        try{
+            String result = increaseScienceCheat(database.getActiveUser(),Integer.parseInt(requestUser.getIJ()));
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void addTechnologyType(RequestUser requestUser){
+        try{
+            String result = buyTechnologyCheat(database.getActiveUser(),requestUser.getTechnologyTypes());
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+    public void increaseTile(RequestUser requestUser){
+        try{
+            int index = requestUser.getIJ().indexOf(" ");
+            int x = Integer.parseInt(requestUser.getIJ().substring(0,index));
+            int y = Integer.parseInt(requestUser.getIJ().substring(index + 1));
+            String result =buyCheatTile(database.getActiveUser(),x,y);
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void addCheatUnit(RequestUser requestUser){
+        try{
+            int index = requestUser.getIJ().indexOf(" ");
+            int x = Integer.parseInt(requestUser.getIJ().substring(0,index));
+            int y = Integer.parseInt(requestUser.getIJ().substring(index + 1));
+            String result = setCheatUnit(database.getActiveUser(),requestUser.getNickname(),x,y);
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+
+    public void deleteImprovement(RequestUser requestUser ){
+        try{
+
+            int index = requestUser.getIJ().indexOf(" ");
+            int x = Integer.parseInt(requestUser.getIJ().substring(0,index));
+            int y = Integer.parseInt(requestUser.getIJ().substring(index + 1));
+            String result = deleteCheatImprovement(x,y);
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void repairImprovement(RequestUser requestUser){
+        try{
+
+            int index = requestUser.getIJ().indexOf(" ");
+            int x = Integer.parseInt(requestUser.getIJ().substring(0,index));
+            int y = Integer.parseInt(requestUser.getIJ().substring(index + 1));
+            String result = repairCheatImprovement(x,y);
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
 
     public void improvementsThatCanBeRepaired(){
         try{

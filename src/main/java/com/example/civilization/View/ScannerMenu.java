@@ -103,6 +103,28 @@ public class ScannerMenu {
                             databaseController.featuresThatCanBeDeleted();
                         }else if(action.equals("improvementsThatCanBeRepairedInThisTerrain")){
                             databaseController.improvementsThatCanBeRepaired();
+                        }else if(action.equals("increaseTurnCheat")){
+                            databaseController.increaseTurn(requestUser);
+                        }else if(action.equals("increaseGoldCheat")){
+                            databaseController.increaseGold(requestUser);
+                        }else if(action.equals("cheatMoveCombatUnit")){
+                            databaseController.increaseCombatUnit(requestUser);
+                        }else if(action.equals("cheatMoveNonCombatUnit")){
+                            databaseController.increaseNonCombatUnit(requestUser);
+                        }else if(action.equals("increaseHappinessCheat")){
+                            databaseController.increaseHappiness(requestUser);
+                        }else if(action.equals("increaseScienceCheat")){
+                            databaseController.increaseScience(requestUser);
+                        }else if(action.equals("buyTechnologyCheat")){
+                            databaseController.addTechnologyType(requestUser);
+                        }else if(action.equals("buyCheatTile")){
+                            databaseController.increaseTile(requestUser);
+                        }else if(action.equals("setCheatUnit")){
+                            databaseController.addCheatUnit(requestUser);
+                        }else if(action.equals("deleteCheatImprovement")){
+                            databaseController.deleteImprovement(requestUser);
+                        }else if(action.equals("repairCheatImprovement")){
+                            databaseController.repairImprovement(requestUser);
                         }
                       databaseController.updateGame();
                     }
