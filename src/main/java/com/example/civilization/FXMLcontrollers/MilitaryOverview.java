@@ -34,7 +34,7 @@ public class MilitaryOverview{
     public void setTexts() {
         int i = 0;
         int j = -1;
-        for (Unit unit : DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getUnits()) {
+        for (Unit unit : DatabaseController.getInstance().activeUser().getCivilization().getUnits()) {
             if (i % 9 == 0) {
                 j++;
                 i = 0;

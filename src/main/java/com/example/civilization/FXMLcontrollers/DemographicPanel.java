@@ -38,76 +38,76 @@ public class DemographicPanel {
             values.add(new Label());
             if (j == 0) {
                 if (i == 0) {
-                    values.get(i + j * 5).setText(citiesRank(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(citiesRank(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 1) {
                     values.get(i + j * 5).setText(citiesValue());
                 } else if (i == 2) {
-                    values.get(i + j * 5).setText(citiesBest(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(citiesBest(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 3) {
-                    values.get(i + j * 5).setText(citiesAverage(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(citiesAverage(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 4) {
-                    values.get(i + j * 5).setText(citiesWorst(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(citiesWorst(DatabaseController.getInstance().getAllPlayerUser()));
                 }
 
             } else if (j == 1) {
                 if (i == 0) {
-                    values.get(i + j * 5).setText(goldRank(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(goldRank(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 1) {
                     values.get(i + j * 5).setText(goldValue());
                 } else if (i == 2) {
-                    values.get(i + j * 5).setText(goldBest(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(goldBest(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 3) {
-                    values.get(i + j * 5).setText(goldAverage(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(goldAverage(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 4) {
-                    values.get(i + j * 5).setText(goldWorst(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(goldWorst(DatabaseController.getInstance().getAllPlayerUser()));
                 }
             } else if (j == 2) {
                 if (i == 0) {
-                    values.get(i + j * 5).setText(scienceRank(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(scienceRank(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 1) {
                     values.get(i + j * 5).setText(scienceValue());
                 } else if (i == 2) {
-                    values.get(i + j * 5).setText(scienceBest(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(scienceBest(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 3) {
-                    values.get(i + j * 5).setText(scienceAverage(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(scienceAverage(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 4) {
-                    values.get(i + j * 5).setText(scienceWorst(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(scienceWorst(DatabaseController.getInstance().getAllPlayerUser()));
                 }
             } else if (j == 3) {
                 if (i == 0) {
-                    values.get(i + j * 5).setText(happinessRank(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(happinessRank(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 1) {
                     values.get(i + j * 5).setText(happinessValue());
                 } else if (i == 2) {
-                    values.get(i + j * 5).setText(happinessBest(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(happinessBest(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 3) {
-                    values.get(i + j * 5).setText(happinessAverage(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(happinessAverage(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 4) {
-                    values.get(i + j * 5).setText(happinessWorst(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(happinessWorst(DatabaseController.getInstance().getAllPlayerUser()));
                 }
             } else if (j == 4) {
                 if (i == 0) {
-                    values.get(i + j * 5).setText(technologiesRank(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(technologiesRank(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 1) {
                     values.get(i + j * 5).setText(technologiesValue());
                 } else if (i == 2) {
-                    values.get(i + j * 5).setText(technologiesBest(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(technologiesBest(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 3) {
-                    values.get(i + j * 5).setText(technologiesAverage(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(technologiesAverage(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 4) {
-                    values.get(i + j * 5).setText(technologiesWorst(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(technologiesWorst(DatabaseController.getInstance().getAllPlayerUser()));
                 }
             } else if (j == 5) {
                 if (i == 0) {
-                    values.get(i + j * 5).setText(unitsRank(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(unitsRank(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 1) {
                     values.get(i + j * 5).setText(unitsValue());
                 } else if (i == 2) {
-                    values.get(i + j * 5).setText(unitsBest(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(unitsBest(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 3) {
-                    values.get(i + j * 5).setText(unitsAverage(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(unitsAverage(DatabaseController.getInstance().getAllPlayerUser()));
                 } else if (i == 4) {
-                    values.get(i + j * 5).setText(unitsWorst(DatabaseController.getInstance().getDatabase().getUsers()));
+                    values.get(i + j * 5).setText(unitsWorst(DatabaseController.getInstance().getAllPlayerUser()));
                 }
             }
             values.get(i + j * 5).setAlignment(Pos.CENTER);
@@ -129,7 +129,7 @@ public class DemographicPanel {
     private String citiesRank(ArrayList<User> users) {
         int ranking = 1;
         for (User user : users) {
-            if (user.getCivilization().getCities().size() > DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getCities().size()) {
+            if (user.getCivilization().getCities().size() > DatabaseController.getInstance().activeUser().getCivilization().getCities().size()) {
                 ranking++;
             }
         }
@@ -137,7 +137,7 @@ public class DemographicPanel {
     }
 
     private String citiesValue() {
-        return Integer.toString(DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getCities().size());
+        return Integer.toString(DatabaseController.getInstance().activeUser().getCivilization().getCities().size());
     }
 
     private String citiesBest(ArrayList<User> users) {
@@ -171,7 +171,7 @@ public class DemographicPanel {
     private String goldRank(ArrayList<User> users) {
         int ranking = 1;
         for (User user : users) {
-            if (user.getCivilization().getGold() > DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getGold()) {
+            if (user.getCivilization().getGold() > DatabaseController.getInstance().activeUser().getCivilization().getGold()) {
                 ranking++;
             }
         }
@@ -179,7 +179,7 @@ public class DemographicPanel {
     }
 
     private String goldValue() {
-        return Integer.toString(DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getGold());
+        return Integer.toString(DatabaseController.getInstance().activeUser().getCivilization().getGold());
     }
 
     private String goldBest(ArrayList<User> users) {
@@ -213,7 +213,7 @@ public class DemographicPanel {
     private String happinessRank(ArrayList<User> users) {
         int ranking = 1;
         for (User user : users) {
-            if (user.getCivilization().getHappiness() > DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getHappiness()) {
+            if (user.getCivilization().getHappiness() > DatabaseController.getInstance().activeUser().getCivilization().getHappiness()) {
                 ranking++;
             }
         }
@@ -221,7 +221,7 @@ public class DemographicPanel {
     }
 
     private String happinessValue() {
-        return Integer.toString(DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getHappiness());
+        return Integer.toString(DatabaseController.getInstance().activeUser().getCivilization().getHappiness());
     }
 
     private String happinessBest(ArrayList<User> users) {
@@ -255,7 +255,7 @@ public class DemographicPanel {
     private String scienceRank(ArrayList<User> users) {
         int ranking = 1;
         for (User user : users) {
-            if (user.getCivilization().getScience() > DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getScience()) {
+            if (user.getCivilization().getScience() > DatabaseController.getInstance().activeUser().getCivilization().getScience()) {
                 ranking++;
             }
         }
@@ -263,7 +263,7 @@ public class DemographicPanel {
     }
 
     private String scienceValue() {
-        return Integer.toString(DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getScience());
+        return Integer.toString(DatabaseController.getInstance().activeUser().getCivilization().getScience());
     }
 
     private String scienceBest(ArrayList<User> users) {
@@ -297,7 +297,7 @@ public class DemographicPanel {
     private String technologiesRank(ArrayList<User> users) {
         int ranking = 1;
         for (User user : users) {
-            if (user.getCivilization().getTechnologies().size() > DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getTechnologies().size()) {
+            if (user.getCivilization().getTechnologies().size() > DatabaseController.getInstance().activeUser().getCivilization().getTechnologies().size()) {
                 ranking++;
             }
         }
@@ -305,7 +305,7 @@ public class DemographicPanel {
     }
 
     private String technologiesValue() {
-        return Integer.toString(DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getTechnologies().size());
+        return Integer.toString(DatabaseController.getInstance().activeUser().getCivilization().getTechnologies().size());
     }
 
     private String technologiesBest(ArrayList<User> users) {
@@ -339,7 +339,7 @@ public class DemographicPanel {
     private String unitsRank(ArrayList<User> users) {
         int ranking = 1;
         for (User user : users) {
-            if (user.getCivilization().getUnits().size() > DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getUnits().size()) {
+            if (user.getCivilization().getUnits().size() > DatabaseController.getInstance().activeUser().getCivilization().getUnits().size()) {
                 ranking++;
             }
         }
@@ -347,7 +347,7 @@ public class DemographicPanel {
     }
 
     private String unitsValue() {
-        return Integer.toString(DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getUnits().size());
+        return Integer.toString(DatabaseController.getInstance().activeUser().getCivilization().getUnits().size());
     }
 
     private String unitsBest(ArrayList<User> users) {

@@ -37,8 +37,8 @@ public class GameMenuController {
 
     @FXML
     public void initialize() {
-        if(!DatabaseController.getInstance().getDatabase().getUsers().contains(DatabaseController.getInstance().getDatabase().getActiveUser())){
-            DatabaseController.getInstance().getDatabase().addUser(DatabaseController.getInstance().getDatabase().getActiveUser());
+        if(!DatabaseController.getInstance().getAllPlayerUser().contains(DatabaseController.getInstance().activeUser())){
+            DatabaseController.getInstance().addUserToPlayerUser(DatabaseController.getInstance().activeUser());
         }
 
         Platform.runLater(this::setOpponentsName);
@@ -52,7 +52,7 @@ public class GameMenuController {
                 anchorPane.getChildren().removeAll(suggestions);
                 suggestions.clear();
                 int i = 0;
-                for (User user : DatabaseController.getInstance().getDatabase().getAllUsers()) {
+                for (User user : DatabaseController.getInstance().getAllUsers()) {
                     if (user.getUsername().equalsIgnoreCase(opponentsName.getText().toUpperCase()) && !user.equals(DatabaseController.getInstance().getDatabase().getActiveUser())) {
                         suggestions.add(new Button());
                         suggestions.get(i).setStyle("-fx-background-radius: 100em");
@@ -68,13 +68,13 @@ public class GameMenuController {
                                 if (mouseEvent.getClickCount() == 2) {
                                     if (button.getTextFill().equals(Color.BLUE)) {
                                         button.setTextFill(Color.RED);
-                                        DatabaseController.getInstance().getDatabase().getUsers().remove(user);
+                                        DatabaseController.getInstance().removeUserToPlayerUser(user);
                                         result.setText("user deselected");
 
                                     } else if (button.getTextFill().equals(Color.RED)) {
                                         button.setTextFill(Color.BLUE);
                                         if (!DatabaseController.getInstance().getDatabase().getUsers().contains(user)) {
-                                            DatabaseController.getInstance().getDatabase().addUser(user);
+                                            DatabaseController.getInstance().addUserToPlayerUser(user);
                                         }
                                         result.setText("user selected");
 
@@ -113,10 +113,10 @@ public class GameMenuController {
 
     public void startGame() {
         if (isInteger(opponentsCount.getText())) {
-            if (DatabaseController.getInstance().getDatabase().getUsers().size() < Integer.parseInt(opponentsCount.getText())) {
+            if (DatabaseController.getInstance().getAllPlayerUser().size() < Integer.parseInt(opponentsCount.getText())) {
                 result.setText("you must select more users to start the game");
 
-            } else if (DatabaseController.getInstance().getDatabase().getUsers().size() > Integer.parseInt(opponentsCount.getText())) {
+            } else if (DatabaseController.getInstance().getAllPlayerUser().size() > Integer.parseInt(opponentsCount.getText())) {
                 result.setText("you must select less users to start the game");
 
             } else {
@@ -124,8 +124,12 @@ public class GameMenuController {
                     result.setText("number of players must be between 2 and 5");
                 } else {
 
-                    DatabaseController.getInstance().getMap().generateMap();
-                    DatabaseController.getInstance().setCivilizations(DatabaseController.getInstance().getDatabase().getUsers());
+                    //
+
+                    //works to do
+                    //
+               ///     DatabaseController.getInstance().getMap().generateMap();
+               ///     DatabaseController.getInstance().setCivilizations();
                     Main.changeMenu("gameMap");
 
                 }

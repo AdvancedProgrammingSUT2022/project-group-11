@@ -34,7 +34,7 @@ public class UnitsPanel {
     public void setTexts() {
         int i = 0;
         int j = -1;
-        for (Unit unit : DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getUnits()) {
+        for (Unit unit : DatabaseController.getInstance().activeUser().getCivilization().getUnits()) {
             if (i % 9 == 0) {
                 j++;
                 i = 0;
@@ -55,7 +55,7 @@ public class UnitsPanel {
                         setAllRedColor(units);
                         button.setTextFill(Color.BLUE);
                         String[] parts = button.getText().split(" ");
-                        DatabaseController.getInstance().activateUnit(DatabaseController.getInstance().getDatabase().getActiveUser(),parts[0],Integer.parseInt(parts[1].substring(2)),Integer.parseInt(parts[2].substring(2)));
+                        DatabaseController.getInstance().activateUnit(DatabaseController.getInstance().activeUser(),parts[0],Integer.parseInt(parts[1].substring(2)),Integer.parseInt(parts[2].substring(2)));
                         result.setText(parts[0] + " unit activated");
                         result.setAlignment(Pos.CENTER);
 

@@ -71,6 +71,60 @@ public class DatabaseController {
     }
 
 
+
+
+    public String notificationhistoryRequest(){
+        String result = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            Gson gson = new Gson();
+            requestUser.addRequest("notificationHistory",null);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+        return result;
+    }
+    public void addUserToPlayerUser(User user){
+        Gson gson = new Gson();
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("addUserToPlayerUsers",user);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void removeUserToPlayerUser(User user){
+        Gson gson = new Gson();
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("removeUserToPlayerUsers",user);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public ArrayList<User> getAllPlayerUser(){
+        ArrayList<User> users = new ArrayList<>();
+        Gson gson = new Gson();
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("getAllPlayerUser",null);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            users = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getUsers();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+        return users;
+    }
     public void addTechnology(TechnologyTypes technologyTypes){
         Gson gson = new Gson();
         try{
@@ -1481,13 +1535,21 @@ public class DatabaseController {
     }
 
     public String activateUnit(User user, String name, int x, int y) {
-        Unit unit = getUnitByCoordinatesAndName(user, name, x, y);
-        if (unit == null) {
-            return "There is no unit with these characteristics";
-        } else {
-            setAllParametersFalse(unit);
-            return "Unit was activated";
+        String result = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("activateUnit",user);
+            requestUser.setNickname(name);
+            requestUser.setIJ(x + " " + y);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+        }catch(IOException E){
+            E.printStackTrace();
         }
+        return result;
+
     }
 
     public String economicOverview(User user) {

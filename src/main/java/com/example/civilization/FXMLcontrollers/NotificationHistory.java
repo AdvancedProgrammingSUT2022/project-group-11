@@ -22,7 +22,7 @@ public class NotificationHistory {
     }
 
     public void setTexts() {
-        result.setText(DatabaseController.getInstance().notificationHistory(DatabaseController.getInstance().getDatabase().getActiveUser()));
+        result.setText(DatabaseController.getInstance().notificationhistoryRequest());
     }
 
     public void backToGameMap() {

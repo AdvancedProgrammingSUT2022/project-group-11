@@ -31,7 +31,7 @@ public class EconomicOverview{
     public void setTexts() {
         int i = 0;
         int j = -1;
-        for (City city : DatabaseController.getInstance().getDatabase().getActiveUser().getCivilization().getCities()) {
+        for (City city : DatabaseController.getInstance().activeUser().getCivilization().getCities()) {
             if (i % 5 == 0) {
                 j++;
                 i = 0;
