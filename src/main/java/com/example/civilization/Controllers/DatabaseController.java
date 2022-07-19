@@ -228,6 +228,24 @@ public class DatabaseController {
         }
     }
 
+    public void unitActive(RequestUser requestUser){
+         User user = database.getActiveUser();
+        int index = requestUser.getIJ().indexOf(" ");
+        int x = Integer.parseInt(requestUser.getIJ().substring(0,index));
+        int y = Integer.parseInt(requestUser.getIJ().substring(index + 1));
+         try{
+             String result = activateUnit(user,requestUser.getNickname(),x,y);
+             ResponseUser responseUser = new ResponseUser();
+             responseUser.addResponse(result,null);
+             Gson gson = new Gson();
+             dataOutputStream.writeUTF(gson.toJson(responseUser));
+             dataOutputStream.flush();
+         }catch(IOException E){
+             E.printStackTrace();
+         }
+    }
+
+
     public void repairImprovement(RequestUser requestUser){
         try{
 
@@ -494,11 +512,49 @@ public class DatabaseController {
         }
     }
 
+    public void addUserToPlayerUsers(RequestUser requestUser){
+
+              User user = database.getUserByUsernameAndPasswordAndNickname(requestUser.getUser().getUsername(),requestUser.getUser().getPassword(),requestUser.getNickname());
+              database.getPalyersUsers().add(user);
+
+    }
+
+    public void removeUserToPlayerUsers(RequestUser requestUser){
+
+        User user = database.getUserByUsernameAndPasswordAndNickname(requestUser.getUser().getUsername(),requestUser.getUser().getPassword(),requestUser.getNickname());
+        database.getPalyersUsers().remove(user);
+
+    }
+
+    public void notification(){
+        try{
+            ResponseUser responseUser = new ResponseUser();
+            Gson gson = new Gson();
+            responseUser.addResponse(notificationHistory(database.getActiveUser()),null);
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
     public void getAllUsers(){
         try{
             ResponseUser responseUser = new ResponseUser();
             Gson gson = new Gson();
             responseUser.setUsers(database.getUsers());
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void getAllPlayerUser(){
+        try{
+            ResponseUser responseUser = new ResponseUser();
+            Gson gson = new Gson();
+            responseUser.setUsers(database.getPalyersUsers());
             dataOutputStream.writeUTF(gson.toJson(responseUser));
             dataOutputStream.flush();
         }catch(IOException E){

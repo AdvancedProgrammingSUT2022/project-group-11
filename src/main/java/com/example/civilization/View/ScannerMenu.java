@@ -125,6 +125,16 @@ public class ScannerMenu {
                             databaseController.deleteImprovement(requestUser);
                         }else if(action.equals("repairCheatImprovement")){
                             databaseController.repairImprovement(requestUser);
+                        }else if(action.equals("activateUnit")){
+                            databaseController.unitActive(requestUser);
+                        }else if(action.equals("getAllPlayerUser")){
+                            databaseController.getAllPlayerUser();
+                        }else if(action.equals("addUserToPlayerUsers")){
+                            databaseController.addUserToPlayerUsers(requestUser);
+                        }else if(action.equals("removeUserToPlayerUsers")){
+                            databaseController.removeUserToPlayerUsers(requestUser);
+                        }else if(action.equals("notificationHistory")){
+                            databaseController.notification();
                         }
                       databaseController.updateGame();
                     }
