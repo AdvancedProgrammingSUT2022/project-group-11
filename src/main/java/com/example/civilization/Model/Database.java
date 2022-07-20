@@ -13,20 +13,14 @@ public class Database {
     }
     private User activeUser;
     private ArrayList<User> Users;
+
     private ArrayList<User> allUsers = new ArrayList<>();
-
-    public ArrayList<User> getAllUsers() {
-        return allUsers;
-    }
-
-    public void setAllUsers(ArrayList<User> allUsers) {
-        this.allUsers = allUsers;
-    }
-
     private ArrayList<String> civilizationsName = new ArrayList<>();
 
     private Map map = new Map();
     private int turn;
+
+    private double year = -4000;
 
     public Database() {
         this.Users = new ArrayList<>();
@@ -69,6 +63,12 @@ public class Database {
         this.Users.add(user);
     }
 
+    public void addToAllUser(User user) {
+        this.allUsers.add(user);
+    }
+
+
+
     public ArrayList<User> getUsers() {
         return Users;
     }
@@ -78,7 +78,7 @@ public class Database {
     }
 
     public User getUserByUsernameAndPassword(String username, String password) {
-        for (User user : this.Users) {
+        for (User user : this.allUsers) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
                 return user;
             }
@@ -87,7 +87,7 @@ public class Database {
     }
 
     public User getUserByUsername(String username) {
-        for (User user : this.Users) {
+        for (User user : this.allUsers) {
             if (user.getUsername().equals(username)) {
                 return user;
             }
@@ -96,7 +96,7 @@ public class Database {
     }
 
     public User getUserByNickname(String nickname) {
-        for (User user : this.Users) {
+        for (User user : this.allUsers) {
             if (user.getNickname().equals(nickname)) {
                 return user;
             }
@@ -111,5 +111,21 @@ public class Database {
 
     public void setActiveUser(User activeUser) {
         this.activeUser = activeUser;
+    }
+
+    public ArrayList<User> getAllUsers() {
+        return allUsers;
+    }
+
+    public void setAllUsers(ArrayList<User> allUsers) {
+        this.allUsers = allUsers;
+    }
+
+    public double getYear() {
+        return year;
+    }
+
+    public void setYear(double year) {
+        this.year = year;
     }
 }

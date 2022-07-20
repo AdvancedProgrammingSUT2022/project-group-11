@@ -32,7 +32,7 @@ public class LeaderboardController {
         ArrayList<User> users = databaseController.getAllUsers();
         users.sort(Comparator.comparing(User::getScore).reversed().thenComparing(User::getLastWin).thenComparing(User::getUsername));
         for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).equals(Database.getInstance().getActiveUser())) {
+            if (users.get(i).equals(DatabaseController.getInstance().activeUser())) {
                 playersUsername.get(i).setStyle("-fx-background-color: GREEN;");
                 playersTime.get(i).setStyle("-fx-background-color: GREEN;");
                 playersHighScore.get(i).setStyle("-fx-background-color: GREEN;");

@@ -10,9 +10,9 @@ import javafx.scene.input.MouseEvent;
 
 public class EditMap {
 
-    private EditMapController editMap = EditMapController.getInstance();
     public TextField iIndex;
     public TextField jIndex;
+    private EditMapController editMap = EditMapController.getInstance();
     @FXML
     private MenuItem bananas;
     @FXML
@@ -167,11 +167,11 @@ public class EditMap {
 
     }
 
-    public void finished(MouseEvent mouseEvent) {
-       Main.changeMenu("GameMap");
+    public void finished() {
+        Main.changeMenu("GameMap");
     }
 
-    public void back(MouseEvent mouseEvent) {
+    public void back() {
         Main.changeMenu("ProfileMenu");
     }
 }

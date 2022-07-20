@@ -1,10 +1,12 @@
 package com.example.civilization.Controllers;
 
+import com.example.civilization.FXMLcontrollers.GameMapController;
 import com.example.civilization.Model.Buildings.Building;
 import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.*;
 import com.example.civilization.Model.Improvements.Improvement;
 import com.example.civilization.Model.Improvements.ImprovementTypes;
+import com.example.civilization.Model.Map;
 import com.example.civilization.Model.Resources.Resource;
 import com.example.civilization.Model.Resources.ResourceTypes;
 import com.example.civilization.Model.Technologies.Technology;
@@ -12,6 +14,8 @@ import com.example.civilization.Model.Technologies.TechnologyTypes;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
 import com.example.civilization.Model.Units.*;
+
+import java.util.*;
 import com.example.civilization.Requests.RequestUser;
 import com.example.civilization.Response.ResponseUser;
 import com.google.gson.Gson;
@@ -72,6 +76,20 @@ public class DatabaseController {
 
 
 
+    public double getYear(){
+        double year = 0 ;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("getYear",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            year = Integer.parseInt(gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getIJ());
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+        return year;
+    }
 
     public String notificationhistoryRequest(){
         String result = null;
@@ -306,6 +324,17 @@ public class DatabaseController {
        return map;
     }
 
+    public void clearPlayerUser(){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("clear",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
     public ArrayList<User> getAllUsers(){
         ArrayList<User> users = new ArrayList<>();
         try{
@@ -343,6 +372,46 @@ public class DatabaseController {
             return "Combat unit was selected";
         }
         return "you do not have access to this unit";
+    }
+
+    public void setIsCombatUnitSelected(int i,int j){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("isSelectedCombatUnit",null);
+            requestUser.setIJ( i + " " + j);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+    public void setIsNonCombatUnitSelected(int i,int j){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("isSelectedNonCombatUnit",null);
+            requestUser.setIJ( i + " " + j);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+
+    public void deselectAllUnits() {
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("deselectAllUnits",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+
     }
 
     public String selectAndDeselectNonCombatUnit(User user, int x, int y) {
@@ -402,7 +471,7 @@ public class DatabaseController {
             combatUnit.setIsSelected(false);
         }
 
-        return "action completed";
+        return "Unit will " + action;
     }
 
     public String changingTheStateOfANonCombatUnit(NonCombatUnit nonCombatUnit, String action) {
@@ -417,7 +486,7 @@ public class DatabaseController {
             nonCombatUnit.setIsSelected(false);
             nonCombatUnit.getNextTerrain().clear();
         }
-        return "action completed";
+        return "Unit will " + action;
 
     }
 
@@ -508,39 +577,44 @@ public class DatabaseController {
         return true;
     }
 
-    public void setAllUnitsUnfinished(User user) {
-        for (Unit unit : user.getCivilization().getUnits()) {
-            if (!unit.getIsAsleep() || !unit.getNextTerrain().isEmpty()) {
-                unit.setIsFinished(false);
-            }
-            if (unit instanceof CombatUnit) {
-                if (((CombatUnit) unit).getAlert() || ((CombatUnit) unit).getFortify() || ((CombatUnit) unit).getFortifyUntilHeal() || ((CombatUnit) unit).getIsGarrisoned()) {
-                    unit.setIsFinished(true);
-                }
-
-            }
-
+    public void setActiveUser(){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("setActiveUser",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
         }
+    }
+    public void setAllUnitsUnfinished(User user) {
+            try{
+                Gson gson = new Gson();
+                RequestUser requestUser = new RequestUser();
+                requestUser.addRequest("setAllUnitsUnfinished",user);
+                dataOutputStream.writeUTF(gson.toJson(requestUser));
+                dataOutputStream.flush();
+            }catch(IOException E){
+                E.printStackTrace();
+            }
     }
 
     public String unitMovement(int x_final, int y_final, User user) {
-        Map map = this.getMap();
-        int mapRows = map.getROW();
-        int mapColumns = map.getCOL();
-        if (x_final > mapRows || x_final < 0 || y_final > mapColumns || y_final < 0) {
-            return "there is no tile with these coordinates";
+        String result = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("unitMovement",user);
+            requestUser.setIJ(x_final + " " + y_final);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+
+        }catch(IOException E){
+            E.printStackTrace();
         }
-        CombatUnit combatUnit = getSelectedCombatUnit();
-        NonCombatUnit nonCombatUnit = getSelectedNonCombatUnit();
-
-        if (combatUnit != null) {
-            return combatUnitMovement(combatUnit, x_final, y_final, user, map);
-
-        } else if (nonCombatUnit != null) {
-            return nonCombatUnitMovement(nonCombatUnit, x_final, y_final, user, map);
-        }
-
-        return "action completed";
+        return result;
     }
 
     public String combatUnitMovement(CombatUnit combatUnit, int x_final, int y_final, User user, Map map) {
@@ -554,9 +628,6 @@ public class DatabaseController {
         ArrayList<ArrayList<Terrain>> allPaths = new ArrayList<>();
         addingAllPath(0, combatUnit.getX(), combatUnit.getY(), x_final, y_final, map, path, allPaths);
         combatUnit.setNextTerrain(findingTheShortestPath(combatUnit, allPaths));
-        for (Terrain terrain : combatUnit.getNextTerrain()) {
-            System.out.println(terrain.getX() + " " + terrain.getY());
-        }
         if (combatUnit.getNextTerrain().isEmpty()) {
             return "You're unable to go to your destination";
         }
@@ -584,10 +655,18 @@ public class DatabaseController {
         return "action completed";
     }
 
-    public void movementOfAllUnits(User user) {
-        for (Unit unit : user.getCivilization().getUnits()) {
-            movementAsLongAsItHasMP(unit);
+    public void movementOfAllUnits() {
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("movementOfAllUnits",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
         }
+
+
     }
 
     public void movementAsLongAsItHasMP(Unit unit) {
@@ -610,6 +689,7 @@ public class DatabaseController {
             unit.setXAndY(unit.getNextTerrain().get(indexOfLastTerrain).getX(), unit.getNextTerrain().get(indexOfLastTerrain).getY());
             if (unit.getNextTerrain().get(indexOfLastTerrain).isRuin()) {
                 Ruins ruins = new Ruins(unit.getNextTerrain().get(indexOfLastTerrain).getX(), unit.getNextTerrain().get(indexOfLastTerrain).getY(), getContainerCivilization(unit), getMap());
+                GameMapController.showingRuinsPopUp(ruins);
                 unit.getNextTerrain().get(indexOfLastTerrain).setRuin(false);
             }
             movementCost += unit.getNextTerrain().get(indexOfLastTerrain).getTerrainTypes().getMovementCost();
@@ -622,11 +702,11 @@ public class DatabaseController {
 
         }
 
-        ArrayList<Terrain> needToRemove = new ArrayList<>();
-        for (int i = 0; i < indexOfLastTerrain; i++) {
-            needToRemove.add(unit.getNextTerrain().get(i));
-        }
-        unit.getNextTerrain().removeAll(needToRemove);
+//        ArrayList<Terrain> needToRemove = new ArrayList<>();
+//        for (int i = 0; i < indexOfLastTerrain; i++) {
+//            needToRemove.add(unit.getNextTerrain().get(i));
+//        }
+        unit.getNextTerrain().clear();
 
     }
 
@@ -659,10 +739,10 @@ public class DatabaseController {
             allPaths.add(path);
             return;
         }
-        if ((turn >= 10 && turn <= 20) && allPaths.size() > 0) {
+        if ((turn >= 6 && turn <= 10) && allPaths.size() > 0) {
             return;
         }
-        if (turn == 20) {
+        if (turn == 10) {
             return;
         }
         for (int i = -1; i < 2; i++) {
@@ -784,22 +864,18 @@ public class DatabaseController {
         return this.database.getMap().getTerrain()[x][y];
     }
 
-    public void setTerrainsOfEachCivilization(User user) {
+    public void setTerrainsOfEachCivilization() {
 
-        ArrayList<Terrain> terrains = new ArrayList<>();
-        ArrayList<Terrain> ownedTerrains = new ArrayList<>();
-
-        for (Unit unit : user.getCivilization().getUnits()) {
-            terrains.add(getTerrainByCoordinates(unit.getX(), unit.getY()));
+        try{
+               RequestUser requestUser = new RequestUser();
+               requestUser.addRequest("setTerrainsOfEachCivilization",null);
+               Gson gson = new Gson();
+               dataOutputStream.writeUTF(gson.toJson(requestUser));
+               dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
         }
 
-        for (City city : user.getCivilization().getCities()) {
-            terrains.addAll(city.getMainTerrains());
-            ownedTerrains.addAll(city.getMainTerrains());
-        }
-
-        user.getCivilization().setTerrains(deleteExcessTerrain(terrains));
-        user.getCivilization().setOwnedTerrains(deleteExcessTerrain(ownedTerrains));
     }
 
     public void setCivilizations() {
@@ -844,10 +920,15 @@ public class DatabaseController {
 
     public void createUnitForEachCivilization(User user) {
         ArrayList<Integer> unitsCoordinates = findingEmptyTiles();
-        NonCombatUnit newSettler = new NonCombatUnit(unitsCoordinates.get(0),unitsCoordinates.get(1)+1 , 0, 0, 0, 0, false, false, UnitTypes.SETTLER, true);
+        NonCombatUnit newSettler = new NonCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1) + 1, 0, 0, 0, 0, false, false, UnitTypes.SETTLER, false);
+
         NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1), 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)].setCombatUnit(newWarrior);
-        getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)+1].setNonCombatUnit(newSettler);
+        getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1) + 1].setNonCombatUnit(newSettler);
+        //user.getCivilization().addCity(new City(user.getCivilization(),user.getCivilization(),getTerrainByCoordinates(10,12),10,null,10,10));
+        //user.getCivilization().addCity(new City(user.getCivilization(),user.getCivilization(),getTerrainByCoordinates(10,12),10,null,10,10));
+
+
         user.getCivilization().getUnits().add(newSettler);
         user.getCivilization().getUnits().add(newWarrior);
 
@@ -870,7 +951,7 @@ public class DatabaseController {
 
     public boolean isTerrainEmpty(int x, int y) {
 
-        return this.getMap().getTerrain()[x][y].getCombatUnit() == null && this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() == null;
+        return this.getMap().getTerrain()[x][y].getCombatUnit() == null && this.getMap().getTerrain()[x][y + 1].getNonCombatUnit() == null && !this.getMap().getTerrain()[x][y].isRuin() && !this.getMap().getTerrain()[x][y + 1].isRuin();
     }
 
     public void addGoldToUser(User user) {
@@ -978,64 +1059,67 @@ public class DatabaseController {
 
     }
 
-    public void setHappinessUser(User user) {
+    public void setTurn(){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("setTurn",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void setHappinessUser() {
 
         // without building
         // without technology
 
-        ResourceTypes[] luxuryResource = {ResourceTypes.COTTON, ResourceTypes.DYES, ResourceTypes.FURS, ResourceTypes.GEMS, ResourceTypes.GEMS, ResourceTypes.GOLD, ResourceTypes.INCENSE, ResourceTypes.IVORY, ResourceTypes.MARBLE, ResourceTypes.SILK, ResourceTypes.SILVER, ResourceTypes.SUGAR};
-        ArrayList<ResourceTypes> happinessLuxuryIncrease = new ArrayList<>();
 
-        for (Terrain allTerrains : user.getCivilization().getOwnedTerrains()) {
-            if (allTerrains.getTerrainResource() != null && allTerrains.getBooleanResource()) {
-                for (ResourceTypes resourceTypes : luxuryResource) {
-                    if (resourceTypes.equals(allTerrains.getTerrainResource().getResourceType())) {
-                        if (!happinessLuxuryIncrease.contains(allTerrains.getTerrainResource().getResourceType())) {
-                            happinessLuxuryIncrease.add(resourceTypes);
-                        }
-                    }
-                }
+            try{
+                RequestUser requestUser = new RequestUser();
+                requestUser.addRequest("setHappiness",null);
+                Gson gson = new Gson();
+                dataOutputStream.writeUTF(gson.toJson(requestUser));
+                dataOutputStream.flush();
 
+            }catch(IOException E){
+                E.printStackTrace();
             }
-        }
-
-        user.getCivilization().setHappiness(user.getCivilization().getHappiness() - 5 * user.getCivilization().getCities().size());
-
-        user.getCivilization().setHappiness(user.getCivilization().getHappiness() + 4 * happinessLuxuryIncrease.size());
-
-        if (user.getCivilization().getHappiness() < 0) {
-            for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
-                if (allTerrain.getCombatUnit() != null) {
-                    allTerrain.getCombatUnit().setCombatStrength(allTerrain.getCombatUnit().getCombatStrength() - allTerrain.getCombatUnit().getCombatStrength() / 4);
-                }
-            }
-            user.getCivilization().setBooleanSettlerBuy(false);
-        } else {
-            for (Terrain allTerrain : user.getCivilization().getOwnedTerrains()) {
-                if (allTerrain.getCombatUnit() != null) {
-                    allTerrain.getCombatUnit().setCombatStrength(allTerrain.getCombatUnit().getCombatStrength() + allTerrain.getCombatUnit().getCombatStrength() / 4);
-                }
-            }
-            user.getCivilization().setBooleanSettlerBuy(true);
-        }
-
-
     }
 
-    public void setScience(User user) {
-        user.getCivilization().setScience(user.getCivilization().getScience() + 3);
-        for (City city : user.getCivilization().getCities()) {
-            user.getCivilization().setScience(user.getCivilization().getScience() + city.getScience());
+    public void setScience() {
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("setScience",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+
+        }catch(IOException E){
+            E.printStackTrace();
         }
+
     }
 
     public String choosingATechnologyToStudy(User user, TechnologyTypes technologyType) {
         for (TechnologyTypes technologyType2 : technologyType.getRequirements()) {
             if (!isContainTechnology(user, technologyType2)) {
-                notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " you do not have required prerequisites" + "\n");
+                if (notificationHistory.get(user) != null) {
+                    notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " you do not have required prerequisites" + "\n");
+                } else {
+                    notificationHistory.put(user, this.database.getTurn() + " you do not have required prerequisites" + "\n");
+                }
+
                 return "you do not have required prerequisites";
             } else if (isContainTechnology(user, technologyType2) && !getTechnologyByTechnologyType(user, technologyType2).getIsAvailable()) {
-                notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " you do not have required prerequisites" + "\n");
+                if (notificationHistory.get(user) != null) {
+                    notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " you do not have required prerequisites" + "\n");
+                } else {
+                    notificationHistory.put(user, this.database.getTurn() + " you do not have required prerequisites" + "\n");
+                }
                 return "you do not have required prerequisites";
             }
         }
@@ -1044,12 +1128,22 @@ public class DatabaseController {
         }
         if (isContainTechnology(user, technologyType)) {
             getTechnologyByTechnologyType(user, technologyType).setUnderResearch(true);
-            notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " Technology is under research again" + "\n");
+            if (notificationHistory.get(user) != null) {
+                notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " Technology " + technologyType.name() + " is under research again" + "\n");
+            } else {
+                notificationHistory.put(user, this.database.getTurn() + " Technology " + technologyType.name() + " is under research again" + "\n");
+            }
+
             return "Technology is under research again";
         } else {
             user.getCivilization().getTechnologies().add(new Technology(true, 0, technologyType, false));
         }
-        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " Technology is under research" + "\n");
+        if (notificationHistory.get(user) != null) {
+            notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " Technology " + technologyType.name() + " is under research" + "\n");
+        } else {
+            notificationHistory.put(user, this.database.getTurn() + " Technology " + technologyType.name() + " is under research" + "\n");
+        }
+
         return "Technology is under research";
     }
 
@@ -1193,13 +1287,29 @@ public class DatabaseController {
         }
     }
 
-    public void setUnitsParametersAfterEachTurn(ArrayList<User> users) {
-        increasingTurnInWorkersActions();
-        increaseTurnInConstructingUnit(users);
-        for (User user : users) {
-            changingUnitsParameters(user);
+    public void setAvailability(){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("availability",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
         }
+    }
 
+    public void setUnitsParametersAfterEachTurn(ArrayList<User> users) {
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("setUnitsParametersAfterEachTurn",null);
+            requestUser.setUsers(users);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
 
     }
 
@@ -1472,12 +1582,19 @@ public class DatabaseController {
     }
 
     public Civilization getContainerCivilization(Unit unit) {
-        for (User user : this.database.getUsers()) {
-            if (user.getCivilization().getUnits().contains(unit)) {
-                return user.getCivilization();
-            }
+        Civilization civilization = null;
+        try{
+           RequestUser requestUser = new RequestUser();
+           requestUser.addRequest("getContainerCivilization",null);
+           requestUser.setUnit(unit);
+           Gson gson = new Gson();
+           dataOutputStream.writeUTF(gson.toJson(requestUser));
+           dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
         }
-        return null;
+        return civilization;
+
     }
 
     public String demographicPanel() {
@@ -1526,7 +1643,7 @@ public class DatabaseController {
 
     public Unit getUnitByCoordinatesAndName(User user, String name, int x, int y) {
         for (Unit unit : user.getCivilization().getUnits()) {
-            if (unit.getUnitType().name().equals(name) && unit.getX() == x && unit.getY() == y) {
+            if (unit.getUnitType().name().equalsIgnoreCase(name) && unit.getX() == x && unit.getY() == y) {
                 return unit;
             }
         }
@@ -1661,13 +1778,33 @@ public class DatabaseController {
         return true;
     }
 
-    public User getUserByCivilization(Civilization civilization) {
-        for (User user : database.getUsers()) {
-            if (user.getCivilization().equals(civilization)) {
-                return user;
-            }
+    public void setScore(int score,User user){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("setScore",user);
+            requestUser.setIJ(Integer.toString(score));
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
         }
-        return null;
+    }
+
+    public User getUserByCivilization(Civilization civilization) {
+        User user = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("getUserByCivilization",null);
+            requestUser.setCivilization(civilization);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            user = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getUser();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+       return user;
     }
 
     public ArrayList<Object> removeExcessObjects(ArrayList<Object> objects) {
@@ -1753,7 +1890,12 @@ public class DatabaseController {
             }
 
         }
-        notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " improvement will be built successfully" + "\n");
+        if (notificationHistory.get(user) != null) {
+            notificationHistory.put(user, notificationHistory.get(user) + this.database.getTurn() + " improvement will be built successfully" + "\n");
+        } else {
+            notificationHistory.put(user, this.database.getTurn() + " improvement will be built successfully" + "\n");
+        }
+
         return "improvement will be built successfully";
     }
 
@@ -1951,6 +2093,72 @@ public class DatabaseController {
 
     }
 
+
+
+
+
+    public User getNextTurnUser() {
+        int i = DatabaseController.getInstance().getDatabase().getUsers().indexOf(DatabaseController.getInstance().getDatabase().getActiveUser());
+        if (i == DatabaseController.getInstance().getDatabase().getUsers().size() - 1) {
+            return DatabaseController.getInstance().getDatabase().getUsers().get(0);
+        } else {
+            return DatabaseController.getInstance().getDatabase().getUsers().get(i + 1);
+        }
+    }
+
+    public Civilization theWinnerCivilization(){
+        Civilization civilization = null;
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("theWinnerCivilization",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            civilization = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getCivilization();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+       return civilization;
+    }
+
+    public Civilization theWinnerAfterYear2050(){
+        int max = -1;
+        for(User user : database.getUsers()){
+            if(user.getCivilization().getScore()>max){
+                max = user.getCivilization().getScore();
+            }
+        }
+        for(User user : database.getUsers()){
+            if(max ==user.getCivilization().getScore()){
+                return user.getCivilization();
+            }
+        }
+        return null;
+    }
+
+    public int calculatingScoreForEachCivilizationAfterEachRound(Civilization civilization){
+        if(civilization.isHasEverHadCity() && civilization.getCities().size()==0){
+            return 0;
+        }
+        return civilization.getTerrains().size()*50 + civilization.getTechnologies().size()*500+ civilization.getCities().size()*150;
+
+    }
+
+    public void increasingYearPerTurn(){
+
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("increasingYearPerTurn",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+
+
+    }
 
 
 

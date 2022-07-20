@@ -71,7 +71,7 @@ public class TerrainPopUpController {
 
         x.setText("x : " + terrain.getX());
         y.setText("y : " + terrain.getY());
-        if(terrain.getType().equals("visible")) {
+        if (terrain.getType().equals("visible")) {
 
             setTerrainTypeAndFeatureType(terrain, terrain.getTerrainTypes(), terrain.getTerrainFeatureTypes());
             if (terrain.getResource() != null) {
