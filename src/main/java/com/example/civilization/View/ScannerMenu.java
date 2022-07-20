@@ -1,6 +1,7 @@
 package com.example.civilization.View;
 
 import com.example.civilization.Controllers.DatabaseController;
+import com.example.civilization.Model.Units.Unit;
 import com.example.civilization.Requests.RequestUser;
 import com.google.gson.Gson;
 
@@ -135,7 +136,50 @@ public class ScannerMenu {
                             databaseController.removeUserToPlayerUsers(requestUser);
                         }else if(action.equals("notificationHistory")){
                             databaseController.notification();
+                        }else if(action.equals("changingTheStateOfAUnit")){
+                            databaseController.changingTheStateUnit(requestUser);
+                        }else if(action.equals("unitMovement")){
+                            databaseController.unitMovement(requestUser);
+                        }else if(action.equals("theWinnerCivilization")){
+                            databaseController.theWinnerCivil(requestUser);
+                        }else if(action.equals("getUserByCivilization")){
+                            databaseController.getUserCivil(requestUser);
+                        }else if(action.equals("setScore")){
+                            databaseController.setScore(requestUser);
+                        }else if(action.equals("getYear")){
+                            databaseController.getYear();
+                        }else if(action.equals("clear")){
+                            databaseController.clear();
+                        }else if(action.equals("setAllUnitsUnfinished")){
+                            databaseController.setAllUnitunfinished(requestUser);
+                        }else if(action.equals("setActiveUser")){
+                            databaseController.setActiveUser();
+                        }else if(action.equals("setUnitsParametersAfterEachTurn")){
+                            databaseController.setUnitsParametersAfterEachTurn(requestUser);
+                        }else if(action.equals("availability")){
+                            databaseController.setAvailability();
+                        }else if(action.equals("setScience")){
+                            databaseController.science();
+                        }else if(action.equals("setHappiness")){
+                            databaseController.happiness();
+                        }else if(action.equals("setTurn")){
+                            databaseController.turn();
+                        }else if(action.equals("increasingYearPerTurn")){
+                            databaseController.increasingTurnYear();
+                        }else if(action.equals("deselectAllUnits")){
+                            databaseController.deselectAllUnits();
+                        }else if(action.equals("getContainerCivilization")){
+                            databaseController.getContainerCivilization(requestUser);
+                        }else if(action.equals("isSelectedCombatUnit")){
+                            databaseController.setIsSelectedCombatUnit(requestUser);
+                        }else if(action.equals("isSelectedNonCombatUnit")){
+                            databaseController.setIsSelectedNonCombatUnit(requestUser);
+                        }else if(action.equals("setTerrainsOfEachCivilization")){
+                            databaseController.setTerrainsOfEachCivilization(requestUser);
+                        }else if(action.equals("movementOfAllUnits")){
+                            databaseController.movementOfAllUnits(DatabaseController.getInstance().getDatabase().getActiveUser());
                         }
+
                       databaseController.updateGame();
                     }
                 }catch(IOException E){

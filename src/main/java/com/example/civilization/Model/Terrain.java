@@ -35,7 +35,6 @@ public class Terrain {
     private boolean isRuin;
 
     public Terrain(int x, int y, String Type, TerrainTypes terrainTypes, ArrayList<TerrainFeatureTypes> terrainFeatureTypes, CombatUnit combatUnit, NonCombatUnit nonCombatUnit, Improvement TerrainImprovement, Resource TerrainResource, ArrayList<Revealed> reveals) {
-
         this.x = x;
         this.y = y;
         this.Type = Type;

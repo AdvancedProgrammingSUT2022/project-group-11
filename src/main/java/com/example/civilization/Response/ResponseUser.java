@@ -1,19 +1,17 @@
 package com.example.civilization.Response;
 
+import com.example.civilization.Model.*;
 import com.example.civilization.Model.GlobalChats.Message;
 import com.example.civilization.Model.GlobalChats.Room;
 import com.example.civilization.Model.GlobalChats.privateChat;
 import com.example.civilization.Model.Improvements.ImprovementTypes;
-import com.example.civilization.Model.Map;
 import com.example.civilization.Model.Resources.Resource;
-import com.example.civilization.Model.River;
 import com.example.civilization.Model.Technologies.TechnologyTypes;
-import com.example.civilization.Model.Terrain;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
 import com.example.civilization.Model.Units.CombatUnit;
 import com.example.civilization.Model.Units.NonCombatUnit;
-import com.example.civilization.Model.User;
+import com.example.civilization.Model.Units.Unit;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +38,23 @@ public class ResponseUser {
     private CombatUnit combatUnit;
     private ArrayList<ImprovementTypes> improvementTypes;
     private ImprovementTypes improvementType;
+    private Civilization civilization;
+    public Unit getUnit() {
+        return unit;
+    }
 
+    public void setUnit(Unit unit) {
+        this.unit = unit;
+    }
+
+    private Unit unit;
+    public Civilization getCivilization() {
+        return civilization;
+    }
+
+    public void setCivilization(Civilization civilization) {
+        this.civilization = civilization;
+    }
     public ImprovementTypes getImprovementType() {
         return improvementType;
     }

@@ -436,7 +436,7 @@ public class Map {
 
 
 
-    // initialize Map Before Print For Speciall User
+    // initialize Map Before Print For Special User
     private boolean isBlock(int i, int j) {
         if (i < 0 || i >= ROW) {
             return false;
@@ -648,10 +648,7 @@ public class Map {
                 toBeRemoved.add(tile);
             }
         }
-        if ( toBeRemoved != null)
-        {
-            user.getCivilization().getRevealedTerrains().removeAll(toBeRemoved);
-        }
+        user.getCivilization().getRevealedTerrains().removeAll(toBeRemoved);
 
         user.getCivilization().setVisibleTerrains(visibleTerrains);
 

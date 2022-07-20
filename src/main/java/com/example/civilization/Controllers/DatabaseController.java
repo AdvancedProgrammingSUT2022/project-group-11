@@ -78,6 +78,96 @@ public class DatabaseController {
     }
 
 
+    public void getUserCivil(RequestUser requestUser){
+        try{
+             Civilization civilization = requestUser.getCivilization();
+             Gson gson = new Gson();
+             ResponseUser responseUser = new ResponseUser();
+             responseUser.addResponse(null,getUserByCivilization(civilization));
+             dataOutputStream.writeUTF(gson.toJson(responseUser));
+             dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+
+    public void setScore(RequestUser requestUser){
+        User user = requestUser.getUser();
+        user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname());
+        int score = Integer.parseInt(requestUser.getIJ());
+        user.setScore(score);
+    }
+
+    public void getYear(){
+        try{
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.setIJ(Double.toString(database.getYear()));
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void setAllUnitunfinished(RequestUser requestUser){
+        User user = requestUser.getUser();
+        user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname());
+        setAllUnitsUnfinished(user);
+    }
+    public void clear(){
+        database.getPalyersUsers().clear();
+    }
+
+
+    public void theWinnerCivil(RequestUser requestUser){
+        try{
+
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.setCivilization(theWinnerCivilization());
+            responseUser.addResponse(null,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void changingTheStateUnit(RequestUser requestUser){
+        try{
+            String action = requestUser.getNickname();
+            ResponseUser responseUser = new ResponseUser();
+            String result = changingTheStateOfAUnit(action);
+            responseUser.addResponse(result,null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch(IOException E){
+            E.printStackTrace();
+        }
+    }
+
+
+    public void unitMovement(RequestUser requestUser) {
+         try{
+             int index = requestUser.getIJ().indexOf(" ");
+             int x = Integer.parseInt(requestUser.getIJ().substring(0,index));
+             int y = Integer.parseInt(requestUser.getIJ().substring(index + 1));
+             User user = requestUser.getUser();
+             user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname());
+             ResponseUser responseUser = new ResponseUser();
+             responseUser.addResponse(unitMovement(x,y,user),null);
+             Gson gson = new Gson();
+             dataOutputStream.writeUTF(gson.toJson(responseUser));
+             dataOutputStream.flush();
+         }catch(IOException E){
+             E.printStackTrace();
+         }
+    }
+
+
     public void increaseTurn(RequestUser requestUser){
         try{
             int amount = Integer.parseInt(requestUser.getIJ());
@@ -417,6 +507,19 @@ public class DatabaseController {
         }
     }
 
+    public void getContainerCivilization(RequestUser requestUser){
+        Unit unit = requestUser.getUnit();
+        Civilization civilization = getContainerCivilization(unit);
+        try{
+            Gson gson = new Gson();
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.setCivilization(civilization);
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
     public void userLogin(RequestUser requestUser) {
         try {
             User user = requestUser.getUser();
@@ -431,6 +534,63 @@ public class DatabaseController {
         }catch (IOException E){
             E.printStackTrace();
         }
+    }
+    public void science(){
+        setScience(database.getActiveUser());
+    }
+    public void deselectAllUnits() {
+
+        if (DatabaseController.getInstance().getSelectedNonCombatUnit() != null) {
+            DatabaseController.getInstance().getSelectedNonCombatUnit().setIsSelected(false);
+        }
+        if (DatabaseController.getInstance().getSelectedCombatUnit() != null) {
+            DatabaseController.getInstance().getSelectedCombatUnit().setIsSelected(false);
+        }
+    }
+
+    public void increasingTurnYear(){
+        increasingYearPerTurn();
+    }
+    public void increasingYearPerTurn(){
+
+
+        if(database.getYear()>= -4000 && database.getYear()<1000){
+            database.setYear(database.getYear()+40);
+        }
+        if(database.getYear()>= -1000 && database.getYear()<500){
+            database.setYear(database.getYear()+25);
+        }
+        if(database.getYear()>= 500 && database.getYear()<1000){
+            database.setYear(database.getYear()+20);
+        }
+        if(database.getYear()>= 1000 && database.getYear()<1500){
+            database.setYear(database.getYear()+10);
+        }
+        if(database.getYear()>= 1500 && database.getYear()<1800){
+            database.setYear(database.getYear()+5);
+        }
+        if(database.getYear()>= 1800 && database.getYear()<1900){
+            database.setYear(database.getYear()+2);
+        }
+        if(database.getYear()>= 1900 && database.getYear()<2020){
+            database.setYear(database.getYear()+1);
+        }
+        if(database.getYear()>= 2020 && database.getYear()<2050){
+            database.setYear(database.getYear()+0.5);
+        }
+
+    }
+
+
+    public void turn(){
+        database.setTurn(database.getTurn() + 1);
+    }
+    public void happiness(){
+        setHappinessUser(database.getActiveUser());
+    }
+
+    public void setAvailability(){
+        database.getActiveUser().getCivilization().setAvailability();
     }
 
     public void activeUser(RequestUser requestUser){
@@ -676,6 +836,22 @@ public class DatabaseController {
              user.getRooms().add(room);
         }
     }
+    public Civilization theWinnerCivilization(){
+        int count = 0;
+        for(User user : database.getUsers()){
+            if(user.getCivilization().getCurrentCapital().equals(user.getCivilization().getFirstCapital())){
+                count++;
+            }
+        }
+        if(count ==1){
+            for(User user : database.getUsers()){
+                if(user.getCivilization().getCurrentCapital().equals(user.getCivilization().getFirstCapital())){
+                    return user.getCivilization();
+                }
+            }
+        }
+        return null;
+    }
     public String selectAndDeselectCombatUnit(User user, int x, int y) {
         Map map = this.getMap();
         int mapRows = map.getROW();
@@ -812,6 +988,24 @@ public class DatabaseController {
         return isSelected;
     }
 
+    public void setUnitsParametersAfterEachTurn(RequestUser requestUser) {
+        ArrayList<User> users = new ArrayList<>();
+        for(int i = 0; i< requestUser.getUsers().size();i++){
+            users.add(database.getUserByUsernameAndPasswordAndNickname(requestUser.getUsers().get(i).getUsername(),requestUser.getUsers().get(i).getPassword(),requestUser.getUsers().get(i).getNickname()));
+        }
+        setUnitsParametersAfterEachTurn(users);
+    }
+    public void setActiveUser(){
+        database.setActiveUser(getNextTurnUser());
+    }
+    public User getNextTurnUser() {
+        int i = DatabaseController.getInstance().getDatabase().getPalyersUsers().indexOf(DatabaseController.getInstance().getDatabase().getActiveUser());
+        if (i == DatabaseController.getInstance().getDatabase().getPalyersUsers().size() - 1) {
+            return DatabaseController.getInstance().getDatabase().getPalyersUsers().get(0);
+        } else {
+            return DatabaseController.getInstance().getDatabase().getPalyersUsers().get(i + 1);
+        }
+    }
     public CombatUnit getSelectedCombatUnit() {
         int row = this.database.getMap().getROW();
         int column = this.database.getMap().getCOL();
@@ -1924,8 +2118,24 @@ public class DatabaseController {
 
     }
 
+    public void setTerrainsOfEachCivilization(RequestUser requestUser){
+        setTerrainsOfEachCivilization(database.getActiveUser());
+    }
+    public void setIsSelectedCombatUnit(RequestUser requestUser){
+        int index = requestUser.getIJ().indexOf(" ");
+        int i = Integer.parseInt(requestUser.getIJ().substring(0,index));
+        int j = Integer.parseInt(requestUser.getIJ().substring(index + 1));
+        database.getMap().getTerrain()[i][j].getCombatUnit().setIsSelected(true);
+    }
+
+    public void setIsSelectedNonCombatUnit(RequestUser requestUser){
+        int index = requestUser.getIJ().indexOf(" ");
+        int i = Integer.parseInt(requestUser.getIJ().substring(0,index));
+        int j = Integer.parseInt(requestUser.getIJ().substring(index + 1));
+        database.getMap().getTerrain()[i][j].getNonCombatUnit().setIsSelected(true);
+    }
     public Civilization getContainerCivilization(Unit unit) {
-        for (User user : this.database.getUsers()) {
+        for (User user : this.database.getPalyersUsers()) {
             if (user.getCivilization().getUnits().contains(unit)) {
                 return user.getCivilization();
             }

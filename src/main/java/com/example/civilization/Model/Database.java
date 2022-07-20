@@ -21,6 +21,16 @@ public class Database {
 
     private ArrayList<User> palyesrUser = new ArrayList<>();
 
+    private double year = -4000;
+
+    public double getYear() {
+        return year;
+    }
+
+    public void setYear(double year) {
+        this.year = year;
+    }
+
     public ArrayList<User> getPalyersUsers() {
         return palyesrUser;
     }
