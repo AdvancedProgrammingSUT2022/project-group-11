@@ -13,27 +13,25 @@ import java.net.Socket;
 
 public class ScannerMenu {
     private DatabaseController databaseController;
+    private ServerSocket serverSocket;
     public static Socket socket;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
-    public ScannerMenu(){
-
-        try {
-            this.dataInputStream = new DataInputStream(socket.getInputStream());
-            this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            DatabaseController.dataInputStream = dataInputStream;
-            DatabaseController.dataOutputStream = dataOutputStream;
-        }catch (IOException E){
-            E.printStackTrace();
-        }
+    public ScannerMenu() throws IOException {
+        serverSocket = new ServerSocket(7777);
         this.databaseController = DatabaseController.getInstance();
     }
 
-    public void run(){
+    public void run() throws IOException {
         while(true){
+            socket = serverSocket.accept();
             new Thread(() ->{
                 try {
                     while (true) {
+                        this.dataInputStream = new DataInputStream(socket.getInputStream());
+                        this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                        DatabaseController.dataInputStream = dataInputStream;
+                        DatabaseController.dataOutputStream = dataOutputStream;
                         String input = dataInputStream.readUTF();
                         Gson gson = new Gson();
                         RequestUser requestUser = gson.fromJson(input,RequestUser.class);
@@ -178,6 +176,32 @@ public class ScannerMenu {
                             databaseController.setTerrainsOfEachCivilization(requestUser);
                         }else if(action.equals("movementOfAllUnits")){
                             databaseController.movementOfAllUnits(DatabaseController.getInstance().getDatabase().getActiveUser());
+                        }else if(action.equals("startGame")){
+                            databaseController.startGame();
+                        }else if(action.equals("initializeMap")){
+                            databaseController.initializeMap();
+                        }else if(action.equals("removeDemandRequest")){
+                            databaseController.removeDemandRequest(requestUser);
+                        }else if(action.equals("removeDemandCityRequest")){
+                            databaseController.removeDemandCityRequest(requestUser);
+                        }else if (action.equals("citySetOwner")){
+                            databaseController.citySetOwner(requestUser);
+                        }else if(action.equals("setCityGold")){
+                            databaseController.setCityGold(requestUser);
+                        }else if(action.equals("putStatusCivilization")){
+                            databaseController.putStatusCivilization(requestUser);
+                        }else if(action.equals("putStatusSecondCivilization")){
+                            databaseController.putStatusSecondCivilization(requestUser);
+                        }else if(action.equals("putTradeRequest")){
+                            databaseController.putTradeRequest(requestUser);
+                        }else if(action.equals("removePutTradeRequest")){
+                            databaseController.removePutTradeRequest(requestUser);
+                        }else if(action.equals("removePutTradeRequestCivilization")){
+                            databaseController.removePutTradeRequestCivilization(requestUser);
+                        }else if(action.equals("addCity")){
+                            databaseController.addCity(requestUser);
+                        }else if(action.equals("removeCity")){
+                            databaseController.removeCity(requestUser);
                         }
 
                       databaseController.updateGame();

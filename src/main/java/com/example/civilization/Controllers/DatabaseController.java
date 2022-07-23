@@ -62,6 +62,16 @@ public class DatabaseController {
     }
 
 
+    public void startGame(){
+            database.setActiveUser(database.getPalyersUsers().get(0));
+
+    }
+
+
+    public void initializeMap(){
+        database.getMap().initializeMapUser(database.getActiveUser());
+    }
+
 
 
     public void updateGame(){
@@ -69,9 +79,25 @@ public class DatabaseController {
         if(onlineUsers.size() > 0) {
             for (User user : onlineUsers) {
                 if (database.getActiveUser().equals(user)) {
-
+                   try{
+                       ResponseUser responseUser = new ResponseUser();
+                       responseUser.addResponse("its your turn",null);
+                       Gson gson = new Gson();
+                       dataOutputStream.writeUTF(gson.toJson(responseUser));
+                       dataOutputStream.flush();
+                   }catch (IOException E){
+                       E.printStackTrace();
+                   }
                 } else {
-
+                    try{
+                        ResponseUser responseUser = new ResponseUser();
+                        responseUser.addResponse("its not your turn",null);
+                        Gson gson = new Gson();
+                        dataOutputStream.writeUTF(gson.toJson(responseUser));
+                        dataOutputStream.flush();
+                    }catch (IOException E){
+                        E.printStackTrace();
+                    }
                 }
             }
         }
@@ -655,14 +681,7 @@ public class DatabaseController {
     public void generateMapFromServer(RequestUser requestUser){
         try{
            ResponseUser responseUser = new ResponseUser();
-           if(database.getPalyersUsers().size() == 0){
                database.getMap().generateMap();
-
-           }
-            User user = requestUser.getUser();
-            if(database.getPalyersUsers().indexOf(database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname())) == -1){
-                database.getPalyersUsers().add(database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(),user.getNickname()));
-            }
            responseUser.setMap(database.getMap());
            Gson gson = new Gson();
             dataOutputStream.writeUTF(gson.toJson(responseUser));
@@ -672,6 +691,21 @@ public class DatabaseController {
         }
     }
 
+
+    public void putStatusCivilization(RequestUser requestUser){
+        Civilization civilization = requestUser.getCivilization();
+        boolean bool = Boolean.parseBoolean(requestUser.getIJ());
+        database.getActiveUser().getCivilization().getStatusWithOtherCivilizations().put(civilization,bool);
+
+    }
+
+    public void putStatusSecondCivilization(RequestUser requestUser){
+        Civilization civilization = requestUser.getCivilization();
+        Civilization secondCivilization = requestUser.getSecondCivilization();
+        boolean bool = Boolean.parseBoolean(requestUser.getIJ());
+       secondCivilization.getStatusWithOtherCivilizations().put(civilization,bool);
+
+    }
     public void addUserToPlayerUsers(RequestUser requestUser){
 
               User user = database.getUserByUsernameAndPasswordAndNickname(requestUser.getUser().getUsername(),requestUser.getUser().getPassword(),requestUser.getNickname());
@@ -1031,6 +1065,36 @@ public class DatabaseController {
         }
         return null;
     }
+
+
+    public void removeDemandRequest(RequestUser requestUser){
+
+            Civilization civilization = requestUser.getCivilization();
+            database.getActiveUser().getCivilization().getDemandRequests().remove(civilization);
+
+    }
+
+    public void removeDemandCityRequest(RequestUser requestUser){
+
+        City city = requestUser.getCity();
+        database.getActiveUser().getCivilization().getCities().remove(city);
+
+    }
+
+    public void citySetOwner(RequestUser requestUser){
+        Civilization civilization = requestUser.getCivilization();
+        City city = requestUser.getCity();
+        civilization.addCity(city);
+        city.setOwner(civilization);
+
+    }
+
+    public void setCityGold(RequestUser requestUser){
+        int amount = Integer.parseInt(requestUser.getIJ());
+        Civilization civilization =  requestUser.getCivilization();
+        civilization.setGold(amount);
+    }
+
 
     public boolean isAllTasksFinished(User user) {
         for (Unit unit : user.getCivilization().getUnits()) {
@@ -2592,8 +2656,54 @@ public class DatabaseController {
 
     }
 
+    public void putTradeRequest(RequestUser requestUser){
+        Civilization civilization = requestUser.getCivilization();
+        Civilization secondCivilization = requestUser.getSecondCivilization();
+        String str = requestUser.getIJ();
+        secondCivilization.getTradeRequests().put(civilization,str);
+    }
+
+    public void removePutTradeRequest(RequestUser requestUser){
+        Civilization civilization = requestUser.getCivilization();
+        database.getActiveUser().getCivilization().getTradeRequests().remove(civilization);
+    }
+
+
+    public void removePutTradeRequestCivilization(RequestUser requestUser){
+        Civilization civilization = requestUser.getCivilization();
+        Civilization second = requestUser.getSecondCivilization();
+        second.getTradeRequests().remove(civilization);
+    }
 
 
 
+    public Civilization getCivilizationByName(String name){
+        for(User user : database.getPalyersUsers()){
+            if(user.getCivilization().getName().equalsIgnoreCase(name)){
+                return user.getCivilization();
+            }
+        }
+        return null;
+    }
 
+
+    public void addCity(RequestUser requestUser) {
+          Civilization civilization = requestUser.getCivilization();
+          City city = requestUser.getCity();
+          civilization.getCities().add(city);
+          if(requestUser.getIJ().equals("yes")) {
+              setOwner(civilization, city);
+          }
+    }
+
+    public void setOwner(Civilization civilization,City city){
+        city.setOwner(civilization);
+    }
+
+
+    public void removeCity(RequestUser requestUser) {
+        Civilization civilization = requestUser.getCivilization();
+        City city = requestUser.getCity();
+        civilization.getCities().remove(city);
+    }
 }
