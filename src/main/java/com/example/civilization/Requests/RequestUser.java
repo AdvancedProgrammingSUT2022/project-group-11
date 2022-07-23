@@ -1,6 +1,7 @@
 package com.example.civilization.Requests;
 
 import com.example.civilization.Model.*;
+import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.GlobalChats.Message;
 import com.example.civilization.Model.GlobalChats.Room;
 import com.example.civilization.Model.GlobalChats.privateChat;
@@ -17,31 +18,56 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RequestUser {
-   private String action;
-   private User user;
-   private String nickname;
-   private String password;
-   private Map map;
-    private ArrayList<User> users = new ArrayList<>();
-    private River river;
+    public String action;
+    public User user;
+    public String nickname;
+    public String password;
+    public Map map;
+    public ArrayList<User> users = new ArrayList<>();
+    public River river;
+    public String IJ;
 
-   private String IJ;
+    public Terrain terrain;
+    public TerrainTypes typeTile;
+    public ArrayList<TerrainFeatureTypes> feature;
+    public Resource resource;
 
-   private Terrain terrain;
-   private TerrainTypes typeTile;
-   private ArrayList<TerrainFeatureTypes> feature;
-   private Resource resource;
+    public privateChat privateChat;
+    public ArrayList<Room> rooms = new ArrayList<>();
+    public ArrayList<privateChat> privateChats = new ArrayList<>();
 
-   private privateChat privateChat;
-    private ArrayList<Room> rooms = new ArrayList<>();
-    private ArrayList<privateChat> privateChats = new ArrayList<>();
+    public TechnologyTypes technologyTypes;
+    public ArrayList<TechnologyTypes> technologyTypesArrayList;
 
-    private TechnologyTypes technologyTypes;
-    private ArrayList<TechnologyTypes> technologyTypesArrayList;
+    public NonCombatUnit nonCombatUnit;
+    public CombatUnit combatUnit;
+    public Civilization civilization;
+    private City city;
+    private City secondCity;
 
-    private NonCombatUnit nonCombatUnit;
-    private CombatUnit combatUnit;
-    private Civilization civilization;
+    public City getSecondCity() {
+        return secondCity;
+    }
+
+    public void setSecondCity(City secondCity) {
+        this.secondCity = secondCity;
+    }
+    private Civilization secondCivilization;
+
+    public Civilization getSecondCivilization() {
+        return secondCivilization;
+    }
+
+    public void setSecondCivilization(Civilization secondCivilization) {
+        this.secondCivilization = secondCivilization;
+    }
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
 
     public Unit getUnit() {
         return unit;

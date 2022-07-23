@@ -130,10 +130,8 @@ public class GameMapController {
     @FXML
     public void initialize() throws IOException {
         unitPane.setVisible(false);
-//        DatabaseController.getInstance().getMap().generateMap();
-//        DatabaseController.getInstance().setCivilizations(DatabaseController.getInstance().getDatabase().getUsers());
-        this.databaseController.getMap().initializeMapUser(DatabaseController.getInstance().activeUser());
 
+        this.databaseController.initializeMap();
         selectedPanel.setText(DatabaseController.getInstance().activeUser().getCivilization().getName() + " turn");
 
         pane.setMaxSize(1300, 700);
@@ -165,7 +163,7 @@ public class GameMapController {
 
     @FXML
     private void changingDirection() throws IOException {
-        this.databaseController.getMap().initializeMapUser(DatabaseController.getInstance().activeUser());
+        this.databaseController.initializeMap();
         pane.getScene().setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case UP -> {

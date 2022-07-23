@@ -54,7 +54,7 @@ public class Ruins {
             civilization.getCities().get(nxt).setGold(civilization.getCities().get(nxt).getGold() + gold);
         }
 
-        ArrayList<TechnologyTypes> values = DatabaseController.getInstance().unlockableTechnologies(DatabaseController.getInstance().getUserByCivilization(civilization));
+        ArrayList<TechnologyTypes> values = DatabaseController.getInstance().unlockableTechnologies();
         if (!values.isEmpty()) {
             TechnologyTypes value = values.get(new Random().nextInt(values.size()));
             boolean isNew = true;

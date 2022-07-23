@@ -35,6 +35,8 @@ public class GameMenuController {
     @FXML
     private AnchorPane anchorPane;
 
+    public static User user;
+
     public static boolean isInteger(String str) {
         try {
             Integer.parseInt(str);
@@ -46,8 +48,8 @@ public class GameMenuController {
 
     @FXML
     public void initialize() {
-        if(!DatabaseController.getInstance().getAllPlayerUser().contains(DatabaseController.getInstance().activeUser())){
-            DatabaseController.getInstance().addUserToPlayerUser(DatabaseController.getInstance().activeUser());
+        if(!DatabaseController.getInstance().getAllPlayerUser().contains(user)){
+            DatabaseController.getInstance().addUserToPlayerUser(user);
         }
 
         Platform.runLater(this::setOpponentsName);
@@ -136,13 +138,16 @@ public class GameMenuController {
                 if (Integer.parseInt(opponentsCount.getText()) < 2 || Integer.parseInt(opponentsCount.getText()) > 5) {
                     result.setText("number of players must be between 2 and 5");
                 } else {
+                    DatabaseController.getInstance().startGame();
+                    DatabaseController.getInstance().generateMapFromServer();
+                    DatabaseController.getInstance().setCivilizations();
+                    String result = DatabaseController.getInstance().isActiveUser(user);
+                    if(result.equals("its your turn")){
+                        user.setCanEditGame(true);
+                    }else{
+                        user.setCanEditGame(false);
+                    }
 
-                    //
-
-                    //works to do
-                    //
-               ///     DatabaseController.getInstance().getMap().generateMap();
-               ///     DatabaseController.getInstance().setCivilizations();
                     Main.changeMenu("gameMap");
 
                 }

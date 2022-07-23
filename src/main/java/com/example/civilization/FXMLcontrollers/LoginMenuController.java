@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 public class LoginMenuController {
+    public static User user;
     private DatabaseController databaseController = DatabaseController.getInstance();
     @FXML
     private TextField username;
@@ -40,10 +41,10 @@ public class LoginMenuController {
     {
         String u = username.getText();
         String p = password.getText();
-        User user = databaseController.userLogin(u, p);
+        user = databaseController.userLogin(u, p);
         if ( user != null)
         {
-            Database.getInstance().setActiveUser(user);
+            ProfileMenuController.user = user;
             ProfileMenuController.databaseController = DatabaseController.getInstance();
             Main.changeMenu("ProfileMenu");
             return;

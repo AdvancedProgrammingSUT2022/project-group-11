@@ -24,6 +24,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class ProfileMenuController {
+
+    public static User user;
     public static DatabaseController databaseController = DatabaseController.getInstance();
     @FXML
     private Label username;
@@ -62,10 +64,10 @@ public class ProfileMenuController {
 
 
     public void setTexts() throws FileNotFoundException {
-        User activeUser = databaseController.activeUser();
-        username.setText(activeUser.getUsername());
-        nickname.setText(activeUser.getNickname());
-        Image image = new Image(new FileInputStream(activeUser.getProfilePicture()));
+       // User activeUser = databaseController.activeUser();
+        username.setText(user.getUsername());
+        nickname.setText(user.getNickname());
+        Image image = new Image(new FileInputStream(user.getProfilePicture()));
         //Image image = new Image( ProfileMenuController.class.getResource("/com/example/civilization/PNG/prof" + Database.getInstance().getActiveUser().photoNumber + ".png").toString());
         photo.setImage(image);
 
@@ -73,12 +75,12 @@ public class ProfileMenuController {
     }
 
     public void setUpEditPage() {
-        User activeUser = databaseController.activeUser();
-        editNickname.setPromptText(activeUser.getNickname());
-        editPassword.setPromptText(activeUser.getPassword());
+       // User activeUser = databaseController.activeUser();
+        editNickname.setPromptText(user.getNickname());
+        editPassword.setPromptText(user.getPassword());
         Image image;
         try {
-            image = new Image(new FileInputStream(activeUser.getProfilePicture()));
+            image = new Image(new FileInputStream(user.getProfilePicture()));
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }
@@ -89,61 +91,61 @@ public class ProfileMenuController {
     }
 
     public void changePicTo1() {
-        User activeUser = databaseController.activeUser();
+    //    User activeUser = databaseController.activeUser();
         profilePic.setImage(pic1.getImage());
-        activeUser.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof1.png");
+        user.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof1.png");
     }
 
     public void changePicTo2() {
-        User activeUser = databaseController.activeUser();
+     //   User activeUser = databaseController.activeUser();
         profilePic.setImage(pic2.getImage());
-        activeUser.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof2.png");
+        user.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof2.png");
     }
 
     public void changePicTo3() {
-        User activeUser = databaseController.activeUser();
+       // User activeUser = databaseController.activeUser();
         profilePic.setImage(pic3.getImage());
-       activeUser.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof3.png");
+       user.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof3.png");
 
     }
 
     public void changePicTo4() {
-        User activeUser = databaseController.activeUser();
+     //   User activeUser = databaseController.activeUser();
         profilePic.setImage(pic4.getImage());
-       activeUser.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof4.png");
+       user.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof4.png");
     }
 
     public void changePicTo5() {
-        User activeUser = databaseController.activeUser();
+      //  User activeUser = databaseController.activeUser();
         profilePic.setImage(pic5.getImage());
-        activeUser.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof5.png");
+        user.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof5.png");
 
     }
 
     public void changePicTo6() {
         User activeUser = databaseController.activeUser();
         profilePic.setImage(pic6.getImage());
-        activeUser.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof6.png");
+        user.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof6.png");
     }
 
     public void changePicTo7() {
-        User activeUser = databaseController.activeUser();
+        //User activeUser = databaseController.activeUser();
         profilePic.setImage(pic7.getImage());
-        activeUser.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof7.png");
+        user.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof7.png");
     }
 
     public void changePicTo8() {
-        User activeUser = databaseController.activeUser();
+        // User activeUser = databaseController.activeUser();
         profilePic.setImage(pic8.getImage());
-        activeUser.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof8.png");
+        user.setProfilePicture("src/main/resources/com/example/civilization/PNG/images/prof8.png");
     }
 
     public void saveChanges() {
         String newNickname = editNickname.getText();
         String newPassword = editPassword.getText();
-        User activeUser = databaseController.activeUser();
+  //      User activeUser = databaseController.activeUser();
         if (!newNickname.equals("")) {
-            String temp = databaseController.changeUserNickname(newNickname, activeUser);
+            String temp = databaseController.changeUserNickname(newNickname, user);
             if (temp.startsWith("user")) {
                 nicknameWarning.setText(temp);
                 nicknameWarning.setVisible(true);
@@ -152,7 +154,7 @@ public class ProfileMenuController {
             }
         }
         if (!newPassword.equals("")) {
-            String passTemp = databaseController.changePassword(newPassword, activeUser);
+            String passTemp = databaseController.changePassword(newPassword, user);
             if (passTemp.startsWith("please")) {
                 passwordWarning.setText(passTemp);
                 passwordWarning.setVisible(true);
@@ -228,7 +230,7 @@ public class ProfileMenuController {
         Main.changeMenu("GlobalChat");
     }
     public void EditMap(MouseEvent mouseEvent) {
-        Map map = databaseController.generateMapFromServer(databaseController.activeUser());
+        Map map = databaseController.generateMapFromServer();
         Main.changeMenu("EditMap");
 
     }

@@ -20,6 +20,17 @@ public class User {
 
     private boolean online = false;
 
+
+    private boolean canEditGame;
+
+    public boolean isCanEditGame() {
+        return canEditGame;
+    }
+
+    public void setCanEditGame(boolean canEditGame) {
+        this.canEditGame = canEditGame;
+    }
+
     private ArrayList<privateChat> privatechat = new ArrayList<>();
     private ArrayList<Room> rooms = new ArrayList<>();
 

@@ -29,15 +29,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+
 import static java.util.Comparator.naturalOrder;
 
 public class DatabaseController {
     private static DatabaseController instance;
     public HashMap<User, String> notificationHistory = new HashMap<>();
     private Database database;
-    private Socket socket;
-    private DataInputStream dataInputStream;
-    private DataOutputStream dataOutputStream;
+    private static Socket socket;
+    private static DataInputStream dataInputStream;
+    private static DataOutputStream dataOutputStream;
 
 
     public DataInputStream getDataInputStream(){
@@ -75,6 +76,18 @@ public class DatabaseController {
     }
 
 
+
+    public void startGame(){
+        try {
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("startGame",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
 
     public double getYear(){
         double year = 0 ;
@@ -288,6 +301,21 @@ public class DatabaseController {
         return result;
     }
 
+
+    public String isActiveUser(User user){
+        String result = null;
+        try {
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("updateGame", user);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+        return result;
+    }
     public String changePassword(String p, User user) {
         String result = "password changed successfully! Please Login again with your new password";
         try {
@@ -306,8 +334,19 @@ public class DatabaseController {
         return result;
     }
 
+    public void initializeMap(){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("initializeMap",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
 
-    public Map generateMapFromServer(User user){
+    public Map generateMapFromServer(){
         Map map = null;
        try{
            RequestUser requestUser = new RequestUser();
@@ -2160,7 +2199,170 @@ public class DatabaseController {
 
     }
 
+    public void citySetOwner(City city,Civilization civilization){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("citySetOwner",null);
+            requestUser.setCity(city);
+            requestUser.setCivilization(civilization);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+           dataOutputStream.flush();
+        }catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+
+    public void setCivilizationGold(Civilization civilization,int gold){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("setCityGold",null);
+            requestUser.setIJ(Integer.toString(gold));
+            requestUser.setCivilization(civilization);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
 
 
+    public void demandRemoveRequest(Civilization civilization){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.setCivilization(civilization);
+            requestUser.addRequest("removeDemandRequest",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
 
+    public void demandRemoveCityRequest(City city){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("removeDemandCityRequest",null);
+            requestUser.setCity(city);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void putStatusCivilization(Civilization civilization,boolean bool){
+        try{
+
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("putStatusCivilization",null);
+            requestUser.setCivilization(civilization);
+            requestUser.setIJ(Boolean.toString(bool));
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void removePutTradeRequest(Civilization civilization){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("removePutTradeRequest",null);
+            requestUser.setCivilization(civilization);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void addCity(City city,Civilization civilization,String ij){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("addCity",null);
+            requestUser.setCity(city);
+            requestUser.setIJ(ij);
+            requestUser.setCivilization(civilization);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+
+    public void removePutTradeRequestCivilization(Civilization second,Civilization civilization){
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("removePutTradeRequestCivilization",null);
+            requestUser.setCivilization(civilization);
+            requestUser.setSecondCivilization(second);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+
+    public void putTradeRequest(Civilization secondCivilization,Civilization civilization,String str){
+        try{
+            Gson gson = new Gson();
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("putTradeRequest",null);
+            requestUser.setSecondCivilization(secondCivilization);
+            requestUser.setCivilization(civilization);
+            requestUser.setIJ(str);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+    public void putStatusCivilization(Civilization secondCivilization,Civilization civilization,boolean bool){
+        try{
+
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("putStatusCivilization",null);
+            requestUser.setCivilization(civilization);
+            requestUser.setSecondCivilization(secondCivilization);
+            requestUser.setIJ(Boolean.toString(bool));
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+    public Civilization getCivilizationByName(String name){
+        for(User user : getAllPlayerUser()){
+            if(user.getCivilization().getName().equalsIgnoreCase(name)){
+                return user.getCivilization();
+            }
+        }
+        return null;
+    }
+
+
+    public void removeCity(Civilization second, City city) {
+        try{
+            RequestUser requestUser = new RequestUser();
+            Gson gson = new Gson();
+            requestUser.addRequest("removeCity",null);
+            requestUser.setCity(city);
+            requestUser.setCivilization(second);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
 }

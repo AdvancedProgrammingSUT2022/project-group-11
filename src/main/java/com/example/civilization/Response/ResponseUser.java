@@ -1,6 +1,7 @@
 package com.example.civilization.Response;
 
 import com.example.civilization.Model.*;
+import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.GlobalChats.Message;
 import com.example.civilization.Model.GlobalChats.Room;
 import com.example.civilization.Model.GlobalChats.privateChat;
@@ -37,6 +38,31 @@ public class ResponseUser {
     private ArrayList<ImprovementTypes> improvementTypes;
     private ImprovementTypes improvementType;
     private Civilization civilization;
+    private City city;
+    private Civilization secondCivilization;
+    private City secondCity;
+
+    public City getSecondCity() {
+        return secondCity;
+    }
+
+    public void setSecondCity(City secondCity) {
+        this.secondCity = secondCity;
+    }
+    public Civilization getSecondCivilization() {
+        return secondCivilization;
+    }
+
+    public void setSecondCivilization(Civilization secondCivilization) {
+        this.secondCivilization = secondCivilization;
+    }
+    public City getCity() {
+        return city;
+    }
+
+    public void setCity(City city) {
+        this.city = city;
+    }
     public Unit getUnit() {
         return unit;
     }

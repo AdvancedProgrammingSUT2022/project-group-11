@@ -37,7 +37,7 @@ public class GameMenu {
     public void run(Scanner scanner) {
 
         DatabaseController.getInstance().getMap().generateMap();
-        DatabaseController.getInstance().setCivilizations(users);
+        DatabaseController.getInstance().setCivilizations();
 
         while (true) {
             for (User user : users) {
@@ -119,7 +119,7 @@ public class GameMenu {
                         this.cityController.playTurn(city);
                     }
                 }
-                DatabaseController.getInstance().movementOfAllUnits(user);
+                DatabaseController.getInstance().movementOfAllUnits();
                 DatabaseController.getInstance().setTerrainsOfEachCivilization();
                 DatabaseController.getInstance().setHappinessUser();
                 DatabaseController.getInstance().setScience();
