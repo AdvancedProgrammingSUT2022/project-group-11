@@ -24,6 +24,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,34 +75,6 @@ public class DatabaseController {
 
 
 
-    public void updateGame(){
-        ArrayList<User> onlineUsers = database.getPalyersUsers();
-        if(onlineUsers.size() > 0) {
-            for (User user : onlineUsers) {
-                if (database.getActiveUser().equals(user)) {
-                   try{
-                       ResponseUser responseUser = new ResponseUser();
-                       responseUser.addResponse("its your turn",null);
-                       Gson gson = new Gson();
-                       dataOutputStream.writeUTF(gson.toJson(responseUser));
-                       dataOutputStream.flush();
-                   }catch (IOException E){
-                       E.printStackTrace();
-                   }
-                } else {
-                    try{
-                        ResponseUser responseUser = new ResponseUser();
-                        responseUser.addResponse("its not your turn",null);
-                        Gson gson = new Gson();
-                        dataOutputStream.writeUTF(gson.toJson(responseUser));
-                        dataOutputStream.flush();
-                    }catch (IOException E){
-                        E.printStackTrace();
-                    }
-                }
-            }
-        }
-    }
 
 
     public void getUserCivil(RequestUser requestUser){
@@ -458,7 +431,10 @@ public class DatabaseController {
          responseUser.setMap(database.getMap());
          Gson gson = new Gson();
         try {
-            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            String temp = gson.toJson(responseUser);
+            byte[] bytes = temp.getBytes(StandardCharsets.UTF_8);
+            dataOutputStream.writeInt(bytes.length);
+            dataOutputStream.write(bytes);
             dataOutputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
@@ -2705,5 +2681,86 @@ public class DatabaseController {
         Civilization civilization = requestUser.getCivilization();
         City city = requestUser.getCity();
         civilization.getCities().remove(city);
+    }
+
+    public void addUserToStartPlayer(RequestUser requestUser) {
+        User user  = requestUser.getUser();
+        user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(), user.getNickname());
+        database.getStartUsers().add(user);
+    }
+
+    public void removeUserToStartPlayer(RequestUser requestUser) {
+        User user  = requestUser.getUser();
+        user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(), user.getNickname());
+        database.getStartUsers().remove(user);
+    }
+
+    public void update(RequestUser requestUser) {
+        User user = requestUser.getUser();
+        user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(), user.getNickname());
+        user.setSocket(requestUser.getUser().getSocket());
+        boolean find = false;
+        for(int i = 0; i < database.getStartUsers().size();i++){
+            if(database.getStartUsers().get(i).equals(user)){
+                find = true;
+                break;
+            }
+        }
+        try{
+            if(find){
+                ResponseUser responseUser = new ResponseUser();
+                Gson gson = new Gson();
+                responseUser.addResponse("accept",null);
+                dataOutputStream.writeUTF(gson.toJson(responseUser));
+                dataOutputStream.flush();
+            }else{
+                ResponseUser responseUser = new ResponseUser();
+                Gson gson = new Gson();
+                responseUser.addResponse("notFound",null);
+                dataOutputStream.writeUTF(gson.toJson(responseUser));
+                dataOutputStream.flush();
+            }
+
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void accept(RequestUser requestUser) {
+        try {
+            User user = requestUser.getUser();
+            user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(), user.getPassword(), user.getNickname());
+            int index = database.getStartUsers().indexOf(user);
+            database.getPalyersUsers().add(database.getStartUsers().get(index));
+            if (database.getPalyersUsers().size() - 1 == database.getStartUsers().size()) {
+                for (int i = 0; i < database.getStartUsers().size(); i++) {
+                    DataInputStream dataInputStream1 = new DataInputStream(database.getStartUsers().get(i).getSocket().getInputStream());
+                    DataOutputStream dataOutputStream1 = new DataOutputStream(database.getStartUsers().get(i).getSocket().getOutputStream());
+                    Gson gson = new Gson();
+                    ResponseUser responseUser = new ResponseUser();
+                    responseUser.addResponse("accept",null);
+                    dataOutputStream1.writeUTF(gson.toJson(responseUser));
+                    dataOutputStream1.flush();
+                }
+
+                startGame();
+                database.getMap().generateMap();
+                setCivilizations();
+            }
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void getStartUsers(){
+        try {
+            ResponseUser responseUser = new ResponseUser();
+            responseUser.setUsers(database.getStartUsers());
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(responseUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
     }
 }

@@ -20,6 +20,16 @@ public class Database {
     private int turn;
 
     private ArrayList<User> palyesrUser = new ArrayList<>();
+    private ArrayList<User> startUsers = new ArrayList<>();
+
+
+    public ArrayList<User> getStartUsers() {
+        return startUsers;
+    }
+
+    public void setStartUsers(ArrayList<User> startUsers) {
+        this.startUsers = startUsers;
+    }
 
     private double year = -4000;
 

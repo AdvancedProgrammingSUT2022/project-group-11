@@ -202,9 +202,18 @@ public class ScannerMenu {
                             databaseController.addCity(requestUser);
                         }else if(action.equals("removeCity")){
                             databaseController.removeCity(requestUser);
+                        }else if (action.equals("addUserToStartPlayer")){
+                            databaseController.addUserToStartPlayer(requestUser);
+                        }else if (action.equals("removeUserToStartPlayer")){
+                            databaseController.removeUserToStartPlayer(requestUser);
+                        }else if(action.equals("update")){
+                            databaseController.update(requestUser);
+                        }else if(action.equals("accept")){
+                            databaseController.accept(requestUser);
+                        }else if(action.equals("getStartUsers")){
+                            databaseController.getStartUsers();
                         }
 
-                      databaseController.updateGame();
                     }
                 }catch(IOException E){
                     E.printStackTrace();

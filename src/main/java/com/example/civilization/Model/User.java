@@ -4,6 +4,7 @@ package com.example.civilization.Model;
 import com.example.civilization.Model.GlobalChats.Room;
 import com.example.civilization.Model.GlobalChats.privateChat;
 
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class User {
@@ -23,6 +24,15 @@ public class User {
     private ArrayList<privateChat> privatechat = new ArrayList<>();
     private ArrayList<Room> rooms = new ArrayList<>();
 
+    private Socket socket;
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
 
     public User(String username, String password, String nickname, Civilization civil) {
         this.username = username;
