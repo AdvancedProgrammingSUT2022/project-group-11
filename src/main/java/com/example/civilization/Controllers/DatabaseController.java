@@ -15,6 +15,7 @@ import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Terrains.TerrainTypes;
 import com.example.civilization.Model.Units.*;
 
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 import com.example.civilization.Requests.RequestUser;
 import com.example.civilization.Response.ResponseUser;
@@ -76,6 +77,22 @@ public class DatabaseController {
     }
 
 
+
+
+
+
+    public void addUserForStart(User user){
+        try {
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("addUserForStart",user);
+            user.setSocket(socket);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
 
     public void startGame(){
         try {
@@ -215,7 +232,10 @@ public class DatabaseController {
         try {
             dataOutputStream.writeUTF(gson.toJson(requestUser));
             dataOutputStream.flush();
-            String res = dataInputStream.readUTF();
+            int length= dataInputStream.readInt();
+            byte[] bytes = new byte[length];
+            dataInputStream.readFully(bytes);
+            String res = new String(bytes, StandardCharsets.UTF_8);
             ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
             map = responseUser.getMap();
         } catch (IOException e) {
@@ -302,20 +322,7 @@ public class DatabaseController {
     }
 
 
-    public String isActiveUser(User user){
-        String result = null;
-        try {
-            RequestUser requestUser = new RequestUser();
-            requestUser.addRequest("updateGame", user);
-            Gson gson = new Gson();
-            dataOutputStream.writeUTF(gson.toJson(requestUser));
-            dataOutputStream.flush();
-            result = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getAction();
-        }catch (IOException E){
-            E.printStackTrace();
-        }
-        return result;
-    }
+
     public String changePassword(String p, User user) {
         String result = "password changed successfully! Please Login again with your new password";
         try {
@@ -2364,5 +2371,74 @@ public class DatabaseController {
         }catch (IOException E){
             E.printStackTrace();
         }
+    }
+
+    public void addUserToStartPlayer(User users) {
+        try {
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("addUserToStartPlayer",users);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public void removeUserToStartPlayer(User users) {
+        try {
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("removeUserToStartPlayer",users);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public String update(User user) {
+        String result = null;
+        try{
+            Gson gson = new Gson();
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("update",user);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = dataInputStream.readUTF();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+        return result;
+    }
+
+    public String accept(User user) {
+        String result = null;
+        try{
+            Gson gson = new Gson();
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("accept",user);
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            result = dataInputStream.readUTF();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+        return result;
+    }
+
+    public ArrayList<User> getStartUsers() {
+        ArrayList<User> users = new ArrayList<>();
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("getStartUsers",null);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            users = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getUsers();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+        return users;
     }
 }

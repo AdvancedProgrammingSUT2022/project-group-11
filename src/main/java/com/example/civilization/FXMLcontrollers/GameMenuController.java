@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -25,6 +26,7 @@ import java.util.ArrayList;
 public class GameMenuController {
 
 
+    private String str;
     public Label result;
     public TextField opponentsName;
     public TextField opponentsCount;
@@ -48,7 +50,7 @@ public class GameMenuController {
 
     @FXML
     public void initialize() {
-        if(!DatabaseController.getInstance().getAllPlayerUser().contains(user)){
+        if(!DatabaseController.getInstance().getAllPlayerUser().contains(user)&& !DatabaseController.getInstance().getStartUsers().contains(user)){
             DatabaseController.getInstance().addUserToPlayerUser(user);
         }
 
@@ -67,12 +69,12 @@ public class GameMenuController {
                 anchorPane.getChildren().removeAll(suggestions);
                 suggestions.clear();
                 int i = 0;
-                for (User user : DatabaseController.getInstance().getAllUsers()) {
-                    if (user.getUsername().equalsIgnoreCase(opponentsName.getText().toUpperCase()) && !user.equals(DatabaseController.getInstance().getDatabase().getActiveUser())) {
+                for (User users : DatabaseController.getInstance().getAllUsers()) {
+                    if (users.getUsername().equalsIgnoreCase(opponentsName.getText().toUpperCase()) && !users.equals(DatabaseController.getInstance().activeUser())) {
                         suggestions.add(new Button());
                         suggestions.get(i).setStyle("-fx-background-radius: 100em");
                         suggestions.get(i).setPrefSize(opponentsName.getPrefWidth(), opponentsName.getPrefHeight());
-                        suggestions.get(i).setText(user.getUsername());
+                        suggestions.get(i).setText(users.getUsername());
                         suggestions.get(i).setVisible(true);
                         suggestions.get(i).setLayoutX(opponentsName.getLayoutX());
                         suggestions.get(i).setLayoutY(opponentsName.getLayoutY() + (opponentsName.getPrefHeight() + 10) * (i + 1));
@@ -83,13 +85,15 @@ public class GameMenuController {
                                 if (mouseEvent.getClickCount() == 2) {
                                     if (button.getTextFill().equals(Color.BLUE)) {
                                         button.setTextFill(Color.RED);
-                                        DatabaseController.getInstance().removeUserToPlayerUser(user);
+                                        DatabaseController.getInstance().removeUserToStartPlayer(users);
+                                       // DatabaseController.getInstance().removeUserToPlayerUser(users);
                                         result.setText("user deselected");
 
                                     } else if (button.getTextFill().equals(Color.RED)) {
                                         button.setTextFill(Color.BLUE);
-                                        if (!DatabaseController.getInstance().getDatabase().getUsers().contains(user)) {
-                                            DatabaseController.getInstance().addUserToPlayerUser(user);
+                                        if (!DatabaseController.getInstance().getDatabase().getUsers().contains(users)) {
+                                          //  DatabaseController.getInstance().addUserToPlayerUser(users);
+                                            DatabaseController.getInstance().addUserToStartPlayer(users);
                                         }
                                         result.setText("user selected");
 
@@ -138,18 +142,8 @@ public class GameMenuController {
                 if (Integer.parseInt(opponentsCount.getText()) < 2 || Integer.parseInt(opponentsCount.getText()) > 5) {
                     result.setText("number of players must be between 2 and 5");
                 } else {
-                    DatabaseController.getInstance().startGame();
-                    DatabaseController.getInstance().generateMapFromServer();
-                    DatabaseController.getInstance().setCivilizations();
-                    String result = DatabaseController.getInstance().isActiveUser(user);
-                    if(result.equals("its your turn")){
-                        user.setCanEditGame(true);
-                    }else{
-                        user.setCanEditGame(false);
-                    }
-
+                    if(DatabaseController.getInstance().getAllPlayerUser().size() - 1 == DatabaseController.getInstance().getStartUsers().size())
                     Main.changeMenu("gameMap");
-
                 }
             }
         }else {
@@ -180,5 +174,25 @@ public class GameMenuController {
 
     public void back() {
         Main.changeMenu("ProfileMenu");
+    }
+
+   
+    public void accept(MouseEvent mouseEvent) {
+        if(str.equals("accept")) {
+            String result;
+            result = DatabaseController.getInstance().accept(user);
+            if (result.equals("accept")) {
+                Main.changeMenu("gameMap");
+            }
+        }
+    }
+
+    public void update(MouseEvent mouseEvent) {
+            String result;
+            result =  DatabaseController.getInstance().update(user);
+            if(result.equals("accept")){
+               str = "accept";
+            }
+
     }
 }

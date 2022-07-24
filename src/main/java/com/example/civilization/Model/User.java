@@ -4,6 +4,7 @@ package com.example.civilization.Model;
 import com.example.civilization.Model.GlobalChats.Room;
 import com.example.civilization.Model.GlobalChats.privateChat;
 
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class User {
@@ -14,6 +15,8 @@ public class User {
     private int score = 0;
     private String lastWin = "00:00";
     private String lastLogin = "00:00";
+
+    private Socket socket;
 
     public int photoNumber;
     private String profilePicture;
@@ -131,4 +134,11 @@ public class User {
     }
 
 
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
 }
