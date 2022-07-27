@@ -79,7 +79,7 @@ public class Database {
 
     public User getCivilizationUser(Terrain Terrain) {
         for (User users : this.Users) {
-            if (users.getCivilization().getTerrains().indexOf(Terrain) != -1) {
+            if (users.getCivilization().getTerrains().contains(Terrain)) {
                 return users;
             }
         }
@@ -104,6 +104,7 @@ public class Database {
                 return user;
             }
         }
+        System.out.println("not");
         return null;
     }
 

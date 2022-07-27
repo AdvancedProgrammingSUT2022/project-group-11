@@ -1,8 +1,10 @@
 package com.example.civilization.View;
 
+import com.example.civilization.Controllers.CityController;
 import com.example.civilization.Controllers.DatabaseController;
-import com.example.civilization.Model.Units.Unit;
+import com.example.civilization.Model.City.City;;
 import com.example.civilization.Requests.RequestUser;
+import com.example.civilization.Response.ResponseUser;
 import com.google.gson.Gson;
 
 import java.io.DataInputStream;
@@ -12,14 +14,16 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ScannerMenu {
-    private DatabaseController databaseController;
-    private ServerSocket serverSocket;
-    public static Socket socket;
-    private DataInputStream dataInputStream;
-    private DataOutputStream dataOutputStream;
+    private static DatabaseController databaseController;
+    private static CityController cityController;
+    private static ServerSocket serverSocket;
+    private static Socket socket;
+    private static DataInputStream dataInputStream;
+    private static DataOutputStream dataOutputStream;
     public ScannerMenu() throws IOException {
         serverSocket = new ServerSocket(7777);
-        this.databaseController = DatabaseController.getInstance();
+        databaseController = DatabaseController.getInstance();
+        cityController = CityController.getInstance();
     }
 
     public void run() throws IOException {
@@ -28,8 +32,8 @@ public class ScannerMenu {
             new Thread(() ->{
                 try {
                     while (true) {
-                        this.dataInputStream = new DataInputStream(socket.getInputStream());
-                        this.dataOutputStream = new DataOutputStream(socket.getOutputStream());
+                        dataInputStream = new DataInputStream(socket.getInputStream());
+                        dataOutputStream = new DataOutputStream(socket.getOutputStream());
                         DatabaseController.dataInputStream = dataInputStream;
                         DatabaseController.dataOutputStream = dataOutputStream;
                         String input = dataInputStream.readUTF();
@@ -212,6 +216,24 @@ public class ScannerMenu {
                             databaseController.accept(requestUser);
                         }else if(action.equals("getStartUsers")){
                             databaseController.getStartUsers();
+                        }else if(action.equals("allPossibleToCreateBuildingsWithTurn")){
+                            ResponseUser responseUser = new ResponseUser();
+                            responseUser.setBuildingTypes( CityController.allPossibleToCreateBuildingsWithTurn(requestUser.getCity()));
+                            Gson gson1 = new Gson();
+                            dataOutputStream.writeUTF(gson1.toJson(responseUser));
+                            dataOutputStream.flush();
+                        }else if (action.equals("createBuildingWithTurn")){
+                            CityController.createBuildingWithTurn(requestUser.getIJ(),requestUser.getCity());
+                        }else if(action.equals("allPossibleToCreateBuildingsWithGold")){
+                            ResponseUser responseUser = new ResponseUser();
+                            responseUser.setBuildingTypes( CityController.allPossibleToCreateBuildingsWithGold(requestUser.getCity()));
+                            Gson gson1 = new Gson();
+                            dataOutputStream.writeUTF(gson1.toJson(responseUser));
+                            dataOutputStream.flush();
+                        }else if(action.equals("createBuildingWithGold")){
+                            CityController.createBuildingWithGold(requestUser.getIJ(),requestUser.getCity());
+                        }else if(action.equals("assignWork")){
+                           CityController.getInstance().assignCitizen(requestUser.getCity(),requestUser.getCitizen(),requestUser.getTerrain());
                         }
 
                     }

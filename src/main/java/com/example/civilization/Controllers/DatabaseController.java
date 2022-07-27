@@ -35,14 +35,14 @@ import static java.util.Comparator.naturalOrder;
 public class DatabaseController {
     private static DatabaseController instance;
     public HashMap<User, String> notificationHistory = new HashMap<>();
-    private Database database;
+    private static Database database;
     public static Socket socket;
     public static DataInputStream dataInputStream;
     public static DataOutputStream dataOutputStream;
 
 
     public DatabaseController() {
-        this.database = Database.getInstance();
+        database = Database.getInstance();
 
     }
 
@@ -59,12 +59,16 @@ public class DatabaseController {
 
     public Map getMap() {
 
-        return this.database.getMap();
+        return database.getMap();
     }
 
 
     public void startGame(){
-            database.setActiveUser(database.getPalyersUsers().get(0));
+        database.setActiveUser(database.getPalyersUsers().get(0));
+       // startGame();
+        database.getMap().generateMap();
+        setCivilizations();
+        initializeMap();
 
     }
 
@@ -406,9 +410,9 @@ public class DatabaseController {
     public void getNoncombatUnit(){
         try{
             Gson gson = new Gson();
-            ResponseUser responseUser = new ResponseUser();
-            responseUser.setNonCombatUnit(getSelectedNonCombatUnit());
-            dataOutputStream.writeUTF(gson.toJson(responseUser));
+         //   ResponseUser responseUser = new ResponseUser();
+        //    responseUser.setNonCombatUnit(getSelectedNonCombatUnit());
+            dataOutputStream.writeUTF(gson.toJson(getSelectedNonCombatUnit()));
             dataOutputStream.flush();
         }catch(IOException E){
             E.printStackTrace();
@@ -417,25 +421,44 @@ public class DatabaseController {
     public void getCombatUnit(){
         try{
             Gson gson = new Gson();
-            ResponseUser responseUser = new ResponseUser();
-            responseUser.setCombatUnit(getSelectedCombatUnit());
-            dataOutputStream.writeUTF(gson.toJson(responseUser));
+       //     ResponseUser responseUser = new ResponseUser();
+  //          responseUser.setCombatUnit(getSelectedCombatUnit());
+           // dataOutputStream.writeUTF(gson.toJson(responseUser));
+          //  dataOutputStream.flush();
+            dataOutputStream.writeUTF(gson.toJson(getSelectedCombatUnit()));
             dataOutputStream.flush();
         }catch(IOException E){
             E.printStackTrace();
         }
     }
 
-    public void getMapServer(){
-         ResponseUser responseUser = new ResponseUser();
-         responseUser.setMap(database.getMap());
+    public void  getMapServer(){
+         //ResponseUser responseUser = new ResponseUser();
+         //responseUser.setMap(database.getMap());
          Gson gson = new Gson();
         try {
-            String temp = gson.toJson(responseUser);
-            byte[] bytes = temp.getBytes(StandardCharsets.UTF_8);
-            dataOutputStream.writeInt(bytes.length);
-            dataOutputStream.write(bytes);
-            dataOutputStream.flush();
+         //   String temp = gson.toJson(responseUser);
+        ///    byte[] bytes = temp.getBytes(StandardCharsets.UTF_8);
+          //  dataOutputStream.writeUTF(gson.toJson(responseUser));//Integer.toString(bytes.length));
+        //    dataOutputStream.write(bytes);
+           // dataOutputStream.flush();
+            for(int i = 0; i < database.getMap().getROW();i++){
+                for(int j = 0; j < database.getMap().getCOL();j++){
+                    //responseUser.setTerrain(database.getMap().getTerrain()[i][j]);
+                    dataOutputStream.writeUTF(gson.toJson(database.getMap().getTerrain()[i][j]));
+                    dataOutputStream.flush();
+                }
+            }
+
+            dataOutputStream.writeUTF(Integer.toString(database.getMap().getRiver().size()));
+         for(int i = 0; i < database.getMap().getRiver().size();i++){
+             // responseUser.setRiver(database.getMap().getRiver().get(i));
+             dataOutputStream.writeUTF(gson.toJson(database.getMap().getRiver().get(i)));
+             dataOutputStream.flush();
+
+         }
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -488,7 +511,7 @@ public class DatabaseController {
     public void createUser(RequestUser requestUser) {
         try {
             User userRequest = requestUser.getUser();
-            ArrayList<User> users = this.database.getUsers();
+            ArrayList<User> users = database.getUsers();
             ResponseUser responseUser = new ResponseUser();
             responseUser.addResponse("user created successfully!", userRequest);
             for (User user : users) {
@@ -501,7 +524,8 @@ public class DatabaseController {
                 }
             }
             Gson gson = new Gson();
-            this.database.addUser(userRequest);
+            //System.out.println(userRequest.getUsername());
+            database.addUser(userRequest);
             dataOutputStream.writeUTF(gson.toJson(responseUser));
             dataOutputStream.flush();
         }catch(IOException E){
@@ -597,7 +621,7 @@ public class DatabaseController {
 
     public void activeUser(RequestUser requestUser){
         try {
-            User user = database.getActiveUser();
+            User user = database.getPalyersUsers().get(0);
             Gson gson = new Gson();
             ResponseUser responseUser = new ResponseUser();
             responseUser.addResponse("activeUser",user);
@@ -684,8 +708,15 @@ public class DatabaseController {
     }
     public void addUserToPlayerUsers(RequestUser requestUser){
 
-              User user = database.getUserByUsernameAndPasswordAndNickname(requestUser.getUser().getUsername(),requestUser.getUser().getPassword(),requestUser.getNickname());
+              // System.out.println("babak");
+             //  System.out.println(requestUser.getUser().getUsername());
+              // System.out.println(requestUser.getUser().getPassword());
+              //  System.out.println(requestUser.getUser().getNickname());
+                User user = database.getUserByUsernameAndPasswordAndNickname(requestUser.getUser().getUsername(),requestUser.getUser().getPassword(),requestUser.getUser().getNickname());
+               System.out.println(user);
               database.getPalyersUsers().add(user);
+     //   System.out.println(user.getUsername());
+    //    System.out.println(database.getPalyersUsers().get(0).getUsername());
 
     }
 
@@ -1377,10 +1408,30 @@ public class DatabaseController {
 
     public void setCivilizations() {
         ArrayList<User> users = database.getPalyersUsers();
-        this.database.setCivilizationsName(new ArrayList<>(List.of("Incan", "Aztec", "Roman", "Ancient Greek", "Chinese", "Maya", "Ancient Egyptian", "Indus Valley", "Mesopotamian", "Persian")));
+        System.out.println(database.getPalyersUsers().size());
+
+        for(int i = 0; i < database.getUsers().size();i++){
+            System.out.println(database.getUsers().get(i).getUsername());
+            System.out.println(database.getUsers().get(i).getPassword());
+            System.out.println(database.getUsers().get(i).getNickname());
+            System.out.println(database.getUsers().get(i).getCivilization());
+            System.out.println("ali");
+        }
+
+        for(int i = 0; i < database.getPalyersUsers().size();i++){
+            System.out.println(database.getPalyersUsers().get(i).getUsername());
+            System.out.println(database.getPalyersUsers().get(i).getPassword());
+            System.out.println(database.getPalyersUsers().get(i).getNickname());
+            System.out.println(database.getPalyersUsers().get(i).getCivilization());
+            System.out.println();
+        }
+
+        System.out.println(users.size());
+        database.setCivilizationsName(new ArrayList<>(List.of("Incan", "Aztec", "Roman", "Ancient Greek", "Chinese", "Maya", "Ancient Egyptian", "Indus Valley", "Mesopotamian", "Persian")));
         ArrayList<Integer> indices = setIndices(users);
         int i = 0;
         for (User user : users) {
+
 
             Civilization civilization = new Civilization(100, 100, this.database.getCivilizationsName().get(indices.get(i)));
             user.setCivilization(civilization);
@@ -2696,9 +2747,10 @@ public class DatabaseController {
     }
 
     public void update(RequestUser requestUser) {
+        Gson gson = new Gson();
         User user = requestUser.getUser();
         user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(),user.getPassword(), user.getNickname());
-        user.setSocket(requestUser.getUser().getSocket());
+       // user.setSocket(requestUser.getUser().getSocket());
         boolean find = false;
         for(int i = 0; i < database.getStartUsers().size();i++){
             if(database.getStartUsers().get(i).equals(user)){
@@ -2708,14 +2760,14 @@ public class DatabaseController {
         }
         try{
             if(find){
+             //    Socket socket1 = gson.fromJson(dataInputStream.readUTF(),Socket.class);
+             //    sockets.add(socket1);
                 ResponseUser responseUser = new ResponseUser();
-                Gson gson = new Gson();
                 responseUser.addResponse("accept",null);
                 dataOutputStream.writeUTF(gson.toJson(responseUser));
                 dataOutputStream.flush();
             }else{
                 ResponseUser responseUser = new ResponseUser();
-                Gson gson = new Gson();
                 responseUser.addResponse("notFound",null);
                 dataOutputStream.writeUTF(gson.toJson(responseUser));
                 dataOutputStream.flush();
@@ -2726,21 +2778,28 @@ public class DatabaseController {
         }
     }
 
+
     public void accept(RequestUser requestUser) {
         try {
+            Gson gson = new Gson();
+           // Socket socket1 = gson.fromJson(dataInputStream.readUTF(),Socket.class);
             User user = requestUser.getUser();
             user = database.getUserByUsernameAndPasswordAndNickname(user.getUsername(), user.getPassword(), user.getNickname());
+          //  user.setSocket(socket1);
             int index = database.getStartUsers().indexOf(user);
             database.getPalyersUsers().add(database.getStartUsers().get(index));
             if (database.getPalyersUsers().size() - 1 == database.getStartUsers().size()) {
                 for (int i = 0; i < database.getStartUsers().size(); i++) {
-                    DataInputStream dataInputStream1 = new DataInputStream(database.getStartUsers().get(i).getSocket().getInputStream());
-                    DataOutputStream dataOutputStream1 = new DataOutputStream(database.getStartUsers().get(i).getSocket().getOutputStream());
-                    Gson gson = new Gson();
-                    ResponseUser responseUser = new ResponseUser();
-                    responseUser.addResponse("accept",null);
-                    dataOutputStream1.writeUTF(gson.toJson(responseUser));
-                    dataOutputStream1.flush();
+                  //  DataInputStream dataInputStream1 = new DataInputStream(sockets.get(i).getInputStream());
+                  //  DataOutputStream dataOutputStream1 = new DataOutputStream(sockets.get(i).getOutputStream());
+                   // Gson gson = new Gson();
+                   // ResponseUser responseUser = new ResponseUser();
+                   // responseUser.addResponse("accept",null);
+                  //  dataOutputStream1.writeUTF(gson.toJson(responseUser));
+                  //  dataOutputStream1.flush();
+
+
+                    dataOutputStream.writeUTF("hi");
                 }
 
                 startGame();

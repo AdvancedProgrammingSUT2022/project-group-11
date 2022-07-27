@@ -24,15 +24,8 @@ public class User {
     private ArrayList<privateChat> privatechat = new ArrayList<>();
     private ArrayList<Room> rooms = new ArrayList<>();
 
-    private Socket socket;
 
-    public Socket getSocket() {
-        return socket;
-    }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
 
     public User(String username, String password, String nickname, Civilization civil) {
         this.username = username;

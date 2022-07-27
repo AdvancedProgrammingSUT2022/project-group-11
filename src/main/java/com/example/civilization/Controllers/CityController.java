@@ -12,7 +12,11 @@ import com.example.civilization.Model.Technologies.TechnologyTypes;
 import com.example.civilization.Model.Terrain;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Units.*;
+import com.example.civilization.Requests.RequestUser;
+import com.example.civilization.Response.ResponseUser;
+import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -20,6 +24,14 @@ import java.util.List;
 import java.util.regex.Matcher;
 
 public class CityController {
+
+    private static CityController instance;
+    public static CityController getInstance(){
+        if(instance == null){
+            instance = new CityController();
+        }
+        return instance;
+    }
 
     private DatabaseController databaseController;
     private Map map;
@@ -30,6 +42,69 @@ public class CityController {
     public void setMap(Map map){
         this.map = map;
     }
+    public static void createBuildingWithGold(String buildingName, City city) {
+
+        for (BuildingTypes buildingTypes : BuildingTypes.values()) {
+            if (buildingTypes.name().equalsIgnoreCase(buildingName)) {
+                Building building = new Building(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), buildingTypes);
+                city.setGold(city.getGold() - buildingTypes.getCost());
+                city.getBuildings().add(building);
+            }
+        }
+
+
+    }
+
+    public static void createBuildingWithTurn(String buildingName, City city) {
+        for (BuildingTypes buildingTypes : BuildingTypes.values()) {
+            if (buildingTypes.name().equalsIgnoreCase(buildingName)) {
+                Building building = new Building(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), buildingTypes);
+                city.getBuildingWaitlist().add(building);
+            }
+        }
+
+    }
+    public static ArrayList<BuildingTypes> allPossibleToCreateBuildingsWithGold(City city) {
+        int money = city.getGold();
+        ArrayList<BuildingTypes> allPossible = new ArrayList<>();
+        ArrayList<BuildingTypes> allBuildingTypesOfCity = new ArrayList<>();
+        for (Building building : city.getBuildings()) {
+            allBuildingTypesOfCity.add(building.getBuildingType());
+        }
+
+        for (BuildingTypes buildingType : BuildingTypes.values()) {
+            boolean first = buildingType.getBuildingRequirements() == null || allBuildingTypesOfCity.containsAll(buildingType.getBuildingRequirements());
+            boolean second = !allBuildingTypesOfCity.contains(buildingType);
+            boolean third = money < buildingType.getCost();
+            if (city.getCentralTerrain().getResource() == null && buildingType.getResourceRequirements() != null) {
+
+            } else if (third && first && second && (buildingType.getResourceRequirements() == null || (buildingType.getResourceRequirements().get(0).equals(city.getCentralTerrain().getResource().getResourceType())))) {
+                allPossible.add(buildingType);
+            }
+        }
+        return allPossible;
+    }
+
+    public static ArrayList<BuildingTypes> allPossibleToCreateBuildingsWithTurn(City city) {
+        ArrayList<BuildingTypes> allPossible = new ArrayList<>();
+        ArrayList<BuildingTypes> allBuildingTypesOfCity = new ArrayList<>();
+        for (Building building : city.getBuildings()) {
+            allBuildingTypesOfCity.add(building.getBuildingType());
+        }
+        for (BuildingTypes buildingType : BuildingTypes.values()) {
+            boolean first = buildingType.getBuildingRequirements() == null || allBuildingTypesOfCity.containsAll(buildingType.getBuildingRequirements());
+            boolean second = !allBuildingTypesOfCity.contains(buildingType);
+            if (city.getCentralTerrain().getResource() == null && buildingType.getResourceRequirements() != null) {
+
+            } else if (first && second && (buildingType.getResourceRequirements() == null || (buildingType.getResourceRequirements().get(0).equals(city.getCentralTerrain().getResource().getResourceType())))) {
+                allPossible.add(buildingType);
+            }
+        }
+        return allPossible;
+    }
+
+
+
     public String garrisonCity(CombatUnit combatUnit) {
         Terrain unitTerrain = this.databaseController.getTerrainByCoordinates(combatUnit.getX(), combatUnit.getY());
         City city = unitTerrain.getCity();
