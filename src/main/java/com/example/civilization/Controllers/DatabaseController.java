@@ -2,6 +2,7 @@ package com.example.civilization.Controllers;
 
 import com.example.civilization.FXMLcontrollers.GameMapController;
 import com.example.civilization.Model.Buildings.Building;
+import com.example.civilization.Model.City.Citizen;
 import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.*;
 import com.example.civilization.Model.Improvements.Improvement;
@@ -20,6 +21,7 @@ import java.util.*;
 import com.example.civilization.Requests.RequestUser;
 import com.example.civilization.Response.ResponseUser;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -85,7 +87,7 @@ public class DatabaseController {
         try {
             RequestUser requestUser = new RequestUser();
             requestUser.addRequest("addUserForStart",user);
-            user.setSocket(socket);
+           // user.setSocket(socket);
             Gson gson = new Gson();
             dataOutputStream.writeUTF(gson.toJson(requestUser));
             dataOutputStream.flush();
@@ -159,6 +161,16 @@ public class DatabaseController {
         }
     }
 
+    public boolean contains(ArrayList<User> users,User user){
+        for(User us : users){
+            if(us.getUsername().equals(user.getUsername()) && us.getPassword().equals(user.getUsername()) && us.getNickname().equals(user.getNickname())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+
     public ArrayList<User> getAllPlayerUser(){
         ArrayList<User> users = new ArrayList<>();
         Gson gson = new Gson();
@@ -224,7 +236,7 @@ public class DatabaseController {
     }
 
     public Map getMapFromServer(){
-        Map map;
+        Map map = new Map();
         RequestUser requestUser = new RequestUser();
         requestUser.addRequest("getMap",null);
         Gson gson = new Gson();
@@ -232,14 +244,35 @@ public class DatabaseController {
         try {
             dataOutputStream.writeUTF(gson.toJson(requestUser));
             dataOutputStream.flush();
-            int length= dataInputStream.readInt();
+            /*
+            int length= Integer.parseInt(dataInputStream.readUTF());
             byte[] bytes = new byte[length];
             dataInputStream.readFully(bytes);
             String res = new String(bytes, StandardCharsets.UTF_8);
             ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
             map = responseUser.getMap();
+
+             */
+            for(int i = 0; i < map.getROW();i++){
+                for(int j = 0; j < map.getCOL();j++){
+                    Terrain terrain = gson.fromJson(dataInputStream.readUTF(),Terrain.class);
+                    map.getTerrain()[i][j] = terrain;
+                }
+            }
+
+           int length = Integer.parseInt(dataInputStream.readUTF());
+            for(int i = 0 ;i < length;i++){
+                River river = gson.fromJson(dataInputStream.readUTF(),River.class);
+                //  ResponseUser responseUser = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class);
+                map.getRiver().add(river);
+            }
+
+
+
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println(e.getCause());
+            System.out.println("ali");
+        //    throw new RuntimeException(e);
         }
 
 
@@ -292,8 +325,7 @@ public class DatabaseController {
             Gson gson = new Gson();
             dataOutputStream.writeUTF(gson.toJson(requestUser));
             dataOutputStream.flush();
-            String userString = dataInputStream.readUTF();
-            ResponseUser responseUser  = gson.fromJson(userString,ResponseUser.class);
+            ResponseUser responseUser  = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class);
             user = responseUser.getUser();
         }catch (IOException E){
             E.printStackTrace();
@@ -525,6 +557,7 @@ public class DatabaseController {
         switch (action) {
             case "sleep" -> nonCombatUnit.setIsAsleep(true);
             case "wake" -> nonCombatUnit.setIsAsleep(false);
+            case "found city" -> CityController.foundCity(getContainerCivilization(nonCombatUnit),nonCombatUnit,getTerrainByCoordinates(nonCombatUnit.getX() ,nonCombatUnit.getY()));
             case "delete" -> nonCombatUnit = null;
         }
         if (!action.equals("delete")) {
@@ -580,16 +613,16 @@ public class DatabaseController {
     public CombatUnit getSelectedCombatUnit() {
         CombatUnit combatUnit = null;
         try{
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().create();
             RequestUser requestUser = new RequestUser();
             requestUser.addRequest("getSelectedCombatUnit",null);
             dataOutputStream.writeUTF(gson.toJson(requestUser));
             dataOutputStream.flush();
             String res = dataInputStream.readUTF();
-            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
-            combatUnit = responseUser.getCombatUnit();
+            combatUnit = gson.fromJson(res,CombatUnit.class);
         }catch(IOException E){
-            E.printStackTrace();
+            System.out.println(E.getCause());
+           // E.printStackTrace();
         }
 
         return combatUnit;
@@ -598,17 +631,17 @@ public class DatabaseController {
     public NonCombatUnit getSelectedNonCombatUnit() {
         NonCombatUnit nonCombatUnit = null;
         try{
-            Gson gson = new Gson();
+            Gson gson = new GsonBuilder().create();
             RequestUser requestUser = new RequestUser();
             requestUser.addRequest("getSelectedNonCombatUnit",null);
             dataOutputStream.writeUTF(gson.toJson(requestUser));
             dataOutputStream.flush();
             String res = dataInputStream.readUTF();
-            ResponseUser responseUser = gson.fromJson(res,ResponseUser.class);
-            nonCombatUnit = responseUser.getNonCombatUnit();
+            nonCombatUnit = gson.fromJson(res,NonCombatUnit.class);
 
         }catch(IOException E){
-            E.printStackTrace();
+            System.out.println(E.getCause());
+          //  E.printStackTrace();
         }
 
         return nonCombatUnit;
@@ -898,6 +931,7 @@ public class DatabaseController {
     }
 
     public Technology getUnderResearchTechnology(User user) {
+
         for (Technology technology : user.getCivilization().getTechnologies()) {
             if (technology.getUnderResearch()) {
                 return technology;
@@ -971,8 +1005,8 @@ public class DatabaseController {
         NonRangedCombatUnit newWarrior = new NonRangedCombatUnit(unitsCoordinates.get(0), unitsCoordinates.get(1), 0, 0, 0, 0, false, false, UnitTypes.WARRIOR, false, false, false, false, false);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1)].setCombatUnit(newWarrior);
         getMap().getTerrain()[unitsCoordinates.get(0)][unitsCoordinates.get(1) + 1].setNonCombatUnit(newSettler);
-        //user.getCivilization().addCity(new City(user.getCivilization(),user.getCivilization(),getTerrainByCoordinates(10,12),10,null,10,10));
-        //user.getCivilization().addCity(new City(user.getCivilization(),user.getCivilization(),getTerrainByCoordinates(10,12),10,null,10,10));
+        user.getCivilization().addCity(new City(user.getCivilization(),user.getCivilization(),getTerrainByCoordinates(10,12),10,null,10,10));
+        user.getCivilization().addCity(new City(user.getCivilization(),user.getCivilization(),getTerrainByCoordinates(10,12),10,null,10,10));
 
 
         user.getCivilization().getUnits().add(newSettler);
@@ -2359,6 +2393,9 @@ public class DatabaseController {
     }
 
 
+
+
+
     public void removeCity(Civilization second, City city) {
         try{
             RequestUser requestUser = new RequestUser();
@@ -2405,6 +2442,8 @@ public class DatabaseController {
             requestUser.addRequest("update",user);
             dataOutputStream.writeUTF(gson.toJson(requestUser));
             dataOutputStream.flush();
+            dataOutputStream.writeUTF(gson.toJson(socket,socket.getClass()));
+            dataOutputStream.flush();
             result = dataInputStream.readUTF();
         }catch (IOException E){
             E.printStackTrace();
@@ -2420,6 +2459,7 @@ public class DatabaseController {
             requestUser.addRequest("accept",user);
             dataOutputStream.writeUTF(gson.toJson(requestUser));
             dataOutputStream.flush();
+
             result = dataInputStream.readUTF();
         }catch (IOException E){
             E.printStackTrace();
@@ -2440,5 +2480,20 @@ public class DatabaseController {
             E.printStackTrace();
         }
         return users;
+    }
+
+    public void assignWork(City city, Citizen citizen, Terrain workingTerrain) {
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("assignWork",null);
+            requestUser.setCity(city);
+            requestUser.setCitizen(citizen);
+            requestUser.setTerrain(workingTerrain);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
     }
 }

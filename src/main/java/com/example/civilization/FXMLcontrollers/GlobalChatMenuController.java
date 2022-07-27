@@ -36,7 +36,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class GlobalChatMenuController {
 
-    private static GlobalChatMenuController instance;
+    private static GlobalChatMenuController instance = getInstance();
     public VBox firstBox;
     public Button changeToPublicChatButton;
 

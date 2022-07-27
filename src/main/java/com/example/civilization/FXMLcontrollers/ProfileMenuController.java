@@ -26,7 +26,7 @@ import java.io.IOException;
 public class ProfileMenuController {
 
     public static User user;
-    public static DatabaseController databaseController = DatabaseController.getInstance();
+    private static DatabaseController databaseController = DatabaseController.getInstance();
     @FXML
     private Label username;
     @FXML
@@ -215,11 +215,13 @@ public class ProfileMenuController {
 
     @FXML
     public void goToLeaderboard(ActionEvent event) throws IOException {
+
         Main.changeMenu("leaderboard");
     }
 
     @FXML
     public void goToGameMenu(ActionEvent event) throws IOException {
+        GameMenuController.user = user;
         // DatabaseController.getInstance().getMap().generateMap();
         // DatabaseController.getInstance().setCivilizations(DatabaseController.getInstance().getDatabase().getUsers());
         Main.changeMenu("gameMenu");
@@ -227,10 +229,11 @@ public class ProfileMenuController {
 
     @FXML
     public void goToChatMenu(ActionEvent event) throws IOException {
+        GlobalChatMenuController.user = user;
         Main.changeMenu("GlobalChat");
     }
     public void EditMap(MouseEvent mouseEvent) {
-        Map map = databaseController.generateMapFromServer();
+        //Map map = databaseController.generateMapFromServer();
         Main.changeMenu("EditMap");
 
     }

@@ -45,7 +45,7 @@ public class LoginMenuController {
         if ( user != null)
         {
             ProfileMenuController.user = user;
-            ProfileMenuController.databaseController = DatabaseController.getInstance();
+       //      ProfileMenuController.databaseController = DatabaseController.getInstance();
             Main.changeMenu("ProfileMenu");
             return;
 

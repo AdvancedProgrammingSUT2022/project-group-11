@@ -56,7 +56,7 @@ public class TechnologyTreeController {
                     children.setOnMouseClicked(mouseEvent -> {
                         if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                             if (mouseEvent.getClickCount() == 2) {
-                                DatabaseController.getInstance().choosingATechnologyToStudyForGraphic( DatabaseController.getInstance().getTechnologyTypeByName(((Text) ((StackPane) children).getChildren().get(1)).getText()));
+                                DatabaseController.getInstance().choosingATechnologyToStudyForGraphic(DatabaseController.getInstance().getTechnologyTypeByName(((Text) ((StackPane) children).getChildren().get(1)).getText()));
                                 setIcons();
                             }
                         }
@@ -89,7 +89,7 @@ public class TechnologyTreeController {
                                 suggestions.get(i).setOnMouseClicked(mouseEvent -> {
                                     if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                                         if (mouseEvent.getClickCount() == 2) {
-                                            DatabaseController.getInstance().choosingATechnologyToStudyForGraphic( DatabaseController.getInstance().getTechnologyTypeByName(name));
+                                            DatabaseController.getInstance().choosingATechnologyToStudyForGraphic(DatabaseController.getInstance().getTechnologyTypeByName(name));
                                             setIcons();
                                         }
                                     }
@@ -142,7 +142,7 @@ public class TechnologyTreeController {
         }
     }
 
-    public void showingPopUp(TechnologyTypes technologyTypes, StackPane stackPane) {
+    public static void showingPopUp(TechnologyTypes technologyTypes, StackPane stackPane) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("FXML/TechnologyPopUp.fxml"));
             Parent root = loader.load();

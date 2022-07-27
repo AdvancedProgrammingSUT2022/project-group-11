@@ -5,6 +5,7 @@ import com.example.civilization.Model.Buildings.BuildingTypes;
 import com.example.civilization.Model.City.Citizen;
 import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.Civilization;
+import com.example.civilization.Model.Database;
 import com.example.civilization.Model.Map;
 import com.example.civilization.Model.Resources.ResourceTypes;
 import com.example.civilization.Model.Technologies.Technology;
@@ -12,17 +13,97 @@ import com.example.civilization.Model.Technologies.TechnologyTypes;
 import com.example.civilization.Model.Terrain;
 import com.example.civilization.Model.TerrainFeatures.TerrainFeatureTypes;
 import com.example.civilization.Model.Units.*;
+import com.example.civilization.Requests.RequestUser;
+import com.example.civilization.Response.ResponseUser;
+import com.google.gson.Gson;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.regex.Matcher;
 
 public class CityController {
 
-    private DatabaseController databaseController;
-    private Map map;
+    private static CityController instance;
+    public static CityController getInstance(){
+        if(instance == null){
+            instance = new CityController();
+        }
+        return instance;
+    }
+
+    private DatabaseController databaseController = DatabaseController.getInstance();
+
+    private static DataInputStream dataInputStream = DatabaseController.getInstance().getDataInputStream();
+    private static DataOutputStream dataOutputStream = DatabaseController.getInstance().getDataOutputStream();
+    private Map map = Database.getInstance().getMap();
+
+    public static void createBuildingWithTurn(String buildingName, City city) {
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("createBuildingWithTurn",null);
+            requestUser.setIJ(buildingName);
+            requestUser.setCity(city);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+
+    }
+
+    public static void createBuildingWithGold(String buildingName, City city) {
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("createBuildingWithGold",null);
+            requestUser.setIJ(buildingName);
+            requestUser.setCity(city);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    public static ArrayList<BuildingTypes> allPossibleToCreateBuildingsWithTurn(City city) {
+        ArrayList<BuildingTypes> allPossibleBuildings = new ArrayList<>();
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("allPossibleToCreateBuildingsWithTurn",null);
+            requestUser.setCity(city);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            allPossibleBuildings = gson.fromJson(dataInputStream.readUTF(), ResponseUser.class).getBuildingTypes();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+        return allPossibleBuildings;
+
+    }
+
+    public static ArrayList<BuildingTypes> allPossibleToCreateBuildingsWithGold(City city) {
+        ArrayList<BuildingTypes> allPossible = new ArrayList<>();
+        try{
+            RequestUser requestUser = new RequestUser();
+            requestUser.addRequest("allPossibleToCreateBuildingsWithGold",null);
+            requestUser.setCity(city);
+            Gson gson = new Gson();
+            dataOutputStream.writeUTF(gson.toJson(requestUser));
+            dataOutputStream.flush();
+            allPossible = gson.fromJson(dataInputStream.readUTF(),ResponseUser.class).getBuildingTypes();
+        }catch (IOException E){
+            E.printStackTrace();
+        }
+
+        return allPossible;
+    }
 
     public void setDatabaseController(DatabaseController databaseController) {
         this.databaseController = databaseController;
@@ -73,7 +154,7 @@ public class CityController {
 
     }
 
-    public void foundCity(Civilization civilization, NonCombatUnit unit, Terrain tile) {
+    public static void foundCity(Civilization civilization, NonCombatUnit unit, Terrain tile) {
         if (unit == null) {
             System.out.println("please select a unit first");
             return;
@@ -203,7 +284,6 @@ public class CityController {
 
     }
 
-
     public void attachCity(Civilization civilization, City city) {
         civilization.addCity(city);
         city.setOwner(civilization);
@@ -222,7 +302,6 @@ public class CityController {
 
     }
 
-
     public boolean containUnit(ArrayList<Technology> tech, TechnologyTypes technologyType) {
         for (int i = 0; i < tech.size(); i++) {
             if (tech.get(i).getTechnologyType() == technologyType) {
@@ -231,7 +310,6 @@ public class CityController {
         }
         return false;
     }
-
 
     public String createUnitWithTurn(Matcher matcher, City city) {
         Civilization civilization = city.getOwner();
@@ -301,77 +379,6 @@ public class CityController {
         }
 
         return "invalid unit name";
-    }
-
-
-    public String createBuildingWithTurn(Matcher matcher, City city) {
-        Civilization civilization = city.getOwner();
-        String buildingName = matcher.group("buildingName");
-        String lackBuilding = "You lack the required buildings to construct this building";
-        String lackResources = "You lack the required resources to construct this building";
-        String buildingAlreadyExists = "You have constructed this building before";
-        ArrayList<BuildingTypes> allBuildingTypes = new ArrayList<>(Arrays.asList(BuildingTypes.values()));
-        ArrayList<BuildingTypes> allBuildingTypesOfCity = new ArrayList<>();
-        for (Building building : city.getBuildings()) {
-            allBuildingTypesOfCity.add(building.getBuildingType());
-        }
-
-        for (BuildingTypes buildingType : allBuildingTypes) {
-            if (buildingType.name().equals(buildingName)) {
-                if (buildingType.getBuildingRequirements() != null && allBuildingTypes.containsAll(buildingType.getBuildingRequirements())) {
-                    return lackBuilding;
-                } else if (city.getCentralTerrain().getResource() != null && buildingType.getResourceRequirements() != null && !city.getCentralTerrain().getResource().getResourceType().equals(buildingType.getResourceRequirements().get(0))) {
-                    return lackResources;
-                } else if (allBuildingTypes.contains(buildingType)) {
-                    return buildingAlreadyExists;
-                }
-                Building building = new Building(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), buildingType);
-                city.getBuildingWaitlist().add(building);
-                return buildingType.name() + " will be constructed in " + buildingType.getTurn() + " turns";
-            }
-
-        }
-
-        return "invalid building name";
-
-    }
-
-    public String createBuildingWithGold(Matcher matcher, City city) {
-        Civilization civilization = city.getOwner();
-        int money = city.getGold();
-        String notEnoughMoney = "You do not have enough gold to construct this unit";
-        String buildingName = matcher.group("buildingName");
-        String lackBuilding = "You lack the required buildings to construct this building";
-        String lackResources = "You lack the required resources to construct this building";
-        String buildingAlreadyExists = "You have constructed this building before";
-        String unitPurchasedSuccessfully = "Unit purchase was successful";
-        ArrayList<BuildingTypes> allBuildingTypes = new ArrayList<>(Arrays.asList(BuildingTypes.values()));
-        ArrayList<BuildingTypes> allBuildingTypesOfCity = new ArrayList<>();
-        for (Building building : city.getBuildings()) {
-            allBuildingTypesOfCity.add(building.getBuildingType());
-        }
-
-        for (BuildingTypes buildingType : allBuildingTypes) {
-            if (buildingType.name().equals(buildingName)) {
-                if (money < buildingType.getCost()) {
-                    return notEnoughMoney;
-                } else if (buildingType.getBuildingRequirements() != null && allBuildingTypes.containsAll(buildingType.getBuildingRequirements())) {
-                    return lackBuilding;
-                } else if (city.getCentralTerrain().getResource() != null && buildingType.getResourceRequirements() != null && !city.getCentralTerrain().getResource().getResourceType().equals(buildingType.getResourceRequirements().get(0))) {
-                    return lackResources;
-                } else if (allBuildingTypes.contains(buildingType)) {
-                    return buildingAlreadyExists;
-                }
-                Building building = new Building(city.getCentralTerrain().getX(), city.getCentralTerrain().getY(), buildingType);
-                city.setGold(city.getGold() - buildingType.getCost());
-                city.getBuildings().add(building);
-                return unitPurchasedSuccessfully;
-            }
-
-        }
-
-        return "invalid building name";
-
     }
 
     public String createUnit(Matcher matcher, City city) {
@@ -818,20 +825,19 @@ public class CityController {
     }
 
 
-    public void buyTile(int x, int y, City city) {
+    public String buyTile(int x, int y, City city) {
         Terrain tile = this.databaseController.getTerrainByCoordinates(x, y);
         ArrayList<Terrain> mainTerrains = city.getMainTerrains();
         if (NeighborsAtADistanceOfOneFromAnArraylistOfTerrains(mainTerrains, this.map).contains(tile)) {
             if (city.getGold() < tile.getGold()) {
-                System.out.println("Not enough money");
-                return;
+                return "Not enough money";
             }
             city.setGold(city.getGold() - tile.getGold());
             mainTerrains.add(tile);
             city.setMainTerrains(mainTerrains);
-            return;
+            return "Tile bought successfully";
         }
-        System.out.println("You cannot buy this tile");
+        return "You cannot buy this tile";
 
     }
 

@@ -9,7 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -26,7 +28,8 @@ import java.util.ArrayList;
 public class GameMenuController {
 
 
-    private String str;
+    public ChoiceBox gameSpeed;
+    private String str = "";
     public Label result;
     public TextField opponentsName;
     public TextField opponentsCount;
@@ -50,7 +53,7 @@ public class GameMenuController {
 
     @FXML
     public void initialize() {
-        if(!DatabaseController.getInstance().getAllPlayerUser().contains(user)&& !DatabaseController.getInstance().getStartUsers().contains(user)){
+        if(!DatabaseController.getInstance().contains(DatabaseController.getInstance().getAllPlayerUser(), user)){//&& !DatabaseController.getInstance().getStartUsers().contains(user)){
             DatabaseController.getInstance().addUserToPlayerUser(user);
         }
 
@@ -59,7 +62,8 @@ public class GameMenuController {
     }
 
     public void setOpponentsName() {
-        newGame.setOnMouseEntered(mouseEvent -> showingTooltip("new game"));
+
+        newGame.setOnMouseClicked(mouseEvent -> showingTooltip("new game"));
         load.setOnMouseEntered(mouseEvent -> showingTooltip("load"));
         opponentsCount.setOnMouseEntered(mouseEvent -> showingTooltip("number of players"));
         opponentsName.setOnMouseEntered(mouseEvent -> showingTooltip("search name"));
@@ -135,14 +139,15 @@ public class GameMenuController {
             if (DatabaseController.getInstance().getAllPlayerUser().size() < Integer.parseInt(opponentsCount.getText())) {
                 result.setText("you must select more users to start the game");
 
-            } else if (DatabaseController.getInstance().getAllPlayerUser().size() > Integer.parseInt(opponentsCount.getText())) {
+            } else if (DatabaseController.getInstance().getAllPlayerUser().size() > Integer.parseInt(opponentsCount.getText() + 1)) {
                 result.setText("you must select less users to start the game");
 
             } else {
-                if (Integer.parseInt(opponentsCount.getText()) < 2 || Integer.parseInt(opponentsCount.getText()) > 5) {
+                if (Integer.parseInt(opponentsCount.getText()) < -2 || Integer.parseInt(opponentsCount.getText()) > 5) {
                     result.setText("number of players must be between 2 and 5");
                 } else {
-                    if(DatabaseController.getInstance().getAllPlayerUser().size() - 1 == DatabaseController.getInstance().getStartUsers().size())
+                    //if(DatabaseController.getInstance().getAllPlayerUser().size() - 1 == DatabaseController.getInstance().getStartUsers().size())
+                    DatabaseController.getInstance().startGame();
                     Main.changeMenu("gameMap");
                 }
             }

@@ -16,7 +16,7 @@ public class User {
     private String lastWin = "00:00";
     private String lastLogin = "00:00";
 
-    private Socket socket;
+
 
     public int photoNumber;
     private String profilePicture;
@@ -134,11 +134,5 @@ public class User {
     }
 
 
-    public Socket getSocket() {
-        return socket;
-    }
 
-    public void setSocket(Socket socket) {
-        this.socket = socket;
-    }
 }

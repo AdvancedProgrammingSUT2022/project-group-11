@@ -89,16 +89,16 @@ public class CheatCodeControllers {
                             resultText.setText(DatabaseController.getInstance().setCheatUnit(user, name,x,y));
 
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_IMPROVEMENT)) != null) {
-                          //  resultText.setText(GameMenu.setCheatImprovement(matcher));
+                            //  resultText.setText(GameMenu.setCheatImprovement(matcher));
 
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_RESOURCE)) != null) {
-                           // resultText.setText(GameMenu.setCheatResource(matcher));
+                            // resultText.setText(GameMenu.setCheatResource(matcher));
 
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_TERRAIN_FEATURE_TYPE)) != null) {
-                           // resultText.setText(GameMenu.setCheatTerrainFeature(matcher));
+                            // resultText.setText(GameMenu.setCheatTerrainFeature(matcher));
 
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.SET_CHEAT_TERRAIN_TYPE)) != null) {
-                        //      resultText.setText(GameMenu.setCheatTerrainType(matcher));
+                            //      resultText.setText(GameMenu.setCheatTerrainType(matcher));
 
                         } else if ((matcher = GameEnums.getMatcher(input, GameEnums.DELETE_CHEAT_IMPROVEMENT)) != null) {
                             int x = Integer.parseInt(matcher.group("x"));

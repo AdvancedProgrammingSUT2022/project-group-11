@@ -1,6 +1,8 @@
 package com.example.civilization.Requests;
 
 import com.example.civilization.Model.*;
+import com.example.civilization.Model.Buildings.BuildingTypes;
+import com.example.civilization.Model.City.Citizen;
 import com.example.civilization.Model.City.City;
 import com.example.civilization.Model.GlobalChats.Message;
 import com.example.civilization.Model.GlobalChats.Room;
@@ -44,6 +46,26 @@ public class RequestUser {
     public Civilization civilization;
     private City city;
     private City secondCity;
+
+    private Citizen citizen;
+
+    public Citizen getCitizen() {
+        return citizen;
+    }
+
+    public void setCitizen(Citizen citizen) {
+        this.citizen = citizen;
+    }
+
+    private ArrayList<BuildingTypes> buildingTypes = new ArrayList<>();
+
+    public ArrayList<BuildingTypes> getBuildingTypes() {
+        return buildingTypes;
+    }
+
+    public void setBuildingTypes(ArrayList<BuildingTypes> buildingTypes) {
+        this.buildingTypes = buildingTypes;
+    }
 
     public City getSecondCity() {
         return secondCity;
